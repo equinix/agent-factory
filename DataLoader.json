@@ -1,0 +1,43 @@
+{
+    "access_manager": {
+        "eventDriven": [],
+        "runOnce": [],
+        "scheduled": []
+    },
+    "fabric": {
+        "eventDriven": [
+            {
+                "name": "equinix.fabric.connection.attribute.changed",
+                "description": "Connection named ${connection_name} attributes are changed",
+                "releaseStatus": "released"
+            }
+        ],
+        "runOnce": [],
+        "scheduled": []
+    },
+    "iam": {
+        "eventDriven": [],
+        "runOnce": [],
+        "scheduled": []
+    },
+    "identity": {
+        "eventDriven": [],
+        "runOnce": [],
+        "scheduled": []
+    },
+    "network_edge": {
+        "eventDriven": [],
+        "runOnce": [],
+        "scheduled": []
+    },
+    "resource_manager": {
+        "eventDriven": [],
+        "runOnce": [],
+        "scheduled": []
+    },
+    "time_service": {
+        "eventDriven": [],
+        "runOnce": [],
+        "scheduled": []
+    }
+}

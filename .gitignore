@@ -1,0 +1,11 @@
+# OS X Finder Files
+.DS_Store
+
+# IDE files
+.idea
+
+# Local Setup Scripts for Repo
+local_helper_scripts/*
+
+# Python Generated Files
+__pycache__
