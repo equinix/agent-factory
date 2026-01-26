@@ -21,7 +21,7 @@ Connections should be in PROVISIONED state to be eligible for bandwidth upgrade.
 4. After the PING operation completes, capture the results of the command, including any success or failure details. Use the connection uuid provided as the source connection uuid for the PING command.
 5. Wait for a short period to ensure the PING command has sufficient time to complete before attempting to retrieve the results.
 6. Search for the PING command using the router uuid. Limit the result to 1.
-7. Next, send an email notification to the designated email address, using the outcome of the PING command as the email body so the recipient is clearly informed of the connectivity status and any relevant diagnostic information.
+7. Next, send an email notification to the designated email address, using the outcome of the search router command as the email body so the recipient is clearly informed of the connectivity status and any relevant diagnostic information.
 
 ## Available Tools
 This skill can use the following tools:
