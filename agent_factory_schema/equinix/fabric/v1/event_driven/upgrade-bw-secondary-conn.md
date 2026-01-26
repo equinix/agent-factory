@@ -22,11 +22,11 @@ This agent provides the following automated monitoring and remediation capabilit
 The agent follows this automated workflow when processing bandwidth alerts:
 1. Alert Rule Validation
  - Receives cloud event notification containing alert metadata
- - Validates alert rule existence using fabric_get_stream_alert_rule_details
+ - Validates alert rule existence using get_stream_alert_rule_details
  - Confirms alert is for bandwidth threshold monitoring
 2. Primary Connection Analysis
  - Extracts connection UUID from the cloud event subject field
- - Retrieves complete connection details using fabric_search_connection
+ - Retrieves complete connection details using search_connection
  - Extracts current bandwidth allocation
  - Identifies redundant_group membership
 3. Secondary Connection Discovery
@@ -41,9 +41,9 @@ The agent follows this automated workflow when processing bandwidth alerts:
 ## Available Tools
 This skill can use the following tools:
 
-*   **`fabric_search_connection`**: Searches for an existing connection `.
-*   **`fabric_get_stream_alert_rule_details `**: Searches for an existing alert rule.
-*   **`fabric_update_connection`**: Update connection. Used to upgrade bandwidth.
+*   **`search_connection`**: Searches for an existing connection `.
+*   **`get_stream_alert_rule_details `**: Searches for an existing alert rule.
+*   **`update_connection`**: Update connection. Used to upgrade bandwidth.
 
 ## Guidelines
 *   **Prioritize Clarity**: Ensure all parameters for the MCP tools are clearly identified from the user's request before making the tool call.
