@@ -9,12 +9,54 @@ Definitive "source of truth" for the Equinix Agent Factory
 The following data are the supported md files for Equinix Agent Factory
 
 <!-- CATALOG_GENERATION_START -->
+
+---
+### Equinix Network-Edge   Event-Driven
+
 <table>
 	<tr>
 		<th>Name</th>
 		<th>Overview</th>
 		<th>Capabilities</th>
 		<th>Agent Tools</th>
+	</tr>
+	<tr>
+		<td>Network Edge Connection Bandwidth monitoring and upgrade agent</td>
+		<td>This definition sets up and activate an Equinix agent that automatically upgrades the bandwidth of a connection when usage reaches a certain threshold.</td>
+		<td>- Monitor real-time network event streams<br>- Detect bandwidth threshold alerts<br>- Analyze connection utilization patterns<br>- Automatically upgrade connection bandwidth<br>- Log all actions and decisions<br>- Send notifications for critical events</td>
+		<td>This skill can use the following tools:
+
+* **`fabric_search_connection`**: Searches for an existing connection.
+* **`fabric_get_stream_alert_rule_details`**: Searches for an existing alert rule.
+* **`fabric_update_connection`**: Update connection. Used to upgrade bandwidth.
+* **`fabric_get_next_available_bandwidth_tier`**: Fetches the next available billing tier based on a bandwidth input.
+	</tr>
+</table>
+
+
+---
+### Equinix Fabric   Run-Once
+
+<table>
+	<tr>
+		<th>Name</th>
+		<th>Overview</th>
+		<th>Capabilities</th>
+		<th>Agent Tools</th>
+	</tr>
+	<tr>
+		<td>Ping FCR agent</td>
+		<td>This definition sets up and activates an Equinix agent that initiates a PING command on a Fabric Cloud Router in order to perform a network connectivity check.
+Once the PING operation is completed, the resulting output is collected and used to generate an email notification.
+The email is then sent to the specified recipient, ensuring that the results of the connectivity test are communicated clearly and promptly.
+This agent can only run once.</td>
+		<td>- PING command on Fabric Cloud Router<br>- Email notification with PING results<br>- Log all actions and decisions</td>
+		<td>This skill can use the following tools:
+
+*   **`search_router`**: Searches for an existing fabric cloud router.
+*   **`search_connection`**: Searches for an existing connection.
+*   **`create_router_commands`**: Initiate a PING command on a Fabric Cloud Router by UUID.
+*   **`send_email_notification`**: Sends an email notification given an email address and email body.
 	</tr>
 	<tr>
 		<td>Bandwidth upgrader agent</td>
@@ -26,6 +68,19 @@ This agent can only run once.</td>
 *   **`search_connection`**: Searches for an existing connection.
 *   **`update_connection`**: Update connection. Used to upgrade bandwidth.
 *   **`get_next_available_bandwidth_tier `**: Fetches the next available billing tier based on a bandwidth input.
+	</tr>
+</table>
+
+
+---
+### Equinix Fabric   Event-Driven
+
+<table>
+	<tr>
+		<th>Name</th>
+		<th>Overview</th>
+		<th>Capabilities</th>
+		<th>Agent Tools</th>
 	</tr>
 	<tr>
 		<td>Cloud Router monitoring and upgrade package agent</td>
@@ -41,6 +96,17 @@ When the route usage exceeds a predefined threshold, the agent automatically upg
 	</tr>
 	<tr>
 		<td>Network Bandwidth monitoring and upgrade agent</td>
+		<td>This automated agent monitors Equinix Fabric connections and maintains bandwidth parity between redundant connection pairs. 
+When bandwidth utilization on a primary connection reaches a configured threshold, the agent automatically upgrades the secondary connection to match the primary connection's bandwidth, ensuring consistent performance across the redundant pair.</td>
+		<td></td>
+		<td>This skill can use the following tools:
+
+*   **`search_connection`**: Searches for an existing connection `.
+*   **`get_stream_alert_rule_details `**: Searches for an existing alert rule.
+*   **`update_connection`**: Update connection. Used to upgrade bandwidth.
+	</tr>
+	<tr>
+		<td>Network Bandwidth monitoring and upgrade agent</td>
 		<td>This definition sets up and activate an Equinix agent that automatically upgrades the bandwidth of a connection when usage reaches a certain threshold.</td>
 		<td>- Monitor real-time network event streams<br>- Detect bandwidth threshold alerts<br>- Analyze connection utilization patterns<br>- Automatically upgrade connection bandwidth<br>- Log all actions and decisions<br>- Send notifications for critical events</td>
 		<td>This skill can use the following tools:
@@ -49,6 +115,30 @@ When the route usage exceeds a predefined threshold, the agent automatically upg
 * **`get_stream_alert_rule_details`**: Searches for an existing alert rule.
 * **`update_connection`**: Update connection. Used to upgrade bandwidth.
 * **`get_next_available_bandwidth_tier`**: Fetches the next available billing tier based on a bandwidth input.
+	</tr>
+	<tr>
+		<td>Network connection packets drop monitoring and upgrade agent</td>
+		<td>This skill sets up and activate an Equinix agent that automatically upgrades the bandwidth of a connection when there are packets drop due to traffic over bw threshold.</td>
+		<td>- Monitor real-time network event streams<br>- Detect packet drop alerts<br>- Analyze connection utilization patterns<br>- Automatically upgrade connection bandwidth<br>- Log all actions and decisions<br>- Send notifications for critical events</td>
+		<td>This skill can use the following tools:
+
+*   **`search_connection`**: Searches for an existing connection `.
+*   **`get_stream_alert_rule_details `**: Searches for an existing alert rule.
+*   **`update_connection`**: Update connection. Used to upgrade bandwidth.
+*   **`get_next_available_bandwidth_tier `**: Fetches the next available billing tier based on a bandwidth input.
+	</tr>
+</table>
+
+
+---
+### Equinix Fabric   Scheduled
+
+<table>
+	<tr>
+		<th>Name</th>
+		<th>Overview</th>
+		<th>Capabilities</th>
+		<th>Agent Tools</th>
 	</tr>
 	<tr>
 		<td>Scheduled bandwidth upgrader agent</td>

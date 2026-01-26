@@ -3,17 +3,17 @@
     "name": "EventDriven",
     "examples": [],
     "package": "equinix.fabric.v1",
-    "datatype": "equinix.fabric.v1.EventDriven",
-    "domain": "Equinix Fabric Agent Factory EventDriven",
+    "datatype": "equinix.fabric.v1.eventdriven",
+    "domain": "Equinix Fabric Agent Factory Event Driven",
     "$schema": "http://json-schema.org/draft-04/schema#",
     "$ref": "#/definitions/Data",
     "definitions": {
-        "name": "ChangeEvent Event Data",
-        "description": "The data within all ChangeEvent events.",
-        "uri": "The data within all ChangeEvent events.",
-        "releaseStatus": "The data within all ChangeEvent events."
+        "name": "Equinix Fabric Agent Factory Event Driven",
+        "description": "Equinix Fabric Agent Factory Event Driven",
+        "uri": "Equinix Fabric Agent Factory Event Driven",
+        "releaseStatus": "Equinix Fabric Agent Factory Event Driven"
     },
-    "eventDrivenTypes": [
+    "agentFactories": [
         {
             "name": "equinix.fabric.connection.bandwidth.upgrade",
             "description": "Upgrade Primary Connection Bandwidth",
@@ -24,22 +24,6 @@
             "name": "equinix.fabric.router.upgrade",
             "description": "Upgrade FCR Package",
             "uri": "https://equinix.github.io/equinix-cloudevents/agent_factory_schema/equinix/fabric/v1/event_driven/upgrade-fcr-package.md",
-            "releaseStatus": "released"
-        }
-    ],
-    "runOnceTypes": [
-        {
-            "name": "equinix.fabric.connection.bandwidth.upgrade",
-            "description": "Upgrade Primary Connection Bandwidth",
-            "uri": "https://equinix.github.io/equinix-cloudevents/agent_factory_schema/equinix/fabric/v1/run_once/upgrade-bw-primmry-connection.md",
-            "releaseStatus": "released"
-        }
-    ],
-    "scheduledTypes": [
-        {
-            "name": "equinix.fabric.connection.bandwidth.upgrade",
-            "description": "Upgrade Primary Connection Bandwidth",
-            "uri": "https://equinix.github.io/equinix-cloudevents/agent_factory_schema/equinix/fabric/v1/scheduled/upgrade-bw-primmry-connection.md",
             "releaseStatus": "released"
         }
     ]
