@@ -1,5 +1,5 @@
 {
-    "$id": "https://equinix.github.io/agent-factory/agent_factory_schema/equinix/fabric/v1/EventDriven.json",
+    "$id": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/EventDriven.json",
     "name": "EventDriven",
     "examples": [],
     "package": "equinix.fabric.v1",
@@ -17,13 +17,25 @@
         {
             "name": "equinix.fabric.connection.bandwidth.upgrade",
             "description": "Upgrade Primary Connection Bandwidth",
-            "uri": "https://equinix.github.io/agent-factory/agent_factory_schema/equinix/fabric/v1/event_driven/upgrade-bw-primmry-connection.md",
+            "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/event_driven/upgrade-bw-primmry-connection.md",
+            "releaseStatus": "released"
+        },
+        {
+            "name": "equinix.fabric.connection.bandwidth.upgrade",
+            "description": "Upgrade Secondary Connection Bandwidth",
+            "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/event_driven/upgrade-bw-secondary-connection.md",
+            "releaseStatus": "released"
+        },
+        {
+            "name": "equinix.fabric.connection.bandwidth.upgrade",
+            "description": "Upgrade Connection Bandwidth from Packet Drop Alert",
+            "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/event_driven/upgrade-bw-on-packet-drop-alert.md",
             "releaseStatus": "released"
         },
         {
             "name": "equinix.fabric.router.upgrade",
             "description": "Upgrade FCR Package",
-            "uri": "https://equinix.github.io/agent-factory/agent_factory_schema/equinix/fabric/v1/event_driven/upgrade-fcr-package.md",
+            "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/event_driven/upgrade-fcr-package.md",
             "releaseStatus": "released"
         }
     ]
