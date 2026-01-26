@@ -1,5 +1,5 @@
 {
-    "$id": "https://equinix.github.io/agent-factory/agent_factory_schema/equinix/fabric/v1/Scheduled.json",
+    "$id": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/Scheduled.json",
     "name": "Scheduled",
     "examples": [],
     "package": "equinix.fabric.v1",
@@ -17,7 +17,7 @@
         {
             "name": "equinix.fabric.connection.bandwidth.upgrade",
             "description": "Upgrade Primary Connection Bandwidth",
-            "uri": "https://equinix.github.io/agent-factory/agent_factory_schema/equinix/fabric/v1/scheduled/upgrade-bw-primmry-connection.md",
+            "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/scheduled/upgrade-bw-primmry-connection.md",
             "releaseStatus": "released"
         }
     ]
