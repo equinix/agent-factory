@@ -12,13 +12,13 @@
                 {
                     "name": "equinix.fabric.connection.bandwidth.upgrade",
                     "description": "Upgrade Primary Connection Bandwidth",
-                    "uri": "https://equinix.github.io/equinix-cloudevents/agent_factory_schema/equinix/fabric/v1/event_driven/upgrade-bw-primmry-connection.md",
+                    "uri": "https://equinix.github.io/agent-factory/agent_factory_schema/equinix/fabric/v1/event_driven/upgrade-bw-primmry-connection.md",
                     "releaseStatus": "released"
                 },
                 {
                     "name": "equinix.fabric.router.upgrade",
                     "description": "Upgrade FCR Package",
-                    "uri": "https://equinix.github.io/equinix-cloudevents/agent_factory_schema/equinix/fabric/v1/event_driven/upgrade-fcr-package.md",
+                    "uri": "https://equinix.github.io/agent-factory/agent_factory_schema/equinix/fabric/v1/event_driven/upgrade-fcr-package.md",
                     "releaseStatus": "released"
                 }
             ]
@@ -33,7 +33,7 @@
                 {
                     "name": "equinix.fabric.connection.bandwidth.upgrade",
                     "description": "Upgrade Primary Connection Bandwidth",
-                    "uri": "https://equinix.github.io/equinix-cloudevents/agent_factory_schema/equinix/fabric/v1/run_once/upgrade-bw-primary-connection.md",
+                    "uri": "https://equinix.github.io/agent-factory/agent_factory_schema/equinix/fabric/v1/run_once/upgrade-bw-primary-connection.md",
                     "releaseStatus": "released"
                 }
             ]
@@ -48,17 +48,33 @@
                 {
                     "name": "equinix.fabric.connection.bandwidth.upgrade",
                     "description": "Upgrade Primary Connection Bandwidth",
-                    "uri": "https://equinix.github.io/equinix-cloudevents/agent_factory_schema/equinix/fabric/v1/scheduled/upgrade-bw-primmry-connection.md",
+                    "uri": "https://equinix.github.io/agent-factory/agent_factory_schema/equinix/fabric/v1/scheduled/upgrade-bw-primmry-connection.md",
                     "releaseStatus": "released"
                 }
             ]
         },
         {
             "url": "https://equinix.github.io/agent-factory/agent_factory_schema/equinix/network_edge/v1/EventDriven.json",
-            "domain": "Equinix Network Edge Agent Factory",
+            "domain": "Equinix Network Edge Agent Factory Event Driven",
             "name": "EventDriven",
-            "description": "NetworkEdge",
+            "description": "Equinix Network Edge Agent Factory Event Driven",
             "datatype": "equinix.network_edge.v1.EventDriven",
+            "agentFactories": []
+        },
+        {
+            "url": "https://equinix.github.io/agent-factory/agent_factory_schema/equinix/network_edge/v1/RunOnce.json",
+            "domain": "Equinix Network Edge Agent Factory Scheduled",
+            "name": "Scheduled",
+            "description": "Equinix Network Edge Agent Factory Scheduled",
+            "datatype": "equinix.network_edge.v1.Scheduled",
+            "agentFactories": []
+        },
+        {
+            "url": "https://equinix.github.io/agent-factory/agent_factory_schema/equinix/network_edge/v1/RunOnce.json",
+            "domain": "Equinix Network Edge Agent Factory Run Once",
+            "name": "RunOnce",
+            "description": "Equinix Network Edge Agent Factory Run Once",
+            "datatype": "equinix.network_edge.v1.RunOnce",
             "agentFactories": []
         }
     ]

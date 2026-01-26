@@ -17,7 +17,7 @@
         {
             "name": "equinix.fabric.connection.bandwidth.upgrade",
             "description": "Upgrade Primary Connection Bandwidth",
-            "uri": "https://equinix.github.io/equinix-cloudevents/agent_factory_schema/equinix/fabric/v1/run_once/upgrade-bw-primary-connection.md",
+            "uri": "https://equinix.github.io/agent-factory/agent_factory_schema/equinix/fabric/v1/run_once/upgrade-bw-primary-connection.md",
             "releaseStatus": "released"
         }
     ]

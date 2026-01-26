@@ -1,38 +1,14 @@
 # Equinix Agent Factory
 
-Equinix published [CloudEvent](https://cloudevents.io/) Types
+Equinix published md agents
 
 Definitive "source of truth" for the Equinix Agent Factory
 
 ## Equinix Agent Factory in this repository
 
-The following data are the supported md files for Equinix Agent Factory
+The following md files are supported for Equinix Agent Factory
 
 <!-- CATALOG_GENERATION_START -->
-
----
-### Equinix Network-Edge   Event-Driven
-
-<table>
-	<tr>
-		<th>Name</th>
-		<th>Overview</th>
-		<th>Capabilities</th>
-		<th>Agent Tools</th>
-	</tr>
-	<tr>
-		<td>Network Edge Connection Bandwidth monitoring and upgrade agent</td>
-		<td>This definition sets up and activate an Equinix agent that automatically upgrades the bandwidth of a connection when usage reaches a certain threshold.</td>
-		<td>- Monitor real-time network event streams<br>- Detect bandwidth threshold alerts<br>- Analyze connection utilization patterns<br>- Automatically upgrade connection bandwidth<br>- Log all actions and decisions<br>- Send notifications for critical events</td>
-		<td>This skill can use the following tools:
-
-* **`fabric_search_connection`**: Searches for an existing connection.
-* **`fabric_get_stream_alert_rule_details`**: Searches for an existing alert rule.
-* **`fabric_update_connection`**: Update connection. Used to upgrade bandwidth.
-* **`fabric_get_next_available_bandwidth_tier`**: Fetches the next available billing tier based on a bandwidth input.
-	</tr>
-</table>
-
 
 ---
 ### Equinix Fabric   Run-Once
