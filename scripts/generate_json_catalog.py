@@ -22,18 +22,14 @@ def retrieve_json_schemas():
             if file.endswith('.json') and os.path.basename(root) != "agent_factory_schema":
                 with open(root + "/" + file, "r") as eventFile:
                     data = json.load(eventFile)
-                    eventDriven = sortedRemoveDuplicates(data.get(sc.EVENT_DRIVEN, []))
-                    runOnceTypes = sortedRemoveDuplicates(data.get(sc.RUN_ONCE, []))
-                    scheduledTypes = sortedRemoveDuplicates(data.get(sc.SCHEDULED, []))
+                    agentFactories = sortedRemoveDuplicates(data.get("agentFactories", []))
                     newItem = {
                         "url": data["$id"],
                         "domain": data["domain"],
                         "name": data["name"],
                         "description": data["definitions"]["description"],
                         "datatype": data["datatype"],
-                        "eventDrivenTypes": eventDriven,
-                        "runOnceTypes": runOnceTypes,
-                        "scheduledTypes": scheduledTypes
+                        "agentFactories": agentFactories
                     }
                     json_schemas.append(newItem)
     json_schemas.sort(key=lambda x: x["url"])
