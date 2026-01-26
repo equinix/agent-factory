@@ -28,7 +28,7 @@ This skill can use the following tools:
 *   **`search_router`**: Searches for an existing fabric cloud router.
 *   **`search_connection`**: Searches for an existing connection.
 *   **`create_router_commands`**: Initiate a PING command on a Fabric Cloud Router by UUID.
-*   **`fabric_send_email_notification`**: Sends an email notification given an email address and email body.
+*   **`send_email_notification`**: Sends an email notification given an email address and email body.
 
 ## Guidelines
 *   **Prioritize Clarity**: Ensure all parameters for the MCP tools are clearly identified from the user's request before making the tool call.
