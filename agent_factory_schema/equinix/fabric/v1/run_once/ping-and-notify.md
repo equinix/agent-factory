@@ -20,7 +20,7 @@ Connections should be in PROVISIONED state to be eligible for bandwidth upgrade.
 3. Then initiate a PING command on the Fabric Cloud Router to test network connectivity to verify that the specified destination is reachable. Use the project of the router as the input project of the ping command.
 4. After the PING operation completes, capture the results of the command, including any success or failure details. Use the connection uuid provided as the source connection uuid for the PING command.
 5. Wait for 10000 milliseconds to ensure the PING command has sufficient time to complete before attempting to retrieve the results.
-6. Search for the PING command using the router uuid. Limit the result to 1.
+6. Search for the PING command using the router uuid. Limit the result to 1. If the response is in pending state, wait for another 10000 milliseconds and search again.
 7. Next, send an email notification to the designated email address, using the outcome of the search router command as the email body so the recipient is clearly informed of the connectivity status and any relevant diagnostic information.
 
 ## Available Tools
