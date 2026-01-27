@@ -19,8 +19,9 @@ Connections should be in PROVISIONED state to be eligible for bandwidth upgrade.
 2. Search for the existing connection given the connection uuid. Verify if the aside router uuid of the connection matches the router uuid from the first step. Stop if they do not match.
 3. Then initiate a PING command on the Fabric Cloud Router to test network connectivity to verify that the specified destination is reachable. Use the project of the router as the input project of the ping command.
 4. After the PING operation completes, capture the results of the command, including any success or failure details. Use the connection uuid provided as the source connection uuid for the PING command.
-5. Next, send an email notification to the designated email address, using the outcome of the PING command as the email body so the recipient is clearly informed of the connectivity status and any relevant diagnostic information.
-
+5. Wait for 20000 milliseconds to ensure the PING command has sufficient time to complete before attempting to retrieve the results.
+6. Search for the PING command using the router uuid. Limit the result to 1.
+7. Next, send an email notification to the designated email address, using the outcome of the search router command as the email body so the recipient is clearly informed of the connectivity status and any relevant diagnostic information.
 
 ## Available Tools
 This skill can use the following tools:
@@ -28,6 +29,8 @@ This skill can use the following tools:
 *   **`search_router`**: Searches for an existing fabric cloud router.
 *   **`search_connection`**: Searches for an existing connection.
 *   **`create_router_commands`**: Initiate a PING command on a Fabric Cloud Router by UUID.
+*   **`wait`**: Wait for a while. An optional parameter can be provided to specify the wait time in milliseconds.
+*   **`search_router_commands`**: Search for commands (e.g., PING) on a Fabric Cloud Router.
 *   **`send_email_notification`**: Sends an email notification given an email address and email body.
 
 ## Guidelines
