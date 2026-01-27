@@ -13,7 +13,9 @@ def extract_md_sections(md_content, current_md_file):
         base_url = "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/"
         rel_path = os.path.relpath(current_md_file, os.path.dirname(__file__) + "/../")
         url = f"{base_url}{rel_path.replace(os.sep, '/')}"
-        html_name = f'<a href="{url}">{name.group(1).strip()}</a>'
+        current_md_file_last_index = rel_path.rfind("/")
+        md_file =  rel_path[current_md_file_last_index + 1:]
+        html_name = f'<a href="{url}">{name.group(1).strip()}<br>[{md_file}]</a>'
     else:
         html_name = ""
 
@@ -25,9 +27,9 @@ def extract_md_sections(md_content, current_md_file):
 
     return {
         "name": html_name,
-        "description": overview.group(1).strip() if overview else "",
+        "description": overview.group(1).strip() if overview else "--",
         "capabilities": html_capabilities,
-        "agent_definition": tools.group(1).strip() if tools else "",
+        "agent_definition": tools.group(1).strip() if tools else "--",
     }
 
 def find_md_files(root):
@@ -38,12 +40,37 @@ def find_md_files(root):
                 md_files.append(os.path.join(dirpath, f))
     return md_files
 
+def catalog_schema_entry(schema):
+    agentFactories = ""
+
+    if "agentFactories" in schema:
+        agentFactories = schema["agentFactories"]
+
+    return f"""---
+### {schema["domain"]}
+### {schema["url"]}
+### {schema["datatype"]}
+### {schema["agentFactories"]}
+"""
+
+def extract_schema_factory_status(entry_name, catalog):
+    # Check if any agentFactory uri is in entry["name"]
+    matching_schema = None
+    matching_uri = None
+    release_status = None
+    for schema in catalog["schemas"]:
+        for agent_factory in schema.get("agentFactories", []):
+            catalog_agent_factory_uri = agent_factory.get("uri", "")
+            if catalog_agent_factory_uri and catalog_agent_factory_uri in entry_name:
+                return agent_factory.get("releaseStatus")
+    return sc.PREVIEW
+
 def create_table(entries):
     if not entries:
         return ""
-    table = "<table>\n\t<tr>\n\t\t<th>Name</th>\n\t\t<th>Overview</th>\n\t\t<th>Capabilities</th>\n\t\t<th>Agent Tools</th>\n\t</tr>\n"
+    table = "<table>\n\t<tr>\n\t\t<th>Name</th>\n\t\t<th>Overview</th>\n\t\t<th>Capabilities</th>\n\t\t<th>Agent Tools</th>\n\t\t<th>Release Status</th>\n\t</tr>\n"
     for entry in entries:
-        table += f"\t<tr>\n\t\t<td>{entry['name']}</td>\n\t\t<td>{entry['description']}</td>\n\t\t<td>{entry['capabilities']}</td>\n\t\t<td>{entry['agent_definition']}\n\t</tr>\n"
+        table += f"\t<tr>\n\t\t<td>{entry['name']}</td>\n\t\t<td>{entry['description']}</td>\n\t\t<td>{entry['capabilities']}</td>\n\t\t<td>{entry['agent_definition']}</td>\n\t\t<td>{entry['release_status']}\n\t</tr>\n"
     table += "</table>\n"
     return table
 
@@ -51,6 +78,10 @@ def replace_readme_catalog():
     root = os.path.dirname(os.path.abspath(__file__)) + "/../agent_factory_schema"
     readme_path = os.path.dirname(os.path.abspath(__file__)) + "/../README.md"
     catalog_path = os.path.dirname(os.path.abspath(__file__)) + "/../agent_factory_schema/catalog.json"
+
+    with open(catalog_path, "r") as catalog_file:
+        catalog = json.load(catalog_file)
+        schemas = "\n".join(map(catalog_schema_entry, catalog["schemas"]))
 
     sections = []
     for dirpath, dirnames, filenames in os.walk(root):
@@ -65,8 +96,8 @@ def replace_readme_catalog():
                 with open(md_file, "r") as f:
                     content = f.read()
                     entry = extract_md_sections(content, md_file)
+                    entry["release_status"] = extract_schema_factory_status(entry["name"], catalog)
                     entries.append(entry)
-
             sections.append(f"\n---\n### {formatted_section_dir}\n")
             sections.append(create_table(entries))
 

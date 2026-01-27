@@ -1,5 +1,5 @@
 {
-    "$id": "https://equinix.github.io/agent-factory/agent_factory_schema/equinix/network_edge/v1/RunOnce.json",
+    "$id": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/network_edge/v1/RunOnce.json",
     "name": "RunOnce",
     "examples": [],
     "package": "equinix.network_edge.v1",
