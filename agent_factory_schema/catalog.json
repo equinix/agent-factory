@@ -5,7 +5,7 @@
         {
             "url": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/EventDriven.json",
             "domain": "Equinix Fabric Agent Factory Event Driven",
-            "name": "EventDriven",
+            "title": "EventDriven",
             "description": "Equinix Fabric Agent Factory Event Driven",
             "datatype": "equinix.fabric.v1.eventdriven",
             "agentFactories": [
@@ -13,20 +13,20 @@
                     "name": "equinix.fabric.connection.bandwidth.upgrade",
                     "description": "Upgrade Connection Bandwidth from Packet Drop Alert",
                     "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/event_driven/upgrade-bw-on-packet-drop-alert.md",
-                    "releaseStatus": "released"
+                    "releaseStatus": "preview"
                 },
                 {
                     "name": "equinix.fabric.router.upgrade",
                     "description": "Upgrade FCR Package",
                     "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/event_driven/upgrade-fcr-package.md",
-                    "releaseStatus": "released"
+                    "releaseStatus": "preview"
                 }
             ]
         },
         {
             "url": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/RunOnce.json",
             "domain": "Equinix Fabric Agent Factory Run Once",
-            "name": "RunOnce",
+            "title": "RunOnce",
             "description": "Equinix Fabric Agent Factory Run Once",
             "datatype": "equinix.fabric.v1.runonce",
             "agentFactories": [
@@ -34,20 +34,20 @@
                     "name": "equinix.fabric.connection.bandwidth.upgrade",
                     "description": "Upgrade Primary Connection Bandwidth",
                     "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/run_once/upgrade-bw-primary-connection.md",
-                    "releaseStatus": "released"
+                    "releaseStatus": "preview"
                 },
                 {
                     "name": "equinix.fabric.router.troubleshoot",
                     "description": "Ping and Notify Fabric Cloud Router Connection",
                     "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/run_once/ping-and-notify.md",
-                    "releaseStatus": "released"
+                    "releaseStatus": "preview"
                 }
             ]
         },
         {
             "url": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/Scheduled.json",
             "domain": "Equinix Fabric Agent Factory Scheduled",
-            "name": "Scheduled",
+            "title": "Scheduled",
             "description": "Equinix Fabric Agent Factory Scheduled",
             "datatype": "equinix.fabric.v1.scheduled",
             "agentFactories": [
@@ -55,32 +55,32 @@
                     "name": "equinix.fabric.connection.bandwidth.upgrade",
                     "description": "Upgrade Primary Connection Bandwidth",
                     "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/scheduled/upgrade-bw-primary-connection.md",
-                    "releaseStatus": "released"
+                    "releaseStatus": "preview"
                 }
             ]
         },
         {
             "url": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/network_edge/v1/EventDriven.json",
             "domain": "Equinix Network Edge Agent Factory Event Driven",
-            "name": "EventDriven",
+            "title": "EventDriven",
             "description": "Equinix Network Edge Agent Factory Event Driven",
-            "datatype": "equinix.network_edge.v1.EventDriven",
-            "agentFactories": []
-        },
-        {
-            "url": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/network_edge/v1/RunOnce.json",
-            "domain": "Equinix Network Edge Agent Factory Scheduled",
-            "name": "Scheduled",
-            "description": "Equinix Network Edge Agent Factory Scheduled",
-            "datatype": "equinix.network_edge.v1.Scheduled",
+            "datatype": "equinix.network_edge.v1.eventdriven",
             "agentFactories": []
         },
         {
             "url": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/network_edge/v1/RunOnce.json",
             "domain": "Equinix Network Edge Agent Factory Run Once",
-            "name": "RunOnce",
+            "title": "RunOnce",
             "description": "Equinix Network Edge Agent Factory Run Once",
-            "datatype": "equinix.network_edge.v1.RunOnce",
+            "datatype": "equinix.network_edge.v1.runonce",
+            "agentFactories": []
+        },
+        {
+            "url": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/network_edge/v1/RunOnce.json",
+            "domain": "Equinix Network Edge Agent Factory Scheduled",
+            "title": "Scheduled",
+            "description": "Equinix Network Edge Agent Factory Scheduled",
+            "datatype": "equinix.network_edge.v1.Scheduled",
             "agentFactories": []
         }
     ]

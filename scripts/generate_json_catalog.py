@@ -20,14 +20,14 @@ def retrieve_json_schemas():
     for root, dirs, files in os.walk(directory):
         for file in files:
             if file.endswith('.json') and os.path.basename(root) != "agent_factory_schema":
-                with open(root + "/" + file, "r") as eventFile:
-                    data = json.load(eventFile)
+                with open(root + "/" + file, "r") as jsonFiles:
+                    data = json.load(jsonFiles)
                     agentFactories = sortedRemoveDuplicates(data.get("agentFactories", []))
                     newItem = {
                         "url": data["$id"],
                         "domain": data["domain"],
-                        "name": data["name"],
-                        "description": data["definitions"]["description"],
+                        "title": data["name"],
+                        "description": data["definitions"]["Data"]["description"],
                         "datatype": data["datatype"],
                         "agentFactories": agentFactories
                     }
