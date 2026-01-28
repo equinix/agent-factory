@@ -36,7 +36,7 @@ This agent can only run once.</td>
 *   **`wait`**: Wait for a while. An optional parameter can be provided to specify the wait time in milliseconds.
 *   **`search_router_commands`**: Search for commands (e.g., PING) on a Fabric Cloud Router.
 *   **`send_email_notification`**: Sends an email notification given an email address and email body.</td>
-		<td>released
+		<td>preview
 	</tr>
 	<tr>
 		<td><a href="https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/run_once/upgrade-bw-primary-connection.md">Bandwidth upgrader agent<br>[upgrade-bw-primary-connection.md]</a></td>
@@ -48,7 +48,7 @@ This agent can only run once.</td>
 *   **`search_connection`**: Searches for an existing connection.
 *   **`update_connection`**: Update connection. Used to upgrade bandwidth.
 *   **`get_next_available_bandwidth_tier `**: Fetches the next available billing tier based on a bandwidth input.</td>
-		<td>released
+		<td>preview
 	</tr>
 </table>
 
@@ -104,7 +104,7 @@ This agent is triggered at 3pm every Monday and Wednesday each month.</td>
 *   **`search_connection`**: Searches for an existing connection.
 *   **`update_connection`**: Update connection. Used to upgrade bandwidth.
 *   **`get_next_available_bandwidth_tier `**: Fetches the next available billing tier based on a bandwidth input.</td>
-		<td>released
+		<td>preview
 	</tr>
 </table>
 
@@ -130,7 +130,7 @@ This agent is triggered at 3pm every Monday and Wednesday each month.</td>
 *   **`get_stream_alert_rule_details `**: Searches for an existing alert rule.
 *   **`update_connection`**: Update connection. Used to upgrade bandwidth.
 *   **`get_next_available_bandwidth_tier `**: Fetches the next available billing tier based on a bandwidth input.</td>
-		<td>released
+		<td>preview
 	</tr>
 	<tr>
 		<td><a href="https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/event_driven/upgrade-fcr-package.md">Cloud Router monitoring and upgrade package agent<br>[upgrade-fcr-package.md]</a></td>
@@ -143,7 +143,7 @@ When the route usage exceeds a predefined threshold, the agent automatically upg
 *   **`get_stream_alert_rule_details `**: Searches for an existing alert rule.
 *   **`get_next_available_router_package `**: Fetches the next available Fabric Cloud Router package based on a package input.
 *   **`update_router`**: Update connection. Used to upgrade bandwidth.</td>
-		<td>released
+		<td>preview
 	</tr>
 	<tr>
 		<td><a href="https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/event_driven/upgrade-bw-primary-connection.md">Network Bandwidth monitoring and upgrade agent<br>[upgrade-bw-primary-connection.md]</a></td>
