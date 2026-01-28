@@ -2,7 +2,7 @@ import os
 from jsonschema import validate
 import json
 
-def validateJsonSchemas():
+def validate_json_schemas():
     validationSchemaFile = os.path.dirname(os.path.abspath(__file__)) + "/jsonschema-org-schema.json"
     root = os.path.dirname(os.path.abspath(__file__)) + "/../agent_factory_schema"
 
@@ -17,4 +17,4 @@ def validateJsonSchemas():
                     validate(instance=data, schema=schema)
 
 if __name__ == "__main__":
-    validateJsonSchemas()
+    validate_json_schemas()
