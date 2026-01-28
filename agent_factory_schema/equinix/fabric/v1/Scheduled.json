@@ -28,6 +28,18 @@
             "description": "Upgrade Primary Connection Bandwidth",
             "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/scheduled/upgrade-bw-primary-connection.md",
             "releaseStatus": "preview"
+        },
+        {
+            "name": "equinix.fabric.router.ping.notify",
+            "description": "Ping and Notify Fabric Cloud Router Connection",
+            "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/scheduled/ping-and-notify.md",
+            "releaseStatus": "preview"
+        },
+        {
+            "name": "equinix.fabric.router.upgrade",
+            "description": "Upgrade FCR Package",
+            "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/scheduled/upgrade-fcr-package.md",
+            "releaseStatus": "preview"
         }
     ]
 }

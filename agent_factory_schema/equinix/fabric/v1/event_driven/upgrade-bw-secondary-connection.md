@@ -17,8 +17,7 @@ If these resources are not yet configured, create a stream, attach your connecti
 - Intelligent Bandwidth Matching: Upgrades secondary connection bandwidth to match primary connection specifications
 - Comprehensive Logging: Records all actions, decisions, and state changes for audit and troubleshooting- Monitor real-time network event streams
 
-## Workflow
-The agent follows this automated workflow when processing bandwidth alerts:
+## Follow the action step by step below
 1. Alert Rule Validation
  - Receives cloud event notification containing alert metadata
  - Validates alert rule existence using get_stream_alert_rule_details

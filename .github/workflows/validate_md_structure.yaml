@@ -1,0 +1,27 @@
+name: Validate JSON Schemas Syntax
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
+    paths:
+      - 'agent_factory_schema/**'
+      - 'scripts/**'
+      - '.github/workflows/validate_md_structure.yaml'
+
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Check out repo
+      uses: actions/checkout@v4
+
+    - name: Setup Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.13' 
+
+    - name: Install Python requirements.txt Dependencies
+      run: python3 -m pip install -r ./scripts/requirements.txt
+
+    - name: Validate MD File Structures
+      run: python3 ./scripts/validate_md_structure.py
