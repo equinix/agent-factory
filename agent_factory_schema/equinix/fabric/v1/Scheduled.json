@@ -13,7 +13,7 @@
                 "agentFactories": {
                     "$ref": "#/definitions/agentFactories",
                     "additionalProperties": true,
-                    "description": "The agent factories within all run-once scenarios."
+                    "description": "The agent factories within all scheduled scenarios."
                 }
             },
             "additionalProperties": true,
@@ -27,7 +27,7 @@
             "name": "equinix.fabric.connection.bandwidth.upgrade",
             "description": "Upgrade Primary Connection Bandwidth",
             "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/scheduled/upgrade-bw-primary-connection.md",
-            "releaseStatus": "released"
+            "releaseStatus": "preview"
         }
     ]
 }
