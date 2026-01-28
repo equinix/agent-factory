@@ -1,20 +1,19 @@
 # Collect connection and email
 
 ## Overview
-This skill sets up and activate an Equinix agent that automatically email a list of connections that are over the metros where latency spike.
+This skill sets up and activate an Equinix agent that automatically email a list of connections beetween two metros. 
+This agent can only run once.
 
 ## Prerequisites
 Connections should be in PROVISIONED state 
 
 ## Capabilities
-- Detect metro latency alerts
-- Identify the source and destination metros
 - Identify the active connections over the metros
 - Email notification with the connections list
 - Log all actions and decisions
 
 ## Follow the action step by step below:
-1. Once the cloud event is received, look at the metro latency alert, from type extract source and destination metro codes
+1. From the agent configuration, extract source and destination metro codes
 2. Search for the active connections, using the source metro code as aside and destination metro code as aside
 3. Next, send an email notification to the designated email address, using the outcome of the search connection command as the email body so the recipient is clearly informed of the connections list to follow up.
 
