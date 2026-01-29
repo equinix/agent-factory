@@ -21,7 +21,7 @@ If you don't have one yet, start by creating a stream, attach your connection re
 3. Search for the existing connection given the subject connection uuid from the cloud event message.
 4. Extract the bandwidth from the connection details, and then fetch the next available tier given the bandwidth extracted from the connection details.
 5. Upgrade the bandwidth of the connection given the new bandwidth.
-6. Search for the last cloudevent of the connection
+6. Search for cloudevent of the connection
 7. Next, send an email notification to the designated email address, using the outcome of the search cloudevent command as the email body so the recipient is clearly informed of the connectivity status and any relevant diagnostic information.
 
 
@@ -32,8 +32,8 @@ This skill can use the following tools:
 * **`get_stream_alert_rule_details`**: Searches for an existing alert rule.
 * **`update_connection`**: Update connection. Used to upgrade bandwidth.
 * **`get_next_available_bandwidth_tier`**: Fetches the next available billing tier based on a bandwidth input.
-* **`search_cloud_events`**: Search for the last cloudevent based on the connection uuid.
-* **`send_email_notification: Sends an email notification given an email address and email body.
+* **`search_cloud_events`**: Search for the cloudevent based on the connection uuid.
+* **`send_email_notification`**: Sends an email notification given an email address and email body.
 
 ## Guidelines
 *   **Prioritize Clarity**: Ensure all parameters for the MCP tools are clearly identified from the user's request before making the tool call.
