@@ -171,4 +171,30 @@ When bandwidth utilization on a primary connection reaches a configured threshol
 	</tr>
 </table>
 
+
+---
+### Equinix Network-Edge   Event-Driven
+
+<table>
+	<tr>
+		<th>Name</th>
+		<th>Overview</th>
+		<th>Capabilities</th>
+		<th>Agent Tools</th>
+		<th>Release Status</th>
+	</tr>
+	<tr>
+		<td><a href="https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/network_edge/v1/event_driven/upgrade-bw-primary-connection.md">Network Edge Bandwidth monitoring and upgrade agent Test<br>[upgrade-bw-primary-connection.md]</a></td>
+		<td>--</td>
+		<td>- Monitor real-time network event streams<br>- Detect bandwidth threshold alerts<br>- Analyze connection utilization patterns<br>- Automatically upgrade connection bandwidth<br>- Log all actions and decisions<br>- Send notifications for critical events</td>
+		<td>This skill can use the following tools:
+
+* **`search_connection`**: Searches for an existing connection.
+* **`get_stream_alert_rule_details`**: Searches for an existing alert rule.
+* **`update_connection`**: Update connection. Used to upgrade bandwidth.
+* **`get_next_available_bandwidth_tier`**: Fetches the next available billing tier based on a bandwidth input.</td>
+		<td>preview
+	</tr>
+</table>
+
 <!-- CATALOG_GENERATION_END -->

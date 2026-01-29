@@ -77,7 +77,14 @@
             "title": "EventDriven",
             "description": "Equinix Network Edge Agent Factory Event Driven",
             "datatype": "equinix.network_edge.v1.eventdriven",
-            "agentFactories": []
+            "agentFactories": [
+                {
+                    "name": "equinix.fabric.connection.bandwidth.upgrade",
+                    "description": "Upgrade Primary Connection Bandwidth",
+                    "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/network_edge/v1/event_driven/upgrade-bw-primary-connection.md",
+                    "releaseStatus": "preview"
+                }
+            ]
         },
         {
             "url": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/network_edge/v1/RunOnce.json",
