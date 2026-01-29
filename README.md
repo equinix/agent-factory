@@ -185,7 +185,7 @@ When bandwidth utilization on a primary connection reaches a configured threshol
 	</tr>
 	<tr>
 		<td><a href="https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/network_edge/v1/event_driven/upgrade-bw-primary-connection.md">Network Edge Bandwidth monitoring and upgrade agent Test<br>[upgrade-bw-primary-connection.md]</a></td>
-		<td>--</td>
+		<td>This definition sets up and activate an Equinix agent that automatically upgrades the bandwidth of a connection when usage reaches a certain threshold.</td>
 		<td>- Monitor real-time network event streams<br>- Detect bandwidth threshold alerts<br>- Analyze connection utilization patterns<br>- Automatically upgrade connection bandwidth<br>- Log all actions and decisions<br>- Send notifications for critical events</td>
 		<td>This skill can use the following tools:
 
