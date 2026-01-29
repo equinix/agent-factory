@@ -1,6 +1,6 @@
 # Network Edge Bandwidth monitoring and upgrade agent Test
 
-## missing
+## Overview
 This definition sets up and activate an Equinix agent that automatically upgrades the bandwidth of a connection when usage reaches a certain threshold.
 
 ## Prerequisites
