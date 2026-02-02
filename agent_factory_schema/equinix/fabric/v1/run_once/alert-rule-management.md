@@ -25,9 +25,9 @@ This skill can use the following tools:
 
 *   **`search_connection`**: Searches for an existing connection.
 *   **`get_stream_details`**: Fetches stream details given a stream uuid.
-*   **`create_stream`**: Create a stream. Limit name to 10 characters.
+*   **`create_stream`**: Create a stream.
 *   **`attach_stream_asset`**: Attach a resource to a stream.
-*   **`create_stream_alert_rule`**: Create an alert rule given a stream uuid. Limit name to 10 characters.
+*   **`create_stream_alert_rule`**: Create an alert rule given a stream uuid.
 *   **`wait`**: Wait for a while. An optional parameter can be provided to specify the wait time in milliseconds.
 *   **`send_email_notification`**: Sends an email notification given an email address and email body.
 
@@ -35,7 +35,7 @@ This skill can use the following tools:
 *   **Prioritize Clarity**: Ensure all parameters for the MCP tools are clearly identified from the user's request before making the tool call.
 *   **Error Handling**: If parameters are invalid or operations fail, log errors and stop the process.
 *   **Token Efficiency**: Only call the tools when all necessary information is present, avoiding unnecessary context loading.
-*   **Name guidelines** Limit names to 15 characters when creating streams and alert rules to ensure compatibility.
+*   **Name guidelines** When generating names, limit to 15 characters and use unix timestamps.
 *   **Alert Rule guidelines** Default window size to PT15M.
 *   **Required Parameters** User should specify a connection uuid.
 *   **Required Parameters** User should specify an operand.
