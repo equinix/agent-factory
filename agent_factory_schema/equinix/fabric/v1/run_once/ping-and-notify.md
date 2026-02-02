@@ -7,7 +7,7 @@ The email is then sent to the specified recipient, ensuring that the results of 
 This agent can only run once.
 
 ## Prerequisites
-Connections should be in PROVISIONED state to be eligible for bandwidth upgrade.
+Fabric Cloud Router and Connections associated with it should be in PROVISIONED state to be eligible for ping command.
 
 ## Capabilities
 - PING command on Fabric Cloud Router
