@@ -39,6 +39,22 @@ This agent can only run once.</td>
 		<td>preview
 	</tr>
 	<tr>
+		<td><a href="https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/run_once/alert-rule-management.md">Alert Rule Manager<br>[alert-rule-management.md]</a></td>
+		<td>This definition sets up and activate an Equinix agent that sets up an alert to a connection.
+This agent can only run once.</td>
+		<td>- Automatically creates an alert rule based on user-defined parameters<br>- Instantly creates a stream if one does not exist and attaches the resource to it<br>- Log all actions and decisions</td>
+		<td>This skill can use the following tools:
+
+*   **`search_connection`**: Searches for an existing connection.
+*   **`get_stream_details`**: Fetches stream details given a stream uuid.
+*   **`create_stream`**: Create a stream.
+*   **`attach_stream_asset`**: Attach a resource to a stream.
+*   **`create_stream_alert_rule`**: Create an alert rule given a stream uuid.
+*   **`wait`**: Wait for a while. An optional parameter can be provided to specify the wait time in milliseconds.
+*   **`send_email_notification`**: Sends an email notification given an email address and email body.</td>
+		<td>preview
+	</tr>
+	<tr>
 		<td><a href="https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/run_once/upgrade-bw-primary-connection.md">Bandwidth upgrader agent<br>[upgrade-bw-primary-connection.md]</a></td>
 		<td>This definition sets up and activate an Equinix agent that upgrades the bandwidth of a connection.
 This agent can only run once.</td>
