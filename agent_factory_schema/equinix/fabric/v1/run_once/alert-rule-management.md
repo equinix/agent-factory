@@ -36,7 +36,7 @@ This skill can use the following tools:
 *   **Error Handling**: If parameters are invalid or operations fail, log errors and stop the process.
 *   **Token Efficiency**: Only call the tools when all necessary information is present, avoiding unnecessary context loading.
 *   **Name guidelines** Limit names to 20 characters for streams and alert rules to ensure compatibility.
-*   **Alert Rule guidelines** Default window size to 5 minutes. Operand is either ABOVE or BELOW.
+*   **Alert Rule guidelines** Default window size to PT15M. Operand is either ABOVE or BELOW.
 *   **Required Parameters** User should specify a connection uuid.
 *   **Required Parameters** User should a critical threshold.
 *   **Required Parameters** User should specify an email address.
