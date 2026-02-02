@@ -132,10 +132,6 @@ It is imperative that you understand the responsibility involved for managing yo
 `releaseStatus` attribute in your data schema files. The [CODEOWNERS](#codeowners) section describes how responsibility
 is managed within the repo. Please review it thoroughly.
 
-## Note on Font Colors for SLO Table and SLO Category Codes
-We’ve introduced font color styling for the SLO table and SLO Category values to improve visual clarity when browsing the published schema pages. Please note that these color styles will only render on the published GitHub Pages site and will not be visible in the raw JSON or preview in the PR.
-When contributing or updating SLO entries, make sure to follow the established formatting and verify the color rendering after the pages are published via Jekyll. This ensures consistency and a better visual experience for all users consuming the documentation.
-
 ## CODEOWNERS
 
 CODEOWNERS file will be in place to establish a Github team (Synced with Equinix IAM) responsible for the files along
@@ -168,3 +164,4 @@ The self service contribution model is setup to ensure the repo is always in a s
 either DEV or production enviornment. Each time a Pull Request is merged into main a new version tag will be created
 based on SemVar for the commit names present in the change. This tag will always be available to the Equinix Event
 Manager for releases. This setup is possible because of our CODEOWNERSHIP model.
+
