@@ -25,9 +25,9 @@ This skill can use the following tools:
 
 *   **`search_connection`**: Searches for an existing connection.
 *   **`get_stream_details`**: Fetches stream details given a stream uuid.
-*   **`create_stream`**: Create a stream.
+*   **`create_stream`**: Create a stream. Limit name to 10 characters.
 *   **`attach_stream_asset`**: Attach a resource to a stream.
-*   **`create_stream_alert_rule`**: Create an alert rule given a stream uuid.
+*   **`create_stream_alert_rule`**: Create an alert rule given a stream uuid. Limit name to 10 characters.
 *   **`wait`**: Wait for a while. An optional parameter can be provided to specify the wait time in milliseconds.
 *   **`send_email_notification`**: Sends an email notification given an email address and email body.
 
