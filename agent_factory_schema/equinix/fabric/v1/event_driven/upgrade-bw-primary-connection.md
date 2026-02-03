@@ -16,12 +16,12 @@ If you don't have one yet, start by creating a stream, attach your connection re
 - Send notifications for critical events
 
 ## Follow the action step by step below:
-1. Once the cloud event is received, look at the alert rule from the cloud event message.
-2. Search for an existing alert rule given the alertRule uuid extracted from the cloud event message to find out if the alert rule exist.
-3. Search for the existing connection given the subject connection uuid from the cloud event message.
-4. Extract the bandwidth from the connection details, and then fetch the next available tier given the bandwidth extracted from the connection details.
-5. Upgrade the bandwidth of the connection given the new bandwidth.
-
+1. When a cloud event is received, validate the equinixalert attribute and continue only if it is in a raised state.
+2. Parse the cloud event message to identify the alert rule.
+3. Using the alert rule UUID extracted from the event, check whether a corresponding alert rule already exists.
+4. Locate the associated connection using the subject connection UUID provided in the cloud event message.
+5. Obtain the current bandwidth from the connection details, then determine the next available bandwidth tier based on that value.
+6. Upgrade the connection to the newly determined bandwidth tier.
 
 ## Available Tools
 This skill can use the following tools:
