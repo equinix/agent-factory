@@ -149,6 +149,15 @@ This agent is triggered at 3pm every Monday and Wednesday each month.</td>
 		<td>preview
 	</tr>
 	<tr>
+		<td><a href="https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/event_driven/metro-latency-notify.md">Collect connection and email<br>[metro-latency-notify.md]</a></td>
+		<td>This skill sets up and activate an Equinix agent that automatically email a list of connections that are over the metros where latency spike.</td>
+		<td>- Detect metro latency alerts<br>- Identify the source and destination metros<br>- Identify the active connections over the metros<br>- Email notification with the connections list<br>- Log all actions and decisions</td>
+		<td>This skill can use the following tools:
+*   **`search_connection`**: Searches for active connections with aside and zside metro codes
+*   **`send_email_notification`**: Sends an email notification given an email address and email body.</td>
+		<td>preview
+	</tr>
+	<tr>
 		<td><a href="https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/event_driven/upgrade-fcr-package.md">Cloud Router monitoring and upgrade package agent<br>[upgrade-fcr-package.md]</a></td>
 		<td>This definition sets up and activates an Equinix agent that continuously monitors route usage on a Fabric Cloud Router. 
 When the route usage exceeds a predefined threshold, the agent automatically upgrades the Fabric Cloud Router package to ensure sufficient capacity and uninterrupted operation.</td>
