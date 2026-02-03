@@ -1,4 +1,4 @@
-# Collect connection and email
+# Collect connection over metro latency and notify
 
 ## Overview
 This skill sets up and activate an Equinix agent that automatically email a list of connections that are over the metros where latency spike.
