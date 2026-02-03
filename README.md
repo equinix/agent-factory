@@ -149,7 +149,7 @@ This agent is triggered at 3pm every Monday and Wednesday each month.</td>
 		<td>preview
 	</tr>
 	<tr>
-		<td><a href="https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/event_driven/metro-latency-notify.md">Collect connection and email<br>[metro-latency-notify.md]</a></td>
+		<td><a href="https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/event_driven/metro-latency-notify.md">Collect connection over metro latency and notify<br>[metro-latency-notify.md]</a></td>
 		<td>This skill sets up and activate an Equinix agent that automatically email a list of connections that are over the metros where latency spike.</td>
 		<td>- Detect metro latency alerts<br>- Identify the source and destination metros<br>- Identify the active connections over the metros<br>- Email notification with the connections list<br>- Log all actions and decisions</td>
 		<td>This skill can use the following tools:
