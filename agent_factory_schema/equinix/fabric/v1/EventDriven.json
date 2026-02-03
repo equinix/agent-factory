@@ -8,41 +8,50 @@
     "$schema": "http://json-schema.org/draft-04/schema#",
     "$ref": "#/definitions/Data",
     "definitions": {
-        "name": "Equinix Fabric Agent Factory Event Driven",
-        "description": "Equinix Fabric Agent Factory Event Driven",
-        "uri": "Equinix Fabric Agent Factory Event Driven",
-        "releaseStatus": "Equinix Fabric Agent Factory Event Driven"
+        "Data": {
+            "properties": {
+                "agentFactories": {
+                    "$ref": "#/definitions/agentFactories",
+                    "additionalProperties": true,
+                    "description": "The agent factories within all event-driven scenarios."
+                }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Equinix Fabric Agent Factory Event Driven",
+            "description": "Equinix Fabric Agent Factory Event Driven"
+        }
     },
     "agentFactories": [
         {
             "name": "equinix.fabric.connection.bandwidth.upgrade",
             "description": "Upgrade Primary Connection Bandwidth",
-            "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/event_driven/upgrade-bw-primmry-connection.md",
-            "releaseStatus": "released"
+            "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/event_driven/upgrade-bw-primary-connection.md",
+            "releaseStatus": "preview"
         },
         {
             "name": "equinix.fabric.connection.bandwidth.upgrade",
             "description": "Upgrade Secondary Connection Bandwidth",
             "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/event_driven/upgrade-bw-secondary-connection.md",
-            "releaseStatus": "released"
+            "releaseStatus": "preview"
         },
         {
             "name": "equinix.fabric.connection.bandwidth.upgrade",
             "description": "Upgrade Connection Bandwidth from Packet Drop Alert",
             "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/event_driven/upgrade-bw-on-packet-drop-alert.md",
-            "releaseStatus": "released"
+            "releaseStatus": "preview"
         },
         {
             "name": "equinix.fabric.router.upgrade",
             "description": "Upgrade FCR Package",
             "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/event_driven/upgrade-fcr-package.md",
-            "releaseStatus": "released"
+            "releaseStatus": "preview"
         },
         {
             "name": "equinix.fabric.connection.list.notify",
             "description": "Email connection-list that over metros have latency alert",
             "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/event_driven/metro-latency-notify.md",
-            "releaseStatus": "released"
+            "releaseStatus": "preview"
         }
     ]
 }

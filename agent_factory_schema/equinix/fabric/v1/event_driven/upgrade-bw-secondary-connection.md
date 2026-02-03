@@ -11,15 +11,13 @@ Before deploying this agent, ensure the following resources are configured:
 If these resources are not yet configured, create a stream, attach your connection resources, and configure appropriate alert rules before activating this agent.
 
 ## Capabilities
-This agent provides the following automated monitoring and remediation capabilities:
- - Real-time Event Monitoring: Continuously monitors network event streams for bandwidth alerts
- - Threshold Detection: Identifies when connections exceed configured bandwidth utilization thresholds
- - Redundancy Analysis: Automatically discovers redundant connection pairs and identifies primary/secondary relationships
- - Intelligent Bandwidth Matching: Upgrades secondary connection bandwidth to match primary connection specifications
- - Comprehensive Logging: Records all actions, decisions, and state changes for audit and troubleshooting- Monitor real-time network event streams
+- Real-time Event Monitoring: Continuously monitors network event streams for bandwidth alerts
+- Threshold Detection: Identifies when connections exceed configured bandwidth utilization thresholds
+- Redundancy Analysis: Automatically discovers redundant connection pairs and identifies primary/secondary relationships
+- Intelligent Bandwidth Matching: Upgrades secondary connection bandwidth to match primary connection specifications
+- Comprehensive Logging: Records all actions, decisions, and state changes for audit and troubleshooting- Monitor real-time network event streams
 
-## Workflow
-The agent follows this automated workflow when processing bandwidth alerts:
+## Follow the action step by step below
 1. Alert Rule Validation
  - Receives cloud event notification containing alert metadata
  - Validates alert rule existence using get_stream_alert_rule_details
@@ -49,6 +47,6 @@ This skill can use the following tools:
 *   **Prioritize Clarity**: Ensure all parameters for the MCP tools are clearly identified from the user's request before making the tool call.
 *   **Error Handling**: If parameters are invalid or operations fail, log errors and stop the process.
 *   **Token Efficiency**: Only call the tools when all necessary information is present, avoiding unnecessary context loading.
-*   **User can specify alert rule uuid
-*   **User can specify connection uuid
+*   **Optional Parameters** User can specify alert rule uuid
+*   **Optional Parameters** User can specify connection uuid
 
