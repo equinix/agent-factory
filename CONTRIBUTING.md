@@ -73,7 +73,7 @@ This skill can use the following tools:
 *   **User can specify connection uuid
 ```
 
-## Agent Factory Scehma Registration and Gating
+## Agent Factory Schema Registration and Gating
 
 Each team will add Agent Factory schemas in JSON format to their domain or add Agent Factories under the supported category JSON files: `EventDriven.json`, `RunOnce.json`, or `Scheduled.json`. The data schema is used to organize Agent Factory workflows and indicate their production readiness.
 
@@ -81,8 +81,11 @@ Domains are added under `agent_factory_schema/equinix` in the repository, follow
 A complete example is:`agent_factory_schema/equinix/fabric/v1/EventDriven.json`.
 
 Each Agent Factory schema is created to support Agent Factory category types. Please ensure the
-[Gating](## MD Files Gating) section is read and properly understood to abide by those
+[MD Gating](#md-files-gating) and [Agent Factory Scehma Registration and Gating](#agent-factory-schema-registration-and-gating) and section are read and properly understood to abide by those
 rules.
+
+**Even if the Agent Factory schema is not using `agentFactories`, each attribute and sub attributes ares required in the data
+schema. The Github Action gating will fail if they are not present and the Pull Request will not be merged. Additionally, catalog.json and the README will fail to update.**
 
 Each contributed agent factory schema requires the following attributes:
 * "$id" - The fully resolved URL to the agent factory schema json for linking from Agent Factory envelope and for generating Github Pages
@@ -102,8 +105,6 @@ start.
  Mark `releaseStatus` as `preview` if it is under development and should only be available in DEV enviornment. Additionally,
  the list of object with attribute `uri` will directly link to the raw md file of Agent Factory.
 
-**Even if the Agent Factory schema is not using `agentFactories`, each attribute and sub attributes ares required in the data
-schema. The Github Action will fail if they are not present and the Pull Request will not be merged.**
 
 ## Process for Upgrading Agent Factories from Development to Production
 
@@ -126,7 +127,7 @@ the domain path they are contributing to. This ensures that 1 member from each d
 be necessary to approve a Pull Request before it can be merged.
 
 This is critical because the responsibility of maintaining the `releaseStatus` attributes outlined
-in the [Gating](## Agent Factory Scehma Registration and Gating) section lies with the Domain owners and not the
+in the [Agent Factory Schema Registration and Gating](#agent-factory-schema-registration-and-gating) section lies with the Domain owners and not the
 architects. Should any production defect be found the Domain owner is responsible for resolution
 
 When adding a new domain to the `agent_factory_schema/equinix` directory, add an entry to the CODEOWNERS file signifying which
@@ -151,5 +152,6 @@ The self service contribution model is setup to ensure the repo is always in a s
 either DEV or production enviornment. Each time a Pull Request is merged into main a new version tag will be created
 based on SemVar for the commit names present in the change. This tag will always be available to the Equinix Event
 Manager for releases. This setup is possible because of our CODEOWNERSHIP model.
+
 
 
