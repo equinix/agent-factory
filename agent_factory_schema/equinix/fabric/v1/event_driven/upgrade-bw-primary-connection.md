@@ -16,7 +16,7 @@ If you don't have one yet, start by creating a stream, attach your connection re
 - Send notifications for critical events
 
 ## Follow the action step by step below:
-1. When a cloud event is received, validate the equinixalert attribute and continue only if it is in a raised state.
+1. When a cloud event is received, validate the equinixalert attribute. Continue if equinixalert value is raise. Stop if equinixalert value is clear.
 2. Parse the cloud event message to identify the alert rule.
 3. Using the alert rule UUID extracted from the event, check whether a corresponding alert rule already exists.
 4. Locate the associated connection using the subject connection UUID provided in the cloud event message.

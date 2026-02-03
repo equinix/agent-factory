@@ -16,7 +16,7 @@ If you don't have one yet, start by creating a stream, attach your connection re
 - Send notifications for critical events
 
 ## Follow the action step by step below:
-1. Upon receiving the cloud event, validate the equinixalert attribute and proceed only if it is in a raised state.
+1. Upon receiving the cloud event, validate the equinixalert attribute. Continue if equinixalert value is raise. Stop if equinixalert value is clear.
 2. Parse the cloud event message to extract the packet-drop alert rule.
 3. Using the alert rule UUID obtained from the event, look up any existing alert rule to verify whether it already exists.
 4. Locate the associated connection using the subject connection UUID provided in the cloud event message.
