@@ -46,6 +46,12 @@
             "description": "Upgrade FCR Package",
             "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/event_driven/upgrade-fcr-package.md",
             "releaseStatus": "preview"
+        },
+        {
+            "name": "equinix.fabric.connection.list.notify",
+            "description": "Email connection-list that over metros have latency alert",
+            "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/event_driven/metro-latency-notify.md",
+            "releaseStatus": "preview"
         }
     ]
 }
