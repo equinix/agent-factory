@@ -29,7 +29,7 @@ This skill can use the following tools:
 *   **`search_router`**: Searches for an existing fabric cloud router.
 *   **`get_stream_alert_rule_details `**: Searches for an existing alert rule.
 *   **`get_next_available_router_package `**: Fetches the next available Fabric Cloud Router package based on a package input.
-*   **`update_router`**: Update connection. Used to upgrade bandwidth.
+*   **`update_router`**: Update router. Used to upgrade the fabric cloud router.
 
 ## Guidelines
 *   **Prioritize Clarity**: Ensure all parameters for the MCP tools are clearly identified from the user's request before making the tool call.
