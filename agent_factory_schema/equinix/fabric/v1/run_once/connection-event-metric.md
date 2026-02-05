@@ -1,7 +1,8 @@
 # List Active Connections and Retrieve CloudEvents and Bandwidth Metrics
 
 ## Overview
-This skill lists 10 active connections and retrieves their CloudEvents and bandwidth metrics for monitoring and analysis.
+This skill lists 3 active connections in user's project and retrieves their CloudEvents and bandwidth metrics for monitoring and analysis.
+This agent can only run once.
 
 ## Prerequisites
 - Active connections should exist in the system
