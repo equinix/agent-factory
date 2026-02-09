@@ -119,7 +119,7 @@ This agent is triggered at 3pm every Monday and Wednesday each month.</td>
 
 *   **`search_connection`**: Searches for an existing connection.
 *   **`update_connection`**: Update connection. Used to upgrade bandwidth.
-*   **`get_next_available_bandwidth_tier `**: Fetches the next available billing tier based on a bandwidth input.</td>
+*   **`get_next_available_bandwidth_tier`**: Fetches the next available billing tier based on a bandwidth input.</td>
 		<td>preview
 	</tr>
 </table>

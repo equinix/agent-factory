@@ -20,11 +20,12 @@ The team responsible for the Agent Factory will add their Markdown files under t
 Each Markdown file(.md) must contain the following sections:
 * `# <High Level Title>` - The title of the Agent Factory.
 * `## Overview` - A breif description of the Agent Factory Workflow
-* `## Prerequisites` -  A description of the prerequisite scenarios and requirements needed for the workflow to execute.
 * `## Capabilities` - A high-level description of the capabilities of the Agent Factory.
-* `## Follow the action step by step below:` - The step-by-step workflow actions the Agent must perform.
+* `## Prerequisites` -  A description of the prerequisite scenarios and requirements needed for the workflow to execute.
 * `## Available Tools` - The required Equinix MCP tools that the Agent Factory uses to execute the workflow to help with consistency of workflow.
+* `## Follow the action step by step below:` - The step-by-step workflow actions the Agent must perform.
 * `## Guidelines` - Additional guidance for the Agent Factory, such as clarifications, error handling, appropriate context, and other workflow-specific attributes.
+* `## Configuration` - Required and optional parameters utilized by the agent to control its behavior and execution. These parameters define the minimum set of inputs the agent must receive in order to function correctly.
 
 These sections in Markdown file (.md) make up the structure of Agent Factory, which will be retrieved automatically via Github Actions to generate the README and provide the Agent Factory APIs a way to retrieve its associated Agent Factory.
 **Contributing teams are fully responsible for managing their Markdown (.md) files to ensure the proper gating and consistent workflow results are occuring for their Agent Factory.**
@@ -37,10 +38,6 @@ Example of complete use case for the Agent Factory Markdown(.md) Files:
 ## Overview
 This skill sets up and activate an Equinix agent that automatically upgrades the bandwidth of a connection when there are packets drop due to traffic over bw threshold.
 
-## Prerequisites
-To receive alerts from your connections, you must first set up alert rules in a stream.
-If you don't have one yet, start by creating a stream, attach your connection resources to it, and then configure alert rules for those resources.
-
 ## Capabilities
 - Monitor real-time network event streams
 - Detect packet drop alerts
@@ -49,6 +46,18 @@ If you don't have one yet, start by creating a stream, attach your connection re
 - Log all actions and decisions
 - Send notifications for critical events
 
+## Prerequisites
+To receive alerts from your connections, you must first set up alert rules in a stream.
+If you don't have one yet, start by creating a stream, attach your connection resources to it, and then configure alert rules for those resources.
+
+## Available Tools
+This skill can use the following tools:
+
+*   **`search_connection`**: Searches for an existing connection `.
+*   **`get_stream_alert_rule_details`**: Searches for an existing alert rule.
+*   **`update_connection`**: Update connection. Used to upgrade bandwidth.
+*   **`get_next_available_bandwidth_tier`**: Fetches the next available billing tier based on a bandwidth input.
+
 ## Follow the action step by step below:
 1. Once the cloud event is received, look at the packet drop alert rule from the cloud event message.
 2. Search for an existing alert rule given the alertRule uuid extracted from the cloud event message to find out if the alert rule exist.
@@ -56,21 +65,14 @@ If you don't have one yet, start by creating a stream, attach your connection re
 4. Extract the bandwidth from the connection details, and then fetch the next available tier given the bandwidth extracted from the connection details.
 5. Upgrade the bandwidth of the connection given the new bandwidth.
 
-
-## Available Tools
-This skill can use the following tools:
-
-*   **`search_connection`**: Searches for an existing connection `.
-*   **`get_stream_alert_rule_details `**: Searches for an existing alert rule.
-*   **`update_connection`**: Update connection. Used to upgrade bandwidth.
-*   **`get_next_available_bandwidth_tier `**: Fetches the next available billing tier based on a bandwidth input.
-
 ## Guidelines
 *   **Prioritize Clarity**: Ensure all parameters for the MCP tools are clearly identified from the user's request before making the tool call.
 *   **Error Handling**: If parameters are invalid or operations fail, log errors and stop the process.
 *   **Token Efficiency**: Only call the tools when all necessary information is present, avoiding unnecessary context loading.
-*   **User can specify alert rule uuid
-*   **User can specify connection uuid
+
+## Configuration
+*   **Optional Parameters**: User can specify alert rule uuid
+*   **Optional Parameters**: User can specify connection uuid
 ```
 
 ## Agent Factory Schema Registration and Gating
