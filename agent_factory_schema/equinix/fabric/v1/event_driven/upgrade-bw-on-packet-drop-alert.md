@@ -1,7 +1,7 @@
 # Network connection packets drop monitoring and upgrade agent
 
 ## Overview
-This skill sets up and activate an Equinix agent that automatically upgrades the bandwidth of a connection when there are packets drop due to traffic over bw threshold.
+An Equinix agent that automatically boosts connection bandwidth to mitigate traffic-induced packet loss.
 
 ## Capabilities
 - Monitor real-time network event streams
