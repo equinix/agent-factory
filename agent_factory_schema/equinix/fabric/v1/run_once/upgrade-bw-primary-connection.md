@@ -2,7 +2,7 @@
 
 ## Overview
 This definition sets up and activate an Equinix agent that upgrades the bandwidth of a connection.
-This agent can only run once.
+This agent runs once immediately by default unless scheduled by user.
 
 ## Prerequisites
 Connections should be in PROVISIONED state to be eligible for bandwidth upgrade.
