@@ -1,7 +1,7 @@
 # Ping FCR agent
 
 ## Overview
-This definition sets up and activates an Equinix agent that initiates a PING command on a Fabric Cloud Router in order to perform a network connectivity check.
+An Equinix agent that initiates a PING command on a Fabric Cloud Router in order to perform a network connectivity check.
 Once the PING operation is completed, the resulting output is collected and used to generate an email notification.
 The email is then sent to the specified recipient, ensuring that the results of the connectivity test are communicated clearly and promptly.
 This agent runs once immediately by default unless scheduled by user.

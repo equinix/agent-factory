@@ -1,7 +1,7 @@
 # Network Bandwidth monitoring and upgrade agent
 
 ## Overview
-This definition sets up and activate an Equinix agent that automatically upgrades the bandwidth of a connection when usage reaches a certain threshold.
+An Equinix agent that automatically upgrades the bandwidth of a connection when usage reaches a certain threshold.
 
 ## Capabilities
 - Monitor real-time network event streams

@@ -1,7 +1,7 @@
 # Alert Rule Manager
 
 ## Overview
-This definition sets up and activate an Equinix agent that sets up an alert to a connection.
+An Equinix agent that sets up an alert to a connection.
 This agent runs once immediately by default unless scheduled by user.
 
 ## Capabilities

@@ -1,7 +1,7 @@
 # Bandwidth upgrader agent
 
 ## Overview
-This definition sets up and activate an Equinix agent that upgrades the bandwidth of a connection.
+An Equinix agent that upgrades the bandwidth of a connection.
 This agent runs once immediately by default unless scheduled by user.
 
 ## Prerequisites
