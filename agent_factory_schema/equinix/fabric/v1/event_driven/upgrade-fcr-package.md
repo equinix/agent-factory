@@ -1,7 +1,7 @@
 # Cloud Router monitoring and upgrade package agent
 
 ## Overview
-This definition sets up and activates an Equinix agent that continuously monitors route usage on a Fabric Cloud Router. 
+An Equinix agent that continuously monitors route usage on a Fabric Cloud Router. 
 When the route usage exceeds a predefined threshold, the agent automatically upgrades the Fabric Cloud Router package to ensure sufficient capacity and uninterrupted operation.
 
 ## Capabilities
