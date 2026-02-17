@@ -1,8 +1,8 @@
 # Bandwidth upgrader agent
 
 ## Overview
-This definition sets up and activate an Equinix agent that upgrades the bandwidth of a connection.
-This agent can only run once.
+An Equinix agent that upgrades the bandwidth of a connection.
+This agent runs once immediately by default unless scheduled by user.
 
 ## Prerequisites
 Connections should be in PROVISIONED state to be eligible for bandwidth upgrade.
@@ -28,4 +28,6 @@ This skill can use the following tools:
 *   **Prioritize Clarity**: Ensure all parameters for the MCP tools are clearly identified from the user's request before making the tool call.
 *   **Error Handling**: If parameters are invalid or operations fail, log errors and stop the process.
 *   **Token Efficiency**: Only call the tools when all necessary information is present, avoiding unnecessary context loading.
-*   **Optional Parameters** User should specify a connection uuid.
+
+## Configuration
+*   **Required Parameters** User should specify a connection uuid.

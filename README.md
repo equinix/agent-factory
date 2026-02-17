@@ -107,7 +107,7 @@ This agent is triggered at 6pm on the 15th of February 2026.</td>
 
 *   **`search_router`**: Searches for an existing fabric cloud router.
 *   **`get_next_available_router_package `**: Fetches the next available Fabric Cloud Router package based on a package input.
-*   **`update_router`**: Update connection. Used to upgrade bandwidth.</td>
+*   **`update_router`**: Update router. Used to upgrade the fabric cloud router.</td>
 		<td>preview
 	</tr>
 	<tr>
@@ -119,7 +119,7 @@ This agent is triggered at 3pm every Monday and Wednesday each month.</td>
 
 *   **`search_connection`**: Searches for an existing connection.
 *   **`update_connection`**: Update connection. Used to upgrade bandwidth.
-*   **`get_next_available_bandwidth_tier `**: Fetches the next available billing tier based on a bandwidth input.</td>
+*   **`get_next_available_bandwidth_tier`**: Fetches the next available billing tier based on a bandwidth input.</td>
 		<td>preview
 	</tr>
 </table>
@@ -167,7 +167,7 @@ When the route usage exceeds a predefined threshold, the agent automatically upg
 *   **`search_router`**: Searches for an existing fabric cloud router.
 *   **`get_stream_alert_rule_details `**: Searches for an existing alert rule.
 *   **`get_next_available_router_package `**: Fetches the next available Fabric Cloud Router package based on a package input.
-*   **`update_router`**: Update connection. Used to upgrade bandwidth.</td>
+*   **`update_router`**: Update router. Used to upgrade the fabric cloud router.</td>
 		<td>preview
 	</tr>
 	<tr>

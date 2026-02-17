@@ -1,10 +1,10 @@
 # Ping FCR agent
 
 ## Overview
-This definition sets up and activates an Equinix agent that initiates a PING command on a Fabric Cloud Router in order to perform a network connectivity check.
+An Equinix agent that initiates a PING command on a Fabric Cloud Router in order to perform a network connectivity check.
 Once the PING operation is completed, the resulting output is collected and used to generate an email notification.
 The email is then sent to the specified recipient, ensuring that the results of the connectivity test are communicated clearly and promptly.
-This agent can only run once.
+This agent runs once immediately by default unless scheduled by user.
 
 ## Prerequisites
 Fabric Cloud Router and Connections associated with it should be in PROVISIONED state to be eligible for ping command.
@@ -39,6 +39,8 @@ This skill can use the following tools:
 *   **Prioritize Clarity**: Ensure all parameters for the MCP tools are clearly identified from the user's request before making the tool call.
 *   **Error Handling**: If parameters are invalid or operations fail, log errors and stop the process.
 *   **Token Efficiency**: Only call the tools when all necessary information is present, avoiding unnecessary context loading.
+
+## Configuration
 *   **Required Parameters** User should specify a router uuid.
 *   **Required Parameters** User should specify a connection uuid.
 *   **Required Parameters** User should specify a destination IP address to ping.
