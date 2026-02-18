@@ -34,4 +34,4 @@ This skill can use the following tools:
 *   **Parameters** interval endTime: "2026-02-12T16:00:00Z"
 *   **Parameters** argument name is "projects/vision-fabric"
 *   **Parameters** view is FULL
-*   **Required Parameters** User should specify an email address.
+*   **Parameters** email address is cent-line@yekbvpgx.mailosaur.net
