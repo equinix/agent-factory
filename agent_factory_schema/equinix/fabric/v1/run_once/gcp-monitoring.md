@@ -18,7 +18,7 @@ This skill can use the following tools:
 
 ## Follow the action step by step below:
 1. List the time series data from the Google Cloud Monitoring API using the specified parameters.
-2. Make a long detailed report on the retrieved time series data by extracting key insights and trends based on the results. Make it in html format so that it can be easily read in the email. The report should include visualizations such as charts or graphs to illustrate the trends and patterns in the data, making it easier for stakeholders to understand the performance metrics at a glance.
+2. Make a long detailed report on the retrieved time series data by extracting key insights and trends based on the results. 
 3. Next, send the results above to the designated email address,
 
 ## Guidelines
