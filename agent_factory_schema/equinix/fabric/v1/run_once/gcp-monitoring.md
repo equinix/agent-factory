@@ -14,7 +14,7 @@ This agent runs once immediately by default unless scheduled by user.
 This skill can use the following tools:
 
 *   **`list_timeseries`**: Lists time series data from the Google Cloud Monitoring API.
-*   **`send_email_notification`**: Sends an email notification given an email address and email body.
+*   **`send_email_notification`**: Sends an email notification given a list email of addresses and email body.
 
 ## Follow the action step by step below:
 1. List the time series data from the Google Cloud Monitoring API using the specified parameters.

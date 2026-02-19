@@ -33,7 +33,7 @@ This skill can use the following tools:
 *   **`create_router_commands`**: Initiate a PING command on a Fabric Cloud Router by UUID.
 *   **`wait`**: Wait for a while. An optional parameter can be provided to specify the wait time in milliseconds.
 *   **`search_router_commands`**: Search for commands (e.g., PING) on a Fabric Cloud Router.
-*   **`send_email_notification`**: Sends an email notification given an email address and email body.
+*   **`send_email_notification`**: Sends an email notification given a list email of addresses and email body.
 
 ## Guidelines
 *   **Prioritize Clarity**: Ensure all parameters for the MCP tools are clearly identified from the user's request before making the tool call.
