@@ -18,8 +18,8 @@ This skill can use the following tools:
 
 ## Follow the action step by step below:
 1. List the time series data from the Google Cloud Monitoring API using the specified parameters.
-2. Make a detailed report on  the retrieved time series data by extracting key insights and trends based on the results.
-3. Next, send an email notification to the designated email address, using the outcome of the previous step as the email body so the recipient is clearly informed of the monitoring results and insights.
+2. Make a long detailed report on the retrieved time series data by extracting key insights and trends based on the results.
+3. Next, send the results above to the designated email address,
 
 ## Guidelines
 *   **Prioritize Clarity**: Ensure all parameters for the MCP tools are clearly identified from the user's request before making the tool call.
