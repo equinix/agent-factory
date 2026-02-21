@@ -18,11 +18,9 @@ This skill can use the following tools:
 *   **`send_email_notification`**: Sends an email notification given a list email of addresses and email body.
 
 ## Follow the action step by step below:
-1. List the time series data from the Google Cloud Monitoring API using the specified parameters.
-2. The parameter for startTime is start of today in ISO 8601 format.
-3. The parameter for endTime is end of today in ISO 8601 format.
-4. Make a long detailed report on the retrieved time series data by extracting key insights and trends based on the results. 
-5. Next, send the results above to the designated email address,
+1. List the time series data from the Google Cloud Monitoring API using the specified parameters. Interval start and end time parameters should use ISO 8601 format.
+2. Make a long detailed report on the retrieved time series data by extracting key insights and trends based on the results. 
+3. Next, send the results above to the designated email address,
 
 ## Guidelines
 *   **Prioritize Clarity**: Ensure all parameters for the MCP tools are clearly identified from the user's request before making the tool call.
@@ -31,6 +29,10 @@ This skill can use the following tools:
 *   **Name guidelines** Limit names to 15 characters when creating streams and alert rules to ensure compatibility.
 
 ## Configuration
-*   **Parameters** User should specify gcp filter: metric.type="custom.googleapis.com/equinix/fabric/connection/connection_packets_dropped_rx_aside_rateexceeded_count" AND resource.type="global"
+*   **Parameters** alignmentPeriod is 60s.
+*   **Parameters** crossSeriesReducer is REDUCE_SUM.
+*   **Parameters** User should specify gcp filter: metric.type="<metric_name>" AND resource.type="global"
+*   **Parameters** gcp interval startTime: "2026-02-20T00:00:00Z"
+*   **Parameters** gcp interval endTime: "2026-02-20T23:59:59Z"
 *   **Parameters** User should specify gcp project id:  projects/observability-459023
 *   **Parameters** email address is cent-line@yekbvpgx.mailosaur.net
