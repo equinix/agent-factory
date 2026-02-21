@@ -1,8 +1,9 @@
 # GCP Monitoring Agent
 
 ## Overview
-An Equinix agent that sends gcp monitoring metrics to an email 15 minutes.
+An Equinix agent that sends gcp monitoring metrics to an email 
 This agent runs once immediately by default unless scheduled by user.
+This agent is triggered every 15 minutes.
 
 ## Capabilities
 - An automated monitoring solution utilizing an Equinix-hosted agent to track and transmit real-time GCP performance metrics. 
@@ -18,8 +19,9 @@ This skill can use the following tools:
 
 ## Follow the action step by step below:
 1. List the time series data from the Google Cloud Monitoring API using the specified parameters.
-2. Make a long detailed report on the retrieved time series data by extracting key insights and trends based on the results. 
-3. Next, send the results above to the designated email address,
+2. LLM will find the startTime and endTime parameters for today's year, month, and date in number for
+3. Make a long detailed report on the retrieved time series data by extracting key insights and trends based on the results. 
+4. Next, send the results above to the designated email address,
 
 ## Guidelines
 *   **Prioritize Clarity**: Ensure all parameters for the MCP tools are clearly identified from the user's request before making the tool call.
@@ -28,11 +30,8 @@ This skill can use the following tools:
 *   **Name guidelines** Limit names to 15 characters when creating streams and alert rules to ensure compatibility.
 
 ## Configuration
-*   **Parameters** alignmentPeriod is 60s.
-*   **Parameters** crossSeriesReducer is REDUCE_SUM.
-*   **Parameters** User should specify gcp filter: metric.type="<metric_name>" AND resource.type="global"
-*   **Parameters** gcp interval startTime: "2026-<today_month>-<today_date>T00:00:00Z"
-*   **Parameters** gcp interval endTime: "2026-<today_month>-<today_date>T23:59:59Z"
-*   **Parameters** User should specify gcp project id:  projects/<project_id>
-*   **Parameters** view is FULL
+*   **Parameters** User should specify gcp filter: metric.type="custom.googleapis.com/equinix/fabric/connection/connection_packets_dropped_rx_aside_rateexceeded_count" AND resource.type="global"
+*   **Parameters** startTime is start of today in ISO 8601 format.
+*   **Parameters** endTime is end of today in ISO 8601 format.
+*   **Parameters** User should specify gcp project id:  projects/observability-459023
 *   **Parameters** email address is cent-line@yekbvpgx.mailosaur.net
