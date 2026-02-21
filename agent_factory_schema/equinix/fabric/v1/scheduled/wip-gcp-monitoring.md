@@ -19,9 +19,10 @@ This skill can use the following tools:
 
 ## Follow the action step by step below:
 1. List the time series data from the Google Cloud Monitoring API using the specified parameters.
-2. LLM will find the startTime and endTime parameters for today's year, month, and date in number for
-3. Make a long detailed report on the retrieved time series data by extracting key insights and trends based on the results. 
-4. Next, send the results above to the designated email address,
+2. The parameter for startTime is start of today in ISO 8601 format.
+3. The parameter for endTime is end of today in ISO 8601 format.
+4. Make a long detailed report on the retrieved time series data by extracting key insights and trends based on the results. 
+5. Next, send the results above to the designated email address,
 
 ## Guidelines
 *   **Prioritize Clarity**: Ensure all parameters for the MCP tools are clearly identified from the user's request before making the tool call.
@@ -31,7 +32,5 @@ This skill can use the following tools:
 
 ## Configuration
 *   **Parameters** User should specify gcp filter: metric.type="custom.googleapis.com/equinix/fabric/connection/connection_packets_dropped_rx_aside_rateexceeded_count" AND resource.type="global"
-*   **Parameters** startTime is start of today in ISO 8601 format.
-*   **Parameters** endTime is end of today in ISO 8601 format.
 *   **Parameters** User should specify gcp project id:  projects/observability-459023
 *   **Parameters** email address is cent-line@yekbvpgx.mailosaur.net
