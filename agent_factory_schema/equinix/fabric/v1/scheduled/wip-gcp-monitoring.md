@@ -30,7 +30,7 @@ This skill can use the following tools:
 
 ## Configuration
 *   **Parameters** alignmentPeriod is 60s.
-*   **Parameters** crossSeriesReducer is REDUCE_SUM.
+*   **Parameters** User should specify gcp filter: metric.type="custom.googleapis.com/equinix/fabric/connection/connection_bandwidth_rx_bps" AND resource.type="global"
 *   **Parameters** User should specify gcp filter: metric.type="custom.googleapis.com/equinix/fabric/connection/connection_bandwidth_rx_bps" AND resource.type="global"
 *   **Parameters** gcp interval startTime: "2026-02-20T00:00:00Z"
 *   **Parameters** gcp interval endTime: "2026-02-20T23:59:59Z"
