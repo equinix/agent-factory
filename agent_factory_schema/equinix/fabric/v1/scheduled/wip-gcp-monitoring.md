@@ -35,4 +35,5 @@ This skill can use the following tools:
 *   **Parameters** gcp interval startTime: "2026-02-20T00:00:00Z"
 *   **Parameters** gcp interval endTime: "2026-02-20T23:59:59Z"
 *   **Parameters** User should specify gcp project id:  projects/observability-459023
+*    **Parameters** Parameters view is FULL
 *   **Parameters** email address is cent-line@yekbvpgx.mailosaur.net
