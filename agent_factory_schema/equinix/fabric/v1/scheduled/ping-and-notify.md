@@ -41,7 +41,6 @@ This skill can use the following tools:
 *   **Token Efficiency**: Only call the tools when all necessary information is present, avoiding unnecessary context loading. 
 
 ## Configuration
-*   **Required Parameters** User should specify a router uuid.
-*   **Required Parameters** User should specify a connection uuid.
-*   **Required Parameters** User should specify a destination IP address to ping.
-*   **Required Parameters** User should specify an email address.
+* **`router_uuid`**: <A router UUID> - Required - User should specify a router uuid.
+* **`connection_uuid`**: <A connection UUID> - Required - User should specify a connection uuid.
+* **`source_ip_address`**: <A valid ip address> - Required - User should specify a destination IP address to ping.
