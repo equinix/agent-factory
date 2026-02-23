@@ -37,5 +37,5 @@ This skill can use the following tools:
 *   **Token Efficiency**: Only call the tools when all necessary information is present, avoiding unnecessary context loading.
 
 ## Configuration
-* **`connection_uuids`**: <list of connection UUIDs> - Optional - User can specify a list of connection uuids.
-* **`fcr_router_uuids`**: <<list of fabric cloud router UUIDs> - Optional - User can specify a list of fabric cloud router uuids.
+* **`connection_uuids`**: < list of connection UUIDs > - Optional - User can specify a list of connection uuids.
+* **`fcr_router_uuids`**: < list of fabric cloud router UUIDs > - Optional - User can specify a list of fabric cloud router uuids.

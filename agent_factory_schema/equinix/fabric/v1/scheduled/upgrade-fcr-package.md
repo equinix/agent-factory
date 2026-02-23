@@ -30,4 +30,4 @@ This skill can use the following tools:
 *   **Token Efficiency**: Only call the tools when all necessary information is present, avoiding unnecessary context loading.
 
 ## Configuration
-* **`router_uuid`**: <A router UUID> - Required - User should specify a router uuid.
+* **`router_uuid`**: < A router UUID > - Required - User should specify a router uuid.
