@@ -37,5 +37,5 @@ This skill can use the following tools:
 *   **Token Efficiency**: Only call the tools when all necessary information is present, avoiding unnecessary context loading.
 
 ## Configuration
-* **`connection_uuids`**: <list of connection UUIDs> - Optional - User can specify a list of connection uuids.
-* **`alert_rule_uuids`**: <list of  alert rule UUIDs> - Optional - User can specify a list of alert rule uuids.
+* **`connection_uuids`**: < list of connection UUIDs > - Optional - User can specify a list of connection uuids.
+* **`alert_rule_uuids`**: < list of  alert rule UUIDs > - Optional - User can specify a list of alert rule uuids.
