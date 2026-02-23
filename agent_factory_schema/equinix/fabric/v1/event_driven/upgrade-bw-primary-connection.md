@@ -37,7 +37,7 @@ This skill can use the following tools:
 *   **Token Efficiency**: Only call the tools when all necessary information is present, avoiding unnecessary context loading.
 
 ## Configuration
-*   **Optional Parameters** User can specify a list of alert rule uuids.
-*   **Optional Parameters** User can specify a list of connection uuids.
-*   **Optional Parameters** User can specify if user wants to upgrade to a certain bandwidth in MB.
-*   **Optional Parameters** User can specify if user wants to upgrade to the maximum bandwidth.
+* **`connection_uuids`**: <list of connection UUIDs> - User can specify a list of connection uuids.
+* **`alert_ruule_uuids`**: <list of  alert rule UUIDs> - User can specify a list of alert rule uuids.
+* **`bandwith_in_mb`**: <bandwidth in MB> - User can specify if user wants to upgrade to a certain bandwidth in MB.
+* **`maximum_bandwidth`**: <boolean. default is false> - User can specify if user wants to upgrade to the maximum bandwidth.
