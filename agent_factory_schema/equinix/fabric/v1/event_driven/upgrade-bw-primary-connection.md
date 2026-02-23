@@ -39,3 +39,5 @@ This skill can use the following tools:
 ## Configuration
 *   **Optional Parameters** User can specify a list of alert rule uuids.
 *   **Optional Parameters** User can specify a list of connection uuids.
+*   **Optional Parameters** User can specify if user wants to upgrade to a certain bandwidth in MB.
+*   **Optional Parameters** User can specify if user wants to upgrade to the maximum bandwidth.

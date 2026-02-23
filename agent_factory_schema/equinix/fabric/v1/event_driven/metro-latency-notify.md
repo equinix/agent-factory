@@ -1,4 +1,4 @@
-# Collect connection over metro latency and notify
+# Collect connections over metros with latency spikes and notify
 
 ## Overview
 An Equinix agent that automatically email a list of connections that are over the metros where latency spike.
