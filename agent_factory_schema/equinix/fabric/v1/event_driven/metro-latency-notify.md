@@ -1,4 +1,4 @@
-# Collect connection over metro latency and notify
+# Collect connections over metros with latency spikes and notify
 
 ## Overview
 An Equinix agent that automatically email a list of connections that are over the metros where latency spike.
@@ -29,6 +29,6 @@ This skill can use the following tools:
 *   **Token Efficiency**: Only call the tools when all necessary information is present, avoiding unnecessary context loading.
 
 ## Configuration
-*   **Required Parameters** User should specify source and destination metro code.
-*   **Required Parameters** User should specify an email address.
-
+* **`source_metro_code`**: < A 2 character metro code > - Required - User should specify source metro code.
+* **`destination_metro_code`**: < A 2 character metro code > - Required - User should specify destination metro code.
+* **`emails`**: < list of valid email addresses to send notification to > - Required - User should specify an email address.

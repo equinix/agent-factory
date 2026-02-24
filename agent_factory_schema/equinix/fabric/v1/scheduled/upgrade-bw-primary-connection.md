@@ -29,4 +29,4 @@ This skill can use the following tools:
 *   **Token Efficiency**: Only call the tools when all necessary information is present, avoiding unnecessary context loading.
 
 ## Configuration
-*   **Required Parameters** User should specify a connection uuid.
+* **`connection_uuid`**: < A connection UUID > - Required - User should specify a connection uuid.

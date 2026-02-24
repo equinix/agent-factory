@@ -39,8 +39,7 @@ This skill can use the following tools:
 *   **Alert Rule guidelines** Default window size to PT15M.
 
 ## Configuration
-*   **Required Parameters** User should specify a connection uuid.
-*   **Required Parameters** User should specify an operand.
-*   **Required Parameters** User should a critical threshold.
-*   **Required Parameters** User should specify an email address.
-*   **Optional Parameters** User can specify a stream uuid.
+* **`connection_uuid`**: < A connection UUID > - Required - User should specify a connection uuid.
+* **`operand`**: < A 2 character metro code > - Required - User should specify an operand.
+* **`critical_threshold`**: < list of valid email addresses to send notification to > - Required - User should a critical threshold.
+* **`stream_uuid`**: < A stream UUID > - Optional - User can specify a stream uuid.
