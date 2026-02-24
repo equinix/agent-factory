@@ -22,27 +22,6 @@ The following md files are supported for Equinix Agent Factory
 		<th>Release Status</th>
 	</tr>
 	<tr>
-		<td><a href="https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/run_once/gcp-monitoring.md">GCP Monitoring Agent<br>[gcp-monitoring.md]</a></td>
-		<td>An Equinix agent that sends gcp monitoring metrics to an email.
-This agent runs once immediately by default unless scheduled by user.</td>
-		<td>- An automated monitoring solution utilizing an Equinix-hosted agent to track and transmit real-time GCP performance metrics. <br>- This system is designed to provide stakeholders with regular visibility into cloud health by delivering comprehensive metric reports directly to designated email recipients.</td>
-		<td>This skill can use the following tools:
-
-*   **`list_timeseries`**: Lists time series data from the Google Cloud Monitoring API.
-*   **`send_email_notification`**: Sends an email notification given a list email of addresses and email body.</td>
-		<td>preview
-	</tr>
-	<tr>
-		<td><a href="https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/run_once/pending-signal-test.md">Alert Rule Manager<br>[pending-signal-test.md]</a></td>
-		<td>An Equinix agent that fetches a connection.
-This agent runs once immediately by default unless scheduled by user.</td>
-		<td>- Fetches a connection an send details to email.<br>- Log all actions and decisions</td>
-		<td>This skill can use the following tools:
-
-* **`search_connection`**: Searches for an existing connection.</td>
-		<td>preview
-	</tr>
-	<tr>
 		<td><a href="https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/run_once/ping-and-notify.md">Ping FCR agent<br>[ping-and-notify.md]</a></td>
 		<td>An Equinix agent that initiates a PING command on a Fabric Cloud Router in order to perform a network connectivity check.
 Once the PING operation is completed, the resulting output is collected and used to generate an email notification.
