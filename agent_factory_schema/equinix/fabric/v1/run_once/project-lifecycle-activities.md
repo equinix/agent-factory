@@ -67,7 +67,7 @@ A valid Equinix Fabric project UUID must be available. The project must have clo
 ## Available Tools
 This skill can use the following tools:
 
-*   **`search_cloud_events`**: Searches for Equinix Fabric cloud events using advanced filtering and pagination. Supports filtering by `/equinixproject`, `/time`, `/type`, and `/subject`. Use `AND` combinations with `/equinixproject` `=` and `/time` `>=` / `<=` operators to scope events to the target project and time window.
+*   **`get_cloud_events`**: Searches for Equinix Fabric cloud events using advanced filtering and pagination. Supports filtering by `/equinixproject`, `/time`, `/type`, and `/subject`. Use `AND` combinations with `/equinixproject` `=` and `/time` `>=` / `<=` operators to scope events to the target project and time window.
 *   **`send_email_notification`**: Sends an email notification given an email address and email body.
 
 ## Guidelines
@@ -75,7 +75,9 @@ This skill can use the following tools:
 *   **Error Handling**: If no events are found for the project in the given time window, include that information in the report body and still send the email. If the search fails, log the error and stop.
 *   **Token Efficiency**: Only call the tools when all necessary information is present. Do not load unnecessary context. Summarize event data in memory rather than passing raw payloads downstream.
 *   **Report Conciseness**: The final email body must be a human-readable summary only — do not include raw JSON event data. Focus on the most operationally significant insights as described in step 4.
-*   **Required Parameters** User must specify a project UUID.
-*   **Required Parameters** User must specify a recipient email address.
-*   **Optional Parameters** User may specify a `from` and `to` timestamp for the time range. Defaults to the last 24 hours if not provided.
 
+## Configuration
+* project_uuid: < project uuid > - Required - User must specify a project UUID
+* recipient_email_address: < email address > - Required - User must specify a recipient email address to receive the report
+* from_timestamp: < ISO 8601 timestamp > - Optional - User may specify a `from` timestamp to define the start of the reporting period. Defaults to 24 hours before the current UTC time if not provided.
+* to_timestamp: < ISO 8601 timestamp > - Optional - User may specify a `to` timestamp to define the end of the reporting period. Defaults to the current UTC time if not provided.
