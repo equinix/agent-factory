@@ -34,6 +34,6 @@ Instructions when router event is received.
 
 ## Configuration
 * **`metro_code`**: < A 2 character code > - Required - User should specify a metro code.
-* **`account_number`**: < A valid integer > - Required - User should specify an account number.
+* **`account_number`**: < A valid account > - Required - User should specify an account number.
 * **`package_code`**: < A valid code > - Optional - Default to BASIC.
 * **`email`**: < A valid email address > - Required - User should specify an email.
