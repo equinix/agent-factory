@@ -67,7 +67,7 @@ A valid Equinix Fabric project UUID must be available. The project must have clo
 ## Available Tools
 This skill can use the following tools:
 
-*   **`get_cloud_events`**: Searches for Equinix Fabric cloud events using advanced filtering and pagination. Supports filtering by `/equinixproject`, `/time`, `/type`, and `/subject`. Use `AND` combinations with `/equinixproject` `=` and `/time` `>=` / `<=` operators to scope events to the target project and time window.
+*   **`search_cloud_events`**: Searches for Equinix Fabric cloud events using advanced filtering and pagination. Supports filtering by `/equinixproject`, `/time`, `/type`, and `/subject`. Use `AND` combinations with `/equinixproject` `=` and `/time` `>=` / `<=` operators to scope events to the target project and time window.
 *   **`send_email_notification`**: Sends an email notification given an email address and email body.
 
 ## Guidelines
