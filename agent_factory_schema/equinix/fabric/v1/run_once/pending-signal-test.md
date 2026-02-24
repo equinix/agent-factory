@@ -22,7 +22,7 @@ Main Instructions
 2. Check if state is in PROVISIONED state. Otherwise, stop and return pending signal.
 3. Send an email with the connection details to the provided email address.
 
-Instructions when connection event is received.
+Instructions when connection state event is received.
 1. When a cloud event is received, return success if the event mentions the router is in PROVISIONED state. Otherwise, return pending signal.
 2. Search for the existing connection given the connection uuid.
 3. Send an email with the connection details to the provided email address.
