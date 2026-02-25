@@ -92,23 +92,23 @@ Write the report in plain, conversational English. Do not include raw JSON, full
 ```
 Fabric Operational Health Summary
 Project : <project_uuid>
-Period  : <from_timestamp> → <to_timestamp> (UTC)
+Period  : <from_timestamp> -> <to_timestamp> (UTC)
 
-──────────────────────────────────────────
+------------------------------------------
 Overall Status: <plain English label from Step 4c>
-──────────────────────────────────────────
+------------------------------------------
 
 What Happened This Period
-<Write 2–4 sentences summarizing the period in plain English. Cover: total
+<Write 2-4 sentences summarizing the period in plain English. Cover: total
 events, which asset types were most active, and the headline finding.
 Example: "A total of 34 events were recorded across your project during this
 window. Activity was concentrated on 5 routers and 2 connections. The majority
 of events were provisioning lifecycle changes, with one routing protocol session
 showing repeated instability.">
 
-──────────────────────────────────────────
+------------------------------------------
 Routing & BGP Health
-──────────────────────────────────────────
+------------------------------------------
 <If no BGP/routing events observed:>
 No routing protocol or BGP session events were recorded in this window.
 Your routing infrastructure appears stable.
@@ -121,12 +121,12 @@ Connection <uuid-first-8> / Routing Protocol <rp-uuid-first-8>
 
 If session is flapping (4+ oscillations):
 "This BGP session changed state <N> times over <duration>, alternating
-repeatedly between Connect and Idle. This pattern — known as session flapping —
+repeatedly between Connect and Idle. This pattern - known as session flapping -
 indicates the session is struggling to stay established. The session was last
 seen in an Idle (down) state, meaning it may still be down. This is worth
 investigating promptly."
 
-If transient instability (2–3 oscillations) but recovered:
+If transient instability (2-3 oscillations) but recovered:
 "This BGP session experienced <N> state changes but recovered and was last
 observed in a Connected (up) state. No sustained downtime was detected. Worth
 keeping an eye on over the next reporting window."
@@ -135,9 +135,9 @@ If single routine transition:
 "This routing protocol session recorded a single state change during the window.
 This is consistent with normal operational activity and requires no action."
 
-──────────────────────────────────────────
+------------------------------------------
 Connection & Provisioning Activity
-──────────────────────────────────────────
+------------------------------------------
 <If no provisioning events:>
 No provisioning or connection lifecycle changes were observed. Your connections
 appear stable with no modifications in this window.
@@ -160,91 +160,96 @@ for this project."
 "The provisioning activity appears normal and consistent with routine
 infrastructure management."
 
-──────────────────────────────────────────
+------------------------------------------
 Events That Need Your Attention
-──────────────────────────────────────────
+------------------------------------------
 <If no WARN or higher severity events:>
 No warning or critical events were recorded in this window.
 Everything looks operationally clean.
 
 <Otherwise, list up to 10 WARN/CRIT events. For each, write a plain English
-one-liner — not a raw event type string:>
-⚠ <time (UTC)> — <humanized description of what happened>
-   Asset  : <asset-type> <uuid-first-8>
-   Detail : <data.message if available, otherwise a plain English description>
+one-liner - not a raw event type string:>
+[WARN] <time (UTC)> - <humanized description of what happened>
+   Asset   : <asset-type> <uuid-first-8>
+   Detail  : <data.message if available, otherwise a plain English description>
    Severity: <severitytext>
 
-──────────────────────────────────────────
+------------------------------------------
 Most Active Assets
-──────────────────────────────────────────
+------------------------------------------
 <List top 5 assets by event count. For each, write one plain English sentence
-describing what the asset was doing — not just an event count:>
-- <asset-type> <uuid-first-8>: <N> events — <e.g., "repeated BGP session
+describing what the asset was doing - not just an event count:>
+- <asset-type> <uuid-first-8>: <N> events - <e.g., "repeated BGP session
   flapping between Connect and Idle states" / "routine connection provisioning
   as part of a deployment" / "configuration attribute updates">
 
-──────────────────────────────────────────
+------------------------------------------
 Who Made Changes
-──────────────────────────────────────────
+------------------------------------------
 <Exclude the "equinix" system actor unless it is the only one present.
 For each human or API actor, write one plain English sentence:>
-- <authid>: <N> events — primarily <short description, e.g., "connection
+- <authid>: <N> events - primarily <short description, e.g., "connection
   provisioning and bandwidth configuration changes">
 
 <If all events were system-generated:>
 All activity in this window was initiated by Equinix system processes.
 No user-driven changes were detected.
 
-──────────────────────────────────────────
+------------------------------------------
 Administrative Events (No Action Required)
-──────────────────────────────────────────
+------------------------------------------
 <Summarize without listing individually. These must never influence the
 health assessment above:>
 <N> low-signal administrative events were recorded (e.g., service token
 expirations, system notifications). These are informational only.
 
-──────────────────────────────────────────
+------------------------------------------
 What You Should Do
-──────────────────────────────────────────
-<Write 1–3 plain English, asset-specific recommendations based only on what
+------------------------------------------
+<Write 1-3 plain English, asset-specific recommendations based only on what
 was actually detected. If nothing needs action, say so clearly.>
 
 If BGP flapping detected and session is still down:
-→ Your BGP session on connection <uuid-first-8> (neighbor <neighbor-ip>)
-  appears to still be down. We recommend checking the BGP configuration on
-  your edge device — specifically keepalive timers, MD5 authentication
-  settings, and interface reachability to the neighbor address.
+-> Your BGP session on connection <uuid-first-8> (neighbor <neighbor-ip>)
+   appears to still be down. We recommend checking the BGP configuration on
+   your edge device - specifically keepalive timers, MD5 authentication
+   settings, and interface reachability to the neighbor address.
 
 If BGP flapping but session has since recovered:
-→ Your BGP session on connection <uuid-first-8> flapped during this window
-  but has since recovered. No immediate action is needed, but keep an eye on
-  this session over the next 24 hours to confirm it remains stable.
+-> Your BGP session on connection <uuid-first-8> flapped during this window
+   but has since recovered. No immediate action is needed, but keep an eye on
+   this session over the next 24 hours to confirm it remains stable.
 
 If provisioning churn detected:
-→ Several assets show repeated provisioning activity. If this was part of a
-  planned migration or deployment, no action is needed. If it was unexpected,
-  review your automation workflows or recent deployment scripts for this project.
+-> Several assets show repeated provisioning activity. If this was part of a
+   planned migration or deployment, no action is needed. If it was unexpected,
+   review your automation workflows or recent deployment scripts for this project.
 
 If all clear:
-→ No action required. Your project infrastructure appears healthy and stable
-  during this reporting window.
+-> No action required. Your project infrastructure appears healthy and stable
+   during this reporting window.
 
-──────────────────────────────────────────
+------------------------------------------
 ```
+### Step 6 — Generate PDF Version of the Report
+Use the `generate_pdf` tool to create a nicely formatted PDF version of the report. The title of the PDF could be:
+```Fabric Cloud Event Insight Report```
 
-### Step 6 — Send the Report
-Send the composed report as an email notification to the `recipient_email_address` using the `send_email_notification` tool.
+
+### Step 7 — Send the Report
+Use the generated pdf from the previous step and send the composed report as an email notification to the `recipient_email_address` using the `send_email_notification` tool.
 
 Use the following subject line format:
 ```
-Fabric Health Summary – <project_uuid first 8 chars> – <reporting period date> – <Overall Status label>
+Fabric Cloud Event Insight Summary - <project_uuid first 8 chars> - <reporting period date> - <Overall Status label>
 ```
 
 ## Available Tools
 This skill can use the following tools:
 
 *   **`search_cloud_events`**: Searches for Equinix Fabric cloud events using advanced filtering and pagination. Use `/equinixproject` `=` combined with `/time` `>=` and `/time` `<=` to scope the search to the target project and time window.
-*   **`send_email_notification`**: Sends an email notification given an email address and email body.
+*   **`generate_pdf`**: Generates a PDF document given a title and content. Use this to create a nicely formatted version of the report in pdf format.
+*   **`send_email_notification`**: Sends an email notification given an email address and email body. The pdf generated in the previous step can be included as an attachment to the email for better readability.
 
 ## Guidelines
 *   **Plain English Always**: Every sentence in the report must be readable by a non-technical customer. Avoid raw event type strings, API jargon, and numeric scoring in the output. Translate technical signals into business-relevant language.
