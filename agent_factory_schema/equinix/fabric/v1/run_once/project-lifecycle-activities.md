@@ -19,7 +19,20 @@ A valid Equinix Fabric project UUID must be available. The project must have clo
 ## Follow the action step by step below:
 
 ### Step 1 — Establish Reporting Window
-Accept the user-provided `from_timestamp` and `to_timestamp`. If not provided, default `from_timestamp` to 24 hours before the current UTC time and `to_timestamp` to the current UTC time. Both must be in ISO 8601 format.
+1a. Determine the current UTC time dynamically at the moment this agent runs. Do not assume, guess, or use any hardcoded or previously seen timestamp as the current time. Always derive it from the system clock at execution time.
+
+1b. Apply the following logic to set the reporting window:
+- If the user provided both `from_timestamp` and `to_timestamp`, use them as-is.
+- If the user provided only `from_timestamp`, set `to_timestamp` to the current UTC time.
+- If the user provided only `to_timestamp`, set `from_timestamp` to exactly 24 hours before `to_timestamp`.
+- If the user provided neither, set `to_timestamp` to the current UTC time and set `from_timestamp` to exactly 24 hours before `to_timestamp`.
+
+1c. Both timestamps must be formatted as ISO 8601 strings (e.g., `2026-02-24T10:00:00.000Z`). Do not omit the time component — date-only strings are not valid.
+
+1d. Validate the final window before proceeding:
+- `from_timestamp` must not be more than 89 days before the current UTC time. If it is, reset `from_timestamp` to 89 days before the current UTC time and note this adjustment in the report.
+- `to_timestamp` must not be in the future beyond the current UTC time. If it is, reset it to the current UTC time.
+- `from_timestamp` must be earlier than `to_timestamp`. If not, stop and report an error.
 
 ### Step 2 — Retrieve All Cloud Events
 Search for all cloud events for the given project UUID using the `search_cloud_events` tool with the following filter:

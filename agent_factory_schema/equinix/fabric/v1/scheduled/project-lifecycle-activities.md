@@ -17,7 +17,12 @@ A valid Equinix Fabric project UUID must be available. The project must have clo
 - Log all actions and decisions
 
 ## Follow the action step by step below:
-1. Determine the time window: set `from` to exactly 24 hours before the current UTC time and `to` to the current UTC time, both in ISO 8601 format.
+1. Determine the reporting time window using the following rules:
+   - Do not assume, guess, or use any hardcoded or previously seen timestamp as the current time. Always derive the current UTC time from the system clock at execution time.
+   - Set `to_timestamp` to the current UTC time.
+   - Set `from_timestamp` to exactly 24 hours before `to_timestamp`.
+   - Both timestamps must be formatted as ISO 8601 strings including the time component (e.g., `2026-02-24T10:00:00.000Z`). Date-only strings are not valid.
+   - Validate: `from_timestamp` must not be more than 89 days before the current UTC time. If it is, reset it to 89 days before the current UTC time. `to_timestamp` must not be in the future. `from_timestamp` must be earlier than `to_timestamp`, otherwise stop and report an error.
 2. Search for all cloud events for the given project UUID using the `search_cloud_events` tool. Use `/equinixproject` with operator `=` and the project UUID as the filter, combined with a `/time` `>=` filter for the `from` timestamp and a `/time` `<=` filter for the `to` timestamp. Set pagination limit to 100.
 3. If the result set contains more pages (i.e., total events exceed the limit), repeat the search with incremented offsets until all events have been retrieved or a maximum of 500 events have been collected.
 4. From the collected events, extract and summarize only the most important information:
