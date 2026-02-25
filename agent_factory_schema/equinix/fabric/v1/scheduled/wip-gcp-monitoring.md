@@ -2,7 +2,6 @@
 
 ## Overview
 An Equinix agent that sends gcp monitoring metrics to an email 
-This agent runs once immediately by default unless scheduled by user.
 This agent is triggered every 5 minutes.
 
 ## Capabilities
@@ -14,7 +13,7 @@ This agent is triggered every 5 minutes.
 ## Available Tools
 This skill can use the following tools:
 
-*   **`list_timeseries`**: Lists time series data from the Google Cloud Monitoring API.
+*   **`list_timeseries`**: Lists time series data from the Google Cloud Monitoring API. Parameter view is always FULL.
 *   **`send_email_notification`**: Sends an email notification given a list email of addresses and email body.
 
 ## Follow the action step by step below:
@@ -26,13 +25,11 @@ This skill can use the following tools:
 *   **Prioritize Clarity**: Ensure all parameters for the MCP tools are clearly identified from the user's request before making the tool call.
 *   **Error Handling**: If parameters are invalid or operations fail, log errors and stop the process.
 *   **Token Efficiency**: Only call the tools when all necessary information is present, avoiding unnecessary context loading.
-*   **Name guidelines** Limit names to 15 characters when creating streams and alert rules to ensure compatibility.
 
 ## Configuration
-*   **Parameters** alignmentPeriod is 300s.
-*   **Parameters** User should specify gcp filter: metric.type="custom.googleapis.com/equinix/fabric/connection/connection_bandwidth_rx_bps" AND resource.type="global"
-*   **Parameters** gcp interval startTime: "2026-02-20T00:00:00Z"
-*   **Parameters** gcp interval endTime: "2026-02-21T23:59:59Z"
-*   **Parameters** User should specify gcp project id:  projects/observability-459023
-*   **Parameters** Parameters view is FULL
-*   **Parameters** email address is cent-line@yekbvpgx.mailosaur.net
+* **`alignment_period`**: < string value in seconds > - Optional - Default value is 300s.
+* **`filter`**: < string > - Required - The gcp aggregation filter.
+* **`start_time`**: < time in ISO 8601 > - Required - The gcp aggregation start time.
+* **`end_time`**: < time in ISO 8601 > - Required - The gcp aggregation end time.
+* **`gcp_project_id`**: < string value > - Required - The gcp aggregation name.
+* **`email`**: < email format string > - Required - The notification email.
