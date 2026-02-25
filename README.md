@@ -39,6 +39,18 @@ This agent runs once immediately by default unless scheduled by user.</td>
 		<td>preview
 	</tr>
 	<tr>
+		<td><a href="https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/run_once/upgrade-bw-primary-connection.md">Bandwidth upgrader agent<br>[upgrade-bw-primary-connection.md]</a></td>
+		<td>An Equinix agent that upgrades the bandwidth of a connection.
+This agent runs once immediately by default unless scheduled by user.</td>
+		<td>- Automatically upgrade connection bandwidth<br>- Log all actions and decisions</td>
+		<td>This skill can use the following tools:
+
+*   **`search_connection`**: Searches for an existing connection.
+*   **`update_connection`**: Update connection. Used to upgrade bandwidth.
+*   **`get_next_available_bandwidth_tier `**: Fetches the next available billing tier based on a bandwidth input.</td>
+		<td>preview
+	</tr>
+	<tr>
 		<td><a href="https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/run_once/alert-rule-management.md">Alert Rule Manager<br>[alert-rule-management.md]</a></td>
 		<td>An Equinix agent that sets up an alert to a connection.
 This agent runs once immediately by default unless scheduled by user.</td>
@@ -65,18 +77,6 @@ This agent runs once immediately by default unless scheduled by user.</td>
 *   **`search_router`**: Searches for an existing fabric cloud router.
 *   **`get_next_available_router_package `**: Fetches the next available Fabric Cloud Router package based on a package input.
 *   **`update_router`**: Update router. Used to upgrade the fabric cloud router.</td>
-		<td>preview
-	</tr>
-	<tr>
-		<td><a href="https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/run_once/upgrade-bw-primary-connection.md">Bandwidth upgrader agent<br>[upgrade-bw-primary-connection.md]</a></td>
-		<td>An Equinix agent that upgrades the bandwidth of a connection.
-This agent runs once immediately by default unless scheduled by user.</td>
-		<td>- Automatically upgrade connection bandwidth<br>- Log all actions and decisions</td>
-		<td>This skill can use the following tools:
-
-*   **`search_connection`**: Searches for an existing connection.
-*   **`update_connection`**: Update connection. Used to upgrade bandwidth.
-*   **`get_next_available_bandwidth_tier `**: Fetches the next available billing tier based on a bandwidth input.</td>
 		<td>preview
 	</tr>
 </table>
@@ -111,6 +111,18 @@ This agent is triggered at 10am every day.</td>
 		<td>preview
 	</tr>
 	<tr>
+		<td><a href="https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/scheduled/upgrade-bw-primary-connection.md">Scheduled bandwidth upgrader agent<br>[upgrade-bw-primary-connection.md]</a></td>
+		<td>This definition sets up and activate an Equinix agent that upgrades the bandwidth of a connection.
+This agent is triggered at 3pm every Monday and Wednesday each month.</td>
+		<td>- Automatically upgrade connection bandwidth<br>- Log all actions and decisions</td>
+		<td>This skill can use the following tools:
+
+*   **`search_connection`**: Searches for an existing connection.
+*   **`update_connection`**: Update connection. Used to upgrade bandwidth.
+*   **`get_next_available_bandwidth_tier`**: Fetches the next available billing tier based on a bandwidth input.</td>
+		<td>preview
+	</tr>
+	<tr>
 		<td><a href="https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/scheduled/upgrade-fcr-package.md">Cloud Router upgrade package agent<br>[upgrade-fcr-package.md]</a></td>
 		<td>This definition sets up and activates an Equinix agent that upgrades the package of a Fabric Cloud Router. 
 When the route usage exceeds a predefined threshold, the agent automatically upgrades the Fabric Cloud Router package to ensure sufficient capacity and uninterrupted operation.
@@ -121,18 +133,6 @@ This agent is triggered at 6pm on the 15th of February 2026.</td>
 *   **`search_router`**: Searches for an existing fabric cloud router.
 *   **`get_next_available_router_package `**: Fetches the next available Fabric Cloud Router package based on a package input.
 *   **`update_router`**: Update router. Used to upgrade the fabric cloud router.</td>
-		<td>preview
-	</tr>
-	<tr>
-		<td><a href="https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/scheduled/upgrade-bw-primary-connection.md">Scheduled bandwidth upgrader agent<br>[upgrade-bw-primary-connection.md]</a></td>
-		<td>This definition sets up and activate an Equinix agent that upgrades the bandwidth of a connection.
-This agent is triggered at 3pm every Monday and Wednesday each month.</td>
-		<td>- Automatically upgrade connection bandwidth<br>- Log all actions and decisions</td>
-		<td>This skill can use the following tools:
-
-*   **`search_connection`**: Searches for an existing connection.
-*   **`update_connection`**: Update connection. Used to upgrade bandwidth.
-*   **`get_next_available_bandwidth_tier`**: Fetches the next available billing tier based on a bandwidth input.</td>
 		<td>preview
 	</tr>
 </table>
@@ -162,6 +162,18 @@ This agent is triggered at 3pm every Monday and Wednesday each month.</td>
 		<td>preview
 	</tr>
 	<tr>
+		<td><a href="https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/event_driven/upgrade-bw-primary-connection.md">Network Bandwidth monitoring and upgrade agent<br>[upgrade-bw-primary-connection.md]</a></td>
+		<td>An Equinix agent that automatically upgrades the bandwidth of a connection when usage reaches a certain threshold.</td>
+		<td>- Monitor real-time network event streams<br>- Detect bandwidth threshold alerts<br>- Analyze connection utilization patterns<br>- Automatically upgrade connection bandwidth<br>- Log all actions and decisions<br>- Send notifications for critical events</td>
+		<td>This skill can use the following tools:
+
+* **`search_connection`**: Searches for an existing connection.
+* **`get_stream_alert_rule_details`**: Searches for an existing alert rule.
+* **`update_connection`**: Update connection. Used to upgrade bandwidth.
+* **`get_next_available_bandwidth_tier`**: Fetches the next available billing tier based on a bandwidth input.</td>
+		<td>preview
+	</tr>
+	<tr>
 		<td><a href="https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/event_driven/metro-latency-notify.md">Collect connections over metros with latency spikes and notify<br>[metro-latency-notify.md]</a></td>
 		<td>An Equinix agent that automatically email a list of connections that are over the metros where latency spike.</td>
 		<td>- Detect metro latency alerts<br>- Identify the source and destination metros<br>- Identify the active connections over the metros<br>- Email notification with the connections list<br>- Log all actions and decisions</td>
@@ -181,18 +193,6 @@ When the route usage exceeds a predefined threshold, the agent automatically upg
 *   **`get_stream_alert_rule_details `**: Searches for an existing alert rule.
 *   **`get_next_available_router_package `**: Fetches the next available Fabric Cloud Router package based on a package input.
 *   **`update_router`**: Update router. Used to upgrade the fabric cloud router.</td>
-		<td>preview
-	</tr>
-	<tr>
-		<td><a href="https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/event_driven/upgrade-bw-primary-connection.md">Network Bandwidth monitoring and upgrade agent<br>[upgrade-bw-primary-connection.md]</a></td>
-		<td>An Equinix agent that automatically upgrades the bandwidth of a connection when usage reaches a certain threshold.</td>
-		<td>- Monitor real-time network event streams<br>- Detect bandwidth threshold alerts<br>- Analyze connection utilization patterns<br>- Automatically upgrade connection bandwidth<br>- Log all actions and decisions<br>- Send notifications for critical events</td>
-		<td>This skill can use the following tools:
-
-* **`search_connection`**: Searches for an existing connection.
-* **`get_stream_alert_rule_details`**: Searches for an existing alert rule.
-* **`update_connection`**: Update connection. Used to upgrade bandwidth.
-* **`get_next_available_bandwidth_tier`**: Fetches the next available billing tier based on a bandwidth input.</td>
 		<td>preview
 	</tr>
 	<tr>
