@@ -1,3 +1,8 @@
+---
+name: upgrade-fcr-package
+description: Continuously monitors route usage on a Fabric Cloud Router and upgrades package when needed. 
+---
+
 # Cloud Router monitoring and upgrade package agent
 
 ## Overview

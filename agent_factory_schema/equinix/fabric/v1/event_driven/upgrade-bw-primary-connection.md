@@ -1,3 +1,8 @@
+---
+name: upgrade-bw-primary-connection
+description: Automatically upgrades the bandwidth of a connection when usage reaches a certain threshold.
+---
+
 # Network Bandwidth monitoring and upgrade agent
 
 ## Overview

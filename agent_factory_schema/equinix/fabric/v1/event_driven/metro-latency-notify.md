@@ -1,6 +1,6 @@
 ---
-name: obsidian
-description: Work with Obsidian vaults (plain Markdown notes) and automate via obsidian-cli.
+name: metro-latency-notify
+description: Automatically email a list of connections that are over the metros where latency spike.
 ---
 
 # Collect connections over metros with latency spikes and notify

@@ -1,7 +1,12 @@
+---
+name: alert-rule-management
+description: Sets up an alert rule for a connection.
+---
+
 # Alert Rule Manager
 
 ## Overview
-An Equinix agent that sets up an alert to a connection.
+An Equinix agent that sets up an alert rule for a connection.
 This agent runs once immediately by default unless scheduled by user.
 
 ## Capabilities

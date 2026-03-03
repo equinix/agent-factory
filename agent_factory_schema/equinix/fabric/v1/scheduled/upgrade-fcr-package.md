@@ -1,3 +1,8 @@
+---
+name: run-once-upgrade-fcr-package
+description: Upgrades the package of a Fabric Cloud Router. 
+---
+
 # Cloud Router upgrade package agent
 
 ## Overview

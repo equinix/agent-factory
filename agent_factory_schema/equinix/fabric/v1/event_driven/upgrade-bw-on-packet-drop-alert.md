@@ -1,3 +1,8 @@
+---
+name: upgrade-bw-on-packet-drop-alert
+description: Automatically boosts connection bandwidth to mitigate traffic-induced packet loss.
+---
+
 # Network connection packets drop monitoring and upgrade agent
 
 ## Overview

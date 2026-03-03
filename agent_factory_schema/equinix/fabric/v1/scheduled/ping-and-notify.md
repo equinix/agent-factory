@@ -1,3 +1,8 @@
+---
+name: scheduled-ping-fcr-and-notify
+description: Initiates a PING command on a Fabric Cloud Router.
+---
+
 # Ping FCR agent
 
 ## Overview

@@ -1,3 +1,8 @@
+---
+name: scheduled-upgrade-bw-primary-connection
+description: Upgrades the bandwidth of a connection.
+---
+
 # Scheduled bandwidth upgrader agent
 
 ## Overview

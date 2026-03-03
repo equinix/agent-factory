@@ -1,3 +1,8 @@
+---
+name: run-once-upgrade-bw-primary-connection
+description: Upgrades the bandwidth of a connection.
+---
+
 # Bandwidth upgrader agent
 
 ## Overview
