@@ -24,7 +24,7 @@ This skill can use the following tools:
 *   **`get_stream_alert_rule_details `**: Searches for an existing alert rule.
 *   **`update_connection`**: Update connection. Used to upgrade bandwidth.
 
-## Follow the action step by step below
+## Instructions
 1. Alert Rule Validation
  - Receives cloud event notification containing alert metadata
  - Validates alert rule existence using get_stream_alert_rule_details

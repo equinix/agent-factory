@@ -23,7 +23,7 @@ This skill can use the following tools:
 *   **`wait`**: Wait for a while. An optional parameter can be provided to specify the wait time in milliseconds.
 *   **`send_email_notification`**: Sends an email notification given an email address and email body.
 
-## Follow the action step by step below:
+## Instructions
 1. Search for the existing connection given the connection uuid.
 2. Get the stream details given the stream uuid. If stream uuid is not provided, create a new stream.
 3. Attach the connection resource to the stream.

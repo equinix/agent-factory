@@ -24,7 +24,7 @@ This skill can use the following tools:
 *   **`search_router_commands`**: Search for commands (e.g., PING) on a Fabric Cloud Router.
 *   **`send_email_notification`**: Sends an email notification given an email address and email body.
 
-## Follow the action step by step below:
+## Instructions
 1. Start by fetching details of the router given the uuid. Stop if router does not exist.
 2. Search for the existing connection given the connection uuid. Verify if the aside router uuid of the connection matches the router uuid from the first step. Stop if they do not match.
 3. Then initiate a PING command on the Fabric Cloud Router to test network connectivity to verify that the specified destination is reachable. Use the project of the router as the input project of the ping command.

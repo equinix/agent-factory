@@ -11,7 +11,7 @@ Connections should be in PROVISIONED state to be eligible for bandwidth upgrade.
 - Automatically upgrade connection bandwidth
 - Log all actions and decisions
 
-## Follow the action step by step below:
+## Instructions
 1. Search for the existing connection given the connection uuid.
 2. Extract the bandwidth from the connection details, and then fetch the next available tier given the bandwidth extracted from the connection details.
 3. Upgrade the bandwidth of the connection given the new bandwidth.

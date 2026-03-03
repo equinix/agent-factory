@@ -23,7 +23,7 @@ Each Markdown file(.md) must contain the following sections:
 * `## Capabilities` - A high-level description of the capabilities of the Agent Factory.
 * `## Prerequisites` -  A description of the prerequisite scenarios and requirements needed for the workflow to execute.
 * `## Available Tools` - The required Equinix MCP tools that the Agent Factory uses to execute the workflow to help with consistency of workflow.
-* `## Follow the action step by step below:` - The step-by-step workflow actions the Agent must perform.
+* `## Instructions` - The step-by-step workflow actions the Agent must perform.
 * `## Guidelines` - Additional guidance for the Agent Factory, such as clarifications, error handling, appropriate context, and other workflow-specific attributes.
 * `## Configuration` - Required and optional parameters utilized by the agent to control its behavior and execution. These parameters define the minimum set of inputs the agent must receive in order to function correctly.
 
@@ -58,7 +58,7 @@ This skill can use the following tools:
 *   **`update_connection`**: Update connection. Used to upgrade bandwidth.
 *   **`get_next_available_bandwidth_tier`**: Fetches the next available billing tier based on a bandwidth input.
 
-## Follow the action step by step below:
+## Instructions
 1. Once the cloud event is received, look at the packet drop alert rule from the cloud event message.
 2. Search for an existing alert rule given the alertRule uuid extracted from the cloud event message to find out if the alert rule exist.
 3. Search for the existing connection given the subject connection uuid from the cloud event message.

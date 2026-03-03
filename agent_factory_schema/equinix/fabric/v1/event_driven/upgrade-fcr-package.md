@@ -24,7 +24,7 @@ This skill can use the following tools:
 *   **`get_next_available_router_package `**: Fetches the next available Fabric Cloud Router package based on a package input.
 *   **`update_router`**: Update router. Used to upgrade the fabric cloud router.
 
-## Follow the action step by step below:
+## Instructions
 1. When a cloud event is received, analyze the event message and identify the alert rule referenced in the payload.
 2. Using the alert rule UUID extracted from the cloud event message, search the system to determine whether the corresponding alert rule already exists.
 3. From the same cloud event message, extract the subject router UUID and use it to locate the associated Fabric Cloud Router in the system.

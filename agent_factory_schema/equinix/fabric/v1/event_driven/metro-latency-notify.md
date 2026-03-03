@@ -1,3 +1,8 @@
+---
+name: obsidian
+description: Work with Obsidian vaults (plain Markdown notes) and automate via obsidian-cli.
+---
+
 # Collect connections over metros with latency spikes and notify
 
 ## Overview
@@ -18,7 +23,7 @@ This skill can use the following tools:
 *   **`search_connection`**: Searches for active connections with aside and zside metro codes
 *   **`send_email_notification`**: Sends an email notification given an email address and email body.
 
-## Follow the action step by step below:
+## Instructions
 1. Once the cloud event is received, look at the metro latency alert, from type extract source and destination metro codes
 2. Search for the active connections, using the source metro code as aside and destination metro code as aside
 3. Next, send an email notification to the designated email address, using the outcome of the search connection command as the email body so the recipient is clearly informed of the connections list to follow up.

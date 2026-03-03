@@ -23,7 +23,7 @@ This skill can use the following tools:
 *   **`update_connection`**: Update connection. Used to upgrade bandwidth.
 *   **`get_next_available_bandwidth_tier `**: Fetches the next available billing tier based on a bandwidth input.
 
-## Follow the action step by step below:
+## Instructions
 1. Upon receiving the cloud event, validate the equinixalert attribute. Continue if equinixalert value is raise. Stop if equinixalert value is clear.
 2. Parse the cloud event message to extract the packet-drop alert rule.
 3. Using the alert rule UUID obtained from the event, look up any existing alert rule to verify whether it already exists.
