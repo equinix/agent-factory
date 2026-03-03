@@ -62,13 +62,15 @@ From the collected events, build the following in-memory groupings:
 - **Administrative / Low-Signal**: event type matches `equinix.fabric.service_token.*` or `severitynumber` <= 9 (INFO level)
 
 #### 3b. Group BGP/Routing events by session:
-- Key: composite of connection UUID + routing protocol UUID (both parsed from the subject path, e.g., `/fabric/v4/connections/<conn-uuid>/routingProtocols/<rp-uuid>`)
+- Key: composite of connection UUID + routing protocol UUID (both parsed from the subject path, e.g., `/fabric/v4/connections/<conn-uuid>/routingProtocols/<rp-uuid>`). When referencing these in the report, use only the first 8 characters of each UUID (e.g., `<conn-uuid-first-8>` / `<rp-uuid-first-8>`).
 - For each session, sort events by timestamp ascending and track the ordered sequence of state transitions
 - Extract neighbor IP from `data.message` where present (e.g., "Neighbor 169.254.96.1 address session state changed to Connect")
 
 #### 3c. Group provisioning events by asset:
 - Key: subject UUID
 - Track count of provisioning, reprovisioning, deprovisioning, and failed state transitions per asset
+
+After completing 3a, 3b, and 3c, discard all raw event payloads. Carry forward only the in-memory groupings and derived summaries. Do not pass raw event data into any downstream step.
 
 ### Step 4 — Detect Behavioral Patterns
 
@@ -96,9 +98,17 @@ Assign one of the following plain-English labels based on observed patterns. Do 
 - **"Routing Instability Detected"** — One or more BGP sessions are flapping or in a failed/idle final state
 - **"Elevated Risk"** — Both routing instability and provisioning churn are present, or any CRIT-level event was observed
 - **"Migration in Progress"** — High provisioning/deprovisioning churn, low or no WARN events, pattern consistent with a planned migration
+- **"Migration in Progress"** — High provisioning/deprovisioning churn, low or no WARN events, pattern consistent with a planned migration
 
 ### Step 5 — Compose the Intelligence Report
-Write the report in plain, conversational English. Do not include raw JSON, full UUIDs (use the first 8 characters only), or technical jargon without explanation. Use the hierarchical structure below exactly — starting from the broadest summary and drilling down to the most specific routing-level detail:
+Write the report in plain, conversational English. Do not include raw JSON, full UUIDs (use the first 8 characters only), or technical jargon without explanation. Use the hierarchical structure below exactly — starting from the broadest summary and drilling down to the most specific routing-level detail.
+Do NOT write the report as prose in your response text.
+Compose the full report content in-memory only, then proceed
+immediately to Step 6 to send it via `send_email_notification`.
+The report must only appear as the `pdfContent` parameter value
+in the tool call — never in the response body.
+
+**Do not respond to the user between Step 5 and Step 6. Proceed directly to calling `send_email_notification`.**
 
 ```
 Fabric Operational Health Summary
@@ -269,6 +279,11 @@ If provisioning churn detected:
    a planned migration or deployment, no action is needed. If it was
    unexpected, review your automation workflows or recent deployment scripts
    for this project.
+
+If migration pattern detected:
+-> Your project shows a pattern consistent with a planned migration. If this
+   is expected, no action is required. If the migration is complete, verify
+   all target assets are in their expected final states.
 
 If all clear:
 -> No action required. Your project infrastructure appears healthy and
