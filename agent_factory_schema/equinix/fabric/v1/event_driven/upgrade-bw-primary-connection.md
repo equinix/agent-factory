@@ -31,8 +31,8 @@ This skill can use the following tools:
 ## Instructions
 1. When a cloud event is received, validate the equinixalert attribute. Continue if equinixalert value is raise. Stop if equinixalert value is clear.
 2. Parse the cloud event message to identify the alert rule.
-3. Using the alert rule UUID extracted from the event, check whether a corresponding alert rule already exists.
-4. Locate the associated connection using the subject connection UUID provided in the cloud event message.
+3. Using the alert rule UUID extracted from the event, check whether a corresponding alert rule already exists. Stop if the alert rule cannot be found.
+4. Locate the associated connection using the subject connection UUID provided in the cloud event message. Stop if the connection cannot be found.
 5. Obtain the current bandwidth from the connection details. Check whether user entered "bandwith_in_mb" in Configuration. If yes, use this bandwidth value. Otherwise, determine the next available bandwidth tier based on the current bandwidth value.
 6. Upgrade the connection to the newly determined bandwidth tier.
 
