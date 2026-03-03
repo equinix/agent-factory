@@ -1,3 +1,8 @@
+---
+name: scheduled-upgrade-bw-primary-connection
+description: Upgrades the bandwidth of a connection.
+---
+
 # Scheduled bandwidth upgrader agent
 
 ## Overview
@@ -18,7 +23,7 @@ This skill can use the following tools:
 *   **`update_connection`**: Update connection. Used to upgrade bandwidth.
 *   **`get_next_available_bandwidth_tier`**: Fetches the next available billing tier based on a bandwidth input.
 
-## Follow the action step by step below:
+## Instructions
 1. Search for the existing connection given the connection uuid.
 2. Extract the bandwidth from the connection details, and then fetch the next available tier given the bandwidth extracted from the connection details.
 3. Upgrade the bandwidth of the connection given the new bandwidth.

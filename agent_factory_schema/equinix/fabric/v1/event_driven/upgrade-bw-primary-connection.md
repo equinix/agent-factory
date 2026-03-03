@@ -1,3 +1,8 @@
+---
+name: upgrade-bw-primary-connection
+description: Automatically upgrades the bandwidth of a connection when usage reaches a certain threshold.
+---
+
 # Network Bandwidth monitoring and upgrade agent
 
 ## Overview
@@ -23,7 +28,7 @@ This skill can use the following tools:
 * **`update_connection`**: Update connection. Used to upgrade bandwidth.
 * **`get_next_available_bandwidth_tier`**: Fetches the next available billing tier based on a bandwidth input.
 
-## Follow the action step by step below:
+## Instructions
 1. When a cloud event is received, validate the equinixalert attribute. Continue if equinixalert value is raise. Stop if equinixalert value is clear.
 2. Parse the cloud event message to identify the alert rule.
 3. Using the alert rule UUID extracted from the event, check whether a corresponding alert rule already exists.
