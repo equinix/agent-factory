@@ -93,8 +93,51 @@ Do NOT write the report as prose in your response text. Compose in-memory only, 
 
 **Do not respond to the user between Step 5 and Step 6. Proceed directly to calling `send_email_notification`.**
 
-Structure the report using these sections (omit any section with no content — no placeholder text). Do not include any section numbers in the headings:
+Structure the report using these sections (omit any section with no content — no placeholder text). Do not include any section numbers in the headings. Use the separator formatting shown below exactly:
 
+```
+==========================================
+Overall Status: <label>
+==========================================
+
+------------------------------------------
+Summary
+------------------------------------------
+<content>
+
+------------------------------------------
+Project & User Activity
+------------------------------------------
+<content>
+
+------------------------------------------
+Fabric Cloud Router Activity
+------------------------------------------
+<content>
+
+------------------------------------------
+Connection Activity
+------------------------------------------
+<content>
+
+------------------------------------------
+Routing Protocol & BGP Health
+------------------------------------------
+<content>
+
+------------------------------------------
+Events That Need Your Attention
+------------------------------------------
+<content>
+
+------------------------------------------
+What You Should Do
+------------------------------------------
+<content>
+==========================================
+```
+
+Section content rules:
 - **Header**: Project UUID, period, overall status label
 - **Summary**: 3–5 sentences — total events, asset types active, headline finding, routine or needs attention
 - **Project & User Activity**: Include only if human/API actors or administrative events exist. List active users as `<data.auth.name> (id: <authid>)` with event counts and plain English description of their activity. Note service token expirations as informational only.
@@ -114,7 +157,7 @@ Rules:
 Use `send_email_notification` to send the report to `recipient_email_address`.
 - `pdfContent`: the full report text from Step 5.
 - `body`: one-paragraph summary of overall status and headline finding.
-- `pdfTitle`: `Fabric Insights - <project_uuid first 8 chars> - <reporting period date> - <Overall Status label>`
+- `pdfTitle`: `FabricInsights-<project_uuid first 8 chars>-<reporting period date>-<Overall Status label>`
 
 ## Available Tools
 - **`search_cloud_events`**: Searches Equinix Fabric cloud events. Use `/equinixproject` `=` with `/time` `>=` and `<=` to scope by project and time window.
