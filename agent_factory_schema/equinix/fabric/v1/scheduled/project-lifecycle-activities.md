@@ -98,7 +98,7 @@ Structure the report using these sections (omit any section with no content — 
 
 ```
 ==========================================
-Overall Status: <label>
+Overall Status:
 ==========================================
 
 ------------------------------------------
@@ -158,7 +158,7 @@ Rules:
 Use `send_email_notification` to send the report to `recipient_email_address`.
 - `pdfContent`: the full report text from Step 5.
 - `body`: one-paragraph summary of overall status and headline finding.
-- `pdfTitle`: `FabricInsights-<project_uuid first 8 chars>-<reporting period date>-<Overall Status label>`
+- `pdfTitle`: `FabricInsights-<project_uuid first 8 chars>-<reporting period from date>-<reporting period to date>-<Overall Status label>`
 
 ## Available Tools
 - **`search_cloud_events`**: Searches Equinix Fabric cloud events. Use `/equinixproject` `=` with `/time` `>=` and `<=` to scope by project and time window.
