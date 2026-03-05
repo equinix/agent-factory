@@ -58,10 +58,13 @@ Build the following in-memory groupings:
 - Key: connection UUID + routing protocol UUID (from subject path `/fabric/v4/connections/<conn-uuid>/routingProtocols/<rp-uuid>`). Use only the first 8 chars of each UUID in the report.
 - Sort events by timestamp ascending, track ordered state transitions.
 - Extract neighbor IP from `data.message` where present.
+- Extract and retain `data.resource.name` for the asset where present.
 
 #### 3c. Group provisioning events by asset:
 - Key: subject UUID
 - Track count of provisioning, reprovisioning, deprovisioning, and failed transitions per asset.
+- Extract and retain `data.resource.name` for the asset where present.
+- For user-initiated events, extract and retain `data.auth.name` (human-readable name) alongside `authid` from the event root.
 
 After completing 3a–3c, discard all raw event payloads. Carry forward only in-memory groupings and derived summaries. Do not pass raw event data into any downstream step.
 
@@ -91,19 +94,20 @@ Do NOT write the report as prose in your response text. Compose in-memory only, 
 
 **Do not respond to the user between Step 5 and Step 6. Proceed directly to calling `send_email_notification`.**
 
-Structure the report using these sections (omit any section with no content — no placeholder text):
+Structure the report using these sections (omit any section with no content — no placeholder text). Do not include any section numbers in the headings:
 
 - **Header**: Project UUID, period, overall status label
-- **1. Summary**: 3–5 sentences — total events, asset types active, headline finding, routine or needs attention
-- **2. Project & User Activity**: Include only if human/API actors or administrative events exist. List active authids with event counts and descriptions. Note service token expirations as informational only.
-- **3. Fabric Cloud Router Activity**: Include only if router events exist. Note churn (3+ transitions) as elevated. List each router (uuid-first-8) with plain English description of activity.
-- **4. Connection Activity**: Include only if connection events exist. Note churn (3+ transitions). List each connection (uuid-first-8) with description and last observed state.
-- **5. Routing Protocol & BGP Health**: Include only if BGP/routing events exist. Per session: 0–1 transitions = routine, 2–3 = transient but recovered, 4+ = flapping. Always state final observed session state.
-- **6. Events That Need Your Attention**: Include only if WARN/CRIT events exist. List up to 10, humanized — no raw event type strings. Format: `[WARN] <time UTC> - <description>`, Asset, Detail, Severity.
-- **7. What You Should Do**: 1–3 plain English recommendations based only on detected findings. If nothing needs action, say so.
+- **Summary**: 3–5 sentences — total events, asset types active, headline finding, routine or needs attention
+- **Project & User Activity**: Include only if human/API actors or administrative events exist. List active users as `<data.auth.name> (id: <authid>)` with event counts and plain English description of their activity. Note service token expirations as informational only.
+- **Fabric Cloud Router Activity**: Include only if router events exist. Note churn (3+ transitions) as elevated. List each router as `<data.resource.name> (<uuid-first-8>)` with plain English description of activity.
+- **Connection Activity**: Include only if connection events exist. Note churn (3+ transitions). List each connection as `<data.resource.name> (<uuid-first-8>)` with description and last observed state.
+- **Routing Protocol & BGP Health**: Include only if BGP/routing events exist. Reference sessions using both the connection name/uuid-first-8 and routing protocol uuid-first-8. Per session: 0–1 transitions = routine, 2–3 = transient but recovered, 4+ = flapping. Always state final observed session state.
+- **Events That Need Your Attention**: Include only if WARN/CRIT events exist. List up to 10, humanized — no raw event type strings. Format: `[WARN] <time UTC> - <description>`, Asset (use name + uuid-first-8), Detail, Severity.
+- **What You Should Do**: 1–3 plain English recommendations based only on detected findings. If nothing needs action, always end with: "No issues were detected and no action is required at this time. I will continue monitoring any new events for you."
 
 Rules:
-- Plain English always. No raw event type strings, no full UUIDs (first 8 chars only), no API jargon.
+- Plain English always. No raw event type strings, no API jargon.
+- Always use both the human-readable name AND the first 8 chars of the UUID when referencing any asset (router, connection, port, routing protocol) or user. Format: `<name> (<uuid-first-8>)` for assets and `<data.auth.name> (id: <authid>)` for users. If a name is not available, fall back to uuid-first-8 only.
 - Final observed state must be stated for any asset with multiple transitions.
 - Use the overall status label from Step 4c in the header.
 
@@ -111,7 +115,7 @@ Rules:
 Use `send_email_notification` to send the report to `recipient_email_address`.
 - `pdfContent`: the full report text from Step 5.
 - `body`: one-paragraph summary of overall status and headline finding.
-- `pdfTitle`: `Fabric Cloud Event Insight Report - <project_uuid first 8 chars> - <reporting period date> - <Overall Status label>`
+- `pdfTitle`: `Fabric Insights - <project_uuid first 8 chars> - <reporting period date> - <Overall Status label>`
 
 ## Available Tools
 - **`search_cloud_events`**: Searches Equinix Fabric cloud events. Use `/equinixproject` `=` with `/time` `>=` and `<=` to scope by project and time window.
