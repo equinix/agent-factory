@@ -2,7 +2,7 @@
 
 ## Overview
 An Equinix agent that sends gcp monitoring and equinix metrics to an email 
-This agent is triggered every 5 minutes.
+This agent is triggered every 1 hour.
 
 ## Capabilities
 - An automated monitoring solution utilizing an Equinix-hosted agent to track and transmit real-time GCP performance metrics. 
