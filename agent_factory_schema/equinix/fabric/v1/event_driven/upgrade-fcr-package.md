@@ -8,6 +8,7 @@ description: Continuously monitors route usage on a Fabric Cloud Router and upgr
 ## Overview
 An Equinix agent that continuously monitors route usage on a Fabric Cloud Router. 
 When the route usage exceeds a predefined threshold, the agent automatically upgrades the Fabric Cloud Router package to ensure sufficient capacity and uninterrupted operation.
+This agent only executes once.
 
 ## Capabilities
 - Continuously monitor real-time network event streams to maintain visibility into network activity and performance.
