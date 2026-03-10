@@ -8,6 +8,7 @@ description: Monitors Equinix Fabric connections and maintains bandwidth parity 
 ## Overview
 This automated agent monitors Equinix Fabric connections and maintains bandwidth parity between redundant connection pairs. 
 When bandwidth utilization on a primary connection reaches a configured threshold, the agent automatically upgrades the secondary connection to match the primary connection's bandwidth, ensuring consistent performance across the redundant pair.
+This agent only executes once.
 
 ## Capabilities
 - Real-time Event Monitoring: Continuously monitors network event streams for bandwidth alerts

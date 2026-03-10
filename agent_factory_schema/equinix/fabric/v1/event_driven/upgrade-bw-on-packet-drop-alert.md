@@ -7,6 +7,7 @@ description: Automatically boosts connection bandwidth to mitigate traffic-induc
 
 ## Overview
 An Equinix agent that automatically boosts connection bandwidth to mitigate traffic-induced packet loss.
+This agent only executes once.
 
 ## Capabilities
 - Monitor real-time network event streams

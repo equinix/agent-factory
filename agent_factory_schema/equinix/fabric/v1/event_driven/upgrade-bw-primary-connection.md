@@ -6,7 +6,8 @@ description: Automatically upgrades the bandwidth of a connection when usage rea
 # Network Bandwidth monitoring and upgrade agent
 
 ## Overview
-An Equinix agent that automatically upgrades the bandwidth of a connection when usage reaches a certain threshold.
+An Equinix agent that automatically upgrades the bandwidth of a connection when usage reaches a certain threshold. 
+This agent only executes once.
 
 ## Capabilities
 - Monitor real-time network event streams
