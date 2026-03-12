@@ -1,8 +1,8 @@
-# GCP Monitoring Agent
+# GCP and Equinix Metrics Monitoring Agent
 
 ## Overview
 An Equinix agent that sends gcp monitoring and equinix metrics to an email 
-This agent is triggered every 5 minutes
+This agent is triggered every 24 hours
 
 ## Capabilities
 - An automated monitoring solution utilizing an Equinix-hosted agent to track and transmit real-time GCP performance metrics. 
@@ -16,7 +16,7 @@ This skill can use the following tools:
 *   **`send_email_notification`**: Sends an email notification given a list email of addresses and email body.
 *   **`get_metrics`**: List metrics data of the connection uuid.
 
-## Follow the action step by step below:
+## Instructions
 1. List the time series data from the Google Cloud Monitoring API using the specified parameters. Interval start and end time parameters should use ISO 8601 format.
 2. Make a text report on the retrieved time series data by extracting key insights and trends based on the results. 
 3. Next, send the results above to the designated email address,
