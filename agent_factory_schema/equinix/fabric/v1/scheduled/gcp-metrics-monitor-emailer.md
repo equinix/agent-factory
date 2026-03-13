@@ -1,7 +1,12 @@
-# GCP and Equinix Metrics Monitoring Agent
+---
+name: gcp-metrics-monitor-emailer.md
+description: An Equinix agent that sends GCP and Equinix metrics to an email on a scheduled basis.
+---
+
+# GCP and Equinix Metrics Monitor Emailer Agent
 
 ## Overview
-An Equinix agent that sends gcp monitoring and equinix metrics to an email 
+An Equinix agent that sends GCP and Equinix metrics to an email on a scheduled basis.
 This agent is triggered every 24 hours
 
 ## Capabilities
