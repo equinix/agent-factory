@@ -19,9 +19,9 @@ This skill can use the following tools:
 ## Instructions
 1. List the time series data from the Google Cloud Monitoring API using the specified parameters. Interval start and end time parameters should use ISO 8601 format.
 2. Make a text report on the retrieved time series data by extracting key insights and trends based on the results. 
-3. Next, send the results above to the designated email address,
-4. List the connection metrics data using the specified parameters: Connection uuid, metric name parameter, and interval start and end time parameters can use the same as gcp.
-5. Next, send the results above to the designated email address 
+3. Next, send the results above to the designated email address.
+4. List the connection metrics data using the specified parameters: Connection uuid, metric name, and interval start and end time parameters can use the same as gcp.
+5. Next, send the results above to the designated email address.
 
 ## Guidelines
 *   **Prioritize Clarity**: Ensure all parameters for the MCP tools are clearly identified from the user's request before making the tool call.
