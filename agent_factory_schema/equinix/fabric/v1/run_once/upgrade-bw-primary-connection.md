@@ -1,3 +1,8 @@
+---
+name: run-once-upgrade-bw-primary-connection
+description: Upgrades the bandwidth of a connection.
+---
+
 # Bandwidth upgrader agent
 
 ## Overview
@@ -11,7 +16,7 @@ Connections should be in PROVISIONED state to be eligible for bandwidth upgrade.
 - Automatically upgrade connection bandwidth
 - Log all actions and decisions
 
-## Follow the action step by step below:
+## Instructions
 1. Search for the existing connection given the connection uuid.
 2. Extract the bandwidth from the connection details, and then fetch the next available tier given the bandwidth extracted from the connection details.
 3. Upgrade the bandwidth of the connection given the new bandwidth.
@@ -30,4 +35,4 @@ This skill can use the following tools:
 *   **Token Efficiency**: Only call the tools when all necessary information is present, avoiding unnecessary context loading.
 
 ## Configuration
-*   **Required Parameters** User should specify a connection uuid.
+* **`connection_uuid`**: < A connection UUID > - Required - User should specify a connection uuid.

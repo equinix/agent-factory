@@ -1,7 +1,13 @@
+---
+name: upgrade-bw-primary-connection
+description: Automatically upgrades the bandwidth of a connection when usage reaches a certain threshold.
+---
+
 # Network Bandwidth monitoring and upgrade agent
 
 ## Overview
-An Equinix agent that automatically upgrades the bandwidth of a connection when usage reaches a certain threshold.
+An Equinix agent that automatically upgrades the bandwidth of a connection when usage reaches a certain threshold. 
+This agent only executes once.
 
 ## Capabilities
 - Monitor real-time network event streams
@@ -23,12 +29,12 @@ This skill can use the following tools:
 * **`update_connection`**: Update connection. Used to upgrade bandwidth.
 * **`get_next_available_bandwidth_tier`**: Fetches the next available billing tier based on a bandwidth input.
 
-## Follow the action step by step below:
+## Instructions
 1. When a cloud event is received, validate the equinixalert attribute. Continue if equinixalert value is raise. Stop if equinixalert value is clear.
 2. Parse the cloud event message to identify the alert rule.
 3. Using the alert rule UUID extracted from the event, check whether a corresponding alert rule already exists.
 4. Locate the associated connection using the subject connection UUID provided in the cloud event message.
-5. Obtain the current bandwidth from the connection details, then determine the next available bandwidth tier based on that value.
+5. Obtain the current bandwidth from the connection details. Check whether user entered "bandwith_in_mb" in Configuration. If yes, use this bandwidth value. Otherwise, determine the next available bandwidth tier based on the current bandwidth value.
 6. Upgrade the connection to the newly determined bandwidth tier.
 
 ## Guidelines
@@ -37,5 +43,7 @@ This skill can use the following tools:
 *   **Token Efficiency**: Only call the tools when all necessary information is present, avoiding unnecessary context loading.
 
 ## Configuration
-*   **Optional Parameters** User can specify a list of alert rule uuids.
-*   **Optional Parameters** User can specify a list of connection uuids.
+* **`connection_uuids`**: < list of connection UUIDs > - Optional - User can specify a list of connection uuids.
+* **`alert_rule_uuids`**: < list of  alert rule UUIDs > - Optional - User can specify a list of alert rule uuids.
+* **`bandwith_in_mb`**: < bandwidth in MB > - Optional - User can specify if user wants to upgrade to a certain bandwidth in MB.
+* **`maximum_bandwidth`**: < boolean. default is false > - Optional - User can specify if user wants to upgrade to the maximum bandwidth.

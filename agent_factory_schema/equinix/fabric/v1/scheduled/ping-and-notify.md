@@ -1,3 +1,8 @@
+---
+name: scheduled-ping-fcr-and-notify
+description: Initiates a PING command on a Fabric Cloud Router.
+---
+
 # Ping FCR agent
 
 ## Overview
@@ -24,7 +29,7 @@ This skill can use the following tools:
 *   **`search_router_commands`**: Search for commands (e.g., PING) on a Fabric Cloud Router.
 *   **`send_email_notification`**: Sends an email notification given an email address and email body.
 
-## Follow the action step by step below:
+## Instructions
 1. Start by fetching details of the router given the uuid. Stop if router does not exist.
 2. Search for the existing connection given the connection uuid. Verify if the aside router uuid of the connection matches the router uuid from the first step. Stop if they do not match.
 3. Then initiate a PING command on the Fabric Cloud Router to test network connectivity to verify that the specified destination is reachable. Use the project of the router as the input project of the ping command.
@@ -41,7 +46,6 @@ This skill can use the following tools:
 *   **Token Efficiency**: Only call the tools when all necessary information is present, avoiding unnecessary context loading. 
 
 ## Configuration
-*   **Required Parameters** User should specify a router uuid.
-*   **Required Parameters** User should specify a connection uuid.
-*   **Required Parameters** User should specify a destination IP address to ping.
-*   **Required Parameters** User should specify an email address.
+* **`router_uuid`**: < A router UUID > - Required - User should specify a router uuid.
+* **`connection_uuid`**: < A connection UUID > - Required - User should specify a connection uuid.
+* **`source_ip_address`**: < A valid ip address > - Required - User should specify a destination IP address to ping.

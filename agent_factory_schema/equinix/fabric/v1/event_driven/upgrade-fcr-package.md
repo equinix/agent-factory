@@ -1,8 +1,14 @@
+---
+name: upgrade-fcr-package
+description: Continuously monitors route usage on a Fabric Cloud Router and upgrades package when needed. 
+---
+
 # Cloud Router monitoring and upgrade package agent
 
 ## Overview
 An Equinix agent that continuously monitors route usage on a Fabric Cloud Router. 
 When the route usage exceeds a predefined threshold, the agent automatically upgrades the Fabric Cloud Router package to ensure sufficient capacity and uninterrupted operation.
+This agent only executes once.
 
 ## Capabilities
 - Continuously monitor real-time network event streams to maintain visibility into network activity and performance.
@@ -24,7 +30,7 @@ This skill can use the following tools:
 *   **`get_next_available_router_package `**: Fetches the next available Fabric Cloud Router package based on a package input.
 *   **`update_router`**: Update router. Used to upgrade the fabric cloud router.
 
-## Follow the action step by step below:
+## Instructions
 1. When a cloud event is received, analyze the event message and identify the alert rule referenced in the payload.
 2. Using the alert rule UUID extracted from the cloud event message, search the system to determine whether the corresponding alert rule already exists.
 3. From the same cloud event message, extract the subject router UUID and use it to locate the associated Fabric Cloud Router in the system.
@@ -37,5 +43,5 @@ This skill can use the following tools:
 *   **Token Efficiency**: Only call the tools when all necessary information is present, avoiding unnecessary context loading.
 
 ## Configuration
-*   **Optional Parameters** User can specify a list of alert rule uuids.
-*   **Optional Parameters** User can specify a list of fabric cloud router uuids.
+* **`connection_uuids`**: < list of connection UUIDs > - Optional - User can specify a list of connection uuids.
+* **`fcr_router_uuids`**: < list of fabric cloud router UUIDs > - Optional - User can specify a list of fabric cloud router uuids.

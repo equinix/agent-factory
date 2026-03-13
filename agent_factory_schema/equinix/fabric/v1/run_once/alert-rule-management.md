@@ -1,7 +1,12 @@
+---
+name: alert-rule-management
+description: Sets up an alert rule for a connection.
+---
+
 # Alert Rule Manager
 
 ## Overview
-An Equinix agent that sets up an alert to a connection.
+An Equinix agent that sets up an alert rule for a connection.
 This agent runs once immediately by default unless scheduled by user.
 
 ## Capabilities
@@ -23,7 +28,7 @@ This skill can use the following tools:
 *   **`wait`**: Wait for a while. An optional parameter can be provided to specify the wait time in milliseconds.
 *   **`send_email_notification`**: Sends an email notification given an email address and email body.
 
-## Follow the action step by step below:
+## Instructions
 1. Search for the existing connection given the connection uuid.
 2. Get the stream details given the stream uuid. If stream uuid is not provided, create a new stream.
 3. Attach the connection resource to the stream.
@@ -39,8 +44,7 @@ This skill can use the following tools:
 *   **Alert Rule guidelines** Default window size to PT15M.
 
 ## Configuration
-*   **Required Parameters** User should specify a connection uuid.
-*   **Required Parameters** User should specify an operand.
-*   **Required Parameters** User should a critical threshold.
-*   **Required Parameters** User should specify an email address.
-*   **Optional Parameters** User can specify a stream uuid.
+* **`connection_uuid`**: < A connection UUID > - Required - User should specify a connection uuid.
+* **`operand`**: < A 2 character metro code > - Required - User should specify an operand.
+* **`critical_threshold`**: < list of valid email addresses to send notification to > - Required - User should a critical threshold.
+* **`stream_uuid`**: < A stream UUID > - Optional - User can specify a stream uuid.

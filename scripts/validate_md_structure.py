@@ -4,9 +4,10 @@ REQUIRED_SECTIONS = [
     "## Overview",
     "## Prerequisites",
     "## Capabilities",
-    "## Follow the action step by step below",
+    "## Instructions",
     "## Available Tools",
     "## Guidelines",
+    "## Configuration",
 ]
 
 def validate_md_sections(root_dir):

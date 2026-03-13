@@ -1,8 +1,14 @@
+---
+name: upgrade-bw-secondary-connection
+description: Monitors Equinix Fabric connections and maintains bandwidth parity between redundant connection pairs.
+---
+
 # Network Bandwidth monitoring and upgrade agent
 
 ## Overview
 This automated agent monitors Equinix Fabric connections and maintains bandwidth parity between redundant connection pairs. 
 When bandwidth utilization on a primary connection reaches a configured threshold, the agent automatically upgrades the secondary connection to match the primary connection's bandwidth, ensuring consistent performance across the redundant pair.
+This agent only executes once.
 
 ## Capabilities
 - Real-time Event Monitoring: Continuously monitors network event streams for bandwidth alerts
@@ -24,23 +30,23 @@ This skill can use the following tools:
 *   **`get_stream_alert_rule_details `**: Searches for an existing alert rule.
 *   **`update_connection`**: Update connection. Used to upgrade bandwidth.
 
-## Follow the action step by step below
+## Instructions
 1. Alert Rule Validation
- - Receives cloud event notification containing alert metadata
- - Validates alert rule existence using get_stream_alert_rule_details
- - Confirms alert is for bandwidth threshold monitoring
+   - Receives cloud event notification containing alert metadata
+   - Validates alert rule existence using get_stream_alert_rule_details
+   - Confirms alert is for bandwidth threshold monitoring
 2. Primary Connection Analysis
- - Extracts connection UUID from the cloud event subject field
- - Retrieves complete connection details using search_connection
- - Extracts current bandwidth allocation
- - Identifies redundant_group membership
+   - Extracts connection UUID from the cloud event subject field
+   - Retrieves complete connection details using search_connection
+   - Extracts current bandwidth allocation
+   - Identifies redundant_group membership
 3. Secondary Connection Discovery
- - Identify the secondary connection of the redundant_group
- - Filters by redundancy group UUID and SECONDARY priority
- - Validates secondary connection configuration
+   - Identify the secondary connection of the redundant_group
+   - Filters by redundancy group UUID and SECONDARY priority
+   - Validates secondary connection configuration
 4. Bandwidth Synchronization
- - Sets secondary bandwidth to match primary connection bandwidth
- - Logs upgrade action with before/after values
+   - Sets secondary bandwidth to match primary connection bandwidth
+   - Logs upgrade action with before/after values
 
 
 ## Guidelines
@@ -49,6 +55,5 @@ This skill can use the following tools:
 *   **Token Efficiency**: Only call the tools when all necessary information is present, avoiding unnecessary context loading.
 
 ## Configuration
-*   **Optional Parameters** User can specify alert rule uuid
-*   **Optional Parameters** User can specify connection uuid
-
+* **`connection_uuids`**: < list of connection UUIDs > - Optional - User can specify a list of connection uuids.
+* **`alert_rule_uuids`**: < list of  alert rule UUIDs > - Optional - User can specify a list of alert rule uuids.

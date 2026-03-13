@@ -8,7 +8,7 @@ description: Upgrades the package of a Fabric Cloud Router.
 ## Overview
 This definition sets up and activates an Equinix agent that upgrades the package of a Fabric Cloud Router. 
 When the route usage exceeds a predefined threshold, the agent automatically upgrades the Fabric Cloud Router package to ensure sufficient capacity and uninterrupted operation.
-This agent is triggered at 6pm on the 15th of February 2026.
+This agent runs once immediately by default unless scheduled by user.
 
 ## Capabilities
 - Automatically upgrade Fabric Cloud Router packages as needed to ensure adequate capacity and prevent service disruption.

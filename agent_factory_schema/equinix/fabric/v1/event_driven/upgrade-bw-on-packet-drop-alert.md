@@ -1,7 +1,13 @@
+---
+name: upgrade-bw-on-packet-drop-alert
+description: Automatically boosts connection bandwidth to mitigate traffic-induced packet loss.
+---
+
 # Network connection packets drop monitoring and upgrade agent
 
 ## Overview
 An Equinix agent that automatically boosts connection bandwidth to mitigate traffic-induced packet loss.
+This agent only executes once.
 
 ## Capabilities
 - Monitor real-time network event streams
@@ -23,7 +29,7 @@ This skill can use the following tools:
 *   **`update_connection`**: Update connection. Used to upgrade bandwidth.
 *   **`get_next_available_bandwidth_tier `**: Fetches the next available billing tier based on a bandwidth input.
 
-## Follow the action step by step below:
+## Instructions
 1. Upon receiving the cloud event, validate the equinixalert attribute. Continue if equinixalert value is raise. Stop if equinixalert value is clear.
 2. Parse the cloud event message to extract the packet-drop alert rule.
 3. Using the alert rule UUID obtained from the event, look up any existing alert rule to verify whether it already exists.
@@ -37,5 +43,5 @@ This skill can use the following tools:
 *   **Token Efficiency**: Only call the tools when all necessary information is present, avoiding unnecessary context loading.
 
 ## Configuration
-*   **Optional Parameters** User can specify alert rule uuid
-*   **Optional Parameters** User can specify connection uuid
+* **`connection_uuids`**: < list of connection UUIDs > - Optional - User can specify a list of connection uuids.
+* **`alert_rule_uuids`**: < list of  alert rule UUIDs > - Optional - User can specify a list of alert rule uuids.
