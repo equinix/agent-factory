@@ -25,7 +25,7 @@ Connections should be in PROVISIONED state to be eligible for bandwidth upgrade.
 ## Available Tools
 This skill can use the following tools:
 
-*   **`search_connection`**: Searches for an existing connection.
+*   **`search_connections`**: Searches for an existing connection.
 *   **`update_connection`**: Update connection. Used to upgrade bandwidth.
 *   **`get_next_available_bandwidth_tier `**: Fetches the next available billing tier based on a bandwidth input.
 

@@ -22,8 +22,8 @@ Connections should be in PROVISIONED state to be eligible for bandwidth upgrade.
 ## Available Tools
 This skill can use the following tools:
 
-*   **`search_router`**: Searches for an existing fabric cloud router.
-*   **`search_connection`**: Searches for an existing connection.
+*   **`search_routers`**: Searches for an existing fabric cloud router.
+*   **`search_connections`**: Searches for an existing connection.
 *   **`create_router_commands`**: Initiate a PING command on a Fabric Cloud Router by UUID.
 *   **`wait`**: Wait for a while. An optional parameter can be provided to specify the wait time in milliseconds.
 *   **`search_router_commands`**: Search for commands (e.g., PING) on a Fabric Cloud Router.

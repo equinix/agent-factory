@@ -20,7 +20,7 @@ Fabric Cloud router should be in PROVISIONED state to be eligible for bandwidth 
 ## Available Tools
 This skill can use the following tools:
 
-*   **`search_router`**: Searches for an existing fabric cloud router.
+*   **`search_routers`**: Searches for an existing fabric cloud router.
 *   **`get_next_available_router_package `**: Fetches the next available Fabric Cloud Router package based on a package input.
 *   **`update_router`**: Update router. Used to upgrade the fabric cloud router.
 
