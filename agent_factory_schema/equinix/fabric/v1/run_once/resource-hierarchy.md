@@ -12,17 +12,63 @@ This agent runs once immediately by default unless scheduled by user.
 ## Prerequisites
 Fabric Cloud router resources exist in the given project.
 
+## Instructions
+Structure the report using these sections (omit any section with no content — no placeholder text). Do not include any section numbers in the headings. Use the separator formatting shown below exactly:
+
+```
+==========================================
+Overall Resource Hierarchy:
+==========================================
+
+------------------------------------------
+Summary
+------------------------------------------
+<content>
+
+------------------------------------------
+IPWAN Resources
+------------------------------------------
+<content>
+
+------------------------------------------
+Fabric Cloud Router Resources
+------------------------------------------
+<content>
+
+------------------------------------------
+Connection Resources
+------------------------------------------
+<content>
+
+------------------------------------------
+Network Policy Resources
+------------------------------------------
+<content>
+
+------------------------------------------
+What You Should Do
+------------------------------------------
+<content>
+==========================================
+```
+### Step 2— Send the Report
+Use `send_email_notification` to send the report to `recipient_email_address`.
+- `pdfContent`: the full report text from Step 5.
+- `body`: one-paragraph summary of overall status and headline finding.
+- `pdfTitle`: `FabricInsights-<project_uuid first 8 chars>-<reporting period from date>-<reporting period to date>-<Overall Status label>`
+
 ## Available Tools
 This skill can use the following tools:
 
 *   **`search_router`**: Searches for an existing fabric cloud router.
 *   **`search_connection`**: Searches for an existing fabric cloud router connection.
-*   **`search_route_filter`**: Searches for an existing route filter.
+*   **`search_route_filter`**: Searches for an existing route filters attached to each fabric cloud router connection.
+*   **`search_route_aggregation`**: Searches for an existing route aggregations attached to each fabric cloud router connection.
 
 ## Follow the action step by step below:
 1. Search for the existing fabric cloud router given the project uuid. Stop if the router is not found.
 2. Once the router details are retrieved, search for the existing fabric cloud router connection given the fcr uuid.
-3. Once the fabric cloud router connection details are retrieved, search for the associated route filters given the fcr connection uuid.
+3. Once the fabric cloud router connection details are retrieved, search for the associated route filters and route aggregations given the fcr connection uuid.
 
 ## Guidelines
 *   **Prioritize Clarity**: Ensure all parameters for the MCP tools are clearly identified from the user's request before making the tool call.
@@ -31,3 +77,4 @@ This skill can use the following tools:
 
 ## Configuration
 * **`project_uuid`**: < A project UUID > - Required - User should specify a project uuid.
+* **`recipient_email_address`**: Required. Email address to receive the report.
