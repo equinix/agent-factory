@@ -30,8 +30,8 @@ This agent runs once immediately by default unless scheduled by user.</td>
 		<td>- PING command on Fabric Cloud Router<br>- Email notification with PING results<br>- Log all actions and decisions</td>
 		<td>This skill can use the following tools:
 
-*   **`search_router`**: Searches for an existing fabric cloud router.
-*   **`search_connection`**: Searches for an existing connection.
+*   **`search_routers`**: Searches for an existing fabric cloud router.
+*   **`search_connections`**: Searches for an existing connection.
 *   **`create_router_commands`**: Initiate a PING command on a Fabric Cloud Router by UUID.
 *   **`wait`**: Wait for a while. An optional parameter can be provided to specify the wait time in milliseconds.
 *   **`search_router_commands`**: Search for commands (e.g., PING) on a Fabric Cloud Router.
@@ -45,7 +45,7 @@ This agent runs once immediately by default unless scheduled by user.</td>
 		<td>- Automatically upgrade connection bandwidth<br>- Log all actions and decisions</td>
 		<td>This skill can use the following tools:
 
-*   **`search_connection`**: Searches for an existing connection.
+*   **`search_connections`**: Searches for an existing connection.
 *   **`update_connection`**: Update connection. Used to upgrade bandwidth.
 *   **`get_next_available_bandwidth_tier `**: Fetches the next available billing tier based on a bandwidth input.</td>
 		<td>preview
@@ -57,7 +57,7 @@ This agent runs once immediately by default unless scheduled by user.</td>
 		<td>- Automatically creates an alert rule based on user-defined parameters<br>- Instantly creates a stream if one does not exist and attaches the resource to it<br>- Log all actions and decisions</td>
 		<td>This skill can use the following tools:
 
-*   **`search_connection`**: Searches for an existing connection.
+*   **`search_connections`**: Searches for an existing connection.
 *   **`get_stream_details`**: Fetches stream details given a stream uuid.
 *   **`create_stream`**: Create a stream.
 *   **`attach_stream_asset`**: Attach a resource to a stream.
@@ -74,7 +74,7 @@ This agent runs once immediately by default unless scheduled by user.</td>
 		<td>- Automatically upgrade Fabric Cloud Router packages as needed to ensure adequate capacity and prevent service disruption.<br>- Record and log all actions, decisions, and system events for auditing, troubleshooting, and analysis purposes.</td>
 		<td>This skill can use the following tools:
 
-*   **`search_router`**: Searches for an existing fabric cloud router.
+*   **`search_routers`**: Searches for an existing fabric cloud router.
 *   **`get_next_available_router_package `**: Fetches the next available Fabric Cloud Router package based on a package input.
 *   **`update_router`**: Update router. Used to upgrade the fabric cloud router.</td>
 		<td>preview
@@ -113,8 +113,8 @@ This agent is triggered at 10am every day.</td>
 		<td>- PING command on Fabric Cloud Router<br>- Email notification with PING results<br>- Log all actions and decisions</td>
 		<td>This skill can use the following tools:
 
-*   **`search_router`**: Searches for an existing fabric cloud router.
-*   **`search_connection`**: Searches for an existing connection.
+*   **`search_routers`**: Searches for an existing fabric cloud router.
+*   **`search_connections`**: Searches for an existing connection.
 *   **`create_router_commands`**: Initiate a PING command on a Fabric Cloud Router by UUID.
 *   **`wait`**: Wait for a while. An optional parameter can be provided to specify the wait time in milliseconds.
 *   **`search_router_commands`**: Search for commands (e.g., PING) on a Fabric Cloud Router.
@@ -128,7 +128,7 @@ This agent is triggered at 3pm every Monday and Wednesday each month.</td>
 		<td>- Automatically upgrade connection bandwidth<br>- Log all actions and decisions</td>
 		<td>This skill can use the following tools:
 
-*   **`search_connection`**: Searches for an existing connection.
+*   **`search_connections`**: Searches for an existing connection.
 *   **`update_connection`**: Update connection. Used to upgrade bandwidth.
 *   **`get_next_available_bandwidth_tier`**: Fetches the next available billing tier based on a bandwidth input.</td>
 		<td>preview
@@ -152,7 +152,7 @@ This agent is triggered at 6pm on the 15th of February 2026.</td>
 		<td>- Automatically upgrade Fabric Cloud Router packages as needed to ensure adequate capacity and prevent service disruption.<br>- Record and log all actions, decisions, and system events for auditing, troubleshooting, and analysis purposes.</td>
 		<td>This skill can use the following tools:
 
-*   **`search_router`**: Searches for an existing fabric cloud router.
+*   **`search_routers`**: Searches for an existing fabric cloud router.
 *   **`get_next_available_router_package `**: Fetches the next available Fabric Cloud Router package based on a package input.
 *   **`update_router`**: Update router. Used to upgrade the fabric cloud router.</td>
 		<td>preview
@@ -178,7 +178,7 @@ This agent only executes once.</td>
 		<td>- Monitor real-time network event streams<br>- Detect packet drop alerts<br>- Analyze connection utilization patterns<br>- Automatically upgrade connection bandwidth<br>- Log all actions and decisions<br>- Send notifications for critical events</td>
 		<td>This skill can use the following tools:
 
-*   **`search_connection`**: Searches for an existing connection `.
+*   **`search_connections`**: Searches for an existing connection `.
 *   **`get_stream_alert_rule_details `**: Searches for an existing alert rule.
 *   **`update_connection`**: Update connection. Used to upgrade bandwidth.
 *   **`get_next_available_bandwidth_tier `**: Fetches the next available billing tier based on a bandwidth input.</td>
@@ -191,7 +191,7 @@ This agent only executes once.</td>
 		<td>- Monitor real-time network event streams<br>- Detect bandwidth threshold alerts<br>- Analyze connection utilization patterns<br>- Automatically upgrade connection bandwidth<br>- Log all actions and decisions<br>- Send notifications for critical events</td>
 		<td>This skill can use the following tools:
 
-* **`search_connection`**: Searches for an existing connection.
+* **`search_connections`**: Searches for an existing connection.
 * **`get_stream_alert_rule_details`**: Searches for an existing alert rule.
 * **`update_connection`**: Update connection. Used to upgrade bandwidth.
 * **`get_next_available_bandwidth_tier`**: Fetches the next available billing tier based on a bandwidth input.</td>
@@ -202,7 +202,7 @@ This agent only executes once.</td>
 		<td>An Equinix agent that automatically email a list of connections that are over the metros where latency spike.</td>
 		<td>- Detect metro latency alerts<br>- Identify the source and destination metros<br>- Identify the active connections over the metros<br>- Email notification with the connections list<br>- Log all actions and decisions</td>
 		<td>This skill can use the following tools:
-*   **`search_connection`**: Searches for active connections with aside and zside metro codes
+*   **`search_connections`**: Searches for active connections with aside and zside metro codes
 *   **`send_email_notification`**: Sends an email notification given an email address and email body.</td>
 		<td>preview
 	</tr>
@@ -214,7 +214,7 @@ This agent only executes once.</td>
 		<td>- Continuously monitor real-time network event streams to maintain visibility into network activity and performance.<br>- Detect and evaluate alerts triggered when route usage reaches or exceeds defined threshold limits.<br>- Automatically upgrade Fabric Cloud Router packages as needed to ensure adequate capacity and prevent service disruption.<br>- Record and log all actions, decisions, and system events for auditing, troubleshooting, and analysis purposes.<br>- Send timely notifications for critical events to ensure stakeholders are informed and can respond promptly.</td>
 		<td>This skill can use the following tools:
 
-*   **`search_router`**: Searches for an existing fabric cloud router.
+*   **`search_routers`**: Searches for an existing fabric cloud router.
 *   **`get_stream_alert_rule_details `**: Searches for an existing alert rule.
 *   **`get_next_available_router_package `**: Fetches the next available Fabric Cloud Router package based on a package input.
 *   **`update_router`**: Update router. Used to upgrade the fabric cloud router.</td>
@@ -228,7 +228,7 @@ This agent only executes once.</td>
 		<td>- Real-time Event Monitoring: Continuously monitors network event streams for bandwidth alerts<br>- Threshold Detection: Identifies when connections exceed configured bandwidth utilization thresholds<br>- Redundancy Analysis: Automatically discovers redundant connection pairs and identifies primary/secondary relationships<br>- Intelligent Bandwidth Matching: Upgrades secondary connection bandwidth to match primary connection specifications<br>- Comprehensive Logging: Records all actions, decisions, and state changes for audit and troubleshooting- Monitor real-time network event streams</td>
 		<td>This skill can use the following tools:
 
-*   **`search_connection`**: Searches for an existing connection `.
+*   **`search_connections`**: Searches for an existing connection `.
 *   **`get_stream_alert_rule_details `**: Searches for an existing alert rule.
 *   **`update_connection`**: Update connection. Used to upgrade bandwidth.</td>
 		<td>preview

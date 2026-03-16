@@ -26,7 +26,7 @@ If these resources are not yet configured, create a stream, attach your connecti
 ## Available Tools
 This skill can use the following tools:
 
-*   **`search_connection`**: Searches for an existing connection `.
+*   **`search_connections`**: Searches for an existing connection `.
 *   **`get_stream_alert_rule_details `**: Searches for an existing alert rule.
 *   **`update_connection`**: Update connection. Used to upgrade bandwidth.
 

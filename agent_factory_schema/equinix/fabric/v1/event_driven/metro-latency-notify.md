@@ -20,7 +20,7 @@ Connections should be in PROVISIONED state
 
 ## Available Tools
 This skill can use the following tools:
-*   **`search_connection`**: Searches for active connections with aside and zside metro codes
+*   **`search_connections`**: Searches for active connections with aside and zside metro codes
 *   **`send_email_notification`**: Sends an email notification given an email address and email body.
 
 ## Instructions

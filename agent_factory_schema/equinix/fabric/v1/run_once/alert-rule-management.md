@@ -20,7 +20,7 @@ Resources should be in PROVISIONED state to be eligible for alert setup.
 ## Available Tools
 This skill can use the following tools:
 
-*   **`search_connection`**: Searches for an existing connection.
+*   **`search_connections`**: Searches for an existing connection.
 *   **`get_stream_details`**: Fetches stream details given a stream uuid.
 *   **`create_stream`**: Create a stream.
 *   **`attach_stream_asset`**: Attach a resource to a stream.
