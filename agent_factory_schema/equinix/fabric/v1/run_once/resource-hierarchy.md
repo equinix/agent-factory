@@ -60,10 +60,10 @@ Use `send_email_notification` to send the report to `recipient_email_address`.
 ## Available Tools
 This skill can use the following tools:
 
-*   **`search_router`**: Searches for an existing fabric cloud router.
-*   **`search_connection`**: Searches for an existing fabric cloud router connection.
-*   **`search_route_filter`**: Searches for an existing route filters attached to each fabric cloud router connection.
-*   **`search_route_aggregation`**: Searches for an existing route aggregations attached to each fabric cloud router connection.
+*   **`search_routers`**: Searches for an existing fabric cloud router.
+*   **`search_connections`**: Searches for an existing fabric cloud router connection.
+*   **`search_route_filters`**: Searches for an existing route filters attached to each fabric cloud router connection.
+*   **`search_route_aggregations`**: Searches for an existing route aggregations attached to each fabric cloud router connection.
 
 ## Follow the action step by step below:
 1. Search for the existing fabric cloud router given the project uuid. Stop if the router is not found.
