@@ -30,7 +30,7 @@ This skill can use the following tools:
 
 ## Instructions
 1. Search for the existing connection given the connection uuid.
-2. Get the stream details given the stream uuid. If stream uuid is not provided, create a new stream.
+2. Get the stream details given the stream uuid. If a stream uuid is not provided, create a new stream with specified parameter: stream_name.
 3. Attach the connection resource to the stream.
 4. Wait for 5000 milliseconds to ensure the connection is attached to the stream.
 5. Create an alert rule in the stream with the user-defined critical threshold.
@@ -45,6 +45,8 @@ This skill can use the following tools:
 
 ## Configuration
 * **`connection_uuid`**: < A connection UUID > - Required - User should specify a connection uuid.
-* **`operand`**: < A 2 character metro code > - Required - User should specify an operand.
-* **`critical_threshold`**: < list of valid email addresses to send notification to > - Required - User should a critical threshold.
 * **`stream_uuid`**: < A stream UUID > - Optional - User can specify a stream uuid.
+* **`stream_name`**: < A stream name between 3 and 24 characters > - Optional - User can specify a stream name or default auto-gen-stream.
+* **`operand`**: < operand must be ABOVE or BELOW > - Required - User should specify an operand.
+* **`critical_threshold`**: < numeric value for metric type from alert rule > - Required - User should a critical threshold.
+* **`window_size`**: < numeric value for window size from alert rule > - Optional - User should a window size or default is PT15M.
