@@ -1,7 +1,7 @@
 # Project Lifecycle Activities Insight Agent
 
 ## Overview
-This agent analyzes all cloud events within a given Equinix Fabric project over the last 24 hours and delivers a plain-English operational health summary via email. The report is designed to be read in under two minutes. This agent runs automatically every day at 10:00 AM Pacific Time.
+This agent analyzes all cloud events within a given Equinix Fabric project over the last 24 hours and delivers a plain-English operational health summary via email. The report is designed to be read in under two minutes. This agent runs automatically every thirty (30) minutes.
 
 ## Prerequisites
 A valid Equinix Fabric project UUID must be available. The project must have cloud events enabled and assets attached to it.
@@ -158,7 +158,7 @@ Rules:
 Use `send_email_notification` to send the report to `recipient_email_address`.
 - `pdfContent`: the full report text from Step 5.
 - `body`: one-paragraph summary of overall status and headline finding.
-- `pdfTitle`: `FabricInsights-<project_uuid first 8 chars>-<reporting period from date>-<reporting period to date>-<Overall Status label>`
+- `pdfTitle`: `FabricInsights_<project_uuid first 8 chars>_<reporting period from date>_<reporting period to date>_<Overall Status label>`
 
 ## Available Tools
 - **`search_cloud_events`**: Searches Equinix Fabric cloud events. Use `/equinixproject` `=` with `/time` `>=` and `<=` to scope by project and time window.
@@ -173,4 +173,4 @@ Use `send_email_notification` to send the report to `recipient_email_address`.
 
 ## Configuration
 - **`project_uuid`**: Required. A valid Equinix Fabric project UUID.
-- **`recipient_email_address`**: Required. Email address to receive the report.
+- **`recipient_email_address`**: Required. List of email addresses to receive the report.

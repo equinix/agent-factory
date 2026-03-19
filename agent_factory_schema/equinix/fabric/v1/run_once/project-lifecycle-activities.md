@@ -157,7 +157,7 @@ Rules:
 Use `send_email_notification` to send the report to `recipient_email_address`.
 - `pdfContent`: the full report text from Step 5.
 - `body`: one-paragraph summary of overall status and headline finding.
-- `pdfTitle`: `FabricInsights-<project_uuid first 8 chars>-<reporting period from date>-<reporting period to date>-<Overall Status label>`
+- `pdfTitle`: `FabricInsights_<project_uuid first 8 chars>_<reporting period from date>_<reporting period to date>_<Overall Status label>`
 
 ## Available Tools
 - **`search_cloud_events`**: Searches Equinix Fabric cloud events. Use `/equinixproject` `=` with `/time` `>=` and `<=` to scope by project and time window.
@@ -165,6 +165,6 @@ Use `send_email_notification` to send the report to `recipient_email_address`.
 
 ## Configuration
 - **`project_uuid`**: Required. A valid Equinix Fabric project UUID.
-- **`recipient_email_address`**: Required. Email address to receive the report.
+- **`recipient_email_address`**: Required. List of email addresses to receive the report.
 - **`from_timestamp`**: Optional. ISO 8601. Defaults to 24 hours before current UTC.
 - **`to_timestamp`**: Optional. ISO 8601. Defaults to current UTC.
