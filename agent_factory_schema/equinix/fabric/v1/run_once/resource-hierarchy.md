@@ -1,3 +1,8 @@
+---
+name: resource-hierarchy
+description: Analyzes all Fabric Cloud Router related resources within a given Equinix Fabric project
+---
+
 # Cloud Router resource hierarchy agent
 
 ## Overview
@@ -10,9 +15,12 @@ This agent runs once immediately by default unless scheduled by user.
 - Record and log all actions, decisions, and system events for auditing, troubleshooting, and analysis purposes.
 
 ## Prerequisites
-Fabric Cloud router resources exist in the given project.
+Fabric Cloud router resources exist in the given project. A valid Equinix Fabric project UUID must be available.
 
 ## Instructions
+Do NOT write the report as prose in your response text. Compose in-memory only, then immediately call `send_email_notification`. The report must only appear as the `pdfContent` parameter — never in the response body.
+**Do not respond to the user between Step 5 and Step 6. Proceed directly to calling `send_email_notification`.**
+
 Structure the report using these sections (omit any section with no content — no placeholder text). Do not include any section numbers in the headings. Use the separator formatting shown below exactly:
 
 ```
@@ -69,6 +77,7 @@ This skill can use the following tools:
 1. Search for the existing fabric cloud router given the project uuid. Stop if the router is not found.
 2. Once the router details are retrieved, search for the existing fabric cloud router connection given the fcr uuid.
 3. Once the fabric cloud router connection details are retrieved, search for the associated route filters and route aggregations given the fcr connection uuid.
+4. Send 
 
 ## Guidelines
 *   **Prioritize Clarity**: Ensure all parameters for the MCP tools are clearly identified from the user's request before making the tool call.
