@@ -9,23 +9,26 @@ A valid Equinix Fabric project UUID must be available. The project must have clo
 ## Follow the action step by step below:
 
 ### Step 1 — Establish Reporting Window
-1a. Determine the current UTC time dynamically at runtime. Do not use hardcoded or previously seen timestamps.
+1a. Determine which inputs have been provided and follow exactly one branch below. Do not compute or hardcode timestamps manually — always use the `get_timestamps` MCP tool when any timestamp is missing.
 
-1b. Set the reporting window:
-- Both provided: use as-is.
-- Only `from_timestamp`: set `to_timestamp` to current UTC time.
-- Only `to_timestamp`: set `from_timestamp` to 24 hours before `to_timestamp`.
-- Neither: `to_timestamp` = current UTC time, `from_timestamp` = 24 hours before.
+| Inputs provided                                  | Action                                                                                                                        |
+|--------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------|
+| **Neither** `from_timestamp` nor `to_timestamp`  | Call `get_timestamps` with `duration` = `"24h"`. Set `from_timestamp` = `from` field, `to_timestamp` = `to` field.            |
+| **Only** `from_timestamp` provided               | Call `get_timestamps` with `duration` = `"24h"`. Set `to_timestamp` = `to` field. Keep the provided `from_timestamp` as-is.   |
+| **Only** `to_timestamp` provided                 | Call `get_timestamps` with `duration` = `"24h"`. Set `from_timestamp` = `from` field. Keep the provided `to_timestamp` as-is. |
+| **Both** timestamps provided                     | Skip `get_timestamps`. Use both values as-is.                                                                                 |
 
-1c. Both timestamps must be ISO 8601 strings (e.g., `2026-02-24T10:00:00.000Z`). Date-only strings are not valid.
+`get_timestamps` returns a JSON object with `from` and `to` as ISO 8601 UTC strings. Only extract the field(s) you need per the branch above.
 
-1d. Validate:
-- `from_timestamp` must not be more than 89 days before current UTC. If it is, reset and note the adjustment.
-- `to_timestamp` must not be in the future. If it is, reset to current UTC.
+1b. Both timestamps must be ISO 8601 strings (e.g., `2026-02-24T10:00:00.000Z`). Date-only strings are not valid.
+
+1c. Validate:
+- `from_timestamp` must not be more than 89 days before `to_timestamp`. If it is, reset and note the adjustment.
+- `to_timestamp` must not be in the future. If it is, reset to the `to` value from `get_timestamps` with `duration` = `"24h"`.
 - `from_timestamp` must be earlier than `to_timestamp`. If not, stop and report an error.
 
 ### Step 2 — Retrieve All Cloud Events
-Search using `search_cloud_events` with:
+Using `from_timestamp` and `to_timestamp` established in Step 1, call `search_cloud_events` with:
 
 ```json
 {
@@ -39,6 +42,7 @@ Search using `search_cloud_events` with:
   "pagination": { "offset": 0, "limit": 100 }
 }
 ```
+Replace `<project_uuid>` with the configured project UUID, `<from_timestamp>` with the value set in Step 1, and `<to_timestamp>` with the value set in Step 1. Do not use any other timestamp source.
 
 If total events exceed the page limit, repeat with incremented offsets until all events are collected or 500 events maximum are reached.
 
@@ -54,7 +58,7 @@ Build the following in-memory groupings:
 - **Administrative / Low-Signal**: `equinix.fabric.service_token.*` or `severitynumber` <= 9
 
 #### 3b. Group BGP/Routing events by session:
-- Key: connection UUID + routing protocol UUID (from subject path `/fabric/v4/connections/<conn-uuid>/routingProtocols/<rp-uuid>`). Use only the first 8 chars of each UUID in the report.
+- Key: connection UUID + routing protocol UUID (from subject path `/fabric/v4/connections/<conn-uuid>/routingProtocols/<rp-uuid>`). Always use the full UUID in the report.
 - Sort events by timestamp ascending, track ordered state transitions.
 - Extract neighbor IP from `data.message` where present.
 - Extract and retain `data.resource.name` for the asset where present.
@@ -141,15 +145,15 @@ Section content rules:
 - **Header**: Project UUID, period, overall status label
 - **Summary**: 3–5 sentences — total events, asset types active, headline finding, routine or needs attention
 - **Project & User Activity**: Include only if human/API actors or administrative events exist. List active users as `<data.auth.name> (id: <authid>)` with event counts and plain English description of their activity. Note service token expirations as informational only.
-- **Fabric Cloud Router Activity**: Include only if router events exist. Note churn (3+ transitions) as elevated. List each router as `<data.resource.name> (<uuid-first-8>)` with plain English description of activity.
-- **Connection Activity**: Include only if connection events exist. Note churn (3+ transitions). List each connection as `<data.resource.name> (<uuid-first-8>)` with description and last observed state.
-- **Routing Protocol & BGP Health**: Include only if BGP/routing events exist. Reference sessions using both the connection name/uuid-first-8 and routing protocol uuid-first-8. Per session: state 0–1 transitions = routine, 2–3 = transient but recovered, 4+ = flapping. Always state final observed session state.
-- **Events That Need Your Attention**: Include only if WARN/CRIT events exist. List up to 10, humanized — no raw event type strings. Format: `[WARN] <time UTC> - <description>`, Asset (use name + uuid-first-8), Detail, Severity.
-- **What You Should Do**: 1–3 plain English recommendations based only on detected findings. If nothing needs action, always end with: "No issues were detected and no action is required at this time."
+- **Fabric Cloud Router Activity**: Include only if router events exist. Note churn (3+ transitions) as elevated. List each router as `<data.resource.name> (<full-uuid>)` with plain English description of activity.
+- **Connection Activity**: Include only if connection events exist. Note churn (3+ transitions). List each connection as `<data.resource.name> (<full-uuid>)` with description and last observed state.
+- **Routing Protocol & BGP Health**: Include only if BGP/routing events exist. Reference sessions using both the connection name/full UUID and routing protocol full UUID. Per session: state 0–1 transitions = routine, 2–3 = transient but recovered, 4+ = flapping. Always state final observed session state.
+- **Events That Need Your Attention**: Include only if WARN/CRIT events exist. List up to 10, humanized — no raw event type strings. Format: `[WARN] <time UTC> - <description>`, Asset (use name + full UUID), Detail, Severity.
+- **What You Should Do**: 1–3 plain English recommendations based only on detected findings. If nothing needs action, always end with: "No issues were detected and no action is required at this time. I will continue monitoring any new events for you."
 
 Rules:
 - Plain English always. No raw event type strings, no API jargon.
-- Always use both the human-readable name AND the full UUID when referencing any asset (router, connection, port, routing protocol) or user. Format: `<name> (<uuid-first-8>)` for assets and `<data.auth.name> (id: <authid>)` for users. If a name is not available, fall back to uuid-first-8 only.
+- Always use both the human-readable name AND the full UUID when referencing any asset (router, connection, port, routing protocol) or user. Format: `<name> (<full-uuid>)` for assets and `<data.auth.name> (id: <authid>)` for users. If a name is not available, fall back to the full UUID only.
 - Final observed state must be stated for any asset with multiple transitions.
 - Use the overall status label from Step 4c in the header.
 
@@ -157,9 +161,10 @@ Rules:
 Use `send_email_notification` to send the report to `recipient_email_address`.
 - `pdfContent`: the full report text from Step 5.
 - `body`: one-paragraph summary of overall status and headline finding.
-- `pdfTitle`: `FabricInsights_<project_uuid first 8 chars>_<reporting period from date>_<reporting period to date>_<Overall Status label>`
+- `pdfTitle`: `FabricInsights_<project_uuid>_<reporting period from date>_<reporting period to date>_<Overall Status label>`
 
 ## Available Tools
+- **`get_timestamps`**: Generates `from` and `to` UTC timestamps based on a duration string (e.g., `"24h"`, `"7d"`, `"1M"`). Returns a JSON object with `from` and `to` as ISO 8601 UTC strings. Always call this in Step 1 to obtain the reporting window.
 - **`search_cloud_events`**: Searches Equinix Fabric cloud events. Use `/equinixproject` `=` with `/time` `>=` and `<=` to scope by project and time window.
 - **`send_email_notification`**: Sends an email. Pass `pdfTitle` and `pdfContent` (plain text) to auto-generate and attach a PDF.
 
