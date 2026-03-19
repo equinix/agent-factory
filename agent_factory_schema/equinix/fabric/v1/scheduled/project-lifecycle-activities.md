@@ -7,7 +7,7 @@ This agent analyzes all cloud events within a given Equinix Fabric project over 
 A valid Equinix Fabric project UUID must be available. The project must have cloud events enabled and assets attached to it.
 
 ## Schedule
-Runs once every day at **10:00 AM Pacific Time** (UTC-8 in winter / UTC-7 in summer). The reporting window always covers the 24 hours immediately preceding the execution time.
+Runs every thirty(30) minutes. The reporting window always covers the 24 hours immediately preceding the execution time.
 
 ## Follow the action step by step below:
 
