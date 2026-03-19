@@ -19,7 +19,7 @@ Fabric Cloud router resources exist in the given project. A valid Equinix Fabric
 
 ## Instructions
 Do NOT write the report as prose in your response text. Compose in-memory only, then immediately call `send_email_notification`. The report must only appear as the `pdfContent` parameter — never in the response body.
-**Do not respond to the user between Step 5 and Step 6. Proceed directly to calling `send_email_notification`.**
+**Do not respond to the user, Proceed directly to calling `send_email_notification`.**
 
 Structure the report using these sections (omit any section with no content — no placeholder text). Do not include any section numbers in the headings. Use the separator formatting shown below exactly:
 
