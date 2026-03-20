@@ -103,12 +103,8 @@ Structure the report using these sections (omit any section with no content — 
 
 ```
 ==========================================
-Overall Status:
-==========================================
-
-------------------------------------------
 Summary
-------------------------------------------
+==========================================
 <content>
 
 ------------------------------------------
@@ -144,8 +140,7 @@ What You Should Do
 ```
 
 Section content rules:
-- **Header**: Project UUID, period, overall status label
-- **Summary**: 3–5 sentences — total events, asset types active, headline finding, routine or needs attention
+- **Summary**: State the Project UUID and reporting period, then 3–5 sentences — total events, asset types active, headline finding, routine or needs attention.
 - **Project & User Activity**: Include only if human/API actors or administrative events exist. List active users as `<data.auth.name> (id: <authid>)` with event counts and plain English description of their activity. Note service token expirations as informational only.
 - **Fabric Cloud Router Activity**: Include only if router events exist. Note churn (3+ transitions) as elevated. List each router as `<data.resource.name> (<full-uuid>)` with plain English description of activity.
 - **Connection Activity**: Include only if connection events exist. Note churn (3+ transitions). List each connection as `<data.resource.name> (<full-uuid>)` with description and last observed state.
@@ -157,7 +152,6 @@ Rules:
 - Plain English always. No raw event type strings, no API jargon.
 - Always use both the human-readable name AND the full UUID when referencing any asset (router, connection, port, routing protocol) or user. Format: `<name> (<full-uuid>)` for assets and `<data.auth.name> (id: <authid>)` for users. If a name is not available, fall back to the full UUID only.
 - Final observed state must be stated for any asset with multiple transitions.
-- Use the overall status label from Step 4c in the header.
 
 ### Step 6 — Send the Report
 Use `send_email_notification` to send the report to `recipient_email_address`.
