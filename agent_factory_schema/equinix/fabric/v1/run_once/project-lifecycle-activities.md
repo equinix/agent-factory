@@ -1,3 +1,8 @@
+---
+name: project-lifecycle-activities-insight
+description: Analyzes all cloud events within a given Equinix Fabric project.
+---
+
 # Project Lifecycle Activities Insight Agent
 
 ## Overview

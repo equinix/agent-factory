@@ -1,3 +1,8 @@
+---
+name: gcp-monitoring
+description: Send gcp monitoring metrics.
+---
+
 # GCP Monitoring Agent
 
 ## Overview
