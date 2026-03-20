@@ -44,4 +44,3 @@ This skill can use the following tools:
 
 ## Configuration
 * **`connection_uuids`**: < list of connection UUIDs > - Optional - User can specify a list of connection uuids.
-* **`alert_rule_uuids`**: < list of  alert rule UUIDs > - Optional - User can specify a list of alert rule uuids.

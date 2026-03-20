@@ -11,24 +11,23 @@ Once the PING operation is completed, the resulting output is collected and used
 The email is then sent to the specified recipient, ensuring that the results of the connectivity test are communicated clearly and promptly.
 This agent runs once immediately by default unless scheduled by user.
 
-## Prerequisites
-Fabric Cloud Router and Connections associated with it should be in PROVISIONED state to be eligible for ping command.
-
 ## Capabilities
 - PING command on Fabric Cloud Router
 - Email notification with PING results
 - Log all actions and decisions
+
+## Prerequisites
+Fabric Cloud Router and Connections associated with it should be in PROVISIONED state to be eligible for ping command.
 
 ## Instructions
 1. Start by fetching details of the router given the uuid. Stop if router does not exist.
 2. Search for the existing connection given the connection uuid. Verify if the aside router uuid of the connection matches the router uuid from the first step. Stop if they do not match.
 3. Then initiate a PING command on the Fabric Cloud Router to test network connectivity to verify that the specified destination is reachable. Use the project of the router as the input project of the ping command.
 4. After the PING operation completes, capture the results of the command, including any success or failure details. Use the connection uuid provided as the source connection uuid for the PING command.
-5. Wait for 10000 milliseconds to ensure the PING command has sufficient time to complete before attempting to retrieve the results.
-6. Search for the PING command using the router uuid. Limit the result to 1. 
-7. If the response from the search command is in pending state, wait for another 10000 milliseconds.
-8. Search again for the PING command using the router uuid. Limit the result to 1.
-9. Next, send an email notification to the designated email address, using the outcome of the search router command as the email body so the recipient is clearly informed of the connectivity status and any relevant diagnostic information.
+5. Repeat this step 5 times or until the PING command is no longer in pending state.
+    - a. Wait for 10000 milliseconds to ensure the PING command has sufficient time to complete before attempting to retrieve the results.
+    - b. Search for the PING command using the router uuid. Limit the result to 1.
+6. Next, send an email notification to the designated email address, using the outcome of the search router command as the email body so the recipient is clearly informed of the connectivity status and any relevant diagnostic information.
 
 ## Available Tools
 This skill can use the following tools:

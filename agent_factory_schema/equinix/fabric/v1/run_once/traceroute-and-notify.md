@@ -11,13 +11,13 @@ Once the TRACEROUTE operation is completed, the resulting output is collected an
 The email is then sent to the specified recipient, ensuring that the results of the connectivity test are communicated clearly and promptly.
 This agent runs once immediately by default unless scheduled by user.
 
-## Prerequisites
-Fabric Cloud Router and Connections associated with it should be in PROVISIONED state to be eligible for TRACEROUTE command.
-
 ## Capabilities
 - TRACEROUTE command on Fabric Cloud Router
 - Email notification with TRACEROUTE results
 - Log all actions and decisions
+
+## Prerequisites
+Fabric Cloud Router and Connections associated with it should be in PROVISIONED state to be eligible for TRACEROUTE command.
 
 ## Instructions
 1. Start by fetching details of the router given the uuid. Stop if router does not exist.

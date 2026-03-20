@@ -9,16 +9,16 @@ description: Upgrades the bandwidth of a connection.
 An Equinix agent that upgrades the bandwidth of a connection.
 This agent runs once immediately by default unless scheduled by user.
 
-## Prerequisites
-Connections should be in PROVISIONED state to be eligible for bandwidth upgrade.
-
 ## Capabilities
 - Automatically upgrade connection bandwidth
 - Log all actions and decisions
 
+## Prerequisites
+Connections should be in PROVISIONED state to be eligible for bandwidth upgrade.
+
 ## Instructions
 1. Search for the existing connection given the connection uuid.
-2. Extract the bandwidth from the connection details, and then fetch the next available tier given the bandwidth extracted from the connection details.
+2. Obtain the current bandwidth from the connection details. Check whether user entered "bandwith_in_mb" in Configuration. If yes, use this bandwidth value. Otherwise, determine the next available bandwidth tier based on the current bandwidth value.
 3. Upgrade the bandwidth of the connection given the new bandwidth.
 
 
@@ -36,3 +36,4 @@ This skill can use the following tools:
 
 ## Configuration
 * **`connection_uuid`**: < A connection UUID > - Required - User should specify a connection uuid.
+* **`bandwith_in_mb`**: < bandwidth in MB > - Optional - User can specify if user wants to upgrade to a certain bandwidth in MB.
