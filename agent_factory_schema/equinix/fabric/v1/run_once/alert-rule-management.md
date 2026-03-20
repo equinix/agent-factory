@@ -45,6 +45,6 @@ This skill can use the following tools:
 
 ## Configuration
 * **`connection_uuid`**: < A connection UUID > - Required - User should specify a connection uuid.
-* **`operand`**: < A 2 character metro code > - Required - User should specify an operand.
+* **`operand`**: < either ABOVE or BELOW > - Required - User should specify an operand.
 * **`critical_threshold`**: < list of valid email addresses to send notification to > - Required - User should a critical threshold.
 * **`stream_uuid`**: < A stream UUID > - Optional - User can specify a stream uuid.

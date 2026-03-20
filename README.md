@@ -99,6 +99,23 @@ This agent runs once immediately by default unless scheduled by user.</td>
 *   **`send_email_notification`**: Sends an email notification given a list email of addresses and email body.</td>
 		<td>preview
 	</tr>
+	<tr>
+		<td><a href="https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/run_once/traceroute-and-notify.md">TRACEROUTE FCR agent<br>[traceroute-and-notify.md]</a></td>
+		<td>An Equinix agent that initiates a TRACEROUTE command on a Fabric Cloud Router in order to perform a network connectivity check.
+Once the TRACEROUTE operation is completed, the resulting output is collected and used to generate an email notification.
+The email is then sent to the specified recipient, ensuring that the results of the connectivity test are communicated clearly and promptly.
+This agent runs once immediately by default unless scheduled by user.</td>
+		<td>- TRACEROUTE command on Fabric Cloud Router<br>- Email notification with TRACEROUTE results<br>- Log all actions and decisions</td>
+		<td>This skill can use the following tools:
+
+*   **`search_routers`**: Searches for an existing fabric cloud router.
+*   **`search_connections`**: Searches for an existing connection.
+*   **`create_router_commands`**: Initiate a TRACEROUTE command on a Fabric Cloud Router by UUID.
+*   **`wait`**: Wait for a while. An optional parameter can be provided to specify the wait time in milliseconds.
+*   **`search_router_commands`**: Search for commands (e.g., TRACEROUTE) on a Fabric Cloud Router.
+*   **`send_email_notification`**: Sends an email notification given a list email of addresses and email body.</td>
+		<td>preview
+	</tr>
 </table>
 
 
@@ -127,7 +144,7 @@ This agent is triggered at 10am every day.</td>
 *   **`create_router_commands`**: Initiate a PING command on a Fabric Cloud Router by UUID.
 *   **`wait`**: Wait for a while. An optional parameter can be provided to specify the wait time in milliseconds.
 *   **`search_router_commands`**: Search for commands (e.g., PING) on a Fabric Cloud Router.
-*   **`send_email_notification`**: Sends an email notification given an email address and email body.</td>
+*   **`send_email_notification`**: Sends an email notification given a list email of addresses and email body.</td>
 		<td>preview
 	</tr>
 	<tr>
