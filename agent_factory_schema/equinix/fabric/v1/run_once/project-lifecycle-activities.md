@@ -6,7 +6,12 @@ This agent analyzes all cloud events within a given Equinix Fabric project over 
 ## Prerequisites
 A valid Equinix Fabric project UUID must be available. The project must have cloud events enabled and assets attached to it.
 
-## Follow the action step by step below:
+## Capabilities
+- Analyze all cloud events within a given Equinix Fabric project over a specified time range
+- Detect BGP/routing instability, provisioning churn, and critical events
+- Deliver a plain-English operational health summary via email as a PDF report
+
+## Instructions
 
 ### Step 1 — Establish Reporting Window
 1a. Determine which inputs have been provided and follow exactly one branch below. Do not compute or hardcode timestamps manually — always use the `get_timestamps` MCP tool when any timestamp is missing. By default (when neither timestamp is provided), `from` is 24 hours before the current UTC time and `to` is the current UTC time.
@@ -163,6 +168,13 @@ Use `send_email_notification` to send the report to `recipient_email_address`.
 - **`get_timestamps`**: Generates `from` and `to` UTC timestamps based on a duration string (e.g., `"24h"`, `"7d"`, `"1M"`). Returns a JSON object with `from` and `to` as ISO 8601 UTC strings. Always call this in Step 1 to obtain the reporting window.
 - **`search_cloud_events`**: Searches Equinix Fabric cloud events. Use `/equinixproject` `=` with `/time` `>=` and `<=` to scope by project and time window.
 - **`send_email_notification`**: Sends an email. Pass `pdfTitle` and `pdfContent` (plain text) to auto-generate and attach a PDF.
+
+## Guidelines
+- Plain English, no API jargon, no raw event strings, full UUIDs always. Insight over data — derive meaning from patterns, not raw counts.
+- Summarize all event data in-memory. Discard raw payloads after Step 3. Do not pass raw events downstream.
+- Skip empty sections entirely — no placeholder text. If no events found, send email with "No activity detected".
+- Separate WARN/CRIT from INFO. Never let service token expirations inflate the health assessment.
+- If the search API fails, stop without sending.
 
 ## Configuration
 - **`project_uuid`**: Required. A valid Equinix Fabric project UUID.

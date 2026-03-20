@@ -9,7 +9,12 @@ A valid Equinix Fabric project UUID must be available. The project must have clo
 ## Schedule
 Runs once daily at 10:00 AM Pacific Time (18:00 UTC / 17:00 UTC during daylight saving time). The reporting window always covers the 24 hours immediately preceding the execution time.
 
-## Follow the action step by step below:
+## Capabilities
+- Analyze all cloud events within a given Equinix Fabric project over the last 24 hours
+- Detect BGP/routing instability, provisioning churn, and critical events
+- Deliver a plain-English operational health summary via email as a PDF report
+
+## Instructions
 
 ### Step 1 — Establish Reporting Window
 1a. Call the `get_timestamps` MCP tool with `duration` set to `"24h"`. This tool returns a JSON object with `from` and `to` fields as ISO 8601 UTC strings representing the last 24 hours. By default, `from` is 24 hours before the current UTC time and `to` is the current UTC time.
