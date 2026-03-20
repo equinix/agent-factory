@@ -1,13 +1,13 @@
 # Project Lifecycle Activities Insight Agent
 
 ## Overview
-This agent analyzes all cloud events within a given Equinix Fabric project over the last 24 hours and delivers a plain-English operational health summary via email. The report is designed to be read in under two minutes. This agent runs automatically every thirty (30) minutes.
+This agent analyzes all cloud events within a given Equinix Fabric project over the last 24 hours and delivers a plain-English operational health summary via email. The report is designed to be read in under two minutes. This agent runs automatically once daily at 10:00 AM Pacific Time.
 
 ## Prerequisites
 A valid Equinix Fabric project UUID must be available. The project must have cloud events enabled and assets attached to it.
 
 ## Schedule
-Runs every thirty(30) minutes. The reporting window always covers the 24 hours immediately preceding the execution time.
+Runs once daily at 10:00 AM Pacific Time (18:00 UTC / 17:00 UTC during daylight saving time). The reporting window always covers the 24 hours immediately preceding the execution time.
 
 ## Follow the action step by step below:
 
