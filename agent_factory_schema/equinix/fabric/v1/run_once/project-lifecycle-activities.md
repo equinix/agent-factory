@@ -179,5 +179,5 @@ Use `send_email_notification` to send the report to `recipient_email_address`.
 ## Configuration
 - **`project_uuid`**: Required. A valid Equinix Fabric project UUID.
 - **`recipient_email_address`**: Required. List of email addresses to receive the report.
-- **`from_timestamp`**: Optional. ISO 8601. Defaults to 24 hours before current UTC.
-- **`to_timestamp`**: Optional. ISO 8601. Defaults to current UTC.
+- **`from_timestamp`**: Optional. ISO 8601 (e.g., `2026-02-24T10:00:00.000Z`). If not provided, `get_timestamps` is called in Step 1 to derive it (defaults to 24 hours before current UTC).
+- **`to_timestamp`**: Optional. ISO 8601 (e.g., `2026-02-24T10:00:00.000Z`). If not provided, `get_timestamps` is called in Step 1 to derive it (defaults to current UTC).
