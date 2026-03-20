@@ -24,11 +24,10 @@ Fabric Cloud Router and Connections associated with it should be in PROVISIONED 
 2. Search for the existing connection given the connection uuid. Verify if the aside router uuid of the connection matches the router uuid from the first step. Stop if they do not match.
 3. Then initiate a TRACEROUTE command on the Fabric Cloud Router to test network connectivity to verify that the specified destination is reachable. Use the project of the router as the input project of the TRACEROUTE command.
 4. After the TRACEROUTE operation completes, capture the results of the command, including any success or failure details. Use the connection uuid provided as the source connection uuid for the TRACEROUTE command.
-5. Wait for 10000 milliseconds to ensure the TRACEROUTE command has sufficient time to complete before attempting to retrieve the results.
-6. Search for the TRACEROUTE command using the router uuid. Limit the result to 1. 
-7. If the response from the search command is in pending state, wait for another 10000 milliseconds.
-8. Search again for the TRACEROUTE command using the router uuid. Limit the result to 1.
-9. Next, send an email notification to the designated email address, using the outcome of the search router command as the email body so the recipient is clearly informed of the connectivity status and any relevant diagnostic information.
+5. Repeat this step 5 times or until the TRACEROUTE command is no longer in pending state. 
+   - a. Wait for 10000 milliseconds to ensure the TRACEROUTE command has sufficient time to complete before attempting to retrieve the results.
+   - b. Search for the TRACEROUTE command using the router uuid. Limit the result to 1. 
+6. Next, send an email notification to the designated email address, using the outcome of the search router command as the email body so the recipient is clearly informed of the connectivity status and any relevant diagnostic information.
 
 ## Available Tools
 This skill can use the following tools:
