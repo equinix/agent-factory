@@ -99,7 +99,7 @@ Do NOT write the report as prose in your response text. Compose in-memory only, 
 
 **Do not respond to the user between Step 5 and Step 6. Proceed directly to calling `send_email_notification`.**
 
-Structure the report using these sections (omit any section with no content — no placeholder text). Do not include any section numbers in the headings. Use the separator formatting shown below exactly:
+Structure the report using these sections. Do not include any section numbers in the headings. Use the separator formatting shown below exactly. **If a section has no content, omit both the section label and its separator entirely — do not write the heading, do not write placeholder or filler text such as "No events were detected" or "None". The only exception is "What You Should Do", which must always be included.**
 
 ```
 ==========================================
@@ -141,11 +141,11 @@ What You Should Do
 
 Section content rules:
 - **Summary**: State the Project UUID and reporting period, then 3–5 sentences — total events, asset types active, headline finding, routine or needs attention.
-- **Project & User Activity**: Include only if human/API actors or administrative events exist. List active users as `<data.auth.name> (id: <authid>)` with event counts and plain English description of their activity. Note service token expirations as informational only.
-- **Fabric Cloud Router Activity**: Include only if router events exist. Note churn (3+ transitions) as elevated. List each router as `<data.resource.name> (<full-uuid>)` with plain English description of activity.
-- **Connection Activity**: Include only if connection events exist. Note churn (3+ transitions). List each connection as `<data.resource.name> (<full-uuid>)` with description and last observed state.
-- **Routing Protocol & BGP Health**: Include only if BGP/routing events exist. Reference sessions using both the connection name/full UUID and routing protocol full UUID. Per session: state 0–1 transitions = routine, 2–3 = transient but recovered, 4+ = flapping. Always state final observed session state.
-- **Events That Need Your Attention**: Include only if WARN/CRIT events exist. List up to 10, humanized — no raw event type strings. Format: `[WARN] <time UTC> - <description>`, Asset (use name + full UUID), Detail, Severity.
+- **Project & User Activity**: Include only if human/API actors or administrative events exist — otherwise omit entirely. List active users as `<data.auth.name> (id: <authid>)` with event counts and plain English description of their activity. Note service token expirations as informational only.
+- **Fabric Cloud Router Activity**: Include only if router events exist — otherwise omit entirely. Note churn (3+ transitions) as elevated. List each router as `<data.resource.name> (<full-uuid>)` with plain English description of activity.
+- **Connection Activity**: Include only if connection events exist — otherwise omit entirely. Note churn (3+ transitions). List each connection as `<data.resource.name> (<full-uuid>)` with description and last observed state.
+- **Routing Protocol & BGP Health**: Include only if BGP/routing events exist — otherwise omit entirely. Reference sessions using both the connection name/full UUID and routing protocol full UUID. Per session: state 0–1 transitions = routine, 2–3 = transient but recovered, 4+ = flapping. Always state final observed session state.
+- **Events That Need Your Attention**: Include only if WARN/CRIT events exist — otherwise omit entirely. List up to 10, humanized — no raw event type strings. Format: `[WARN] <time UTC> - <description>`, Asset (use name + full UUID), Detail, Severity.
 - **What You Should Do**: 1–3 plain English recommendations based only on detected findings. If nothing needs action, always end with: "No issues were detected and no action is required at this time. I will continue monitoring any new events for you."
 
 Rules:
