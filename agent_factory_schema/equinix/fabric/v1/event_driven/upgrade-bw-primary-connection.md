@@ -44,6 +44,4 @@ This skill can use the following tools:
 
 ## Configuration
 * **`connection_uuids`**: < list of connection UUIDs > - Optional - User can specify a list of connection uuids.
-* **`alert_rule_uuids`**: < list of  alert rule UUIDs > - Optional - User can specify a list of alert rule uuids.
 * **`bandwith_in_mb`**: < bandwidth in MB > - Optional - User can specify if user wants to upgrade to a certain bandwidth in MB.
-* **`maximum_bandwidth`**: < boolean. default is false > - Optional - User can specify if user wants to upgrade to the maximum bandwidth.

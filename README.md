@@ -51,6 +51,15 @@ This agent runs once immediately by default unless scheduled by user.</td>
 		<td>preview
 	</tr>
 	<tr>
+		<td><a href="https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/run_once/project-lifecycle-activities.md">Project Lifecycle Activities Insight Agent<br>[project-lifecycle-activities.md]</a></td>
+		<td>This agent analyzes all cloud events within a given Equinix Fabric project over a specified time range and delivers a plain-English operational health summary via email. This agent runs once immediately by default unless scheduled by user.</td>
+		<td>- Analyze all cloud events within a given Equinix Fabric project over a specified time range<br>- Detect BGP/routing instability, provisioning churn, and critical events<br>- Deliver a plain-English operational health summary via email as a PDF report</td>
+		<td>- **`get_timestamps`**: Generates `from` and `to` UTC timestamps based on a duration string (e.g., `"24h"`, `"7d"`, `"1M"`). Returns a JSON object with `from` and `to` as ISO 8601 UTC strings. Always call this in Step 1 to obtain the reporting window.
+- **`search_cloud_events`**: Searches Equinix Fabric cloud events. Use `/equinixproject` `=` with `/time` `>=` and `<=` to scope by project and time window.
+- **`send_email_notification`**: Sends an email. Pass `pdfTitle` and `pdfContent` (plain text) to auto-generate and attach a PDF.</td>
+		<td>preview
+	</tr>
+	<tr>
 		<td><a href="https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/run_once/alert-rule-management.md">Alert Rule Manager<br>[alert-rule-management.md]</a></td>
 		<td>An Equinix agent that sets up an alert rule for a connection.
 This agent runs once immediately by default unless scheduled by user.</td>
@@ -90,6 +99,23 @@ This agent runs once immediately by default unless scheduled by user.</td>
 *   **`send_email_notification`**: Sends an email notification given a list email of addresses and email body.</td>
 		<td>preview
 	</tr>
+	<tr>
+		<td><a href="https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/run_once/traceroute-and-notify.md">TRACEROUTE FCR agent<br>[traceroute-and-notify.md]</a></td>
+		<td>An Equinix agent that initiates a TRACEROUTE command on a Fabric Cloud Router in order to perform a network connectivity check.
+Once the TRACEROUTE operation is completed, the resulting output is collected and used to generate an email notification.
+The email is then sent to the specified recipient, ensuring that the results of the connectivity test are communicated clearly and promptly.
+This agent runs once immediately by default unless scheduled by user.</td>
+		<td>- TRACEROUTE command on Fabric Cloud Router<br>- Email notification with TRACEROUTE results<br>- Log all actions and decisions</td>
+		<td>This skill can use the following tools:
+
+*   **`search_routers`**: Searches for an existing fabric cloud router.
+*   **`search_connections`**: Searches for an existing connection.
+*   **`create_router_commands`**: Initiate a TRACEROUTE command on a Fabric Cloud Router by UUID.
+*   **`wait`**: Wait for a while. An optional parameter can be provided to specify the wait time in milliseconds.
+*   **`search_router_commands`**: Search for commands (e.g., TRACEROUTE) on a Fabric Cloud Router.
+*   **`send_email_notification`**: Sends an email notification given a list email of addresses and email body.</td>
+		<td>preview
+	</tr>
 </table>
 
 
@@ -118,7 +144,7 @@ This agent is triggered at 10am every day.</td>
 *   **`create_router_commands`**: Initiate a PING command on a Fabric Cloud Router by UUID.
 *   **`wait`**: Wait for a while. An optional parameter can be provided to specify the wait time in milliseconds.
 *   **`search_router_commands`**: Search for commands (e.g., PING) on a Fabric Cloud Router.
-*   **`send_email_notification`**: Sends an email notification given an email address and email body.</td>
+*   **`send_email_notification`**: Sends an email notification given a list email of addresses and email body.</td>
 		<td>preview
 	</tr>
 	<tr>
@@ -142,6 +168,15 @@ This agent is triggered every 24 hours</td>
 *   **`list_timeseries`**: Lists time series data from the Google Cloud Monitoring API. Parameter view is always FULL.
 *   **`send_email_notification`**: Sends an email notification given a list email of addresses and email body.
 *   **`get_metrics`**: List metrics data of the connection uuid.</td>
+		<td>preview
+	</tr>
+	<tr>
+		<td><a href="https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/scheduled/project-lifecycle-activities.md">Project Lifecycle Activities Insight Agent<br>[project-lifecycle-activities.md]</a></td>
+		<td>This agent analyzes all cloud events within a given Equinix Fabric project over the last 24 hours and delivers a plain-English operational health summary via email. The report is designed to be read in under two minutes. This agent runs automatically once daily at 10:00 AM Pacific Time.</td>
+		<td>- Analyze all cloud events within a given Equinix Fabric project over the last 24 hours<br>- Detect BGP/routing instability, provisioning churn, and critical events<br>- Deliver a plain-English operational health summary via email as a PDF report</td>
+		<td>- **`get_timestamps`**: Generates `from` and `to` UTC timestamps based on a duration string (e.g., `"24h"`, `"7d"`, `"1M"`). Returns a JSON object with `from` and `to` as ISO 8601 UTC strings. Always call this in Step 1 to obtain the reporting window.
+- **`search_cloud_events`**: Searches Equinix Fabric cloud events. Use `/equinixproject` `=` with `/time` `>=` and `<=` to scope by project and time window.
+- **`send_email_notification`**: Sends an email. Pass `pdfTitle` and `pdfContent` (plain text) to auto-generate and attach a PDF.</td>
 		<td>preview
 	</tr>
 	<tr>

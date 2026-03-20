@@ -16,7 +16,7 @@ This skill can use the following tools:
 *   **`list_timeseries`**: Lists time series data from the Google Cloud Monitoring API.
 *   **`send_email_notification`**: Sends an email notification given a list email of addresses and email body.
 
-## Follow the action step by step below:
+## Instructions
 1. List the time series data from the Google Cloud Monitoring API using the specified parameters.
 2. Make a long detailed report on the retrieved time series data by extracting key insights and trends based on the results. 
 3. Next, send the results above to the designated email address,
