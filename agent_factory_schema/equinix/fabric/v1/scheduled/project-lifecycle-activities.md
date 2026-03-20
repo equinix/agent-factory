@@ -12,15 +12,16 @@ Runs every thirty(30) minutes. The reporting window always covers the 24 hours i
 ## Follow the action step by step below:
 
 ### Step 1 — Establish Reporting Window
-1a. Call the `get_timestamps` MCP tool with `duration` set to `"24h"`. This tool returns a JSON object with `from` and `to` fields as ISO 8601 UTC strings representing the last 24 hours.
+1a. Call the `get_timestamps` MCP tool with `duration` set to `"24h"`. This tool returns a JSON object with `from` and `to` fields as ISO 8601 UTC strings representing the last 24 hours. By default, `from` is 24 hours before the current UTC time and `to` is the current UTC time.
 
 1b. Set the reporting window directly from the tool response:
 - Set `from_timestamp` = the `from` field returned by `get_timestamps`.
 - Set `to_timestamp` = the `to` field returned by `get_timestamps`.
 - Do not compute, derive, or hardcode these values manually.
+- **On any retry or failure at any subsequent step, do not reuse previously obtained timestamps. Call `get_timestamps` again with the same `duration` values (i.e. `from` and `to` fields) that was originally used, to obtain a fresh `from_timestamp` and `to_timestamp` before retrying.**
 
 1c. Validate:
-- `from_timestamp` must not be more than 89 days before `to_timestamp`. If it is, stop and report an error.
+- `from_timestamp` must be strictly less than 90 days before `to_timestamp` (i.e., the difference must be less than 90 days at the second level of precision). If it is 90 days or more, stop and report an error.
 - `from_timestamp` must be earlier than `to_timestamp`. If not, stop and report an error.
 
 ### Step 2 — Retrieve All Cloud Events
@@ -157,7 +158,7 @@ Rules:
 Use `send_email_notification` to send the report to `recipient_email_address`.
 - `pdfContent`: the full report text from Step 5.
 - `body`: one-paragraph summary of overall status and headline finding.
-- `pdfTitle`: `FabricInsights_<project_uuid>_<reporting period from date>_<reporting period to date>_<Overall Status label>`
+- `pdfTitle`: `FabricInsights_<project_uuid>_<reporting period from date>_<reporting period to date>_<Overall Status label>` — Use only the date portion (`YYYY-MM-DD`) of each timestamp, not the full ISO 8601 string.
 
 ## Available Tools
 - **`get_timestamps`**: Generates `from` and `to` UTC timestamps based on a duration string (e.g., `"24h"`, `"7d"`, `"1M"`). Returns a JSON object with `from` and `to` as ISO 8601 UTC strings. Always call this in Step 1 to obtain the reporting window.

@@ -9,7 +9,7 @@ A valid Equinix Fabric project UUID must be available. The project must have clo
 ## Follow the action step by step below:
 
 ### Step 1 — Establish Reporting Window
-1a. Determine which inputs have been provided and follow exactly one branch below. Do not compute or hardcode timestamps manually — always use the `get_timestamps` MCP tool when any timestamp is missing.
+1a. Determine which inputs have been provided and follow exactly one branch below. Do not compute or hardcode timestamps manually — always use the `get_timestamps` MCP tool when any timestamp is missing. By default (when neither timestamp is provided), `from` is 24 hours before the current UTC time and `to` is the current UTC time.
 
 | Inputs provided                                  | Action                                                                                                                        |
 |--------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------|
@@ -20,10 +20,12 @@ A valid Equinix Fabric project UUID must be available. The project must have clo
 
 `get_timestamps` returns a JSON object with `from` and `to` as ISO 8601 UTC strings. Only extract the field(s) you need per the branch above.
 
+**On any retry or failure at any subsequent step, do not reuse previously obtained timestamps. Call `get_timestamps` again with the same `duration` values (i.e. `from` and `to` fields) that was originally used to obtain a fresh `from_timestamp` and `to_timestamp` (for whichever field(s) were originally derived from the tool) before retrying.**
+
 1b. Both timestamps must be ISO 8601 strings (e.g., `2026-02-24T10:00:00.000Z`). Date-only strings are not valid.
 
 1c. Validate:
-- `from_timestamp` must not be more than 89 days before `to_timestamp`. If it is, reset and note the adjustment.
+- `from_timestamp` must be strictly less than 90 days before `to_timestamp` (i.e., the difference must be less than 90 days at the second level of precision). If it is 90 days or more, reset and note the adjustment.
 - `to_timestamp` must not be in the future. If it is, reset to the `to` value from `get_timestamps` with `duration` = `"24h"`.
 - `from_timestamp` must be earlier than `to_timestamp`. If not, stop and report an error.
 
@@ -161,7 +163,7 @@ Rules:
 Use `send_email_notification` to send the report to `recipient_email_address`.
 - `pdfContent`: the full report text from Step 5.
 - `body`: one-paragraph summary of overall status and headline finding.
-- `pdfTitle`: `FabricInsights_<project_uuid>_<reporting period from date>_<reporting period to date>_<Overall Status label>`
+- `pdfTitle`: `FabricInsights_<project_uuid>_<reporting period from date>_<reporting period to date>_<Overall Status label>` — Use only the date portion (`YYYY-MM-DD`) of each timestamp, not the full ISO 8601 string.
 
 ## Available Tools
 - **`get_timestamps`**: Generates `from` and `to` UTC timestamps based on a duration string (e.g., `"24h"`, `"7d"`, `"1M"`). Returns a JSON object with `from` and `to` as ISO 8601 UTC strings. Always call this in Step 1 to obtain the reporting window.
