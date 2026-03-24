@@ -20,9 +20,8 @@ Fabric Cloud router resources exist in the given project. A valid Equinix Fabric
 ### Step 1
 Search for the existing fabric cloud router given the project uuid. Stop if the router is not found.
 ### Step 2
-Once the router details are retrieved, search for the existing fabric cloud router connection given the fcr uuid.
+Once the router details are retrieved, for each of the cloud router, search for the connection by the cloud router UUID.
 ### Step 3
-Once the fabric cloud router connection details are retrieved, search for the associated route filters and route aggregations given the fcr connection uuid.
 ### Step 4 - Compose the Resource Hierarchy Report
 **Do not respond to the user between Step 4 and Step 5, Proceed directly to calling `send_email_notification`.**
 
@@ -50,11 +49,6 @@ Fabric Cloud Router Resources
 
 ------------------------------------------
 Connection Resources
-------------------------------------------
-<content>
-
-------------------------------------------
-Network Policy Resources
 ------------------------------------------
 <content>
 
