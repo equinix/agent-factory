@@ -44,17 +44,12 @@ IPWAN Resources
 ------------------------------------------
 Fabric Cloud Router Resources
 ------------------------------------------
-1. Metro Distribution: Metro Location with Highest Number of FCRs is Silicon Valley in AMER region.
-2. FCR Status: Most FCRs are in PROVISIONED state, there are several FCRs in error state, which may 
-require your attention, FCR named xxx is in NOT_PROVISIONED state.
-3. FCR Package: Your FCRs are primarily using the STANDARD package, also featuring BASIC and LAB 
-package, note that you cannot create more than 5 FCRs with the Lab package.
+<content>
 
 ------------------------------------------
 Connection Resources
 ------------------------------------------
-FCR Connections: There are several FCRs that don't have connections associated. You can create 
-connection from FCR to your Equinix asset or cloud service provider.
+<content>
 
 ------------------------------------------
 What You Should Do
@@ -63,6 +58,15 @@ Most FCRs are in PROVISIONED state, there are several FCRs in error state, which
 require your attention, FCR named xxx is in NOT_PROVISIONED state.
 ==========================================
 ```
+Section content rules:
+- **Fabric Cloud Router Resources**: List metro distribution, like metro location with highest number of FCRs, FCR package contribution and FCR statuses distribution.
+- **Connection Resources**: Mention average connection counts per FCR, grouping by different FCR packages 
+- **What You Should Do**: 1–3 plain English recommendations based only on detected findings. If nothing needs action, always end with: "No issues were detected and no action is required at this time. I will continue monitoring resource hierarchy for you."
+
+Rules:
+- Plain English always. No raw event type strings, no API jargon.
+- Always use both the human-readable name AND the full UUID when referencing any asset (router, connection, port, routing protocol) or user. Format: `<name> (<full-uuid>)` for assets and `<data.auth.name> (id: <authid>)` for users. If a name is not available, fall back to the full UUID only.
+- Final observed state must be stated for any asset with multiple transitions.
 ### Step 5 — Send the Report
 Use `send_email_notification` to send the report to `recipient_email_address`.
 - `pdfContent`: the full report text from Step 4.
