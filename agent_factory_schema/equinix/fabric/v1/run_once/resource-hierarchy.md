@@ -6,7 +6,7 @@ description: Analyzes all Fabric Cloud Router related resources within a given E
 # Cloud Router resource hierarchy agent
 
 ## Overview
-This definition sets up and activates an Equinix agent that list the FCR related resource hierarchy in a project. List all FCRs in a project and the FCR connections and route filters which are associated with each FCR. If FCRs are connected to IPWAN network via FCR to IPWAN connection, include IPWAN topology as well.
+This definition sets up and activates an Equinix agent that list the FCR (Fabric Cloud Routers) related resource hierarchy in a project. Summarize FCRs in a project and the FCR connections which are associated with each FCR. If FCRs are connected to IPWAN network via FCR to IPWAN connection, include IPWAN topology as well.
 This agent runs once immediately by default unless scheduled by user.
 
 ## Capabilities
@@ -18,9 +18,9 @@ Fabric Cloud router resources exist in the given project. A valid Equinix Fabric
 
 ## Instructions
 ### Step 1
-Search for the existing fabric cloud router given the project uuid. Stop if the router is not found.
+Search for the existing fabric cloud router given the project uuid. Summarize the metro distribution, FCR statues and FCR package types based on the result. Stop if the router is not found.
 ### Step 2
-Once the router details are retrieved, for each of the cloud router, search for the connection by the cloud router UUID.
+For each of the cloud router, search for the connection by the cloud router UUID. Summarize connection count for each FCR.
 ### Step 3
 ### Step 4 - Compose the Resource Hierarchy Report
 **Do not respond to the user between Step 4 and Step 5, Proceed directly to calling `send_email_notification`.**
@@ -45,17 +45,23 @@ IPWAN Resources
 ------------------------------------------
 Fabric Cloud Router Resources
 ------------------------------------------
-<content>
+1. Metro Distribution: Metro Location with Highest Number of FCRs is Silicon Valley in AMER region.
+2. FCR Status: Most FCRs are in PROVISIONED state, there are several FCRs in error state, which may 
+require your attention, FCR named xxx is in NOT_PROVISIONED state.
+3. FCR Package: Your FCRs are primarily using the STANDARD package, also featuring BASIC and LAB 
+package, note that you cannot create more than 5 FCRs with the Lab package.
 
 ------------------------------------------
 Connection Resources
 ------------------------------------------
-<content>
+FCR Connections: There are several FCRs that don't have connections associated. You can create 
+connection from FCR to your Equinix asset or cloud service provider.
 
 ------------------------------------------
 What You Should Do
 ------------------------------------------
-<content>
+Most FCRs are in PROVISIONED state, there are several FCRs in error state, which may 
+require your attention, FCR named xxx is in NOT_PROVISIONED state.
 ==========================================
 ```
 ### Step 5 — Send the Report
@@ -68,9 +74,7 @@ Use `send_email_notification` to send the report to `recipient_email_address`.
 This skill can use the following tools:
 
 *   **`search_routers`**: Searches for an existing fabric cloud router.
-*   **`search_connections`**: Searches for an existing fabric cloud router connection.
-*   **`search_route_filters`**: Searches for an existing route filters attached to each fabric cloud router connection.
-*   **`search_route_aggregations`**: Searches for an existing route aggregations attached to each fabric cloud router connection.
+*   **`search_connections`**: Searches for an fabric cloud router connection w
 
 ## Guidelines
 *   **Prioritize Clarity**: Ensure all parameters for the MCP tools are clearly identified from the user's request before making the tool call.
