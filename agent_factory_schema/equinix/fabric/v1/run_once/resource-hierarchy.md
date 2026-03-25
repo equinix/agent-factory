@@ -20,7 +20,6 @@ Fabric Cloud router resources exist in the given project. A valid Equinix Fabric
 ### Step 1
 Search for the existing fabric cloud router given the project uuid. Summarize the metro distribution, FCR statues and FCR package types based on the result. Stop if the router is not found.
 ### Step 2
-For each of the cloud router, search for the connection by the cloud router UUID. Summarize connection count for each FCR.
 ### Step 3
 ### Step 4 - Compose the Resource Hierarchy Report
 **Do not respond to the user between Step 4 and Step 5, Proceed directly to calling `send_email_notification`.**
@@ -74,7 +73,6 @@ Use `send_email_notification` to send the report to `recipient_email_address`.
 This skill can use the following tools:
 
 *   **`search_routers`**: Searches for an existing fabric cloud router.
-*   **`search_connections`**: Searches for an fabric cloud router connection w
 
 ## Guidelines
 *   **Prioritize Clarity**: Ensure all parameters for the MCP tools are clearly identified from the user's request before making the tool call.
