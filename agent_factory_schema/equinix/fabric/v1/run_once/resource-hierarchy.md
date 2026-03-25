@@ -76,6 +76,7 @@ Use `send_email_notification` to send the report to `recipient_email_address`.
 This skill can use the following tools:
 
 *   **`search_routers`**: Searches for an existing fabric cloud router.
+*   **`send_email_notification`**: Sends an email. Pass pdfTitle and pdfContent (plain text) to auto-generate and attach a PDF.
 
 ## Guidelines
 *   **Prioritize Clarity**: Ensure all parameters for the MCP tools are clearly identified from the user's request before making the tool call.
