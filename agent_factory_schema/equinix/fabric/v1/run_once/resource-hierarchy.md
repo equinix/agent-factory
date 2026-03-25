@@ -54,14 +54,13 @@ Connection Resources
 ------------------------------------------
 What You Should Do
 ------------------------------------------
-Most FCRs are in PROVISIONED state, there are several FCRs in error state, which may 
-require your attention, FCR named xxx is in NOT_PROVISIONED state.
+<content>
 ==========================================
 ```
 Section content rules:
 - **Fabric Cloud Router Resources**: List metro distribution, like metro location with highest number of FCRs, FCR package contribution and FCR statuses distribution.
 - **Connection Resources**: Mention average connection counts per FCR, grouping by different FCR packages 
-- **What You Should Do**: 1–3 plain English recommendations based only on detected findings. If nothing needs action, always end with: "No issues were detected and no action is required at this time. I will continue monitoring resource hierarchy for you."
+- **What You Should Do**: 1–3 plain English recommendations based only on detected findings. Like if any FCRs are error state or don't have any connections. If nothing needs action, always end with: "No issues were detected and no action is required at this time. I will continue monitoring resource hierarchy for you."
 
 Rules:
 - Plain English always. No raw event type strings, no API jargon.
