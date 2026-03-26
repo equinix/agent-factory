@@ -54,6 +54,11 @@ Connection Resources
 <content>
 
 ------------------------------------------
+Network Policy Resources
+------------------------------------------
+<content>
+
+------------------------------------------
 What You Should Do
 ------------------------------------------
 <content>
@@ -62,6 +67,7 @@ What You Should Do
 Section content rules:
 - **Fabric Cloud Router Resources**: List metro distribution, like metro location with highest number of FCRs, FCR package contribution and FCR statuses distribution.
 - **Connection Resources**: Mention average connection counts per FCR, grouping by different FCR packages. Also include FCR connection distribution of various connetion type and bandwidth.
+- **Network Policy Resources**: Mention percentages of connections with route filter or aggregations attached.
 - **What You Should Do**: 1–3 plain English recommendations based only on detected findings. Like if any FCRs are error state or don't have any connections. If nothing needs action, always end with: "No issues were detected and no action is required at this time. I will continue monitoring resource hierarchy for you."
 
 Rules:
