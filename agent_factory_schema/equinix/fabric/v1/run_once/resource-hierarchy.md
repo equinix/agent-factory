@@ -20,7 +20,9 @@ Fabric Cloud router resources exist in the given project. A valid Equinix Fabric
 ### Step 1
 Search for the existing fabric cloud router given the project uuid. Summarize the metro distribution, FCR statues and FCR package types based on the result. Stop if the router is not found.
 ### Step 2
+For each Fabric Cloud Router, search for FCR connections of it. Summarize the distribution of connection type, bandwidth.
 ### Step 3
+For each FCR connection, search for route filter attached to it. Summarize the percentage of FCR connections with route filter.
 ### Step 4 - Compose the Resource Hierarchy Report
 **Do not respond to the user between Step 4 and Step 5, Proceed directly to calling `send_email_notification`.**
 
@@ -59,7 +61,7 @@ What You Should Do
 ```
 Section content rules:
 - **Fabric Cloud Router Resources**: List metro distribution, like metro location with highest number of FCRs, FCR package contribution and FCR statuses distribution.
-- **Connection Resources**: Mention average connection counts per FCR, grouping by different FCR packages 
+- **Connection Resources**: Mention average connection counts per FCR, grouping by different FCR packages. Also include FCR connection distribution of various connetion type and bandwidth.
 - **What You Should Do**: 1–3 plain English recommendations based only on detected findings. Like if any FCRs are error state or don't have any connections. If nothing needs action, always end with: "No issues were detected and no action is required at this time. I will continue monitoring resource hierarchy for you."
 
 Rules:
@@ -76,6 +78,9 @@ Use `send_email_notification` to send the report to `recipient_email_address`.
 This skill can use the following tools:
 
 *   **`search_routers`**: Searches for an existing fabric cloud router.
+*   **`search_connections`**: Searches for an existing fabric cloud router connection.
+*   **`search_route_filters`**: Searches for an existing route filters attached to each fabric cloud router connection.
+*   **`search_route_aggregations`**: Searches for an existing route aggregations attached to each fabric cloud router connection.
 *   **`send_email_notification`**: Sends an email. Pass pdfTitle and pdfContent (plain text) to auto-generate and attach a PDF.
 
 ## Guidelines
