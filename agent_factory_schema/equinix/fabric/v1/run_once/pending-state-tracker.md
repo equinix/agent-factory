@@ -24,9 +24,9 @@ None
 {
   "filter": {
     "and": [
-      { "property": "/state", "operator": "=", "values": ["PROVISIONING"] },
-      { "property": "/time", "operator": ">=", "values": ["<from_timestamp>"] },
-      { "property": "/time", "operator": "<=", "values": ["<to_timestamp>"] }
+      { "property": "/state", "operator": "=", "values": ["PROVISIONING", "DEPROVISIONING"] },
+      { "property": "/changeLog/updatedDateTime", "operator": ">=", "values": ["<from_timestamp>"] },
+      { "property": "/changeLog/updatedDateTime", "operator": "<=", "values": ["<to_timestamp>"] }
     ]
   },
   "pagination": { "offset": 0, "limit": 100 }
@@ -38,8 +38,8 @@ None
   "filter": {
     "and": [
       { "property": "/state", "operator": "=", "values": ["PROVISIONING", "DEPROVISIONING"] },
-      { "property": "/time", "operator": ">=", "values": ["<from_timestamp>"] },
-      { "property": "/time", "operator": "<=", "values": ["<to_timestamp>"] }
+      { "property": "/changeLog/updatedDateTime", "operator": ">=", "values": ["<from_timestamp>"] },
+      { "property": "/changeLog/updatedDateTime", "operator": "<=", "values": ["<to_timestamp>"] }
     ]
   },
   "pagination": { "offset": 0, "limit": 100 }
@@ -52,8 +52,8 @@ None
   "filter": {
     "and": [
       { "property": "/state", "operator": "=", "values": ["PROVISIONING", "DEPROVISIONING"] },
-      { "property": "/time", "operator": ">=", "values": ["<from_timestamp>"] },
-      { "property": "/time", "operator": "<=", "values": ["<to_timestamp>"] }
+      { "property": "/changeLog/updatedDateTime", "operator": ">=", "values": ["<from_timestamp>"] },
+      { "property": "/changeLog/updatedDateTime", "operator": "<=", "values": ["<to_timestamp>"] }
     ]
   },
   "pagination": { "offset": 0, "limit": 100 }
@@ -62,9 +62,9 @@ None
 4. Structure the report below:
 ### Section content
 - **Summary**: 3–5 sentences — total count, headline finding, insights.
-- **Fabric Cloud Router Activity**: Include only if routers exist — otherwise omit entirely. Include uuid, name, state, project, created and updated dates. Also include how long has it been since created date.
-- **Connection Activity**: Include only if connections exist — otherwise omit entirely. Include uuid, name, state, project, created and updated dates. Also include how long has it been since created date.
-- **Port Activity**: Include only if connections exist — otherwise omit entirely. Include uuid, name, state, project, created and updated dates. Also include how long has it been since created date.
+- **Fabric Cloud Router Activity**: Include only if routers exist — otherwise omit entirely. Include name, uuid, state, project, created and updated dates. Also include how long has it been since created date.
+- **Connection Activity**: Include only if connections exist — otherwise omit entirely. Include name, uuid, state, project, created and updated dates. Also include how long has it been since created date.
+- **Port Activity**: Include only if connections exist — otherwise omit entirely. Include name, uuid, state, project, created and updated dates. Also include how long has it been since created date.
 
 ```
 <!DOCTYPE html>
@@ -150,6 +150,29 @@ None
             background: #f8d7da;
             color: #721c24;
         }
+        .table-container {
+          width: 100%;
+          max-width: 600px;
+        }
+        
+        .table-row {
+          display: flex;
+          list-style: none;
+          padding: 0;
+          margin: 0;
+          border-bottom: 1px solid #ddd;
+        }
+        
+        .table-row li {
+          flex: 1;
+          padding: 10px;
+        }
+        
+        .header {
+          background-color: #f4f4f4;
+          font-weight: bold;
+          border-top: 2px solid #333;
+        }
     </style>
 </head>
 
@@ -171,17 +194,17 @@ None
     <div class="section">
         <h2>Cloud Router Activity</h2>
         <div class="content">
-            <ul class="table-header"> 
-                <li>Name</li>
-                <li>UUID</li>
-                <li>State</li>
-                <li>Project</li>
-                <li>Created Date</li>
-                <li>Updated Date</li>
-                <li>Time Since Creation</li>
-            </ul>
-            <ul class="table-values">
-            </ul>
+            <div class="table-container">
+                <!-- Header Row -->
+                <ul class="table-row header">
+                    <li>Name</li>
+                    <li>UUID</li>
+                    <li>Role</li>
+                </ul>
+              
+              <!-- Data Row-->
+              <ul class="table-row">
+              </ul>
         </div>
     </div>
 
