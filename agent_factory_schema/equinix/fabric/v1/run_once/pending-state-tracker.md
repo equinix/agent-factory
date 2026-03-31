@@ -24,7 +24,7 @@ None
 {
   "filter": {
     "and": [
-      { "property": "/operation/equinixStatus", "operator": "=", "values": ["PROVISIONING", "DEPROVISIONING"] },
+      { "property": "/operation/equinixStatus", "operator": "=", "values": ["PROVISIONING", "DEPROVISIONING"] }
     ]
   },
   "pagination": { "offset": 0, "limit": 100 },
