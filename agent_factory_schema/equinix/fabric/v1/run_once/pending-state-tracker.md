@@ -18,11 +18,27 @@ None
 
 ## Instructions
 
-1. Search for connections in PROVISIONING and DEPROVISIONING states.
-2. Search for ports in PROVISIONING and DEPROVISIONING states.
-3. Search for routers in PROVISIONING and DEPROVISIONING states.
+1. Search for connections. Follow ### search rules
+2. Search for ports. Follow ### search rules
+3. Search for routers. Follow ### search rules
 4. Structure the report using this format in ### report format.
 5. Use `send_email_notification` to send the report to `recipient_email_address`. Follow ### email rules.
+
+### search rules:
+Using from_timestamp and to_timestamp from `get_timestamps` response, follow the request payload below:
+
+```json
+{
+  "filter": {
+    "and": [
+      { "property": "/state", "operator": "=", "values": ["PROVISIONING", "DEPROVISIONING"] },
+      { "property": "/time", "operator": ">=", "values": ["<from_timestamp>"] },
+      { "property": "/time", "operator": "<=", "values": ["<to_timestamp>"] }
+    ]
+  },
+  "pagination": { "offset": 0, "limit": 100 }
+}
+```
 
 ### email rules:
 - `pdfContent`: the full report text from Step 4.
