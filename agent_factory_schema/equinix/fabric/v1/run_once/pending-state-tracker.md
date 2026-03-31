@@ -18,14 +18,7 @@ None
 
 ## Instructions
 
-1. Search for connections. Follow ### search connection payload format
-2. Search for ports. Follow ### search ports payload format
-3. Search for routers. Follow ### search routers payload format
-4. Structure the report using this format in ### report format.
-5. Use `send_email_notification` to send the report to `recipient_email_address`. Follow ### email rules.
-
-### search connection payload format:
-Using from_timestamp and to_timestamp from `get_timestamps` response, follow the request payload below:
+1. Search for connections. Using from_timestamp and to_timestamp from `get_timestamps` response, follow the request payload below:
 
 ```json
 {
@@ -39,9 +32,20 @@ Using from_timestamp and to_timestamp from `get_timestamps` response, follow the
   "pagination": { "offset": 0, "limit": 100 }
 }
 ```
-
-### search ports payload format:
-Using from_timestamp and to_timestamp from `get_timestamps` response, follow the request payload below:
+2. Search for ports. Using from_timestamp and to_timestamp from `get_timestamps` response, follow the request payload below:
+```json
+{
+  "filter": {
+    "and": [
+      { "property": "/operation/equinixStatus", "operator": "=", "values": ["PROVISIONING", "DEPROVISIONING"] },
+      { "property": "/time", "operator": ">=", "values": ["<from_timestamp>"] },
+      { "property": "/time", "operator": "<=", "values": ["<to_timestamp>"] }
+    ]
+  },
+  "pagination": { "offset": 0, "limit": 100 }
+}
+```
+3. Search for routers. Follow ### search routers payload format. Using from_timestamp and to_timestamp from `get_timestamps` response, follow the request payload below:
 
 ```json
 {
@@ -55,30 +59,13 @@ Using from_timestamp and to_timestamp from `get_timestamps` response, follow the
   "pagination": { "offset": 0, "limit": 100 }
 }
 ```
+4. Structure the report below:
+### Section content
+- **Summary**: 3–5 sentences — total count, headline finding, insights.
+- **Fabric Cloud Router Activity**: Include only if routers exist — otherwise omit entirely. Include uuid, name, state, project, created and updated dates. Also include how long has it been since created date.
+- **Connection Activity**: Include only if connections exist — otherwise omit entirely. Include uuid, name, state, project, created and updated dates. Also include how long has it been since created date.
+- **Port Activity**: Include only if connections exist — otherwise omit entirely. Include uuid, name, state, project, created and updated dates. Also include how long has it been since created date.
 
-### search routers payload format:
-Using from_timestamp and to_timestamp from `get_timestamps` response, follow the request payload below:
-
-```json
-{
-  "filter": {
-    "and": [
-      { "property": "/operation/equinixStatus", "operator": "=", "values": ["PROVISIONING", "DEPROVISIONING"] },
-      { "property": "/time", "operator": ">=", "values": ["<from_timestamp>"] },
-      { "property": "/time", "operator": "<=", "values": ["<to_timestamp>"] }
-    ]
-  },
-  "pagination": { "offset": 0, "limit": 100 }
-}
-```
-
-### email rules:
-- `pdfContent`: the full report text from Step 4.
-- `body`: one-paragraph summary of overall status and headline finding.
-- `pdfTitle`: `FabricPendingStates_<reporting period from date>_<reporting period to date>` — Use only the date portion (`YYYY-MM-DD`) of each timestamp, not the full ISO 8601 string.
-
-
-### report format.
 ```
 <!DOCTYPE html>
 <html lang="en">
@@ -219,11 +206,10 @@ Using from_timestamp and to_timestamp from `get_timestamps` response, follow the
 </html>
 ```
 
-#### Section content rules:
-- **Summary**: 3–5 sentences — total count, headline finding, insights.
-- **Fabric Cloud Router Activity**: Include only if routers exist — otherwise omit entirely. Include uuid, name, state, project, created and updated dates. Also include how long has it been since created date.
-- **Connection Activity**: Include only if connections exist — otherwise omit entirely. Include uuid, name, state, project, created and updated dates. Also include how long has it been since created date.
-- **Port Activity**: Include only if connections exist — otherwise omit entirely. Include uuid, name, state, project, created and updated dates. Also include how long has it been since created date.
+5. Use `send_email_notification` to send the report to `recipient_email_address`. Follow the email rules below:
+- `pdfContent`: the full report text from Step 4.
+- `body`: one-paragraph summary of overall status and headline finding.
+- `pdfTitle`: `FabricPendingStates_<reporting period from date>_<reporting period to date>` — Use only the date portion (`YYYY-MM-DD`) of each timestamp, not the full ISO 8601 string.
 
 ## Available Tools
 - **`search_connections`**: Searches for connections.
@@ -236,6 +222,7 @@ Using from_timestamp and to_timestamp from `get_timestamps` response, follow the
 - Plain English, no API jargon, no raw event strings, full UUIDs always. Insight over data — derive meaning from patterns, not raw counts.
 - Skip empty sections entirely — no placeholder text. If no results found, send email with "No activity detected".
 - If the search APIs fail, stop without sending.
+- Section content rules of Report:
 
 ## Configuration
 - **`recipient_email_address`**: Required. List of email addresses to receive the report.
