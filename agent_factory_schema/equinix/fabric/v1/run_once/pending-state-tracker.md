@@ -44,7 +44,7 @@ None
       { "property": "/state", "operator": "=", "values": ["PROVISIONING", "DEPROVISIONING"] }
     ]
   },
-  "pagination": { "offset": 0, "limit": 100 },
+  "pagination": { "offset": 0, "limit": 100 }
 }
 ```
 3. Search for routers. Follow the request payload below:
@@ -56,7 +56,7 @@ None
       { "property": "/state", "operator": "=", "values": ["PROVISIONING", "DEPROVISIONING"] }
     ]
   },
-  "pagination": { "offset": 0, "limit": 100 },
+  "pagination": { "offset": 0, "limit": 100 }
 }
 ```
 4. Structure the report below:
