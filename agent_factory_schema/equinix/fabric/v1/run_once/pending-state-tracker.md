@@ -152,7 +152,17 @@ Using from_timestamp and to_timestamp from `get_timestamps` response, follow the
     <div class="section">
         <h2>Cloud Router Activity</h2>
         <div class="content">
-            <ul> </ul>
+            <ul class="table-header"> 
+                <li>Name</li>
+                <li>UUID</li>
+                <li>State</li>
+                <li>Project</li>
+                <li>Created Date</li>
+                <li>Updated Date</li>
+                <li>Time Since Creation</li>
+            </ul>
+            <ul class="table-values">
+            </ul>
         </div>
     </div>
 
@@ -179,9 +189,9 @@ Using from_timestamp and to_timestamp from `get_timestamps` response, follow the
 
 #### Section content rules:
 - **Summary**: 3–5 sentences — total count, headline finding, insights.
-- **Fabric Cloud Router Activity**: Include only if routers exist — otherwise omit entirely. Include uuid, name, description, state, project, created and updated dates. Also include how long has it been since created date.
-- **Connection Activity**: Include only if connections exist — otherwise omit entirely. Include uuid, name, description, state, project, created and updated dates. Also include how long has it been since created date.
-- **Port Activity**: Include only if connections exist — otherwise omit entirely. Include uuid, name, description, state, project, created and updated dates. Also include how long has it been since created date.
+- **Fabric Cloud Router Activity**: Include only if routers exist — otherwise omit entirely. Include uuid, name, state, project, created and updated dates. Also include how long has it been since created date.
+- **Connection Activity**: Include only if connections exist — otherwise omit entirely. Include uuid, name, state, project, created and updated dates. Also include how long has it been since created date.
+- **Port Activity**: Include only if connections exist — otherwise omit entirely. Include uuid, name, state, project, created and updated dates. Also include how long has it been since created date.
 
 ## Available Tools
 - **`search_connections`**: Searches for connections.
