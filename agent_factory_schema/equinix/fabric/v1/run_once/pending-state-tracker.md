@@ -45,12 +45,6 @@ None
     ]
   },
   "pagination": { "offset": 0, "limit": 100 },
-  "sort": [
-    {
-      "direction": "DESC",
-      "property": "/changeLog/updatedDateTime"
-    }
-  ]
 }
 ```
 3. Search for routers. Follow the request payload below:
@@ -63,12 +57,6 @@ None
     ]
   },
   "pagination": { "offset": 0, "limit": 100 },
-  "sort": [
-    {
-      "direction": "DESC",
-      "property": "/changeLog/createdDateTime"
-    }
-  ]
 }
 ```
 4. Structure the report below:
