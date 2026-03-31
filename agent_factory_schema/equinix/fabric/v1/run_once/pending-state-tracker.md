@@ -18,45 +18,57 @@ None
 
 ## Instructions
 
-1. Search for connections. Using from_timestamp and to_timestamp from `get_timestamps` response, follow the request payload below:
+1. Search for connections. Follow the request payload below:
 
 ```json
 {
   "filter": {
     "and": [
-      { "property": "/state", "operator": "=", "values": ["PROVISIONING", "DEPROVISIONING"] },
-      { "property": "/changeLog/updatedDateTime", "operator": ">=", "values": ["<from_timestamp>"] },
-      { "property": "/changeLog/updatedDateTime", "operator": "<=", "values": ["<to_timestamp>"] }
+      { "property": "/operation/equinixStatus", "operator": "=", "values": ["PROVISIONING", "DEPROVISIONING"] },
     ]
   },
-  "pagination": { "offset": 0, "limit": 100 }
+  "pagination": { "offset": 0, "limit": 100 },
+  "sort": [
+    {
+      "direction": "DESC",
+      "property": "/changeLog/createdDateTime"
+    }
+  ]
 }
 ```
-2. Search for ports. Using from_timestamp and to_timestamp from `get_timestamps` response, follow the request payload below:
+2. Search for ports. Follow the request payload below:
 ```json
 {
   "filter": {
     "and": [
-      { "property": "/state", "operator": "=", "values": ["PROVISIONING", "DEPROVISIONING"] },
-      { "property": "/changeLog/updatedDateTime", "operator": ">=", "values": ["<from_timestamp>"] },
-      { "property": "/changeLog/updatedDateTime", "operator": "<=", "values": ["<to_timestamp>"] }
+      { "property": "/state", "operator": "=", "values": ["PROVISIONING", "DEPROVISIONING"] }
     ]
   },
-  "pagination": { "offset": 0, "limit": 100 }
+  "pagination": { "offset": 0, "limit": 100 },
+  "sort": [
+    {
+      "direction": "DESC",
+      "property": "/changeLog/createdDateTime"
+    }
+  ]
 }
 ```
-3. Search for routers. Follow ### search routers payload format. Using from_timestamp and to_timestamp from `get_timestamps` response, follow the request payload below:
+3. Search for routers. Follow the request payload below:
 
 ```json
 {
   "filter": {
     "and": [
-      { "property": "/state", "operator": "=", "values": ["PROVISIONING", "DEPROVISIONING"] },
-      { "property": "/changeLog/updatedDateTime", "operator": ">=", "values": ["<from_timestamp>"] },
-      { "property": "/changeLog/updatedDateTime", "operator": "<=", "values": ["<to_timestamp>"] }
+      { "property": "/state", "operator": "=", "values": ["PROVISIONING", "DEPROVISIONING"] }
     ]
   },
-  "pagination": { "offset": 0, "limit": 100 }
+  "pagination": { "offset": 0, "limit": 100 },
+  "sort": [
+    {
+      "direction": "DESC",
+      "property": "/changeLog/createdDateTime"
+    }
+  ]
 }
 ```
 4. Structure the report below:
@@ -232,14 +244,13 @@ None
 5. Use `send_email_notification` to send the report to `recipient_email_address`. Follow the email rules below:
 - `pdfContent`: the full report text from Step 4.
 - `body`: one-paragraph summary of overall status and headline finding.
-- `pdfTitle`: `FabricPendingStates_<reporting period from date>_<reporting period to date>` — Use only the date portion (`YYYY-MM-DD`) of each timestamp, not the full ISO 8601 string.
+- `pdfTitle`: `FabricPendingStates_<today>` — Use only the date portion (`YYYY-MM-DD`), not the full ISO 8601 string.
 
 ## Available Tools
 - **`search_connections`**: Searches for connections.
 - **`search_routers`**: Searches for fabric cloud routers.
 - **`search_ports`**: Searches for ports.
 - **`send_email_notification`**: Sends an email. Pass `pdfTitle` and `pdfContent` (plain text) to auto-generate and attach a PDF.
-- **`get_timestamps`**: Generates `from` and `to` UTC timestamps based on a duration string (e.g., `"24h"`, `"7d"`, `"1M"`). Returns a JSON object with `from` and `to` as ISO 8601 UTC strings.
 
 ## Guidelines
 - Plain English, no API jargon, no raw event strings, full UUIDs always. Insight over data — derive meaning from patterns, not raw counts.
@@ -249,5 +260,3 @@ None
 
 ## Configuration
 - **`recipient_email_address`**: Required. List of email addresses to receive the report.
-- **`from_timestamp`**: Optional. ISO 8601 (e.g., `2026-02-24T10:00:00.000Z`). If not provided, `get_timestamps` is called in Steps 1,2, and 3 to derive it (defaults to 30 days before current UTC).
-- **`to_timestamp`**: Optional. ISO 8601 (e.g., `2026-02-24T10:00:00.000Z`). If not provided, `get_timestamps` is called in Steps 1,2, and 3 to derive it (defaults to current UTC).
