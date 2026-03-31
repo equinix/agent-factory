@@ -24,7 +24,7 @@ None
 {
   "filter": {
     "and": [
-      { "property": "/operation/equinixStatus", "operator": "=", "values": ["PROVISIONING", "DEPROVISIONING"] },
+      { "property": "/operation/equinixStatus", "operator": "=", "values": ["PROVISIONING"] },
       { "property": "/time", "operator": ">=", "values": ["<from_timestamp>"] },
       { "property": "/time", "operator": "<=", "values": ["<to_timestamp>"] }
     ]
@@ -37,7 +37,7 @@ None
 {
   "filter": {
     "and": [
-      { "property": "/operation/equinixStatus", "operator": "=", "values": ["PROVISIONING", "DEPROVISIONING"] },
+      { "property": "/state", "operator": "=", "values": ["PROVISIONING", "DEPROVISIONING"] },
       { "property": "/time", "operator": ">=", "values": ["<from_timestamp>"] },
       { "property": "/time", "operator": "<=", "values": ["<to_timestamp>"] }
     ]
@@ -51,7 +51,7 @@ None
 {
   "filter": {
     "and": [
-      { "property": "/operation/equinixStatus", "operator": "=", "values": ["PROVISIONING", "DEPROVISIONING"] },
+      { "property": "/state", "operator": "=", "values": ["PROVISIONING", "DEPROVISIONING"] },
       { "property": "/time", "operator": ">=", "values": ["<from_timestamp>"] },
       { "property": "/time", "operator": "<=", "values": ["<to_timestamp>"] }
     ]
