@@ -74,9 +74,9 @@ None
 4. Structure the report below:
 ### Section content
 - **Summary**: 3–5 sentences — total count, headline finding, insights.
-- **Fabric Cloud Router Activity**: Include only if routers exist — otherwise omit entirely. Include name, uuid, state, project, created and updated dates. Also include how long has it been since created date.
-- **Connection Activity**: Include only if connections exist — otherwise omit entirely. Include name, uuid, state, project, created and updated dates. Also include how long has it been since created date.
-- **Port Activity**: Include only if connections exist — otherwise omit entirely. Include name, uuid, state, project, created and updated dates. Also include how long has it been since created date.
+- **Fabric Cloud Router Activity**: Include only if routers exist — otherwise omit entirely. Include name, uuid, state, project, created and updated dates. Also include how long has it been since created date. Put values under Data Row.
+- **Connection Activity**: Include only if connections exist — otherwise omit entirely. Include name, uuid, state, project, created and updated dates. Also include how long has it been since created date. Put values under Data Row.
+- **Port Activity**: Include only if connections exist — otherwise omit entirely. Include name, uuid, state, project, created and updated dates. Also include how long has it been since created date. Put values under Data Row.
 
 ```
 <!DOCTYPE html>
@@ -164,7 +164,7 @@ None
         }
         .table-container {
           width: 100%;
-          max-width: 600px;
+          max-width: 900px;
         }
         
         .table-row {
@@ -179,12 +179,7 @@ None
           flex: 1;
           padding: 10px;
         }
-        
-        .header {
-          background-color: #f4f4f4;
-          font-weight: bold;
-          border-top: 2px solid #333;
-        }
+
     </style>
 </head>
 
@@ -203,32 +198,68 @@ None
         </div>
     </div>
     
-    <div class="section">
+	<div class="section">
         <h2>Cloud Router Activity</h2>
         <div class="content">
-            <div class="table-container">
+        	<div class="table-container">
                 <!-- Header Row -->
                 <ul class="table-row header">
                     <li>Name</li>
                     <li>UUID</li>
-                    <li>Role</li>
+                    <li>State</li>
+                    <li>Created Date</li>
+                    <li>Updated Date</li>
+					<li>Time Since Creation</li>
+                </ul>
+              
+              <!-- Data Row-->
+              <ul class="table-row">
+
+              </ul>
+        	</div>
+        </div>
+    </div>
+
+
+    <div class="section">
+        <h2>Connection Activity</h2>
+        <div class="content">
+        	<div class="table-container">
+                <!-- Header Row -->
+                <ul class="table-row header">
+                    <li>Name</li>
+                    <li>UUID</li>
+                    <li>State</li>
+                    <li>Created Date</li>
+                    <li>Updated Date</li>
+					<li>Time Since Creation</li>
                 </ul>
               
               <!-- Data Row-->
               <ul class="table-row">
               </ul>
-        </div>
-    </div>
-
-    <div class="section">
-        <h2>Connection Activity</h2>
-        <div class="content">
+        	</div>
         </div>
     </div>
 
     <div class="section">
         <h2>Port Activity</h2>
         <div class="content">
+        	<div class="table-container">
+                <!-- Header Row -->
+                <ul class="table-row header">
+                    <li>Name</li>
+                    <li>UUID</li>
+                    <li>State</li>
+                    <li>Created Date</li>
+                    <li>Updated Date</li>
+					<li>Time Since Creation</li>
+                </ul>
+              
+              <!-- Data Row-->
+              <ul class="table-row">
+              </ul>
+        	</div>
         </div>
     </div>
     <div class="footer">
