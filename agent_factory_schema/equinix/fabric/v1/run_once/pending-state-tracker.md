@@ -31,7 +31,7 @@ None
   "sort": [
     {
       "direction": "DESC",
-      "property": "/changeLog/createdDateTime"
+      "property": "/changeLog/updatedDateTime"
     }
   ]
 }
@@ -48,7 +48,7 @@ None
   "sort": [
     {
       "direction": "DESC",
-      "property": "/changeLog/createdDateTime"
+      "property": "/changeLog/updatedDateTime"
     }
   ]
 }
@@ -66,7 +66,7 @@ None
   "sort": [
     {
       "direction": "DESC",
-      "property": "/changeLog/createdDateTime"
+      "property": "/changeLog/updatedDateTime"
     }
   ]
 }
