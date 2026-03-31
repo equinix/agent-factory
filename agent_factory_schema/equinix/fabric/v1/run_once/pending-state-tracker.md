@@ -157,16 +157,18 @@ None
         }
         
         .table-row {
-          display: flex;
           list-style: none;
           padding: 0;
           margin: 0;
           border-bottom: 1px solid #ddd;
+          overflow: hidden; 
         }
         
         .table-row li {
-          flex: 1;
-          padding: 10px;
+          float: left;
+  		  width: 15%;
+  		  box-sizing: border-box;
+  		  padding: 10px;
         }
                
         .table-header {
