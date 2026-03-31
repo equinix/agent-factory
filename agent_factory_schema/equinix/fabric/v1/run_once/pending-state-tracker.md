@@ -66,7 +66,7 @@ None
   "sort": [
     {
       "direction": "DESC",
-      "property": "/changeLog/updatedDateTime"
+      "property": "/changeLog/createdDateTime"
     }
   ]
 }
@@ -130,6 +130,7 @@ None
         .content {
             margin-top: 15px;
             line-height: 1.6;
+            font-size: 10px;
         }
 
         .footer {
@@ -179,6 +180,12 @@ None
           flex: 1;
           padding: 10px;
         }
+               
+        .table-header {
+          background-color: #d4edda;
+          font-weight: bold;
+          border-top: 2px solid #333;
+        }
 
     </style>
 </head>
@@ -203,7 +210,7 @@ None
         <div class="content">
         	<div class="table-container">
                 <!-- Header Row -->
-                <ul class="table-row header">
+                <ul class="table-row table-header">
                     <li>Name</li>
                     <li>UUID</li>
                     <li>State</li>
@@ -226,7 +233,7 @@ None
         <div class="content">
         	<div class="table-container">
                 <!-- Header Row -->
-                <ul class="table-row header">
+                <ul class="table-row table-header">
                     <li>Name</li>
                     <li>UUID</li>
                     <li>State</li>
@@ -247,7 +254,7 @@ None
         <div class="content">
         	<div class="table-container">
                 <!-- Header Row -->
-                <ul class="table-row header">
+                <ul class="table-row table-header">
                     <li>Name</li>
                     <li>UUID</li>
                     <li>State</li>
