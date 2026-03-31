@@ -24,7 +24,7 @@ None
 {
   "filter": {
     "and": [
-      { "property": "/operation/equinixStatus", "operator": "=", "values": ["PROVISIONING"] },
+      { "property": "/state", "operator": "=", "values": ["PROVISIONING"] },
       { "property": "/time", "operator": ">=", "values": ["<from_timestamp>"] },
       { "property": "/time", "operator": "<=", "values": ["<to_timestamp>"] }
     ]
