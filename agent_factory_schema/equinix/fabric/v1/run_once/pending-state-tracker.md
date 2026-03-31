@@ -169,6 +169,9 @@ None
   		  width: 15%;
   		  box-sizing: border-box;
   		  padding: 10px;
+  		  overflow-wrap: break-word; 
+          word-wrap: break-word;
+          white-space: normal; 
         }
                
         .table-header {
