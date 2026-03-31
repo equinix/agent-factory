@@ -18,20 +18,52 @@ None
 
 ## Instructions
 
-1. Search for connections. Follow ### search rules
-2. Search for ports. Follow ### search rules
-3. Search for routers. Follow ### search rules
+1. Search for connections. Follow ### search connection payload format
+2. Search for ports. Follow ### search ports payload format
+3. Search for routers. Follow ### search routers payload format
 4. Structure the report using this format in ### report format.
 5. Use `send_email_notification` to send the report to `recipient_email_address`. Follow ### email rules.
 
-### search rules:
+### search connection payload format:
 Using from_timestamp and to_timestamp from `get_timestamps` response, follow the request payload below:
 
 ```json
 {
   "filter": {
     "and": [
-      { "property": "/state", "operator": "=", "values": ["PROVISIONING", "DEPROVISIONING"] },
+      { "property": "/operation/equinixStatus", "operator": "=", "values": ["PROVISIONING", "DEPROVISIONING"] },
+      { "property": "/time", "operator": ">=", "values": ["<from_timestamp>"] },
+      { "property": "/time", "operator": "<=", "values": ["<to_timestamp>"] }
+    ]
+  },
+  "pagination": { "offset": 0, "limit": 100 }
+}
+```
+
+### search ports payload format:
+Using from_timestamp and to_timestamp from `get_timestamps` response, follow the request payload below:
+
+```json
+{
+  "filter": {
+    "and": [
+      { "property": "/operation/equinixStatus", "operator": "=", "values": ["PROVISIONING", "DEPROVISIONING"] },
+      { "property": "/time", "operator": ">=", "values": ["<from_timestamp>"] },
+      { "property": "/time", "operator": "<=", "values": ["<to_timestamp>"] }
+    ]
+  },
+  "pagination": { "offset": 0, "limit": 100 }
+}
+```
+
+### search routers payload format:
+Using from_timestamp and to_timestamp from `get_timestamps` response, follow the request payload below:
+
+```json
+{
+  "filter": {
+    "and": [
+      { "property": "/operation/equinixStatus", "operator": "=", "values": ["PROVISIONING", "DEPROVISIONING"] },
       { "property": "/time", "operator": ">=", "values": ["<from_timestamp>"] },
       { "property": "/time", "operator": "<=", "values": ["<to_timestamp>"] }
     ]
