@@ -152,6 +152,7 @@ Using from_timestamp and to_timestamp from `get_timestamps` response, follow the
     <div class="section">
         <h2>Cloud Router Activity</h2>
         <div class="content">
+            <ul> </ul>
         </div>
     </div>
 
