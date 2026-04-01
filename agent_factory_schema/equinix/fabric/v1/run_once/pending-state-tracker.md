@@ -157,14 +157,17 @@ None
         }
         
         .table-row {
+          display: flex;
           list-style: none;
           padding: 0;
           margin: 0;
           border-bottom: 1px solid #ddd;
-          overflow: hidden; 
         }
         
         .table-row li {
+          float: left;
+  		  width: 15%;
+  		  box-sizing: border-box;
   		  padding: 10px;
           overflow-wrap: break-word; 
           word-wrap: break-word;
