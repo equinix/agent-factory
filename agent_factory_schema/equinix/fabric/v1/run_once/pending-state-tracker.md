@@ -94,7 +94,7 @@ None
             border-radius: 10px;
             margin-bottom: 25px;
             margin-right: 35px;
-            width: 600px;
+            width: 400px;
             text-align: center;
         }
 
