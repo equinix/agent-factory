@@ -62,9 +62,9 @@ None
 4. Structure the report below:
 ### Section content
 - **Summary**: 3–5 sentences — total count, headline finding, insights.
-- **Fabric Cloud Router Activity**: Include only if routers exist — otherwise omit entirely. Include name, uuid, state, project, created and updated dates. Also include how long has it been since created date. Put values under Data Row.
-- **Connection Activity**: Include only if connections exist — otherwise omit entirely. Include name, uuid, state, project, created and updated dates. Also include how long has it been since created date. Put values under Data Row.
-- **Port Activity**: Include only if connections exist — otherwise omit entirely. Include name, uuid, state, project, created and updated dates. Also include how long has it been since created date. Put values under Data Row.
+- **Fabric Cloud Router Activity**: Include only if routers exist — otherwise omit entirely. Include name, uuid, state, project, created and updated dates. Also include how long has it been since created date in hours. Put values under Data Row.
+- **Connection Activity**: Include only if connections exist — otherwise omit entirely. Include name, uuid, state, project, created and updated dates. Also include how long has it been since created date in hours. Put values under Data Row.
+- **Port Activity**: Include only if connections exist — otherwise omit entirely. Include name, uuid, state, project, created and updated dates. Also include how long has it been since created date in hours. Put values under Data Row.
 
 ```
 <!DOCTYPE html>
@@ -260,7 +260,7 @@ None
                     <li>State</li>
                     <li>Created Date</li>
                     <li>Updated Date</li>
-					<li>Days Since Creation</li>
+					<li>Hours Since Creation</li>
                 </ul>
               
               <!-- Data Row-->
@@ -271,7 +271,7 @@ None
                     <li>State</li>
                     <li>Created Date</li>
                     <li>Updated Date</li>
-					<li>Days Since Creation</li>
+					<li>Hours Since Creation</li>
         	</div>
         </div>
     </div>
@@ -287,7 +287,7 @@ None
                     <li>State</li>
                     <li>Created Date</li>
                     <li>Updated Date</li>
-					<li>Days Since Creation</li>
+					<li>Hours Since Creation</li>
                 </ul>
               
               <!-- Data Row-->
