@@ -94,7 +94,7 @@ None
             border-radius: 10px;
             margin-bottom: 25px;
             margin-right: 35px;
-            width: 800px;
+            width: 600px;
             text-align: center;
         }
 
@@ -182,6 +182,9 @@ None
   		  width: 15%;
   		  box-sizing: border-box;
   		  padding: 10px;
+          overflow-wrap: break-word; 
+          word-wrap: break-word;
+          white-space: normal; 
         }
                
         .table-header {
