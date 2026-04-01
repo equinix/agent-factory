@@ -213,7 +213,7 @@ None
                     <li>State</li>
                     <li>Created Date</li>
                     <li>Updated Date</li>
-					<li>Time Since Creation</li>
+					<li>Hours Since Creation</li>
                 </ul>
               
               <!-- Data Row-->
