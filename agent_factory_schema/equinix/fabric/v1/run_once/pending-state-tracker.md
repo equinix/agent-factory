@@ -70,7 +70,7 @@ None
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Overall Status Report</title>
+    <title>Equinix Fabric</title>
 
     <style>
         body {
@@ -87,16 +87,29 @@ None
         }
 
         .header {
-            background: #d60404;
+            float: left;
+			background: #d60404;
             color: white;
             padding: 25px;
             border-radius: 10px;
             margin-bottom: 25px;
+            margin-right: 35px;
+            width: 800px;
+            text-align: center;
         }
 
         .header h1 {
             margin: 0;
             font-size: 28px;
+        }
+        
+        .logo {
+            float: left;
+            padding-top: 30px;
+        }
+        
+        .new-line {
+        	clear: both;
         }
 
         .section {
@@ -169,9 +182,6 @@ None
   		  width: 15%;
   		  box-sizing: border-box;
   		  padding: 10px;
-  		  overflow-wrap: break-word; 
-          word-wrap: break-word;
-          white-space: normal; 
         }
                
         .table-header {
@@ -187,10 +197,25 @@ None
 
 <div class="container">
 
-    <div class="header">
-        <h1>Overall Status Report</h1>
-        <p>System Operational Overview</p>
+    <div>
+    	<div class="header">
+			<h1>Pending State Report</h1>
+        	<p>Equinix Fabric</p>
+    	</div>
+    	<div class="logo">
+    		<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" x="150px" y="0px" height="70px" viewBox="150 0 208 136" xml:space="preserve">
+               <g>
+                  <polygon fill="#FF0000" points="343.971,31.423 343.971,92.057 330.125,96.902 330.125,26.599 288.575,12.095 288.575,111.406
+                     274.723,116.231 274.723,7.248 253.954,0 233.179,7.248 233.179,116.231 219.334,111.406 219.334,12.095 177.783,26.599
+                     177.783,96.902 163.938,92.057 163.938,31.423 150.078,36.27 150.078,101.901 191.636,116.405 191.636,36.429 205.488,31.597
+                     205.488,121.237 247.031,135.748 247.031,17.093 253.954,14.67 260.877,17.093 260.877,135.748 302.435,121.237 302.435,31.597
+                     316.28,36.429 316.28,116.405 357.83,101.901 357.83,36.27 "></polygon>
+               </g>
+            </svg>
+    	</div>
     </div>
+    
+    <div class="new-line"></div>
 
     <div class="section">
         <h2>Summary</h2>
@@ -238,6 +263,12 @@ None
               <!-- Data Row-->
               <ul class="table-row">
               </ul>
+                                  <li>xd</li>
+                    <li>UUID</li>
+                    <li>State</li>
+                    <li>Created Date</li>
+                    <li>Updated Date</li>
+					<li>Time Since Creation</li>
         	</div>
         </div>
     </div>
