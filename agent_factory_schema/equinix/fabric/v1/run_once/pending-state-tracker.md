@@ -165,9 +165,6 @@ None
         }
         
         .table-row li {
-          float: left;
-  		  width: 15%;
-  		  box-sizing: border-box;
   		  padding: 10px;
           overflow-wrap: break-word; 
           word-wrap: break-word;
