@@ -297,8 +297,8 @@ None
 ## Guidelines
 - Plain English, no API jargon, no raw event strings, full UUIDs always. Insight over data — derive meaning from patterns, not raw counts.
 - Skip empty sections entirely — no placeholder text. If no results found, send email with "No activity detected".
-- If the search APIs fail, stop without sending.
-- Section content rules of Report:
+- If any of the tool call fail, do not send email.
+
 
 ## Configuration
 - **`recipient_email_address`**: Required. List of email addresses to receive the report.
