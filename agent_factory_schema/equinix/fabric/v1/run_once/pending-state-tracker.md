@@ -157,11 +157,11 @@ None
         }
         
         .table-row {
-          display: flex;
           list-style: none;
           padding: 0;
           margin: 0;
           border-bottom: 1px solid #ddd;
+          overflow: hidden; 
         }
         
         .table-row li {
@@ -178,6 +178,10 @@ None
           background-color: #d4edda;
           font-weight: bold;
           border-top: 2px solid #333;
+        }
+        
+        .new-line {
+          clear: both;
         }
 
     </style>
@@ -268,6 +272,7 @@ None
         	</div>
         </div>
     </div>
+    <div class="new-line"></div>
     <div class="footer">
         Generated System Status Report
     </div>
