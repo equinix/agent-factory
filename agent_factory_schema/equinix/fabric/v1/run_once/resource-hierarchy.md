@@ -75,7 +75,7 @@ Section content rules:
 - **Fabric Cloud Router Resources**: List metro distribution, like metro location with highest number of FCRs, FCR package contribution and FCR statuses distribution.
 - **Connection Resources**: Mention average connection counts per FCR, grouping by different FCR packages. Also include FCR connection distribution of various connetion type and bandwidth.
 - **Network Policy Resources**: Mention percentages of connections with route filter or aggregations attached.
-- **Resources Hierarchy**: Output a rendered picture, not ASCII or Markdown tree syntax.Use a top-down hierarchy with boxes and connector lines. Preserve the exact parent-child structure provided by the user. Keep node labels exact and concise. Mark optional nodes clearly in the label. Do not add extra nodes, styling clutter, or unrelated annotations. Prefer a clean professional network-diagram look.
+- **Resources Hierarchy**: Use a top-down hierarchy with boxes and connector lines. Preserve the exact parent-child structure provided by the user. Keep node labels exact and concise. Mark optional nodes clearly in the label. Do not add extra nodes, styling clutter, or unrelated annotations. Prefer a clean professional network-diagram look.
 - **What You Should Do**: 1–3 plain English recommendations based only on detected findings. Like if any FCRs are error state or don't have any connections. If nothing needs action, always end with: "No issues were detected and no action is required at this time. I will continue monitoring resource hierarchy for you."
 
 Rules:
