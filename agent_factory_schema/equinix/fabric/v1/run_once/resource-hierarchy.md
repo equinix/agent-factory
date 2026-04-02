@@ -82,7 +82,7 @@ Rules:
 - Plain English always. No raw event type strings, no API jargon.
 - Always use both the human-readable name AND the full UUID when referencing any asset (router, connection, port, routing protocol) or user. Format: `<name> (<full-uuid>)` for assets and `<data.auth.name> (id: <authid>)` for users. If a name is not available, fall back to the full UUID only.
 - Final observed state must be stated for any asset with multiple transitions.
-### Step 5 — Send the Report
+### Step 6 — Send the Report
 Use `send_email_notification` to send the report to `recipient_email_address`.
 - `pdfContent`: the full report text from Step 4.
 - `body`: one-paragraph summary of overall resource hierarchy and headline finding.
