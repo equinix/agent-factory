@@ -37,7 +37,7 @@ For each Fabric Cloud Router, search for FCR connections of it. Summarize the di
 {
   "filter": {
     "and": [
-      { "property": "/operation/equinixStatus", "operator": "!=", "values": ["DEPROVISIONED"] }
+      { "property": "/operation/equinixStatus", "operator": "=", "values": ["PROVISIONED"] }
     ]
   },
   "pagination": { "offset": 0, "limit": 100 },
@@ -286,7 +286,7 @@ What You Should Do
     </div>
 
     <div class="section">
-        <h2>Route Filter</h2>
+        <h2>Route Filter and Aggregations</h2>
         <div class="content">
         	<div class="table-container">
                 <!-- Header Row -->
@@ -317,9 +317,9 @@ What You Should Do
 </html>
 ```
 Section content rules:
-- **Fabric Cloud Router Resources**: List metro distribution, like metro location with highest number of FCRs, FCR package contribution and FCR statuses distribution.
-- **Connection Resources**: Mention average connection counts per FCR, grouping by different FCR packages. Also include FCR connection distribution of various connetion type and bandwidth.
-- **Network Policy Resources**: Mention percentages of connections with route filter or aggregations attached.
+- **Fabric Cloud Router Resources**: List metro distribution, like metro location with highest number of FCRs, FCR package contribution and FCR statuses distribution. Include name, uuid, state, project, created and updated dates. Also include how long has it been since created date in hours. Put values under Data Row.
+- **Connection Resources**: Mention average connection counts per FCR, grouping by different FCR packages. Also include FCR connection distribution of various connetion type and bandwidth.  Include name, uuid, state, project, created and updated dates. Also include how long has it been since created date in hours. Put values under Data Row.
+- **Network Policy Resources**: Mention percentages of connections with route filter or aggregations attached. Include name, uuid, state, project, created and updated dates. Also include how long has it been since created date in hours. Put values under Data Row.
 - **Resources Hierarchy**: Use a top-down hierarchy with boxes and connector lines. Preserve the exact parent-child structure provided by the user. Keep node labels exact and concise. Mark optional nodes clearly in the label. Do not add extra nodes, styling clutter, or unrelated annotations. Prefer a clean professional network-diagram look.
 - **What You Should Do**: 1–3 plain English recommendations based only on detected findings. Like if any FCRs are error state or don't have any connections. If nothing needs action, always end with: "No issues were detected and no action is required at this time. I will continue monitoring resource hierarchy for you."
 
