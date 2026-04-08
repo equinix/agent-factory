@@ -97,7 +97,7 @@ Resources Hierarchy
 What You Should Do
 ------------------------------------------
 <content>
-==========================================
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -315,6 +315,7 @@ What You Should Do
 
 </body>
 </html>
+==========================================
 ```
 Section content rules:
 - **Fabric Cloud Router Resources**: List metro distribution, like metro location with highest number of FCRs, FCR package contribution and FCR statuses distribution. Include name, uuid, state, project, created and updated dates. Also include how long has it been since created date in hours. Put values under Data Row.
