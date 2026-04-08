@@ -99,7 +99,223 @@ What You Should Do
 <content>
 ==========================================
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Equinix Fabric</title>
 
+    <style>
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background-color: #f4f6f9;
+			margin: 0;
+            padding: 30px;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: auto;
+        }
+
+        .header {
+            background: #d60404;
+            color: white;
+            padding: 25px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 28px;
+        }
+
+        .section {
+            background: white;
+            border-radius: 8px;
+            padding: 20px 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+        }
+
+        .section h2 {
+            margin-top: 0;
+            font-size: 20px;
+            color: #c40808;
+            border-bottom: 2px solid #e6edf5;
+            padding-bottom: 8px;
+        }
+
+        .content {
+            margin-top: 15px;
+            line-height: 1.6;
+            font-size: 10px;
+        }
+
+        .footer {
+            text-align: center;
+            color: #777;
+            margin-top: 30px;
+            font-size: 12px;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+            margin-left: 8px;
+        }
+
+        .badge.good {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .badge.warn {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .badge.critical {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        .table-container {
+          width: 100%;
+          max-width: 900px;
+        }
+        
+        .table-row {
+          list-style: none;
+          padding: 0;
+          margin: 0;
+          border-bottom: 1px solid #ddd;
+          overflow: hidden; 
+        }
+        
+        .table-row li {
+          float: left;
+  		  width: 15%;
+  		  box-sizing: border-box;
+  		  padding: 10px;
+          overflow-wrap: break-word; 
+          word-wrap: break-word;
+          white-space: normal; 
+        }
+               
+        .table-header {
+          background-color: #d4edda;
+          font-weight: bold;
+          border-top: 2px solid #333;
+        }
+        
+        .new-line {
+          clear: both;
+        }
+
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="header">
+        <h1>Resource Hierarchy</h1>
+        <p>Equinix Fabric</p>
+    </div>
+
+    <div class="section">
+        <h2>Summary</h2>
+        <div class="content">
+        </div>
+    </div>
+    
+	<div class="section">
+        <h2>Cloud Router Activity</h2>
+        <div class="content">
+        	<div class="table-container">
+                <!-- Header Row -->
+                <ul class="table-row table-header">
+                    <li>Name</li>
+                    <li>UUID</li>
+                    <li>State</li>
+                    <li>Created Date</li>
+                    <li>Updated Date</li>
+					<li>Hours Since Creation</li>
+                </ul>
+              
+              <!-- Data Row-->
+              <ul class="table-row">
+
+              </ul>
+        	</div>
+        </div>
+    </div>
+
+
+    <div class="section">
+        <h2>FCR Connections</h2>
+        <div class="content">
+        	<div class="table-container">
+                <!-- Header Row -->
+                <ul class="table-row table-header">
+                    <li>Name</li>
+                    <li>UUID</li>
+                    <li>State</li>
+                    <li>FCR Name<li>
+                    <li>Created Date</li>
+                    <li>Updated Date</li>
+					<li>Hours Since Creation</li>
+                </ul>
+              
+              <!-- Data Row-->
+              <ul class="table-row">
+              </ul>
+                                  <li>xd</li>
+                    <li>UUID</li>
+                    <li>State</li>
+                    <li>Created Date</li>
+                    <li>Updated Date</li>
+					<li>Hours Since Creation</li>
+        	</div>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>Route Filter</h2>
+        <div class="content">
+        	<div class="table-container">
+                <!-- Header Row -->
+                <ul class="table-row table-header">
+                    <li>Name</li>
+                    <li>UUID</li>
+                    <li>State</li>
+                    <li>Attached Connection Name</li>
+                    <li>Created Date</li>
+                    <li>Updated Date</li>
+					<li>Hours Since Creation</li>
+                </ul>
+              
+              <!-- Data Row-->
+              <ul class="table-row">
+              </ul>
+        	</div>
+        </div>
+    </div>
+    <div class="new-line"></div>
+    <div class="footer">
+        Generated System Status Report
+    </div>
+
+</div>
+
+</body>
+</html>
+```
 ```
 Section content rules:
 - **Fabric Cloud Router Resources**: List metro distribution, like metro location with highest number of FCRs, FCR package contribution and FCR statuses distribution.
