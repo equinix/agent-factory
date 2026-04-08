@@ -125,8 +125,8 @@ This skill can use the following tools:
 *   **`search_connections`**: Searches for an existing fabric cloud router connection.
 *   **`search_route_filters`**: Searches for an existing route filters attached to each fabric cloud router connection.
 *   **`search_route_aggregations`**: Searches for an existing route aggregations attached to each fabric cloud router connection.
-*   **`get_rf_connections`**: Retrieves all connections attaching to a route filter.
-*   **`get_ra_connections`**: Retrieves all connections attaching to a route aggregation.
+*   **`get_route_filter_connections`**: Retrieve all connections using a specific Route Filter Policy.
+*   **`get_route_aggregation_connections`**: Retrieve all connections using a specific Route aggregation Policy.
 *   **`send_email_notification`**: Sends an email. Pass pdfTitle and pdfContent (plain text) to auto-generate and attach a PDF.
 
 ## Guidelines
