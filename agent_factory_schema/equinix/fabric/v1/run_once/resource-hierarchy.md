@@ -18,11 +18,39 @@ Fabric Cloud router resources exist in the given project. A valid Equinix Fabric
 
 ## Instructions
 ### Step 1
-Search for the existing fabric cloud router which are not in deprovisioned status, given the project uuid. Summarize the metro distribution, FCR statues and FCR package types based on the result. Stop if the router is not found.
+Search for the existing fabric cloud router which are not in deprovisioned status, given the project uuid. Summarize the metro distribution, FCR statues and FCR package types based on the result. Stop if the router is not found. Follow the request payload below:
+
+```json
+{
+  "filter": {
+    "and": [
+      { "property": "/state", "operator": "=", "values": ["PROVISIONED"] }
+    ]
+  },
+  "pagination": { "offset": 0, "limit": 100 }
+}
+```
+
 ### Step 2
-For each Fabric Cloud Router, search for FCR connections of it. Summarize the distribution of connection type, bandwidth.
+For each Fabric Cloud Router, search for FCR connections of it. Summarize the distribution of connection type, bandwidth. Follow the request payload below:
+```json
+{
+  "filter": {
+    "and": [
+      { "property": "/operation/equinixStatus", "operator": "!=", "values": ["DEPROVISIONED"] }
+    ]
+  },
+  "pagination": { "offset": 0, "limit": 100 },
+  "sort": [
+    {
+      "direction": "DESC",
+      "property": "/changeLog/updatedDateTime"
+    }
+  ]
+}
+```
 ### Step 3
-For each FCR connection, search for route filter attached to it. Summarize the percentage of FCR connections with route filter.
+Search for all available route filters. For each route filter, search for connections attached to it. Summarize the percentage of FCR connections with route filter.
 ### Step 4
 Generate a professional network topology diagram on a white background, drawn as a hierarchical tree with the root at the top and children branching downward. Use neat rectangular boxes, thin connector lines, and clear sans-serif labels. Show IPWAN network at the top as optional, then FABRIC_CLOUD_ROUTER, then L2_CONNECTION (A-SIDE FCR), then ROUTE_FILTER and ROUTE_AGGREGATION as sibling children. Clean, minimal, enterprise-style diagram, portrait layout.
 ### Step 5 - Compose the Resource Hierarchy Report
@@ -70,6 +98,8 @@ What You Should Do
 ------------------------------------------
 <content>
 ==========================================
+
+
 ```
 Section content rules:
 - **Fabric Cloud Router Resources**: List metro distribution, like metro location with highest number of FCRs, FCR package contribution and FCR statuses distribution.
@@ -95,6 +125,7 @@ This skill can use the following tools:
 *   **`search_connections`**: Searches for an existing fabric cloud router connection.
 *   **`search_route_filters`**: Searches for an existing route filters attached to each fabric cloud router connection.
 *   **`search_route_aggregations`**: Searches for an existing route aggregations attached to each fabric cloud router connection.
+*   **`service_get_rf_connections`**: Retrieves all connections attaching to a route filter.
 *   **`send_email_notification`**: Sends an email. Pass pdfTitle and pdfContent (plain text) to auto-generate and attach a PDF.
 
 ## Guidelines
