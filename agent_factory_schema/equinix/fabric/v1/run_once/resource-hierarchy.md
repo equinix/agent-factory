@@ -24,7 +24,7 @@ Search for the existing fabric cloud router which are not in deprovisioned statu
 {
   "filter": {
     "and": [
-      { "property": "/state", "operator": "=", "values": ["PROVISIONED"] }
+      { "property": "/state", "operator": "!=", "values": ["DEPROVISIONED"] }
     ]
   },
   "pagination": { "offset": 0, "limit": 100 }
