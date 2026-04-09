@@ -200,7 +200,7 @@ Structure the report using these sections (omit any section with no content — 
                     <li>Name</li>
                     <li>UUID</li>
                     <li>State</li>
-                    <li>FCR Name<li>
+                    <li>FCR Name</li>
                     <li>Created Date</li>
                     <li>Updated Date</li>
 					<li>Hours Since Creation</li>
