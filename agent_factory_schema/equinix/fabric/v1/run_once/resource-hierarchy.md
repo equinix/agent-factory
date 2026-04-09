@@ -170,9 +170,6 @@ Structure the report using these sections (omit any section with no content — 
     
 	<div class="section">
         <h2>Fabric Cloud Router Resources</h2>
-        <h2>Summary</h2>
-        <div class="content">
-        </div>
         <div class="content">
         	<div class="table-container">
                 <!-- Header Row -->
@@ -196,9 +193,6 @@ Structure the report using these sections (omit any section with no content — 
 
     <div class="section">
         <h2>Connection Resources</h2>
-        <h2>Summary</h2>
-        <div class="content">
-        </div>
         <div class="content">
         	<div class="table-container">
                 <!-- Header Row -->
