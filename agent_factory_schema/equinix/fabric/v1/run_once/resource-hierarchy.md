@@ -18,37 +18,10 @@ Fabric Cloud router resources exist in the given project. A valid Equinix Fabric
 
 ## Instructions
 ### Step 1
-Search for the existing fabric cloud router which are not in deprovisioned status, given the project uuid. Summarize the metro distribution, FCR statues and FCR package types based on the result. Stop if the router is not found. Follow the request payload below:
-
-```json
-{
-  "filter": {
-    "and": [
-      { "property": "/state", "operator": "!=", "values": ["DEPROVISIONED"] }
-    ]
-  },
-  "pagination": { "offset": 0, "limit": 100 }
-}
-```
+Search for the existing fabric cloud router which are not in deprovisioned status, given the project uuid. Summarize the metro distribution, FCR statues and FCR package types based on the result. Stop if the router is not found. 
 
 ### Step 2
-For each Fabric Cloud Router, search for FCR connections of it. Summarize the distribution of connection type, bandwidth. Follow the request payload below:
-```json
-{
-  "filter": {
-    "and": [
-      { "property": "/operation/equinixStatus", "operator": "=", "values": ["PROVISIONED"] }
-    ]
-  },
-  "pagination": { "offset": 0, "limit": 100 },
-  "sort": [
-    {
-      "direction": "DESC",
-      "property": "/changeLog/updatedDateTime"
-    }
-  ]
-}
-```
+For each Fabric Cloud Router, search for FCR connections of it. Summarize the distribution of connection type, bandwidth.
 ### Step 3
 Search for all available route filters. For each route filter, search for connections attached to it. Summarize the percentage of FCR connections with route filter.
 ### Step 4
