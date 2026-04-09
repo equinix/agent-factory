@@ -253,11 +253,11 @@ Structure the report using these sections (omit any section with no content — 
 </html>
 ```
 Section content rules:
-- **Fabric Cloud Router Resources**: List metro distribution, like metro location with highest number of FCRs, FCR package contribution and FCR statuses distribution. Include name, uuid, state, project, created and updated dates. Also include how long has it been since created date in hours. Put values under Data Row. Put key findings in Summary section.
-- **Connection Resources**: Mention average connection counts per FCR, grouping by different FCR packages. Also include FCR connection distribution of various connetion type and bandwidth.  Include name, uuid, state, project, created and updated dates. Also include how long has it been since created date in hours. Put values under Data Row. Put key findings in Summary section.
-- **Network Policy Resources**: Mention percentages of connections with route filter or aggregations attached. Include name, uuid, state, project, created and updated dates. Also include how long has it been since created date in hours. Put values under Data Row. Put key findings in Summary section.
+- **Fabric Cloud Router Resources**: List metro distribution, like metro location with highest number of FCRs, FCR package contribution and FCR statuses distribution. Include name, uuid, state, project, created and updated dates. Also include how long has it been since created date in hours. Put values under Data Row. Put key findings in Summary section as the 1st bullet point.
+- **Connection Resources**: Mention average connection counts per FCR, grouping by different FCR packages. Also include FCR connection distribution of various connetion type and bandwidth.  Include name, uuid, state, project, created and updated dates. Also include how long has it been since created date in hours. Put values under Data Row. Put key findings of connections in Summary section as second bullet point.
+- **Network Policy Resources**: Mention percentages of connections with route filter or aggregations attached. Include name, uuid, state, project, created and updated dates. Also include how long has it been since created date in hours. Put values under Data Row. Put key findings in Summary section as the 3rd bullet point.
 - **Resources Hierarchy**: Use a top-down hierarchy with boxes and connector lines. Preserve the exact parent-child structure provided by the user. Keep node labels exact and concise. Mark optional nodes clearly in the label. Do not add extra nodes, styling clutter, or unrelated annotations. Prefer a clean professional network-diagram look.
-- **What You Should Do**: 1–3 plain English recommendations based only on detected findings. Like if any FCRs are error state or don't have any connections. If nothing needs action, always end with: "No issues were detected and no action is required at this time. I will continue monitoring FCR resource hierarchy for you." Put the content under "What You Should Do" section.
+- **What You Should Do**: 1–3 plain English recommendations based only on detected findings. Like if any FCRs are in error state or transient state or don't have any connections. Or If any FCRs connections are in error state or transient state. If nothing needs action, always end with: "I will continue monitoring FCR resource hierarchy for you." Put the content under "What You Should Do" section.
 
 Rules:
 - Plain English always. No raw event type strings, no API jargon.
@@ -267,7 +267,7 @@ Rules:
 Use `send_email_notification` to send the report to `recipient_email_address`.
 - `pdfContent`: the full report text from Step 4.
 - `body`: one-paragraph summary of overall resource hierarchy and headline finding.
-- `pdfTitle`: `FabricResourceHierarchy-<project_uuid first 8 chars>`
+- `pdfTitle`: `FabricFCRResourceHierarchyReport-Project-<project_uuid first 8 chars>`
 
 ## Available Tools
 This skill can use the following tools:
