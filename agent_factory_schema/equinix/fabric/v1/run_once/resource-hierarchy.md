@@ -179,7 +179,6 @@ Structure the report using these sections (omit any section with no content — 
                     <li>State</li>
                     <li>Created Date</li>
                     <li>Updated Date</li>
-					<li>Hours Since Creation</li>
                 </ul>
               
               <!-- Data Row-->
@@ -203,18 +202,16 @@ Structure the report using these sections (omit any section with no content — 
                     <li>FCR Name</li>
                     <li>Created Date</li>
                     <li>Updated Date</li>
-					<li>Hours Since Creation</li>
                 </ul>
               
               <!-- Data Row-->
               <ul class="table-row">
               </ul>
-                                  <li>xd</li>
+                    <li>Name</li>
                     <li>UUID</li>
                     <li>State</li>
                     <li>Created Date</li>
                     <li>Updated Date</li>
-					<li>Hours Since Creation</li>
         	</div>
         </div>
     </div>
@@ -231,7 +228,6 @@ Structure the report using these sections (omit any section with no content — 
                     <li>Attached Connection Name</li>
                     <li>Created Date</li>
                     <li>Updated Date</li>
-					<li>Hours Since Creation</li>
                 </ul>
               
               <!-- Data Row-->
