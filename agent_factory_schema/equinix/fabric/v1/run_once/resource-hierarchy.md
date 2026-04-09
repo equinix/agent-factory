@@ -33,45 +33,6 @@ Generate a professional network topology diagram on a white background, drawn as
 Structure the report using these sections (omit any section with no content — no placeholder text). Do not include any section numbers in the headings. Use the separator formatting shown below exactly:
 
 ```
-==========================================
-Overall Resource Hierarchy:
-==========================================
-
-------------------------------------------
-Summary
-------------------------------------------
-<content>
-
-------------------------------------------
-IPWAN Resources
-------------------------------------------
-<content>
-
-------------------------------------------
-Fabric Cloud Router Resources
-------------------------------------------
-<content>
-
-------------------------------------------
-Connection Resources
-------------------------------------------
-<content>
-
-------------------------------------------
-Network Policy Resources
-------------------------------------------
-<content>
-------------------------------------------
-Resources Hierarchy
-------------------------------------------
-<content>
-
-------------------------------------------
-What You Should Do
-------------------------------------------
-<content>
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -208,7 +169,10 @@ What You Should Do
     </div>
     
 	<div class="section">
-        <h2>Cloud Router Activity</h2>
+        <h2>Fabric Cloud Router Resources</h2>
+        <h2>Summary</h2>
+        <div class="content">
+        </div>
         <div class="content">
         	<div class="table-container">
                 <!-- Header Row -->
@@ -231,7 +195,10 @@ What You Should Do
 
 
     <div class="section">
-        <h2>FCR Connections</h2>
+        <h2>Connection Resources</h2>
+        <h2>Summary</h2>
+        <div class="content">
+        </div>
         <div class="content">
         	<div class="table-container">
                 <!-- Header Row -->
@@ -259,7 +226,7 @@ What You Should Do
     </div>
 
     <div class="section">
-        <h2>Route Filter and Aggregations</h2>
+        <h2>Network Policy Resources</h2>
         <div class="content">
         	<div class="table-container">
                 <!-- Header Row -->
