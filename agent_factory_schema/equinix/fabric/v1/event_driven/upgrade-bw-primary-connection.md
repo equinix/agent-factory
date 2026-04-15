@@ -44,4 +44,4 @@ This skill can use the following tools:
 
 ## Configuration
 * **`connection_uuids`**: < list of connection UUIDs > - Optional - User can specify a list of connection uuids.
-* **`bandwith_in_mb`**: < bandwidth in MB > - Optional - User can specify if user wants to upgrade to a certain bandwidth in MB.
+* **`bandwidth_in_mb`**: < bandwidth in MB > - Required - User should specify a certain bandwidth in MB.
