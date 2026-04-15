@@ -164,7 +164,7 @@ Rules:
 - Final observed state must be stated for any asset with multiple transitions.
 
 ### Step 6 — Send the Report
-Use `send_email_notification` to send the report to `recipient_email_address`.
+Use `send_email_notification` to send the report to `recipient_email_addresses`.
 - `pdfContent`: the full report text from Step 5.
 - `body`: one-paragraph summary of overall status and headline finding.
 - `pdfTitle`: `FabricInsights_<project_uuid>_<reporting period from date>_<reporting period to date>_<Overall Status label>` — Use only the date portion (`YYYY-MM-DD`) of each timestamp, not the full ISO 8601 string.
@@ -183,6 +183,6 @@ Use `send_email_notification` to send the report to `recipient_email_address`.
 
 ## Configuration
 - **`project_uuid`**: Required. A valid Equinix Fabric project UUID.
-- **`recipient_email_address`**: Required. List of email addresses to receive the report.
+- **`recipient_email_addresses`**: Required. List of email addresses to receive the report.
 - **`from_timestamp`**: Optional. ISO 8601 (e.g., `2026-02-24T10:00:00.000Z`). If not provided, `get_timestamps` is called in Step 1 to derive it (defaults to 24 hours before current UTC).
 - **`to_timestamp`**: Optional. ISO 8601 (e.g., `2026-02-24T10:00:00.000Z`). If not provided, `get_timestamps` is called in Step 1 to derive it (defaults to current UTC).

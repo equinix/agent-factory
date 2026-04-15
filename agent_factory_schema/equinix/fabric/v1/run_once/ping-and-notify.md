@@ -27,7 +27,7 @@ Fabric Cloud Router and Connections associated with it should be in PROVISIONED 
 5. Repeat this step 5 times or until the PING command is no longer in pending state.
     - a. Wait for 10000 milliseconds to ensure the PING command has sufficient time to complete before attempting to retrieve the results.
     - b. Search for the PING command using the router uuid. Limit the result to 1.
-6. Next, send an email notification to the designated email address, using the outcome of the search router command as the email body so the recipient is clearly informed of the connectivity status and any relevant diagnostic information.
+6. Next, send an email notification to the recipient email addresses, using the outcome of the search router command as the email body so the recipient is clearly informed of the connectivity status and any relevant diagnostic information.
 
 ## Available Tools
 This skill can use the following tools:
@@ -48,3 +48,4 @@ This skill can use the following tools:
 * **`router_uuid`**: < A router UUID > - Required - User should specify a router uuid.
 * **`connection_uuid`**: < A connection UUID > - Required - User should specify a connection uuid.
 * **`destination_ip_address`**: < A valid ip address > - Required - User should specify a destination IP address to ping.
+* **`recipient_email_addresses`**: < A list of email addresses > - Required. List of email addresses to receive the report.

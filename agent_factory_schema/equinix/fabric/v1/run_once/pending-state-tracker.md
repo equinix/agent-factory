@@ -283,7 +283,7 @@ None
 </html>
 ```
 
-5. Use `send_email_notification` to send the report to `recipient_email_address`. Follow the email rules below:
+5. Use `send_email_notification` to send the report to `recipient_email_addresses`. Follow the email rules below:
 - `pdfContent`: the full report text from Step 4.
 - `body`: one-paragraph summary of overall status and headline finding.
 - `pdfTitle`: `FabricPendingStates_<today>` — Use only the date portion (`YYYY-MM-DD`), not the full ISO 8601 string.
@@ -301,4 +301,4 @@ None
 
 
 ## Configuration
-- **`recipient_email_address`**: Required. List of email addresses to receive the report.
+**`recipient_email_addresses`**: < A list of email addresses > - Required. List of email addresses to receive the report.
