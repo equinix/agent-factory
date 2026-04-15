@@ -30,12 +30,15 @@ This skill can use the following tools:
 * **`get_next_available_bandwidth_tier`**: Fetches the next available billing tier based on a bandwidth input.
 
 ## Instructions
-1. When a cloud event is received, validate the equinixalert attribute. Continue if equinixalert value is raise. Stop if equinixalert value is clear.
-2. Parse the cloud event message to identify the alert rule.
-3. Using the alert rule UUID extracted from the event, check whether a corresponding alert rule already exists.
-4. Locate the associated connection using the subject connection UUID provided in the cloud event message.
-5. Obtain the current bandwidth from the connection details. Check whether user entered "bandwith_in_mb" in Configuration. If yes, use this bandwidth value. Otherwise, determine the next available bandwidth tier based on the current bandwidth value.
-6. Upgrade the connection to the newly determined bandwidth tier.
+1. When a cloud event is received, validate the equinixalert attribute. 
+2. Stop if equinixalert value is clear.
+3. Stop if severitytext is WARN.
+4. Parse the cloud event message to identify the alert rule.
+5. Using the alert rule UUID extracted from the event, check whether a corresponding alert rule already exists.
+6. Locate the associated connection using the subject connection UUID provided in the cloud event message.
+7. Check whether connection_uuids is provided in Configuration. If yes, check whether the connection UUID is in the connection_uuids list. If the connection UUID is found in the list, continue. Otherwise, stop and mark the agent activity as completed. If connection_uuids is not provided, continue.
+8. Obtain the current bandwidth from the connection details. Check whether user entered "bandwith_in_mb" in Configuration. If yes, use this bandwidth value. Otherwise, determine the next available bandwidth tier based on the current bandwidth value.
+9. Upgrade the connection to the newly determined bandwidth tier.
 
 ## Guidelines
 *   **Prioritize Clarity**: Ensure all parameters for the MCP tools are clearly identified from the user's request before making the tool call.
