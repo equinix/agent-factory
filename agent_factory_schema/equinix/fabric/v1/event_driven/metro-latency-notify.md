@@ -20,13 +20,13 @@ Connections should be in PROVISIONED state
 
 ## Available Tools
 This skill can use the following tools:
-*   **`search_connection`**: Searches for active connections with aside and zside metro codes
+*   **`search_connections`**: Searches for active connections with aside and zside metro codes
 *   **`send_email_notification`**: Sends an email notification given an email address and email body.
 
 ## Instructions
 1. Once the cloud event is received, look at the metro latency alert, from type extract source and destination metro codes
 2. Search for the active connections, using the source metro code as aside and destination metro code as aside
-3. Next, send an email notification to the designated email address, using the outcome of the search connection command as the email body so the recipient is clearly informed of the connections list to follow up.
+3. Next, send an email notification to the recipient email addresses, using the outcome of the search connection command as the email body so the recipient is clearly informed of the connections list to follow up.
 
 ## Guidelines
 *   **Prioritize Clarity**: Ensure all parameters for the MCP tools are clearly identified from the user's request before making the tool call.
@@ -36,4 +36,4 @@ This skill can use the following tools:
 ## Configuration
 * **`source_metro_code`**: < A 2 character metro code > - Required - User should specify source metro code.
 * **`destination_metro_code`**: < A 2 character metro code > - Required - User should specify destination metro code.
-* **`emails`**: < list of valid email addresses to send notification to > - Required - User should specify an email address.
+  **`recipient_email_addresses`**: < A list of email addresses > - Required. List of email addresses to receive the report.

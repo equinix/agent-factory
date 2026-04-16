@@ -64,6 +64,12 @@
                     "releaseStatus": "preview"
                 },
                 {
+                    "name": "equinix.fabric.connection.notify",
+                    "description": "GCP and Equinix Metrics Monitor Emailer Agent",
+                    "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/scheduled/gcp-metrics-monitor-emailer.md",
+                    "releaseStatus": "preview"
+                },
+                {
                     "name": "equinix.fabric.router.ping.notify",
                     "description": "Ping and Notify Fabric Cloud Router Connection",
                     "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/scheduled/ping-and-notify.md",

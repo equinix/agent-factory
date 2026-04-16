@@ -7,6 +7,7 @@ description: Automatically boosts connection bandwidth to mitigate traffic-induc
 
 ## Overview
 An Equinix agent that automatically boosts connection bandwidth to mitigate traffic-induced packet loss.
+This agent only executes once.
 
 ## Capabilities
 - Monitor real-time network event streams
@@ -23,7 +24,7 @@ If you don't have one yet, start by creating a stream, attach your connection re
 ## Available Tools
 This skill can use the following tools:
 
-*   **`search_connection`**: Searches for an existing connection `.
+*   **`search_connections`**: Searches for an existing connection `.
 *   **`get_stream_alert_rule_details `**: Searches for an existing alert rule.
 *   **`update_connection`**: Update connection. Used to upgrade bandwidth.
 *   **`get_next_available_bandwidth_tier `**: Fetches the next available billing tier based on a bandwidth input.
@@ -43,4 +44,3 @@ This skill can use the following tools:
 
 ## Configuration
 * **`connection_uuids`**: < list of connection UUIDs > - Optional - User can specify a list of connection uuids.
-* **`alert_rule_uuids`**: < list of  alert rule UUIDs > - Optional - User can specify a list of alert rule uuids.

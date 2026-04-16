@@ -8,6 +8,7 @@ description: Continuously monitors route usage on a Fabric Cloud Router and upgr
 ## Overview
 An Equinix agent that continuously monitors route usage on a Fabric Cloud Router. 
 When the route usage exceeds a predefined threshold, the agent automatically upgrades the Fabric Cloud Router package to ensure sufficient capacity and uninterrupted operation.
+This agent only executes once.
 
 ## Capabilities
 - Continuously monitor real-time network event streams to maintain visibility into network activity and performance.
@@ -24,7 +25,7 @@ After the resource is connected, configure the appropriate alert rules to define
 ## Available Tools
 This skill can use the following tools:
 
-*   **`search_router`**: Searches for an existing fabric cloud router.
+*   **`search_routers`**: Searches for an existing fabric cloud router.
 *   **`get_stream_alert_rule_details `**: Searches for an existing alert rule.
 *   **`get_next_available_router_package `**: Fetches the next available Fabric Cloud Router package based on a package input.
 *   **`update_router`**: Update router. Used to upgrade the fabric cloud router.
@@ -42,5 +43,4 @@ This skill can use the following tools:
 *   **Token Efficiency**: Only call the tools when all necessary information is present, avoiding unnecessary context loading.
 
 ## Configuration
-* **`connection_uuids`**: < list of connection UUIDs > - Optional - User can specify a list of connection uuids.
 * **`fcr_router_uuids`**: < list of fabric cloud router UUIDs > - Optional - User can specify a list of fabric cloud router uuids.
