@@ -3,7 +3,7 @@ name: resource-hierarchy
 description: Analyzes all Fabric Cloud Router related resources within a given Equinix Fabric project
 ---
 
-# Cloud Router resource hierarchy agent
+# Cloud Router resource hierarchy and summary agent
 
 ## Overview
 This definition sets up and activates an Equinix agent that list the FCR (Fabric Cloud Routers) related resource hierarchy in a project. Summarize FCRs in a project and the FCR connections which are associated with each FCR. If FCRs are connected to IPWAN network via FCR to IPWAN connection, include IPWAN topology as well.
@@ -11,6 +11,7 @@ This agent runs once immediately by default unless scheduled by user.
 
 ## Capabilities
 - Automatically list the Fabric Cloud Router and related resource hierarchy in a project.
+- Identify any potential issues in the resource hierarchy, such as FCRs in error states or connections without route filters.
 - Deliver a plain-English resource hierarchy summary via email as a PDF report
 
 ## Prerequisites
@@ -18,17 +19,15 @@ Fabric Cloud router resources exist in the given project. A valid Equinix Fabric
 
 ## Instructions
 ### Step 1
-Search for the existing fabric cloud router which are not in deprovisioned status, given the project uuid. Summarize the metro distribution, FCR statues and FCR package types based on the result. Stop if the router is not found. 
-
+Search for the existing fabric cloud router which are not in deprovisioned status, given the project uuid. Summarize the metro distribution, FCR statues and FCR package types based on the result. Stop if the router is not found.
 ### Step 2
 For each Fabric Cloud Router, search for FCR connections of it. Summarize the distribution of connection type, bandwidth.
 ### Step 3
 Search for all available route filters. For each route filter, search for connections attached to it. Summarize the percentage of FCR connections with route filter.
-### Step 4
-Generate a professional network topology diagram on a white background, drawn as a hierarchical tree with the root at the top and children branching downward. Use neat rectangular boxes, thin connector lines, and clear sans-serif labels. Show IPWAN network at the top as optional, then FABRIC_CLOUD_ROUTER, then L2_CONNECTION (A-SIDE FCR), then ROUTE_FILTER and ROUTE_AGGREGATION as sibling children. Clean, minimal, enterprise-style diagram, portrait layout.
-### Step 5 - Compose the Resource Hierarchy Report
 
-**Do not respond to the user between Step 5 and Step 6, Proceed directly to calling `send_email_notification`.**
+### Step 4 - Compose the Resource Hierarchy Report
+
+**Do not respond to the user between Step 4 and Step 5, Proceed directly to calling `send_email_notification`.**
 
 Structure the report using these sections (omit any section with no content — no placeholder text). Do not include any section numbers in the headings. Use the separator formatting shown below exactly:
 
@@ -256,14 +255,13 @@ Section content rules:
 - **Fabric Cloud Router Resources**: List metro distribution, like metro location with highest number of FCRs, FCR package contribution and FCR statuses distribution. Include name, uuid, state, project, created and updated dates. Also include how long has it been since created date in hours. Put values under Data Row. Put key findings in Summary section as the 1st bullet point.
 - **Connection Resources**: Mention average connection counts per FCR, grouping by different FCR packages. Also include FCR connection distribution of various connetion type and bandwidth.  Include name, uuid, state, project, created and updated dates. Also include how long has it been since created date in hours. Put values under Data Row. Put key findings of connections in Summary section as second bullet point.
 - **Network Policy Resources**: Mention percentages of connections with route filter or aggregations attached. Include name, uuid, state, project, created and updated dates. Also include how long has it been since created date in hours. Put values under Data Row. Put key findings in Summary section as the 3rd bullet point.
-- **Resources Hierarchy**: Use a top-down hierarchy with boxes and connector lines. Preserve the exact parent-child structure provided by the user. Keep node labels exact and concise. Mark optional nodes clearly in the label. Do not add extra nodes, styling clutter, or unrelated annotations. Prefer a clean professional network-diagram look.
 - **What You Should Do**: 1–3 plain English recommendations based only on detected findings. Like if any FCRs are in error state or transient state or don't have any connections. Or If any FCRs connections are in error state or transient state. If nothing needs action, always end with: "I will continue monitoring FCR resource hierarchy for you." Put the content under "What You Should Do" section.
 
 Rules:
 - Plain English always. No raw event type strings, no API jargon.
 - Always use both the human-readable name AND the full UUID when referencing any asset (router, connection, port, routing protocol) or user. Format: `<name> (<full-uuid>)` for assets and `<data.auth.name> (id: <authid>)` for users. If a name is not available, fall back to the full UUID only.
 - Final observed state must be stated for any asset with multiple transitions.
-### Step 6 — Send the Report
+### Step 5 — Send the Report
 Use `send_email_notification` to send the report to `recipient_email_address`.
 - `pdfContent`: the full report text from Step 4.
 - `body`: one-paragraph summary of overall resource hierarchy and headline finding.
