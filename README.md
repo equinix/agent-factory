@@ -100,10 +100,10 @@ This agent runs once immediately by default unless scheduled by user.</td>
 		<td>preview
 	</tr>
 	<tr>
-		<td><a href="https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/run_once/resource-hierarchy.md">Cloud Router resource hierarchy agent<br>[resource-hierarchy.md]</a></td>
+		<td><a href="https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/run_once/resource-hierarchy.md">Cloud Router resource hierarchy and summary agent<br>[resource-hierarchy.md]</a></td>
 		<td>This definition sets up and activates an Equinix agent that list the FCR (Fabric Cloud Routers) related resource hierarchy in a project. Summarize FCRs in a project and the FCR connections which are associated with each FCR. If FCRs are connected to IPWAN network via FCR to IPWAN connection, include IPWAN topology as well.
 This agent runs once immediately by default unless scheduled by user.</td>
-		<td>- Automatically list the Fabric Cloud Router and related resource hierarchy in a project.<br>- Deliver a plain-English resource hierarchy summary via email as a PDF report</td>
+		<td>- Automatically list the Fabric Cloud Router and related resource hierarchy in a project.<br>- Identify any potential issues in the resource hierarchy, such as FCRs in error states or connections without route filters.<br>- Deliver a plain-English resource hierarchy summary via email as a PDF report</td>
 		<td>This skill can use the following tools:
 
 *   **`search_routers`**: Searches for an existing fabric cloud router.
