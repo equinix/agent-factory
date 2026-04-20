@@ -218,16 +218,16 @@ This agent is triggered at 10am every day.</td>
 		<th>Release Status</th>
 	</tr>
 	<tr>
-		<td><a href="https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/event_driven/upgrade-bw-secondary-connection.md">Network Bandwidth monitoring and upgrade agent<br>[upgrade-bw-secondary-connection.md]</a></td>
+		<td><a href="https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/event_driven/upgrade-bw-secondary-connection.md">Network Bandwidth monitoring and upgrade redundant connection agent<br>[upgrade-bw-secondary-connection.md]</a></td>
 		<td>This automated agent monitors Equinix Fabric connections and maintains bandwidth parity between redundant connection pairs. 
 When bandwidth utilization on a primary connection reaches a configured threshold, the agent automatically upgrades the secondary connection to match the primary connection's bandwidth, ensuring consistent performance across the redundant pair.
 This agent only executes once.</td>
-		<td>- Real-time Event Monitoring: Continuously monitors network event streams for bandwidth alerts<br>- Threshold Detection: Identifies when connections exceed configured bandwidth utilization thresholds<br>- Redundancy Analysis: Automatically discovers redundant connection pairs and identifies primary/secondary relationships<br>- Intelligent Bandwidth Matching: Upgrades secondary connection bandwidth to match primary connection specifications<br>- Comprehensive Logging: Records all actions, decisions, and state changes for audit and troubleshooting- Monitor real-time network event streams</td>
+		<td>- Monitor real-time network event streams<br>- Detect bandwidth threshold alerts<br>- Analyze connection utilization patterns<br>- Automatically upgrade connection bandwidth<br>- Log all actions and decisions<br>- Send notifications for critical events</td>
 		<td>This skill can use the following tools:
 
-*   **`search_connections`**: Searches for an existing connection `.
-*   **`get_stream_alert_rule_details `**: Searches for an existing alert rule.
-*   **`update_connection`**: Update connection. Used to upgrade bandwidth.</td>
+* **`search_connections`**: Searches for an existing connection.
+* **`get_stream_alert_rule_details`**: Searches for an existing alert rule.
+* **`update_connection`**: Update connection. Used to upgrade bandwidth.</td>
 		<td>preview
 	</tr>
 	<tr>

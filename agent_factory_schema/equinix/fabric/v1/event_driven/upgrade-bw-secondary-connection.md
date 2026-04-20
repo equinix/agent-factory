@@ -3,7 +3,7 @@ name: upgrade-bw-secondary-connection
 description: Monitors Equinix Fabric connections and maintains bandwidth parity between redundant connection pairs.
 ---
 
-# Network Bandwidth monitoring and upgrade agent
+# Network Bandwidth monitoring and upgrade redundant connection agent
 
 ## Overview
 This automated agent monitors Equinix Fabric connections and maintains bandwidth parity between redundant connection pairs. 
@@ -11,43 +11,35 @@ When bandwidth utilization on a primary connection reaches a configured threshol
 This agent only executes once.
 
 ## Capabilities
-- Real-time Event Monitoring: Continuously monitors network event streams for bandwidth alerts
-- Threshold Detection: Identifies when connections exceed configured bandwidth utilization thresholds
-- Redundancy Analysis: Automatically discovers redundant connection pairs and identifies primary/secondary relationships
-- Intelligent Bandwidth Matching: Upgrades secondary connection bandwidth to match primary connection specifications
-- Comprehensive Logging: Records all actions, decisions, and state changes for audit and troubleshooting- Monitor real-time network event streams
+- Monitor real-time network event streams
+- Detect bandwidth threshold alerts
+- Analyze connection utilization patterns
+- Automatically upgrade connection bandwidth
+- Log all actions and decisions
+- Send notifications for critical events
 
 ## Prerequisites
-Before deploying this agent, ensure the following resources are configured:
-1.Equinix Fabric Stream: A provisioned stream to receive cloud events
-2.Alert Rules: Bandwidth threshold alert rules configured for monitoring connections
-If these resources are not yet configured, create a stream, attach your connection resources, and configure appropriate alert rules before activating this agent.
+To receive alerts from your connections, you must first set up alert rules in a stream.
+If you don't have one yet, start by creating a stream, attach your connection resources to it, and then configure alert rules for those resources.
 
 ## Available Tools
 This skill can use the following tools:
 
-*   **`search_connections`**: Searches for an existing connection `.
-*   **`get_stream_alert_rule_details `**: Searches for an existing alert rule.
-*   **`update_connection`**: Update connection. Used to upgrade bandwidth.
+* **`search_connections`**: Searches for an existing connection.
+* **`get_stream_alert_rule_details`**: Searches for an existing alert rule.
+* **`update_connection`**: Update connection. Used to upgrade bandwidth.
 
 ## Instructions
-1. Alert Rule Validation
-   - Receives cloud event notification containing alert metadata
-   - Validates alert rule existence using get_stream_alert_rule_details
-   - Confirms alert is for bandwidth threshold monitoring
-2. Primary Connection Analysis
-   - Extracts connection UUID from the cloud event subject field
-   - Retrieves complete connection details using search_connection
-   - Extracts current bandwidth allocation
-   - Identifies redundant_group membership
-3. Secondary Connection Discovery
-   - Identify the secondary connection of the redundant_group
-   - Filters by redundancy group UUID and SECONDARY priority
-   - Validates secondary connection configuration
-4. Bandwidth Synchronization
-   - Sets secondary bandwidth to match primary connection bandwidth
-   - Logs upgrade action with before/after values
-
+1. When a cloud event is received, validate the equinixalert attribute.
+2. Stop if equinixalert value is clear.
+3. Stop if severitytext is WARN.
+4. Check whether target_connection_uuids is provided in Configuration. If yes, check whether the connection UUID is in the target_connection_uuids list. If the connection UUID is found in the list, continue. Otherwise, stop and mark the agent activity as completed. If target_connection_uuids is not provided, continue.
+5. Parse the cloud event message to identify the alert rule.
+6. Using the alert rule UUID extracted from the event, check whether a corresponding alert rule already exists.
+7. Locate the associated primary connection using the subject connection UUID provided in the cloud event message.
+8. Locate the secondary connection by filtering priority as SECONDARY and redundant_group as the redundant_group of the primary connection. If connection is not found, Stop.
+9. Obtain the bandwidth to be used for upgrading. Check whether user entered "bandwith_in_mb" in Configuration. If yes, use this bandwidth value. Otherwise, use the current primary connection bandwidth value.
+10. Upgrade the secondary connection to the newly determined bandwidth tier.
 
 ## Guidelines
 *   **Prioritize Clarity**: Ensure all parameters for the MCP tools are clearly identified from the user's request before making the tool call.
@@ -55,4 +47,5 @@ This skill can use the following tools:
 *   **Token Efficiency**: Only call the tools when all necessary information is present, avoiding unnecessary context loading.
 
 ## Configuration
-* **`connection_uuids`**: < list of connection UUIDs > - Optional - User can specify a list of connection uuids.
+* **`target_connection_uuids`**: < list of connection UUIDs > - Optional - User can specify a list of connection uuids.
+* **`bandwidth_in_mb`**: < bandwidth in MB > - Optional - User can specify a certain bandwidth in MB.
