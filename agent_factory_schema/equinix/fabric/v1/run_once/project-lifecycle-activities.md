@@ -1,6 +1,6 @@
 ---
 name: project-lifecycle-activities-insight
-description: Analyzes all cloud events within a given Equinix Fabric project.
+description: Analyzes all cloud events within a given Equinix Fabric project and delivers a summarized status report over a specified time range
 ---
 
 # Project Lifecycle Activities Insight Agent
@@ -14,7 +14,7 @@ A valid Equinix Fabric project UUID must be available. The project must have clo
 ## Capabilities
 - Analyze all cloud events within a given Equinix Fabric project over a specified time range
 - Detect BGP/routing instability, provisioning churn, and critical events
-- Deliver a plain-English operational health summary via email as a PDF report
+- Deliver a plain-English operational health summary via email as a summarized report in PDF format
 
 ## Instructions
 
