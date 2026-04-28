@@ -3,10 +3,10 @@ name: project-lifecycle-activities-insight
 description: Analyzes all cloud events within a given Equinix Fabric project and delivers a summarized status report over a specified time range
 ---
 
-# Project Lifecycle Activities Insight Agent
+# Project Lifecycle Activities Insight Report Agent
 
 ## Overview
-This agent analyzes all cloud events within a given Equinix Fabric project over a specified time range and delivers a plain-English operational health summary via email. This agent runs once immediately by default unless scheduled by user.
+This reporting agent analyzes all cloud events within a given Equinix Fabric project over a specified time range and delivers a plain-English operational health summary report via email. This agent runs once immediately by default unless scheduled by user.
 
 ## Prerequisites
 A valid Equinix Fabric project UUID must be available. The project must have cloud events enabled and assets attached to it.
