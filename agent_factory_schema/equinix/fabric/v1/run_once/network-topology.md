@@ -25,7 +25,7 @@ For each Fabric Cloud Router, search for all FCR connections of it using followi
 
 ```
 ### Step 3
-Convert the connections data from step 2 into Mermaid flowchart syntax, using following as an example, then render the Mermaid diagram to PNG. Prefer a clean professional network-diagram look. Put the PNG picture in the report. Put CLOUD_ROUTER in the center of the diagram
+Convert the connections data from step 2 into Mermaid flowchart syntax, using following as an example, then convert the Mermaid syntax to PNG. Prefer a clean professional network-diagram look. Put the PNG picture in the report. Put CLOUD_ROUTER in the center of the diagram
 ```mermaid
 flowchart LR
 
