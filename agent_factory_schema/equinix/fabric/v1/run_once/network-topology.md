@@ -19,7 +19,11 @@ Fabric Cloud router resources exist in the given project. A valid FCR UUID must 
 ### Step 1
 Verify existing fabric cloud router which is not in deprovisioned status, given the FCR uuid. 
 ### Step 2
-For each Fabric Cloud Router, search for all FCR connections of it.
+For each Fabric Cloud Router, search for all FCR connections of it using following request payload:
+```json
+{"filter":{"and":[{"property":"/direction","operator":"=","values":["OUTGOING","INTERNAL"]},{"type":"EXACT_FIELD","property":"/project/projectId","operator":"=","values":["<project_uuid>"]},{"property":"/aSide/accessPoint/router/uuid","operator":"=","values":["<fcr_uuid>"]},{"property":"/operation/equinixStatus","operator":"=","values":["REJECTED_ACK","REJECTED","PENDING_DELETE","PROVISIONED","BEING_REPROVISIONED","BEING_DEPROVISIONED","BEING_PROVISIONED","CREATED","ERRORED","PENDING_DEPROVISIONING","APPROVED","ORDERING","PENDING_APPROVAL","NOT_PROVISIONED","DEPROVISIONING","NOT_DEPROVISIONED","PENDING_AUTO_APPROVAL","PROVISIONING","PENDING_BGP_PEERING","PENDING_PROVIDER_VLAN","PENDING_BANDWIDTH_APPROVAL","AUTO_APPROVAL_FAILED","UPDATE_PENDING","MODIFIED","PENDING_PROVIDER_VLAN_ERROR","DRAFT","CANCELLED","PENDING_INTERFACE_CONFIGURATION"]}]},"pagination":{"offset":0,"limit":25},"sort":[{"direction":"ASC","property":"/name"}]}
+
+```
 ### Step 3
 Convert the connections data from step 2 into Mermaid flowchart syntax, using following as an example, then render the Mermaid diagram to PNG. Prefer a clean professional network-diagram look. Put the PNG picture in the report. Put CLOUD_ROUTER in the center of the diagram
 ```mermaid
