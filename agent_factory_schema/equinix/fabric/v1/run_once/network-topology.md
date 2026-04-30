@@ -50,8 +50,9 @@ class R router
 class P,S port
 ```
 ### Step 4 - Render the Mermaid Diagram to PNG
-Use the mermaid flowchart from Step 3, savid it as topology.mmd, and then render it to topology.png with Mermaid CLI, add the PNG file as attachment.
+Use the mermaid flowchart from Step 3, savd it as topology.mmd, and then render it to topology.png with Mermaid CLI, add the PNG file as attachment.
 ### Step 5 - Compose the Resource Hierarchy Report
+Include the mermaid diagram from Step 3 and save it in a text file.
 **Do not respond to the user between Step 5 and Step 6, Proceed directly to calling `send_email_notification`.**
 
 
