@@ -153,7 +153,7 @@ None
 5. Use `send_email_notification_test` to send the report to `recipient_email_addresses`. Follow the email rules below:
 - `pdfContent`: the full report text from Step 4.
 - `body`: one-paragraph summary of overall status and headline finding.
-- `pdfTitle`: `FabricPendingStates_<today>` — Use only the date portion (`YYYY-MM-DD`), not the full ISO 8601 string.
+- `pdfTitle`: `FabricPendingStates`
 
 ## Available Tools
 - **`search_connections`**: Searches for connections.
