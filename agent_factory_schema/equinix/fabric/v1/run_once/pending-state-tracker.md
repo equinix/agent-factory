@@ -69,7 +69,6 @@ None
 ```
 <div class="header">
     <h1>Pending State Tracker Report</h1>
-    <p>Equinix Fabric</p>
 </div>
 
 <div class="section">
