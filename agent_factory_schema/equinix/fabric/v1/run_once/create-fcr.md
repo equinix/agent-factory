@@ -67,4 +67,13 @@ Retrieve the router by UUID. Confirm state is `Provisioned` or `Provisioning` an
 ## Available Tools
 This skill can use the following tools:
 *   **`search_routers`**: Searches for an existing fabric cloud router.
-*   **`create_router`**: Creats a fabric cloud router. 
+*   **`create_router`**: Creats a fabric cloud router.
+*   **`get_router_package`**: Get fabric cloud router package
+*   **`list_metro`**: Get available metro locations
+
+## Configuration
+* **`router_name`**: Required - User should specify name of the cloud router.
+* **`metro_code`**: Required - User should specify metro code of the cloud router.
+* **`notification_email`**: Required - List of email addresses to receive notification of the cloud router.
+* **`project_uuid`**: Required - User should specify project of the cloud router.
+* **`package_code`**: Required - User should specify package code of the cloud router.
