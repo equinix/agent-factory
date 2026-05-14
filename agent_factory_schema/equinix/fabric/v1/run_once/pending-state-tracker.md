@@ -150,7 +150,7 @@ None
 
 ```
 
-5. Use `send_email_notification_test` to send the report to `recipient_email_addresses`. Follow the email rules below:
+5. Use `send_email_notification` to send the report to `recipient_email_addresses`. Follow the email rules below:
 - `pdfContent`: the full report text from Step 4.
 - `body`: one-paragraph summary of overall status and headline finding.
 - `pdfTitle`: `FabricPendingStates`
@@ -159,7 +159,7 @@ None
 - **`search_connections`**: Searches for connections.
 - **`search_routers`**: Searches for fabric cloud routers.
 - **`search_ports`**: Searches for ports.
-- **`send_email_notification_test`**: Sends an email. Pass `pdfTitle` and `pdfContent` (plain text) to auto-generate and attach a PDF.
+- **`send_email_notification`**: Sends an email. Pass `pdfTitle` and `pdfContent` (plain text) to auto-generate and attach a PDF.
 
 ## Guidelines
 - Plain English, no API jargon, no raw event strings, full UUIDs always. Insight over data — derive meaning from patterns, not raw counts.
