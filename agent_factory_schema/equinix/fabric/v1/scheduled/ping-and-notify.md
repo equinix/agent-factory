@@ -9,11 +9,11 @@ description: Initiates a PING command on a Fabric Cloud Router.
 This definition sets up and activates an Equinix agent that initiates a PING command on a Fabric Cloud Router in order to perform a network connectivity check.
 Once the PING operation is completed, the resulting output is collected and used to generate an email notification.
 The email is then sent to the specified recipient, ensuring that the results of the connectivity test are communicated clearly and promptly.
-This agent is triggered immediately after creation, then triggered at 11:40am every day.
+This agent is triggered immediately after creation, then triggered at 3:20pm every day.
 
 
 ## Capabilities
-- PING command on Fabric Cloud Router
+- PING command on Fabric Cloud Router3
 - Email notification with PING results
 - Log all actions and decisions
 
