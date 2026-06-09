@@ -11,6 +11,82 @@ The following md files are supported for Equinix Agent Factory
 <!-- CATALOG_GENERATION_START -->
 
 ---
+### Equinix Fabric   Event-Driven
+
+<table>
+	<tr>
+		<th>Name</th>
+		<th>Overview</th>
+		<th>Capabilities</th>
+		<th>Agent Tools</th>
+		<th>Release Status</th>
+	</tr>
+	<tr>
+		<td><a href="https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/event_driven/upgrade-bw-on-packet-drop-alert.md">Network connection packets drop monitoring and upgrade agent<br>[upgrade-bw-on-packet-drop-alert.md]</a></td>
+		<td>An Equinix agent that automatically boosts connection bandwidth to mitigate traffic-induced packet loss.
+This agent only executes once.</td>
+		<td>- Monitor real-time network event streams<br>- Detect packet drop alerts<br>- Analyze connection utilization patterns<br>- Automatically upgrade connection bandwidth<br>- Log all actions and decisions<br>- Send notifications for critical events</td>
+		<td>This skill can use the following tools:
+
+*   **`search_connections`**: Searches for an existing connection `.
+*   **`get_stream_alert_rule_details `**: Searches for an existing alert rule.
+*   **`update_connection`**: Update connection. Used to upgrade bandwidth.
+*   **`get_next_available_bandwidth_tier `**: Fetches the next available billing tier based on a bandwidth input.</td>
+		<td>preview
+	</tr>
+	<tr>
+		<td><a href="https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/event_driven/upgrade-fcr-package.md">Cloud Router monitoring and upgrade package agent<br>[upgrade-fcr-package.md]</a></td>
+		<td>An Equinix agent that continuously monitors route usage on a Fabric Cloud Router. 
+When the route usage exceeds a predefined threshold, the agent automatically upgrades the Fabric Cloud Router package to ensure sufficient capacity and uninterrupted operation.
+This agent only executes once.</td>
+		<td>- Continuously monitor real-time network event streams to maintain visibility into network activity and performance.<br>- Detect and evaluate alerts triggered when route usage reaches or exceeds defined threshold limits.<br>- Automatically upgrade Fabric Cloud Router packages as needed to ensure adequate capacity and prevent service disruption.<br>- Record and log all actions, decisions, and system events for auditing, troubleshooting, and analysis purposes.<br>- Send timely notifications for critical events to ensure stakeholders are informed and can respond promptly.</td>
+		<td>This skill can use the following tools:
+
+*   **`search_routers`**: Searches for an existing fabric cloud router.
+*   **`get_stream_alert_rule_details `**: Searches for an existing alert rule.
+*   **`get_next_available_router_package `**: Fetches the next available Fabric Cloud Router package based on a package input.
+*   **`update_router`**: Update router. Used to upgrade the fabric cloud router.</td>
+		<td>preview
+	</tr>
+	<tr>
+		<td><a href="https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/event_driven/upgrade-bw-secondary-connection.md">Network Bandwidth monitoring and upgrade redundant connection agent<br>[upgrade-bw-secondary-connection.md]</a></td>
+		<td>This automated agent monitors Equinix Fabric connections and maintains bandwidth parity between redundant connection pairs. 
+When bandwidth utilization on a primary connection reaches a configured threshold, the agent automatically upgrades the secondary connection to match the primary connection's bandwidth, ensuring consistent performance across the redundant pair.
+This agent only executes once.</td>
+		<td>- Monitor real-time network event streams<br>- Detect bandwidth threshold alerts<br>- Analyze connection utilization patterns<br>- Automatically upgrade connection bandwidth<br>- Log all actions and decisions<br>- Send notifications for critical events</td>
+		<td>This skill can use the following tools:
+
+* **`search_connections`**: Searches for an existing connection.
+* **`get_stream_alert_rule_details`**: Searches for an existing alert rule.
+* **`update_connection`**: Update connection. Used to upgrade bandwidth.</td>
+		<td>preview
+	</tr>
+	<tr>
+		<td><a href="https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/event_driven/upgrade-bw-primary-connection.md">Network Bandwidth monitoring and upgrade agent<br>[upgrade-bw-primary-connection.md]</a></td>
+		<td>An Equinix agent that automatically upgrades the bandwidth of a connection when usage reaches a certain threshold. 
+This agent only executes once.</td>
+		<td>- Monitor real-time network event streams<br>- Detect bandwidth threshold alerts<br>- Analyze connection utilization patterns<br>- Automatically upgrade connection bandwidth<br>- Log all actions and decisions<br>- Send notifications for critical events</td>
+		<td>This skill can use the following tools:
+
+* **`search_connections`**: Searches for an existing connection.
+* **`get_stream_alert_rule_details`**: Searches for an existing alert rule.
+* **`update_connection`**: Update connection. Used to upgrade bandwidth.
+* **`get_next_available_bandwidth_tier`**: Fetches the next available billing tier based on a bandwidth input.</td>
+		<td>preview
+	</tr>
+	<tr>
+		<td><a href="https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/event_driven/metro-latency-notify.md">Collect connections over metros with latency spikes and notify<br>[metro-latency-notify.md]</a></td>
+		<td>An Equinix agent that automatically email a list of connections that are over the metros where latency spike.</td>
+		<td>- Detect metro latency alerts<br>- Identify the source and destination metros<br>- Identify the active connections over the metros<br>- Email notification with the connections list<br>- Log all actions and decisions</td>
+		<td>This skill can use the following tools:
+*   **`search_connections`**: Searches for active connections with aside and zside metro codes
+*   **`send_email_notification`**: Sends an email notification given an email address and email body.</td>
+		<td>preview
+	</tr>
+</table>
+
+
+---
 ### Equinix Fabric   Run-Once
 
 <table>
@@ -22,20 +98,16 @@ The following md files are supported for Equinix Agent Factory
 		<th>Release Status</th>
 	</tr>
 	<tr>
-		<td><a href="https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/run_once/ping-and-notify.md">Ping FCR agent<br>[ping-and-notify.md]</a></td>
-		<td>An Equinix agent that initiates a PING command on a Fabric Cloud Router in order to perform a network connectivity check.
-Once the PING operation is completed, the resulting output is collected and used to generate an email notification.
-The email is then sent to the specified recipient, ensuring that the results of the connectivity test are communicated clearly and promptly.
+		<td><a href="https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/run_once/upgrade-fcr-package.md">Cloud Router upgrade package agent<br>[upgrade-fcr-package.md]</a></td>
+		<td>This definition sets up and activates an Equinix agent that upgrades the package of a Fabric Cloud Router. 
+When the route usage exceeds a predefined threshold, the agent automatically upgrades the Fabric Cloud Router package to ensure sufficient capacity and uninterrupted operation.
 This agent runs once immediately by default unless scheduled by user.</td>
-		<td>- PING command on Fabric Cloud Router<br>- Email notification with PING results<br>- Log all actions and decisions</td>
+		<td>- Automatically upgrade Fabric Cloud Router packages as needed to ensure adequate capacity and prevent service disruption.<br>- Record and log all actions, decisions, and system events for auditing, troubleshooting, and analysis purposes.</td>
 		<td>This skill can use the following tools:
 
 *   **`search_routers`**: Searches for an existing fabric cloud router.
-*   **`search_connections`**: Searches for an existing connection.
-*   **`create_router_commands`**: Initiate a PING command on a Fabric Cloud Router by UUID.
-*   **`wait`**: Wait for a while. An optional parameter can be provided to specify the wait time in milliseconds.
-*   **`search_router_commands`**: Search for commands (e.g., PING) on a Fabric Cloud Router.
-*   **`send_email_notification`**: Sends an email notification given a list email of addresses and email body.</td>
+*   **`get_next_available_router_package `**: Fetches the next available Fabric Cloud Router package based on a package input.
+*   **`update_router`**: Update router. Used to upgrade the fabric cloud router.</td>
 		<td>preview
 	</tr>
 	<tr>
@@ -61,32 +133,19 @@ This agent runs once immediately by default unless scheduled by user.</td>
 		<td>preview
 	</tr>
 	<tr>
-		<td><a href="https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/run_once/upgrade-fcr-package.md">Cloud Router upgrade package agent<br>[upgrade-fcr-package.md]</a></td>
-		<td>This definition sets up and activates an Equinix agent that upgrades the package of a Fabric Cloud Router. 
-When the route usage exceeds a predefined threshold, the agent automatically upgrades the Fabric Cloud Router package to ensure sufficient capacity and uninterrupted operation.
-This agent runs once immediately by default unless scheduled by user.</td>
-		<td>- Automatically upgrade Fabric Cloud Router packages as needed to ensure adequate capacity and prevent service disruption.<br>- Record and log all actions, decisions, and system events for auditing, troubleshooting, and analysis purposes.</td>
-		<td>This skill can use the following tools:
-
-*   **`search_routers`**: Searches for an existing fabric cloud router.
-*   **`get_next_available_router_package `**: Fetches the next available Fabric Cloud Router package based on a package input.
-*   **`update_router`**: Update router. Used to upgrade the fabric cloud router.</td>
-		<td>preview
-	</tr>
-	<tr>
-		<td><a href="https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/run_once/traceroute-and-notify.md">TRACEROUTE FCR agent<br>[traceroute-and-notify.md]</a></td>
-		<td>An Equinix agent that initiates a TRACEROUTE command on a Fabric Cloud Router in order to perform a network connectivity check.
-Once the TRACEROUTE operation is completed, the resulting output is collected and used to generate an email notification.
+		<td><a href="https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/run_once/ping-and-notify.md">Ping FCR agent<br>[ping-and-notify.md]</a></td>
+		<td>An Equinix agent that initiates a PING command on a Fabric Cloud Router in order to perform a network connectivity check.
+Once the PING operation is completed, the resulting output is collected and used to generate an email notification.
 The email is then sent to the specified recipient, ensuring that the results of the connectivity test are communicated clearly and promptly.
 This agent runs once immediately by default unless scheduled by user.</td>
-		<td>- TRACEROUTE command on Fabric Cloud Router<br>- Email notification with TRACEROUTE results<br>- Log all actions and decisions</td>
+		<td>- PING command on Fabric Cloud Router<br>- Email notification with PING results<br>- Log all actions and decisions</td>
 		<td>This skill can use the following tools:
 
 *   **`search_routers`**: Searches for an existing fabric cloud router.
 *   **`search_connections`**: Searches for an existing connection.
-*   **`create_router_commands`**: Initiate a TRACEROUTE command on a Fabric Cloud Router by UUID.
+*   **`create_router_commands`**: Initiate a PING command on a Fabric Cloud Router by UUID.
 *   **`wait`**: Wait for a while. An optional parameter can be provided to specify the wait time in milliseconds.
-*   **`search_router_commands`**: Search for commands (e.g., TRACEROUTE) on a Fabric Cloud Router.
+*   **`search_router_commands`**: Search for commands (e.g., PING) on a Fabric Cloud Router.
 *   **`send_email_notification`**: Sends an email notification given a list email of addresses and email body.</td>
 		<td>preview
 	</tr>
@@ -127,80 +186,21 @@ This agent runs once immediately by default unless scheduled by user.</td>
 - **`send_email_notification`**: Sends an email. Pass `pdfTitle` and `pdfContent` (plain text) to auto-generate and attach a PDF.</td>
 		<td>preview
 	</tr>
-</table>
-
-
----
-### Equinix Fabric   Event-Driven
-
-<table>
 	<tr>
-		<th>Name</th>
-		<th>Overview</th>
-		<th>Capabilities</th>
-		<th>Agent Tools</th>
-		<th>Release Status</th>
-	</tr>
-	<tr>
-		<td><a href="https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/event_driven/upgrade-bw-on-packet-drop-alert.md">Network connection packets drop monitoring and upgrade agent<br>[upgrade-bw-on-packet-drop-alert.md]</a></td>
-		<td>An Equinix agent that automatically boosts connection bandwidth to mitigate traffic-induced packet loss.
-This agent only executes once.</td>
-		<td>- Monitor real-time network event streams<br>- Detect packet drop alerts<br>- Analyze connection utilization patterns<br>- Automatically upgrade connection bandwidth<br>- Log all actions and decisions<br>- Send notifications for critical events</td>
-		<td>This skill can use the following tools:
-
-*   **`search_connections`**: Searches for an existing connection `.
-*   **`get_stream_alert_rule_details `**: Searches for an existing alert rule.
-*   **`update_connection`**: Update connection. Used to upgrade bandwidth.
-*   **`get_next_available_bandwidth_tier `**: Fetches the next available billing tier based on a bandwidth input.</td>
-		<td>preview
-	</tr>
-	<tr>
-		<td><a href="https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/event_driven/metro-latency-notify.md">Collect connections over metros with latency spikes and notify<br>[metro-latency-notify.md]</a></td>
-		<td>An Equinix agent that automatically email a list of connections that are over the metros where latency spike.</td>
-		<td>- Detect metro latency alerts<br>- Identify the source and destination metros<br>- Identify the active connections over the metros<br>- Email notification with the connections list<br>- Log all actions and decisions</td>
-		<td>This skill can use the following tools:
-*   **`search_connections`**: Searches for active connections with aside and zside metro codes
-*   **`send_email_notification`**: Sends an email notification given an email address and email body.</td>
-		<td>preview
-	</tr>
-	<tr>
-		<td><a href="https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/event_driven/upgrade-fcr-package.md">Cloud Router monitoring and upgrade package agent<br>[upgrade-fcr-package.md]</a></td>
-		<td>An Equinix agent that continuously monitors route usage on a Fabric Cloud Router. 
-When the route usage exceeds a predefined threshold, the agent automatically upgrades the Fabric Cloud Router package to ensure sufficient capacity and uninterrupted operation.
-This agent only executes once.</td>
-		<td>- Continuously monitor real-time network event streams to maintain visibility into network activity and performance.<br>- Detect and evaluate alerts triggered when route usage reaches or exceeds defined threshold limits.<br>- Automatically upgrade Fabric Cloud Router packages as needed to ensure adequate capacity and prevent service disruption.<br>- Record and log all actions, decisions, and system events for auditing, troubleshooting, and analysis purposes.<br>- Send timely notifications for critical events to ensure stakeholders are informed and can respond promptly.</td>
+		<td><a href="https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/run_once/traceroute-and-notify.md">TRACEROUTE FCR agent<br>[traceroute-and-notify.md]</a></td>
+		<td>An Equinix agent that initiates a TRACEROUTE command on a Fabric Cloud Router in order to perform a network connectivity check.
+Once the TRACEROUTE operation is completed, the resulting output is collected and used to generate an email notification.
+The email is then sent to the specified recipient, ensuring that the results of the connectivity test are communicated clearly and promptly.
+This agent runs once immediately by default unless scheduled by user.</td>
+		<td>- TRACEROUTE command on Fabric Cloud Router<br>- Email notification with TRACEROUTE results<br>- Log all actions and decisions</td>
 		<td>This skill can use the following tools:
 
 *   **`search_routers`**: Searches for an existing fabric cloud router.
-*   **`get_stream_alert_rule_details `**: Searches for an existing alert rule.
-*   **`get_next_available_router_package `**: Fetches the next available Fabric Cloud Router package based on a package input.
-*   **`update_router`**: Update router. Used to upgrade the fabric cloud router.</td>
-		<td>preview
-	</tr>
-	<tr>
-		<td><a href="https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/event_driven/upgrade-bw-primary-connection.md">Network Bandwidth monitoring and upgrade agent<br>[upgrade-bw-primary-connection.md]</a></td>
-		<td>An Equinix agent that automatically upgrades the bandwidth of a connection when usage reaches a certain threshold. 
-This agent only executes once.</td>
-		<td>- Monitor real-time network event streams<br>- Detect bandwidth threshold alerts<br>- Analyze connection utilization patterns<br>- Automatically upgrade connection bandwidth<br>- Log all actions and decisions<br>- Send notifications for critical events</td>
-		<td>This skill can use the following tools:
-
-* **`search_connections`**: Searches for an existing connection.
-* **`get_stream_alert_rule_details`**: Searches for an existing alert rule.
-* **`update_connection`**: Update connection. Used to upgrade bandwidth.
-* **`get_next_available_bandwidth_tier`**: Fetches the next available billing tier based on a bandwidth input.</td>
-		<td>preview
-	</tr>
-	<tr>
-		<td><a href="https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/event_driven/upgrade-bw-secondary-connection.md">Network Bandwidth monitoring and upgrade redundant connection agent<br>[upgrade-bw-secondary-connection.md]</a></td>
-		<td>This automated agent monitors Equinix Fabric connections and maintains bandwidth parity between redundant connection pairs. 
-When bandwidth utilization on a primary connection reaches a configured threshold, the agent automatically upgrades the secondary connection to match the primary connection's bandwidth, ensuring consistent performance across the redundant pair.
-This agent only executes once.</td>
-		<td>- Monitor real-time network event streams<br>- Detect bandwidth threshold alerts<br>- Analyze connection utilization patterns<br>- Automatically upgrade connection bandwidth<br>- Log all actions and decisions<br>- Send notifications for critical events</td>
-		<td>This skill can use the following tools:
-
-* **`search_connections`**: Searches for an existing connection.
-* **`get_stream_alert_rule_details`**: Searches for an existing alert rule.
-* **`update_connection`**: Update connection. Used to upgrade bandwidth.</td>
+*   **`search_connections`**: Searches for an existing connection.
+*   **`create_router_commands`**: Initiate a TRACEROUTE command on a Fabric Cloud Router by UUID.
+*   **`wait`**: Wait for a while. An optional parameter can be provided to specify the wait time in milliseconds.
+*   **`search_router_commands`**: Search for commands (e.g., TRACEROUTE) on a Fabric Cloud Router.
+*   **`send_email_notification`**: Sends an email notification given a list email of addresses and email body.</td>
 		<td>preview
 	</tr>
 </table>
