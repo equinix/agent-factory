@@ -1,6 +1,6 @@
 ---
 name: auto-provision-bgp
-description: Event-driven agent that detects new connections without routing protocol, creates a standard BGP routing protocol, and sends completion notifications.
+description: Event-driven agent that detects new connections without a routing protocol then creates a standard BGP routing protocol and sends completion notifications.
 ---
 
 # Automatic BGP bootstrap on new connection agent
@@ -18,7 +18,8 @@ This agent only executes once.
 
 ## Prerequisites
 - A BGP baseline policy must be defined, including ASN standards, BFD expectations, and MD5 key management.  
-- The target connection should be in PROVISIONED state
+- The target connection should be in `PROVISIONED` state.
+- The target connection's name should contain 'test-lyc'.
 - The target connection endpoint must support BGP and permit routing updates.  
 - The agent execution context must have permission to read connection details, create routing protocols, and send notifications.
 
@@ -28,7 +29,6 @@ This skill can use the following tools:
 * **`search_connections`**: Retrieves connection details.
 * **`list_routing_protocols`**: Retrieves existing routing protocols for a connection.
 * **`create_routing_protocol`**: Creates a routing protocol for the target connection.
-* **`wait`**: Waits for a specified number of milliseconds before the next action.
 * **`send_email_notification`**: Sends an email notification.
 
 ## Instructions
@@ -97,7 +97,7 @@ Call `create_routing_protocol` with:
 
 ### Step 6 - Wait for Routing Protocol Provisioning
 6a. Repeat up to 10 times or until the target routing protocol state is `PROVISIONED`:
-- Call `wait` for 15000 milliseconds.
+- Wait for 15000 milliseconds.
 - Call `list_routing_protocols` with `connection_uuid`.
 - Filter by `routing_protocol_uuid` and check `state`.
 - Break early once the target routing protocol reports `state = PROVISIONED`.
@@ -141,8 +141,8 @@ Section content rules for `pdfContent`:
 - **Execution Checks and Retries**: Include polling behavior and outcome: provisioning retry count used, and whether timeout thresholds were reached.
 - **What You Should Do**: Provide 1-3 operational next actions based on final outcome. If outcome is `SUCCESS`, end with: "BGP auto provisioning completed successfully and no further action is required at this time."
 
-10b. Call `send_email_notification` with:
-- `pdfContent`: completion summary from Step 10a.
+7b. Call `send_email_notification` with:
+- `pdfContent`: completion summary from Step 7a.
 - `body`: one-paragraph operational summary of execution result (`SUCCESS`, `PARTIAL_SUCCESS`, or `FAILURE`) and any required follow-up action.
 - `pdfTitle`: `AutoProvisionBGP_<connection_uuid>_<execution_result>`
 - `recipients`: `recipient_email_addresses`
