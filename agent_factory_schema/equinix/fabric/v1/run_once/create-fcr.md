@@ -1,6 +1,8 @@
 ---
 name: run-once-create-cloud-router
 description: Creates a Fabric Cloud Router based on user-provided parameters and notifies on completion.
+execution_mode: GRAPH
+graph_pattern: REACT
 ---
 
 # Cloud Router Creator Agent
