@@ -18,7 +18,7 @@ This agent only executes once.
 
 ## Prerequisites
 - A BGP baseline policy must be defined, including ASN standards, BFD expectations, and MD5 key management.  
-- The target connection should be in `PROVISIONED` state.
+- The target connection should be in `PENDING` state.
 - The target connection's name should contain 'test-lyc'.
 - The target connection endpoint must support BGP and permit routing updates.  
 - The agent execution context must have permission to read connection details, create routing protocols, and send notifications.
@@ -52,21 +52,31 @@ Call `list_routing_protocols` with `connection_uuid` to retrieve existing routin
 3b. If routing protocols exist and none have `type = BGP`, continue to Step 4.  
 3c. If one or more routing protocols already have `type = BGP`, stop without making changes.
 
-### Step 4 - Build `create_routing_protocol` Request Payload (BGP)
-Construct `routing_protocol_request` for `create_routing_protocol` using `type: BGP`.
+### Step 4 - Build `create_routing_protocol` Request Payload (DIRECT and BGP)
+Construct `routing_protocol_request` for `create_routing_protocol` by configuring DIRECT and BGP.
 
-4a. Set top-level fields:
+4a. For DIRECT body, set fields:
+- `type`: `DIRECT`
+- `directIpv4.equinixIfaceIp`: from `directIpv4_equinixIfaceIp`
+- `directIpv6.equinixIfaceIp`: from `directIpv6_equinixIfaceIp`
+
+4b. For DIRECT, validate before submission:
+- Required: `type`.
+- At least one address family must be configured: `directIpv4.equinixIfaceIp` or `directIpv6.equinixIfaceIp`.
+- If validation fails, stop and report an error.
+
+4c. For BGP body, set top-level fields:
 - `type`: `BGP`
 - `customerAsn`: from `customer_asn`
 - `equinixAsn`: from `equinix_asn`
 - `bgpAuthKey`: from `bgp_auth_key`
 - `asOverrideEnabled`: from `as_override_enabled` (default `false`)
 
-4b. Set BFD fields:
+4d. For BGP body, set BFD fields:
 - `bfd.enabled`: from `bfd_enabled` (default `true`)
 - `bfd.interval`: from `bfd_interval` (default `100`)
 
-4c. Build `bgpIpv4` when `bgp_ipv4_customer_peer_ip` is provided:
+4e. For BGP body, build `bgpIpv4` when `bgp_ipv4_customer_peer_ip` is provided:
 - `customerPeerIp`: from `bgp_ipv4_customer_peer_ip`
 - `enabled`: from `bgp_ipv4_enabled` (default `true`)
 - `outboundASPrependCount`: from `bgp_ipv4_outbound_as_prepend_count` (optional)
@@ -74,7 +84,7 @@ Construct `routing_protocol_request` for `create_routing_protocol` using `type: 
 - `outboundMED`: from `bgp_ipv4_outbound_med` (optional)
 - `routesMax`: from `bgp_ipv4_routes_max` (optional)
 
-4d. Build `bgpIpv6` when `bgp_ipv6_customer_peer_ip` is provided:
+4f. For BGP body, build `bgpIpv6` when `bgp_ipv6_customer_peer_ip` is provided:
 - `customerPeerIp`: from `bgp_ipv6_customer_peer_ip`
 - `enabled`: from `bgp_ipv6_enabled` (default `true`)
 - `outboundASPrependCount`: from `bgp_ipv6_outbound_as_prepend_count` (optional)
@@ -82,7 +92,7 @@ Construct `routing_protocol_request` for `create_routing_protocol` using `type: 
 - `outboundMED`: from `bgp_ipv6_outbound_med` (optional)
 - `routesMax`: from `bgp_ipv6_routes_max` (optional)
 
-4e. Validate before submission:
+4g. For BGP, validate before submission:
 - Required: `type`, `customerAsn`, `equinixAsn`, `bgpAuthKey`, `bfd.enabled`, `bfd.interval`.
 - At least one address family must be configured: `bgpIpv4` or `bgpIpv6`.
 - If validation fails, stop and report an error.
@@ -157,6 +167,8 @@ Section content rules for `pdfContent`:
 
 ## Configuration
 * **`connection_uuid`**: <connection UUID> - Required - Target connection ID from event payload.
+* **`directIpv4_equinixIfaceIp`**: <IPv4 string> - Optional - Maps to `directIpv4.equinixIfaceIp`.
+* **`directIpv6_equinixIfaceIp`**: <IPv6 string> - Optional - Maps to `directIpv6.equinixIfaceIp`.
 * **`customer_asn`**: <integer ASN> - Required - Maps to `customerAsn`.
 * **`equinix_asn`**: <integer ASN> - Required - Maps to `equinixAsn`.
 * **`bgp_auth_key`**: <secret reference> - Required - Secret reference used to resolve `bgpAuthKey` in the BGP payload.
