@@ -129,7 +129,7 @@ Call `create_routing_protocol` with:
     </div>
 </div>
 <div class="section">
-    <h2>Routing Protocol & BGP Status</h2>
+    <h2>Routing Protocol and BGP Status</h2>
     <div class="content">
     </div>
 </div>
@@ -147,7 +147,7 @@ Call `create_routing_protocol` with:
 
 Section content rules for `pdfContent`:
 - **Summary**: State `connection_uuid`, `routing_protocol_uuid` (if created), and overall execution outcome (`SUCCESS`, `PARTIAL_SUCCESS`, or `FAILURE`). In 2-4 sentences, summarize what was attempted and whether provisioning completed.
-- **Routing Protocol & BGP Status**: Include final routing protocol state and key BGP configuration applied: `customerAsn`, `equinixAsn`, BFD (`enabled`, `interval`), and configured address families (`bgpIpv4`, `bgpIpv6`).
+- **Routing Protocol and BGP Status**: Include final routing protocol state and key BGP configuration applied: `customerAsn`, `equinixAsn`, BFD (`enabled`, `interval`), and configured address families (`bgpIpv4`, `bgpIpv6`).
 - **Execution Checks and Retries**: Include polling behavior and outcome: provisioning retry count used, and whether timeout thresholds were reached.
 - **What You Should Do**: Provide 1-3 operational next actions based on final outcome. If outcome is `SUCCESS`, end with: "BGP auto provisioning completed successfully and no further action is required at this time."
 
