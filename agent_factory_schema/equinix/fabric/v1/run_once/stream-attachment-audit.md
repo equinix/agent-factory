@@ -16,7 +16,7 @@ This agent runs once immediately by default unless scheduled by user.
 
 ## Capabilities
 - Paginate through all connections and Fabric Cloud Routers in the account
-- Use `search_stream_assets` across every stream to determine which assets are already monitored
+- Use `search_attached_assets` across every stream to determine which assets are already monitored
 - Identify unattached (unmonitored) assets by cross-referencing asset UUIDs against active subscriptions
 - Present a structured, human-readable summary to the user for selection
 - Attach user-selected assets to one or more chosen streams
@@ -33,8 +33,8 @@ This skill can use the following tools:
 - **`search_routers`**: Searches for existing Fabric Cloud Routers with pagination support.
 - **`list_streams`**: Lists all streams available in the account.
 - **`create_stream`**: Creates a new stream with a given name. Used when no streams exist and the user opts to create one.
-- **`search_stream_assets`**: Returns all assets currently attached to a given stream UUID.
-- **`attach_asset`**: Attaches a resource (connection or router) to a stream by asset UUID and stream UUID.
+- **`search_attached_assets`**: Returns all assets currently attached to a given stream UUID.
+- **`attach_stream_asset`**: Attaches a resource (connection or router) to a stream by asset UUID and stream UUID.
 - **`wait`**: Waits for a specified number of milliseconds before the next action.
 - **`send_email_notification`**: Sends an email notification to a list of recipients with an optional PDF attachment.
 
@@ -69,7 +69,7 @@ This skill can use the following tools:
 ### Step 3 — Collect All Streams and Their Attached Assets
 3a. Call `list_streams` to retrieve all available streams. Retain `uuid`, `name`, and `state` per stream.
 
-3b. For **each** stream UUID, call `search_stream_assets` to get the list of assets currently attached to that stream. 
+3b. For **each** stream UUID, call `search_attached_assets` to get the list of assets currently attached to that stream. 
 Collect all returned asset UUIDs into a single in-memory set: `attached_asset_uuids`.
 
 3c. If no streams exist, ask the user whether they would like to create one:
@@ -142,7 +142,7 @@ then ask for explicit approval:
 Execute the `attachment_plan` confirmed in Step 6 in order:
 
 7a. For each `(asset_uuid, stream_uuid)` pair in the plan:
-- Call `attach_asset` with the asset UUID and stream UUID.
+- Call `attach_stream_asset` with the asset UUID and stream UUID.
 - Record the outcome (success or error) alongside the asset name and UUID.
 - Call `wait` for 3000 milliseconds after each attachment.
 
@@ -223,7 +223,7 @@ Section content rules:
 - **Interactive first**: Never skip Step 5 or Step 6 — always present findings to the user and obtain explicit approval before making any changes.
 - **Non-destructive audit**: Steps 1–5 are read-only. No modifications are made until the user confirms in Step 6.
 - **Partial success**: A failure on one attachment must not abort the remaining plan — continue and report all outcomes.
-- **Pagination discipline**: Always paginate connections and routers fully before cross-referencing. Call `search_stream_assets` for every stream returned by `list_streams` before building `attached_asset_uuids` — an incomplete inventory will produce false negatives.
+- **Pagination discipline**: Always paginate connections and routers fully before cross-referencing. Call `search_attached_assets` for every stream returned by `list_streams` before building `attached_asset_uuids` — an incomplete inventory will produce false negatives.
 - **Clarity over completeness**: If the user's selection is ambiguous, ask before acting. Never guess which stream or asset was intended.
 - **Name length**: No generated names should exceed 24 characters.
 - **Token efficiency**: After cross-referencing in Step 4, discard the raw asset payloads. Carry forward only the curated `unattached_connections`, `unattached_routers`, stream list, and `attachment_plan`.
