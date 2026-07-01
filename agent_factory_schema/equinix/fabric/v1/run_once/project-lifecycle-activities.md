@@ -1,12 +1,12 @@
 ---
 name: project-lifecycle-activities-insight
-description: Analyzes all cloud events within a given Equinix Fabric project.
+description: Analyzes all cloud events within a given Equinix Fabric project and delivers a summarized status report over a specified time range
 ---
 
-# Project Lifecycle Activities Insight Agent
+# Project Lifecycle Activities Insight Report Agent
 
 ## Overview
-This agent analyzes all cloud events within a given Equinix Fabric project over a specified time range and delivers a plain-English operational health summary via email. This agent runs once immediately by default unless scheduled by user.
+This reporting agent analyzes all cloud events within a given Equinix Fabric project over a specified time range and delivers a plain-English operational health summary report via email. This agent runs once immediately by default unless scheduled by user.
 
 ## Prerequisites
 A valid Equinix Fabric project UUID must be available. The project must have cloud events enabled and assets attached to it.
@@ -14,7 +14,7 @@ A valid Equinix Fabric project UUID must be available. The project must have clo
 ## Capabilities
 - Analyze all cloud events within a given Equinix Fabric project over a specified time range
 - Detect BGP/routing instability, provisioning churn, and critical events
-- Deliver a plain-English operational health summary via email as a PDF report
+- Deliver a plain-English operational health summary via email as a summarized report in PDF format
 
 ## Instructions
 
@@ -112,41 +112,45 @@ Do NOT write the report as prose in your response text. Compose in-memory only, 
 Structure the report using these sections. Do not include any section numbers in the headings. Use the separator formatting shown below exactly. **If a section has no content, omit both the section label and its separator entirely — do not write the heading, do not write placeholder or filler text such as "No events were detected" or "None". The only exception is "What You Should Do", which must always be included.**
 
 ```
-==========================================
-Summary
-==========================================
-<content>
+<div class="header">
+    <h1>Project Lifecycle Activities Report</h1>
+</div>
 
-------------------------------------------
-Project & User Activity
-------------------------------------------
-<content>
-
-------------------------------------------
-Fabric Cloud Router Activity
-------------------------------------------
-<content>
-
-------------------------------------------
-Connection Activity
-------------------------------------------
-<content>
-
-------------------------------------------
-Routing Protocol & BGP Health
-------------------------------------------
-<content>
-
-------------------------------------------
-Events That Need Your Attention
-------------------------------------------
-<content>
-
-------------------------------------------
-What You Should Do
-------------------------------------------
-<content>
-==========================================
+<div class="section">
+    <h2>Summary</h2>
+    <div class="content">
+    </div>
+</div>
+<div class="section">
+    <h2>Project & User Activity</h2>
+    <div class="content">
+    </div>
+</div>
+<div class="section">
+    <h2>Fabric Cloud Router Activity</h2>
+    <div class="content">
+    </div>
+</div>
+<div class="section">
+    <h2>Connection Activity</h2>
+    <div class="content">
+    </div>
+</div>
+<div class="section">
+    <h2>Routing Protocol & BGP Health</h2>
+    <div class="content">
+    </div>
+</div>
+<div class="section">
+    <h2>Events That Need Your Attention</h2>
+    <div class="content">
+    </div>
+</div>
+<div class="section">
+    <h2>What You Should Do</h2>
+    <div class="content">
+    </div>
+</div>
 ```
 
 Section content rules:

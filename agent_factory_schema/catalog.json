@@ -51,52 +51,11 @@
             ]
         },
         {
-            "url": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/Scheduled.json",
-            "domain": "Equinix Fabric Agent Factory Scheduled",
-            "title": "Scheduled",
-            "description": "Equinix Fabric Agent Factory Scheduled",
-            "datatype": "equinix.fabric.v1.scheduled",
-            "agentFactories": [
-                {
-                    "name": "equinix.fabric.connection.bandwidth.upgrade",
-                    "description": "Upgrade Primary Connection Bandwidth",
-                    "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/scheduled/upgrade-bw-primary-connection.md",
-                    "releaseStatus": "preview"
-                },
-                {
-                    "name": "equinix.fabric.connection.notify",
-                    "description": "GCP and Equinix Metrics Monitor Emailer Agent",
-                    "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/scheduled/gcp-metrics-monitor-emailer.md",
-                    "releaseStatus": "preview"
-                },
-                {
-                    "name": "equinix.fabric.router.ping.notify",
-                    "description": "Ping and Notify Fabric Cloud Router Connection",
-                    "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/scheduled/ping-and-notify.md",
-                    "releaseStatus": "preview"
-                },
-                {
-                    "name": "equinix.fabric.router.upgrade",
-                    "description": "Upgrade FCR Package",
-                    "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/scheduled/upgrade-fcr-package.md",
-                    "releaseStatus": "preview"
-                }
-            ]
-        },
-        {
             "url": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/network_edge/v1/EventDriven.json",
             "domain": "Equinix Network Edge Agent Factory Event Driven",
             "title": "EventDriven",
             "description": "Equinix Network Edge Agent Factory Event Driven",
             "datatype": "equinix.network_edge.v1.eventdriven",
-            "agentFactories": []
-        },
-        {
-            "url": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/network_edge/v1/RunOnce.json",
-            "domain": "Equinix Network Edge Agent Factory Scheduled",
-            "title": "Scheduled",
-            "description": "Equinix Network Edge Agent Factory Scheduled",
-            "datatype": "equinix.network_edge.v1.Scheduled",
             "agentFactories": []
         },
         {

@@ -3,19 +3,25 @@ name: creating-fabric-cloud-router
 description: Creates a new Equinix Fabric Cloud Router (FCR) by gathering metro, package, and project requirements, then validating successful provisioning. Use when a user wants to create, provision, or deploy a Fabric Cloud Router or FCR.
 ---
 # Fabric Cloud Router creator agent
-## Objective
+## Overview
 Create a new Equinix Fabric Cloud Router (FCR) with the user's specified metro, package, and project configuration.
 
-## Definition of Done
+## Prerequisites
+- **IAM role required**: `Fabric Cloud Router Manager` or `Fabric Manager`
+- **Lab tier**: maximum **3 Lab routers per organization** (across all projects)
+- User-provided router name, metro code, project UUID, and package code
+- A new billing account may take up to 24 hours to activate before it can be used
+
+## Capabilities
+- Create a new Fabric Cloud Router with user-specified metro, package, and project configuration
+- Validate metro and package availability before provisioning
+- Confirm router provisioning state and return the created router details
+
+## Instructions
+### Definition of Done
 - Router UUID returned from the creation call
 - Router state is `Provisioned` or `Provisioning`
 - Configuration matches user requirements
-
-## Constraints
-- **Lab tier**: maximum **3 Lab routers per organization** (across all projects)
-- **IAM role required**: `Fabric Cloud Router Manager` or `Fabric Manager`
-- Available in all 64+ Equinix Fabric markets
-- A new billing account may take up to 24 hours to activate before it can be used
 
 ### Package Limits (for Step 3 comparison)
 | Package | Max Connections | Max Routes (IPv4/IPv6) | Max VC Bandwidth | Notes |
@@ -24,8 +30,6 @@ Create a new Equinix Fabric Cloud Router (FCR) with the user's specified metro, 
 | **Basic** | ~15 (recommended) | 250 / 50 | 1 Gbps | |
 | **Standard** | ~25 (recommended) | 1,000 / 100 | 10 Gbps | |
 | **Advanced** | ~35 (recommended) | 4,000 / 250 | 100 Gbps | |
-
-## Steps
 
 ### 1. Check Existing Routers
 List all FCRs in the user's account. Note the count of Lab-tier routers across the org (hard limit: 3 per org), existing naming conventions, and active metros. Use this to suggest a project if the user hasn't specified one.
