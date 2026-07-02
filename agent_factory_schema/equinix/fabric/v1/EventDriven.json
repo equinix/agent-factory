@@ -52,6 +52,12 @@
             "description": "Email connection-list that over metros have latency alert",
             "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/event_driven/metro-latency-notify.md",
             "releaseStatus": "preview"
+        },
+        {
+            "name": "equinix.fabric.connection.provisioning.track",
+            "description": "Track connection provisioning lifecycle and alert when stuck",
+            "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/event_driven/connection-order-status-tracker.md",
+            "releaseStatus": "preview"
         }
     ]
 }
