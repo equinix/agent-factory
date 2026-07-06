@@ -22,8 +22,6 @@ This skill can use the following tools:
 *   **`list_streams`**: Retrieves a list of existing streams.
 *   **`send_email_notification`**: Sends an email notification given an email address and email body.
 
-list_streams
-
 ## Instructions
 1. Once the cloud event is received, see if it is of the type `equinix.fabric.connection.state.provisioned`.  Only proceed further if it is.
 2. Search for any streams that may be attached to the connection using the connection uuid.  Only proceed if none are found.
