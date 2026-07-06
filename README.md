@@ -148,9 +148,7 @@ This agent runs once immediately by default unless scheduled by user.</td>
 		<td>This skill can use the following tools:
 *   **`search_attached_assets`**: Searches for any streams which may be attached to a given asset.
 *   **`list_streams`**: Retrieves a list of existing streams.
-*   **`send_email_notification`**: Sends an email notification given an email address and email body.
-
-list_streams</td>
+*   **`send_email_notification`**: Sends an email notification given an email address and email body.</td>
 		<td>preview
 	</tr>
 	<tr>
