@@ -171,6 +171,24 @@ This agent runs once immediately by default unless scheduled by user.</td>
 - **`send_email_notification`**: Sends an email. Pass `pdfTitle` and `pdfContent` (plain text) to auto-generate and attach a PDF.</td>
 		<td>preview
 	</tr>
+	<tr>
+		<td><a href="https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_schedule/asset/stuck-state-timeout-notifier.md">Stuck State Timeout Notifier Agent<br>[stuck-state-timeout-notifier.md]</a></td>
+		<td>This agent identifies Equinix Fabric connections, ports, and routers that have remained in a `PROVISIONING` or
+`DEPROVISIONING` state longer than a configurable timeout, and emails a report of the affected resources.
+This agent runs once immediately by default unless scheduled by user.
+This agent is read-only — it never modifies, upgrades, or cancels any resource.
+
+Differs from `asset-pending-state-tracker` and `connection-pending-state-tracker`: this agent applies separate
+configurable timeouts for `PROVISIONING` vs. `DEPROVISIONING`, and enriches each stuck connection/port with its
+most recent related cloud event for extra context.</td>
+		<td>- Analyze all connections, ports, and routers currently in a provisioning or deprovisioning state<br>- Flag only the resources that have exceeded a state-specific timeout<br>- Deliver a plain-English summary via email as a PDF report</td>
+		<td>- **`search_connections`**: Searches for connections.
+- **`search_routers`**: Searches for fabric cloud routers.
+- **`search_ports`**: Searches for ports.
+- **`search_cloud_events_by_asset`**: Retrieves recent cloud events for a given connection or port UUID. Not supported for routers.
+- **`send_email_notification`**: Sends an email. Pass `pdfTitle` and `pdfContent` (plain text) to auto-generate and attach a PDF.</td>
+		<td>preview
+	</tr>
 </table>
 
 </details>
