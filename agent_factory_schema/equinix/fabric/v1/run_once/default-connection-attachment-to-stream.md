@@ -25,22 +25,46 @@ This skill can use the following tools:
 *   **`send_email_notification`**: Sends an email notification given an email address and email body.
 
 ## Instructions
-1. Search across the users existing connections for anything that is provisioned
+1. Calculate a last possible date by taking the current time and subtracting the `hours` parameter save this as the `lastDate` (this will be refenced later)
+2. Search across the users existing connections for anything that is provisioned using the `search_connections` tool
 Search by connection status:
 ```
 {
   "filter": {
-    "and": [{"property": "/operation/equinixStatus", "operator": "=", "values": ["PROVISIONED"]}]
+    "and": [
+        {"property": "/operation/equinixStatus", "operator": "=", "values": ["PROVISIONED"]},
+        {"property":"/changeLog/updatedDateTime","operator":"<","values":["{{lastDate}}"]}
+        ]
+  },
+  "pagination": {
+        "limit": 100
   }
 }
 ```
-2. For each connection found:  Check the last updated date and compare to the current time.  If the connection is older than the `hours` parameter in hours.  Keep that in a list for more processing.
-3. For each connection remaining in the list:  Search for any streams that may be attached to the connection using the connection uuid.
-Search by asset with a specific connection UUID example:
+If there are more than 100 results, do not handle more than that but report that information later in the emai.
+Store the connections in a list.
+3. Search for any streams that may be attached to the connection using the connection uuid using the `search_attached_assets` tool.
+We can search them all in a single call doing something like the following:
 ```
-{"filter":{"and":[{"property":"/uuid","operator":"=","values":["88ddbf4f-aadd-44e6-a84b-3410b01a7f3b"]}]}}
+{
+    "filter": {
+        "and": [
+            {
+                "property": "/uuid",
+                "operator": "IN",
+                "values": [
+                    "d4b78fcb-a8fc-43a7-a4b8-713b97e44dba",
+                    "1de93aeb-9c9e-4d93-9d5a-af5efb084b24"
+                ]
+            }
+        ]
+    },
+    "pagination": {
+        "limit": 100
+    }
+}
 ```
-If one or more streams are found, remove it from the list.
+If one or more streams are found for the connection, remove that connection from the list.
 4. For each connection remaining in the list:  Attach that connection to the default stream.  Store the results.
 5. Send an email notification describing all the connections that you attempted to attach to the default stream and the results each attempt.  If no attempts were made, do not send an emai.
 
