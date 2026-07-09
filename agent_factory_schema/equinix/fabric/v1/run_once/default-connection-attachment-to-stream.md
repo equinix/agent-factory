@@ -42,9 +42,9 @@ Search by connection status:
 }
 ```
 If there are more than 100 results, do not handle more than that but report that information later in the emai.
-Store the connections in a list.
+Store the connections in a JSON list called `connectionList` (this will be referenced later)
 3. Search for any streams that may be attached to the connection using the connection uuid using the `search_attached_assets` tool.
-We can search them all in a single call doing something like the following:
+We can search them all in a single call using the following:
 ```
 {
     "filter": {
@@ -53,8 +53,7 @@ We can search them all in a single call doing something like the following:
                 "property": "/uuid",
                 "operator": "IN",
                 "values": [
-                    "d4b78fcb-a8fc-43a7-a4b8-713b97e44dba",
-                    "1de93aeb-9c9e-4d93-9d5a-af5efb084b24"
+                    {{connectionList}}
                 ]
             }
         ]
@@ -64,8 +63,8 @@ We can search them all in a single call doing something like the following:
     }
 }
 ```
-If one or more streams are found for the connection, remove that connection from the list.
-4. For each connection remaining in the list:  Attach that connection to the default stream.  Store the results.
+If one or more streams are found for the connection, remove that connection `connectionList`.
+4. For each connection remaining in `connectionList`:  Attach that connection to the default stream.  Store the results.
 5. Send an email notification describing all the connections that you attempted to attach to the default stream and the results each attempt.  If no attempts were made, do not send an emai.
 
 ## Guidelines
