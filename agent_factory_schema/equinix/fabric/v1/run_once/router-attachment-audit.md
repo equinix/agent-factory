@@ -29,7 +29,7 @@ unattached. This agent runs once immediately by default unless scheduled by user
 ## Available Tools
 This skill can use the following tools:
 
-- **`search_routers`**: Searches for existing Fabric Cloud Routers with pagination support.
+- **`search_routers`**: Searches for existing provisioned Fabric Cloud Routers with pagination support.
 - **`list_streams`**: Lists all streams available in the account.
 - **`search_attached_assets`**: Returns all assets currently attached to a given stream UUID.
 - **`attach_stream_asset`**: Attaches a router to a stream by asset UUID and stream UUID.
