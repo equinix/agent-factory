@@ -32,7 +32,7 @@ This skill can use the following tools:
 - **`search_routers`**: Searches for existing provisioned Fabric Cloud Routers with pagination support.
 - **`list_streams`**: Lists all streams available in the account.
 - **`search_attached_assets`**: Returns all assets currently attached to a given stream UUID.
-- **`attach_stream_asset`**: Attaches a router to a stream by asset UUID and stream UUID.
+- **`attach_stream_asset`**: Attaches a router to a stream by asset UUID and stream UUID with `"metrics_enabled": false`.
 - **`wait`**: Waits for a specified number of milliseconds before the next action.
 - **`send_email_notification`**: Sends an email notification to a list of recipients with an optional PDF attachment.
 
@@ -80,7 +80,7 @@ Call the selected set `routers_to_attach`. Any unattached routers beyond the fir
 and will be reported as left unattached (reason: exceeded 50-router attachment limit).
 
 5b. For each router in `routers_to_attach`, in order:
-- Call `attach_stream_asset` with the router UUID and the configured `stream_uuid`.
+- Call `attach_stream_asset` with the router UUID, the configured `stream_uuid`, and `"metrics_enabled": false`.
 - Record the outcome (success or error) alongside the router name and UUID.
 - Call `wait` for 3000 milliseconds after each attachment.
 
