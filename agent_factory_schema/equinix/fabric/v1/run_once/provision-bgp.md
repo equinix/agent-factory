@@ -106,13 +106,14 @@ Call `create_routing_protocol` with:
 5b. Loop:
 - If `attempt_count` = 10 OR `pending_routing_protocol_uuids` is empty, exit this loop now and go to 5c.
 - Increment `attempt_count` by 1.
-- Call `wait` for 20000 milliseconds.
+- Call `wait` for 15000 milliseconds.
 - Call `list_routing_protocols` with `connection_uuid`.
 - For each UUID remaining in `pending_routing_protocol_uuids`, look up its entry in the response and check its `state`.
 - Remove any UUID whose `state = PROVISIONED` from `pending_routing_protocol_uuids`.
+- State the full, current membership of `pending_routing_protocol_uuids` (including which UUIDs, if any, remain) before deciding whether to continue.
 - Go back to the top of this loop.
 
-5c. If `pending_routing_protocol_uuids` is empty, continue to Step 6.
+5c. Continue to Step 6 only if `pending_routing_protocol_uuids` has zero remaining members — meaning every routing protocol created in Step 4 (DIRECT and/or BGP, whichever were created) has individually reached `PROVISIONED`. A single protocol reaching `PROVISIONED` while another created protocol is still pending does NOT satisfy this condition; do not exit the loop or advance to Step 6 in that case.
 
 5d. If `attempt_count` = 10 and `pending_routing_protocol_uuids` is non-empty:
 - For each remaining UUID still in `state = PROVISIONING`, stop tracking it and continue to Step 6.
