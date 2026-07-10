@@ -37,6 +37,8 @@ None
 }
 ```
 
+If the `search_connections` call fails, retry up to 5 attempts total. Before each retry, `wait` briefly, then call `search_connections` again with the same payload. Stop retrying as soon as a call succeeds, and continue to Step 2 with that result. Only give up after all 5 attempts fail.
+
 2. Structure the report below:
 ### Section content
 - **Summary**: 3–5 sentences — total count, headline finding, insights.
@@ -84,12 +86,13 @@ None
 
 ## Available Tools
 - **`search_connections`**: Searches for connections.
+- **`wait`**: Wait for a while. An optional parameter can be provided to specify the wait time in milliseconds.
 - **`send_email_notification`**: Sends an email. Pass `pdfTitle` and `pdfContent` (plain text) to auto-generate and attach a PDF.
 
 ## Guidelines
 - Plain English, no API jargon, no raw event strings, full UUIDs always. Insight over data — derive meaning from patterns, not raw counts.
 - Skip empty sections entirely — no placeholder text. If no results found, send email with "No connections currently pending".
-- If the tool call fails, do not send email.
+- If `search_connections` fails on all 5 attempts, do not send email.
 
 ## Configuration
 **`recipient_email_addresses`**: < A list of email addresses > - Required. List of email addresses to receive the report.
