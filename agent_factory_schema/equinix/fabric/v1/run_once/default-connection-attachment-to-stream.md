@@ -27,7 +27,7 @@ This skill can use the following tools:
 
 ## Instructions
 1. Using the `hours` parameter generate a duration string by suffixing an "h" (e.g. "12h" or "24h").
-Use the `get_timestamps` tool to get a value  save this as the `lastDate` (this will be refenced later)
+Use the `get_timestamps` tool to get a value save the `from` in the reply as the `lastDate` (this will be refenced later)
 2. Search across the users existing connections for anything that is provisioned using the `search_connections` tool
 Search by connection status:
 ```
