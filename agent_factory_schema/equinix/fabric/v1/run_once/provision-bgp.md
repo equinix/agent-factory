@@ -106,7 +106,7 @@ Call `create_routing_protocol` with:
 5b. Loop:
 - If `attempt_count` = 10 OR `pending_routing_protocol_uuids` is empty, exit this loop now and go to 5c.
 - Increment `attempt_count` by 1.
-- Call `wait` for 15000 milliseconds.
+- Call `wait` for 20000 milliseconds.
 - Call `list_routing_protocols` with `connection_uuid`.
 - For each UUID remaining in `pending_routing_protocol_uuids`, look up its entry in the response and check its `state`.
 - Remove any UUID whose `state = PROVISIONED` from `pending_routing_protocol_uuids`.
