@@ -31,7 +31,7 @@ env:
 
 jobs:
   content-eval:
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, nonprod, ecx]
     steps:
       - name: Check out agent-factory
         uses: actions/checkout@v4
