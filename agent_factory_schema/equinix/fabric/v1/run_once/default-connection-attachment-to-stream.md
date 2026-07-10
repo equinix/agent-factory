@@ -25,7 +25,7 @@ This skill can use the following tools:
 *   **`send_email_notification`**: Sends an email notification given an email address and email body.
 
 ## Instructions
-1. Calculate a last possible date by taking the current UTC time and subtracting the `hours` parameter save this as the `lastDate` (this will be refenced later)
+1. Calculate a last possible date by taking the current UTC time and subtracting `hours` number of hours and save this as the `lastDate` (this will be refenced later)
 2. Search across the users existing connections for anything that is provisioned using the `search_connections` tool
 Search by connection status:
 ```
