@@ -61,6 +61,7 @@ This agent runs once immediately by default unless scheduled by user.</td>
 		<td>An Equinix agent that automatically detects new connections older than a certain amount of time and ensures they are at least connected to the default stream.</td>
 		<td>- Detect older connections that are not attached to any stream<br>- Attach such connections to the default stream<br>- Email notification of this action to the user<br>- Log all actions and decisions</td>
 		<td>This skill can use the following tools:
+*   **`get_timestamps`**: Generates `from` and `to` UTC timestamps based on a duration string (e.g., `"24h"`, `"7d"`, `"1M"`). Returns a JSON object with `from` and `to` as ISO 8601 UTC strings. Always call this in Step 1 to obtain the reporting window.
 *   **`search_connections`**: Search for any connections that are already provisioned.
 *   **`search_attached_assets`**: Search for any streams which may be attached to a given connection.
 *   **`attach_stream_asset`**: Attach the connection to the default stream.
