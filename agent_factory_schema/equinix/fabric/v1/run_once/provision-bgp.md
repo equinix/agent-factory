@@ -103,7 +103,7 @@ Call `create_routing_protocol` with:
 ### Step 5 - Wait for Routing Protocol Provisioning
 5a. Build a `pending_routing_protocol_uuids` set from whichever UUIDs were recorded in Step 4 (`direct_routing_protocol_uuid` and/or `bgp_routing_protocol_uuid`). Only UUIDs that were actually created are tracked.
 
-5b. Repeat up to 10 times, or until `pending_routing_protocol_uuids` is empty:
+5b. Repeat this step up to 10 times, or until `pending_routing_protocol_uuids` is empty:
 - Call `wait` for 15000 milliseconds.
 - Call `list_routing_protocols` with `connection_uuid`.
 - For each UUID remaining in `pending_routing_protocol_uuids`, look up its entry in the response and check its `state`.
