@@ -101,30 +101,23 @@ Call `create_routing_protocol` with:
 4c. If creation of BGP routing protocol is successful, record returned routing protocol UUID as `bgp_routing_protocol_uuid`.
 
 ### Step 5 - Wait for Routing Protocol Provisioning
-5a. Build a `pending_routing_protocol_uuids` set from whichever UUIDs were recorded in Step 4 (`direct_routing_protocol_uuid` and/or `bgp_routing_protocol_uuid`). Only UUIDs that were actually created are tracked. Initialize `attempt_count` = 0.
+Poll `list_routing_protocols` with `connection_uuid` until:
+- ALL `state` is `PROVISIONED`, or
+- 10 verification attempts have been made.
 
-5b. Perform one polling attempt:
-- Call `wait` for 20000 milliseconds.
-- Call `list_routing_protocols` with `connection_uuid`.
-- For each UUID remaining in `pending_routing_protocol_uuids`, look up its entry in the response and check its `state`.
-- Remove any UUID whose `state = PROVISIONED` from `pending_routing_protocol_uuids`.
-- Increment `attempt_count` by 1.
-- State the full, current membership of `pending_routing_protocol_uuids` (including which UUIDs, if any, remain).
+Between each verification attempt where any state remains `PROVISIONING`, call `wait` for 15000 milliseconds. before calling `list_routing_protocols` with `connection_uuid` again.
+If ALL `state` becomes `PROVISIONED`, continue immediately to Step 6.
+If at least 1 `state` is still `PROVISIONING` after the 10th verification attempt, stop polling and continue to the next step without further verification.
+If `verify_state` returns a non-retryable state (for example, `FAILED` or `ERROR`), for that specific UUID, report its type (DIRECT or BGP) and last known state. Then continue to Step 6.
 
-5c. After every polling attempt in 5b, evaluate these conditions in order and stop at the first one that matches. Do not jump ahead to a later condition or apply it out of order:
-1. If `pending_routing_protocol_uuids` is now empty: every created routing protocol has reached `PROVISIONED`. Continue to Step 6.
-2. Else, if `attempt_count` < 10: at least one created routing protocol has not reached `PROVISIONED` yet, and retries remain. Go back to 5b and perform another polling attempt. This condition applies regardless of what `state` any individual UUID currently shows — including `PROVISIONING` — so do not continue to Step 6 or apply condition 3 while this condition holds.
-3. Else (`attempt_count` = 10 and `pending_routing_protocol_uuids` is still non-empty): retries are exhausted. For each remaining UUID:
-    - If its `state = PROVISIONING`, stop tracking it and continue to Step 6.
-    - If its `state` is anything else (not `PROVISIONED`, not `PROVISIONING`), report that the maximum retry attempts exceeded for that specific UUID (include its type — DIRECT or BGP — and last known state). Then continue to Step 6.
-
-5d. Determine overall provisioning outcome for Step 6:
+### Step 6 - Determine overall provisioning outcome
+Determine overall provisioning outcome for Step 7:
 - `SUCCESS` if every created routing protocol reached `PROVISIONED`.
 - `PARTIAL_SUCCESS` if at least one created routing protocol reached `PROVISIONED` and at least one did not (e.g., BGP provisioned but DIRECT still `PROVISIONING`, or vice versa).
 - `FAILURE` if none of the created routing protocols reached `PROVISIONED`.
 
-### Step 6 - Send Completion Notification
-6a. Compose `pdfContent` in memory. When inserting a single line break, use `<br/>` instead of `<br>`.
+### Step 7 - Send Completion Notification
+7a. Compose `pdfContent` in memory. When inserting a single line break, use `<br/>` instead of `<br>`.
 
 ```
 <div class="header">
@@ -154,13 +147,13 @@ Call `create_routing_protocol` with:
 ```
 
 Section content rules for `pdfContent`:
-- **Summary**: State `connection_uuid`, each created routing protocol UUID (`direct_routing_protocol_uuid` and/or `bgp_routing_protocol_uuid`, whichever apply) with its final state, and overall execution outcome (`SUCCESS`, `PARTIAL_SUCCESS`, or `FAILURE`) as determined in Step 5d. In 2-4 sentences, summarize what was attempted and whether provisioning completed for each created protocol.
+- **Summary**: State `connection_uuid`, each created routing protocol UUID (`direct_routing_protocol_uuid` and/or `bgp_routing_protocol_uuid`, whichever apply) with its final state, and overall execution outcome (`SUCCESS`, `PARTIAL_SUCCESS`, or `FAILURE`) as determined in Step 6. In 2-4 sentences, summarize what was attempted and whether provisioning completed for each created protocol.
 - **Routing Protocol and BGP Status**: Include final routing protocol state and key BGP configuration applied: `customerAsn`, `equinixAsn`, BFD (`enabled`, `interval`), and configured address families (`bgpIpv4`, `bgpIpv6`).
 - **Execution Checks and Retries**: Include polling behavior and outcome: provisioning retry count used, and whether timeout thresholds were reached. If the state is still `PROVISIONING`, ask the user to verify the routing protocol state in 1-2 minutes.
 - **What You Should Do**: Provide 1-3 operational next actions based on final outcome. If outcome is `SUCCESS`, end with: "BGP provisioning completed successfully and no further action is required at this time."
 
-6b. Call `send_email_notification` with:
-- `pdfContent`: completion summary from Step 6a.
+7b. Call `send_email_notification` with:
+- `pdfContent`: completion summary from Step 7a.
 - `body`: one-paragraph operational summary of execution result (`SUCCESS`, `PARTIAL_SUCCESS`, or `FAILURE`) and any required follow-up action.
 - `pdfTitle`: `ProvisionBGP_<connection_uuid>_<execution_result>`
 - `recipients`: `recipient_email_addresses`
