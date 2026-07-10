@@ -19,13 +19,15 @@ Connections should be in PROVISIONED state and be older than the `hours` paramet
 
 ## Available Tools
 This skill can use the following tools:
+*   **`get_timestamps`**: Generates `from` and `to` UTC timestamps based on a duration string (e.g., `"24h"`, `"7d"`, `"1M"`). Returns a JSON object with `from` and `to` as ISO 8601 UTC strings. Always call this in Step 1 to obtain the reporting window.
 *   **`search_connections`**: Search for any connections that are already provisioned.
 *   **`search_attached_assets`**: Search for any streams which may be attached to a given connection.
 *   **`attach_stream_asset`**: Attach the connection to the default stream.
 *   **`send_email_notification`**: Sends an email notification given an email address and email body.
 
 ## Instructions
-1. Calculate a last possible date by taking the current UTC time and subtracting `hours` number of hours and save this as the `lastDate` (this will be refenced later)
+1. Using the `hours` parameter generate a duration string by suffixing an "h" (e.g. "12h" or "24h").
+Use the `get_timestamps` tool to get a value  save this as the `lastDate` (this will be refenced later)
 2. Search across the users existing connections for anything that is provisioned using the `search_connections` tool
 Search by connection status:
 ```
