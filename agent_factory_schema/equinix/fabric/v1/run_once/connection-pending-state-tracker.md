@@ -39,7 +39,7 @@ None
 
 If the `search_connections` call fails, retry up to 5 attempts total. Before each retry, `wait` briefly, then call `search_connections` again with the same payload. Stop retrying as soon as a call succeeds, and continue to Step 2 with that result. Only give up after all 5 attempts fail.
 
-2. Filter connections by timeout threshold. Calculate the time each connection has been in pending state (`now - updatedDateTime`). Keep only connections where `minutes_in_pending_state > pending_state_timeout_minutes` (default: 30 minutes). If no connections exceed the threshold, stop here and do not send an email. Otherwise, proceed to Step 3 with the filtered list.
+2. Call `get_timestamps` with `duration` = `"24h"` to obtain the current UTC time. Use the `to` field as `now` (ignore `from`). For each connection from Step 1, calculate `minutes_in_pending_state` = `now` − `changeLog.updatedDateTime`, in minutes. Keep only connections where `minutes_in_pending_state > pending_state_timeout_minutes` (default: 30 minutes). If no connections exceed the threshold, stop here and do not send an email. Otherwise, proceed to Step 3 with the filtered list.
 
 3. Structure the report below:
 ### Section content
@@ -88,6 +88,7 @@ If the `search_connections` call fails, retry up to 5 attempts total. Before eac
 
 ## Available Tools
 - **`search_connections`**: Searches for connections.
+- **`get_timestamps`**: Generates `from` and `to` UTC timestamps based on a required duration string (e.g., `"24h"`, `"7d"`). `to` is always the current UTC time; `from` is `to` minus the duration. Use the `to` field as the current UTC time reference for calculating time-in-state. Do not compute or hardcode the current time manually.
 - **`wait`**: Wait for a while. An optional parameter can be provided to specify the wait time in milliseconds.
 - **`send_email_notification`**: Sends an email. Pass `pdfTitle` and `pdfContent` (plain text) to auto-generate and attach a PDF.
 
@@ -96,6 +97,7 @@ If the `search_connections` call fails, retry up to 5 attempts total. Before eac
 - Only send email if connections exceed the timeout threshold. Do not send email if all connections are within acceptable time.
 - If `search_connections` fails on all 5 attempts, do not send email.
 - Always use the configured `pending_state_timeout_minutes` value; if not provided, default to 30 minutes.
+- Never estimate or hardcode the current time — always call `get_timestamps` to get an authoritative `now` before calculating time-in-state.
 
 ## Configuration
 - **`recipient_email_addresses`**: Required. List of email addresses to receive the report.
