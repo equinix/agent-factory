@@ -3,7 +3,7 @@ name: daily-create-report
 description: Identify connections, ports, cloud routers, networks, internet access, and network edge creation events in past 24 hours; compile creation summary with owners and distribute a daily report.
 ---
 
-# Fabric Asset Creation Report Agent
+# Daily Asset Creation Report Agent
 
 ## Overview
 Identify connections, ports, cloud routers, networks, internet access, and network edge creation events in past 24 hours; compile creation summary with owners and distribute a daily report.
@@ -99,7 +99,7 @@ Structure the report using these sections. Do not include any section numbers in
 
 ```
 <div class="header">
-    <h1>Daily EQuinix Created Assets Report</h1>
+    <h1>Daily Equinix Created Assets Report</h1>
 </div>
 
 <div class="section">
