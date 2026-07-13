@@ -66,7 +66,7 @@ We can search them all in a single call using the following:
 }
 ```
 If one or more streams are found for the connection, remove that connection `connectionList`.
-4. For each connection remaining in `connectionList`:  Attach that connection to the default stream.  Store the results.
+4. For each and every connection remaining in `connectionList`:  Attach that connection to the default stream.  Store the results.
 5. Send an email notification describing all the connections that you attempted to attach to the default stream and the results each attempt.  If no attempts were made, do not send an emai.
 
 ## Guidelines
