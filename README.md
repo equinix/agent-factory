@@ -69,6 +69,18 @@ This agent runs once immediately by default unless scheduled by user.</td>
 		<td>preview
 	</tr>
 	<tr>
+		<td><a href="https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/run_once/default-router-attachment-to-stream.md">Detect routers that are not attached to a stream and notify<br>[default-router-attachment-to-stream.md]</a></td>
+		<td>An Equinix agent that automatically detects new routers older than a certain amount of time and ensures they are at least connected to the default stream.</td>
+		<td>- Detect older routers that are not attached to any stream<br>- Attach such routers to the default stream<br>- Email notification of this action to the user<br>- Log all actions and decisions</td>
+		<td>This skill can use the following tools:
+*   **`get_timestamps`**: Generates `from` and `to` UTC timestamps based on a duration string (e.g., `"24h"`, `"7d"`, `"1M"`). Returns a JSON object with `from` and `to` as ISO 8601 UTC strings. Always call this in Step 1 to obtain the reporting window.
+*   **`search_routers`**: Search for any routers that are already provisioned.
+*   **`search_attached_assets`**: Search for any streams which may be attached to a given router.
+*   **`attach_stream_asset`**: Attach the router to the default stream.
+*   **`send_email_notification`**: Sends an email notification given an email address and email body.</td>
+		<td>preview
+	</tr>
+	<tr>
 		<td><a href="https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/run_once/upgrade-bw-primary-connection.md">Bandwidth upgrader agent<br>[upgrade-bw-primary-connection.md]</a></td>
 		<td>An Equinix agent that upgrades the bandwidth of a connection.
 This agent runs once immediately by default unless scheduled by user.</td>
@@ -95,6 +107,18 @@ This agent runs once immediately by default unless scheduled by user.</td>
 *   **`wait`**: Wait for a while. An optional parameter can be provided to specify the wait time in milliseconds.
 *   **`search_router_commands`**: Search for commands (e.g., PING) on a Fabric Cloud Router.
 *   **`send_email_notification`**: Sends an email notification given a list email of addresses and email body.</td>
+		<td>preview
+	</tr>
+	<tr>
+		<td><a href="https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/run_once/default-port-attachment-to-stream.md">Detect ports that are not attached to a stream and notify<br>[default-port-attachment-to-stream.md]</a></td>
+		<td>An Equinix agent that automatically detects new ports older than a certain amount of time and ensures they are at least connected to the default stream.</td>
+		<td>- Detect older ports that are not attached to any stream<br>- Attach such ports to the default stream<br>- Email notification of this action to the user<br>- Log all actions and decisions</td>
+		<td>This skill can use the following tools:
+*   **`get_timestamps`**: Generates `from` and `to` UTC timestamps based on a duration string (e.g., `"24h"`, `"7d"`, `"1M"`). Returns a JSON object with `from` and `to` as ISO 8601 UTC strings. Always call this in Step 1 to obtain the reporting window.
+*   **`search_ports`**: Search for any ports that are already provisioned.
+*   **`search_attached_assets`**: Search for any streams which may be attached to a given port.
+*   **`attach_stream_asset`**: Attach the port to the default stream.
+*   **`send_email_notification`**: Sends an email notification given an email address and email body.</td>
 		<td>preview
 	</tr>
 	<tr>
