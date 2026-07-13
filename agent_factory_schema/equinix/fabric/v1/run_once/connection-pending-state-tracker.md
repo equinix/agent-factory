@@ -6,8 +6,8 @@ description: Monitors and notifies user for connections stuck in provisioning or
 # Connection Pending State Tracker Agent
 
 ## Overview
-This agent analyzes the lifecycle state of Equinix Fabric connections to identify those currently in a provisioning or deprovisioning phase, proactively notifying the user.
-This agent runs once immediately by default unless scheduled by user. Recommended schedule: every 4 hours.
+This agent analyzes the lifecycle state of Equinix Fabric connections to identify those stuck in provisioning or deprovisioning state longer than a configured threshold, proactively notifying the user when action may be needed.
+This agent runs once immediately by default unless scheduled by user. Recommended schedule: every 4 hours. Only sends email if connections exceed the timeout threshold.
 
 ## Prerequisites
 None
@@ -39,10 +39,12 @@ None
 
 If the `search_connections` call fails, retry up to 5 attempts total. Before each retry, `wait` briefly, then call `search_connections` again with the same payload. Stop retrying as soon as a call succeeds, and continue to Step 2 with that result. Only give up after all 5 attempts fail.
 
-2. Structure the report below:
+2. Filter connections by timeout threshold. Calculate the time each connection has been in pending state (`now - updatedDateTime`). Keep only connections where `minutes_in_pending_state > pending_state_timeout_minutes` (default: 30 minutes). If no connections exceed the threshold, stop here and do not send an email. Otherwise, proceed to Step 3 with the filtered list.
+
+3. Structure the report below:
 ### Section content
-- **Summary**: 3–5 sentences — total count, headline finding, insights.
-- **Connection Activity**: Include only if connections exist — otherwise omit entirely. Include name, uuid, state, project, created and updated dates. Also include how long has it been since created date in hours. Put values under Data Row.
+- **Summary**: 3–5 sentences — count of connections exceeding timeout, headline finding, insights.
+- **Connection Activity**: Include name, uuid, state, project, created and updated dates. Also include how long has it been in pending state in hours. Put values under Data Row.
 
 ```
 <div class="header">
@@ -66,7 +68,7 @@ If the `search_connections` call fails, retry up to 5 attempts total. Before eac
                 <li>State</li>
                 <li>Created Date</li>
                 <li>Updated Date</li>
-                <li>Hours Since Creation</li>
+                <li>Hours in Pending State</li>
             </ul>
 
           <!-- Data Row-->
@@ -79,9 +81,9 @@ If the `search_connections` call fails, retry up to 5 attempts total. Before eac
 
 ```
 
-3. Use `send_email_notification` to send the report to `recipient_email_addresses`. Follow the email rules below:
-- `pdfContent`: the full report text from Step 2.
-- `body`: one-paragraph summary of overall status and headline finding.
+4. Use `send_email_notification` to send the report to `recipient_email_addresses`. Follow the email rules below:
+- `pdfContent`: the full report text from Step 3.
+- `body`: one-paragraph summary of connections exceeding timeout threshold and recommended actions.
 - `pdfTitle`: `ConnectionPendingStates`
 
 ## Available Tools
@@ -91,8 +93,19 @@ If the `search_connections` call fails, retry up to 5 attempts total. Before eac
 
 ## Guidelines
 - Plain English, no API jargon, no raw event strings, full UUIDs always. Insight over data — derive meaning from patterns, not raw counts.
-- Skip empty sections entirely — no placeholder text. If no results found, send email with "No connections currently pending".
+- Only send email if connections exceed the timeout threshold. Do not send email if all connections are within acceptable time.
 - If `search_connections` fails on all 5 attempts, do not send email.
+- Always use the configured `pending_state_timeout_minutes` value; if not provided, default to 30 minutes.
 
 ## Configuration
-**`recipient_email_addresses`**: < A list of email addresses > - Required. List of email addresses to receive the report.
+
+**`recipient_email_addresses`** (Required)  
+A list of email addresses to receive the report.
+
+**`pending_state_timeout_minutes`** (Optional)  
+Threshold in minutes — only connections exceeding this time in provisioning/deprovisioning state will be reported and trigger an email alert.
+- **Default**: `30` (minutes)
+- **Example values**: `60`, `120`, `240`
+
+**Behavior**:  
+If no connections exceed this threshold, no email is sent. This ensures alerts only when connections are genuinely stuck longer than acceptable.
