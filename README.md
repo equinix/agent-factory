@@ -154,16 +154,6 @@ This agent runs once immediately by default unless scheduled by user.</td>
 		<th>Release Status</th>
 	</tr>
 	<tr>
-		<td><a href="https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/event_driven/pre-flight-validator.md">Detect connections that are not attached to a stream and notify<br>[pre-flight-validator.md]</a></td>
-		<td>An Equinix agent that automatically detects new connections are not attached to a stream.</td>
-		<td>- Detect connections that are not attached to any stream<br>- Email notification with the list of available streams<br>- Log all actions and decisions</td>
-		<td>This skill can use the following tools:
-*   **`search_attached_assets`**: Searches for any streams which may be attached to a given asset.
-*   **`list_streams`**: Retrieves a list of existing streams.
-*   **`send_email_notification`**: Sends an email notification given an email address and email body.</td>
-		<td>preview
-	</tr>
-	<tr>
 		<td><a href="https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/event_driven/upgrade-fcr-package.md">Cloud Router monitoring and upgrade package agent<br>[upgrade-fcr-package.md]</a></td>
 		<td>An Equinix agent that continuously monitors route usage on a Fabric Cloud Router. 
 When the route usage exceeds a predefined threshold, the agent automatically upgrades the Fabric Cloud Router package to ensure sufficient capacity and uninterrupted operation.
