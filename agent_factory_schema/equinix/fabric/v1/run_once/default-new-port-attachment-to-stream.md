@@ -35,7 +35,7 @@ Search by port status:
   "filter": {
     "and": [
         {"property": "/state", "operator": "=", "values": ["ACTIVE"]},
-        {"property":"/changeLog/updatedDateTime","operator":"<","values":["{{lastDate}}"]}
+        {"property":"/changeLog/updatedDateTime","operator":">","values":["{{lastDate}}"]}
         ]
   },
   "pagination": {
@@ -77,5 +77,5 @@ If the call fails because metrics were enabled, try again without metrics enable
 
 ## Configuration
 * **`stream_uuid`**: < The uuid of the default stream > - Required.
-* **`hours`**: < The minimum age of ports required to take action provided in hours > - Required.
+* **`hours`**: < The maximum age of ports required to take action provided in hours > - Required.
 * **`recipient_email_addresses`**: < A list of email addresses > - Required. List of email addresses to receive the notification.
