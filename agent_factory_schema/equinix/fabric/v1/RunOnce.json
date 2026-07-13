@@ -34,6 +34,12 @@
             "description": "Ping and Notify Fabric Cloud Router Connection",
             "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/run_once/ping-and-notify.md",
             "releaseStatus": "preview"
+        },
+        {
+            "name": "equinix.fabric.connection.health.scorecard",
+            "description": "Create Connection Health Scorecard",
+            "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/run_once/create-connection-health-scorecard.md",
+            "releaseStatus": "preview"
         }
     ]
 }
