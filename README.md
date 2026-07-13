@@ -133,6 +133,7 @@ This agent runs once immediately by default unless scheduled by user.</td>
 This agent runs once immediately by default unless scheduled by user. Recommended schedule: every 4 hours. Only sends email if connections exceed the timeout threshold.</td>
 		<td>- Search for all connections currently in a pending (provisioning or deprovisioning) state<br>- Deliver a plain-English summary via email</td>
 		<td>- **`search_connections`**: Searches for connections.
+- **`get_timestamps`**: Generates `from` and `to` UTC timestamps based on a required duration string (e.g., `"24h"`, `"7d"`). `to` is always the current UTC time; `from` is `to` minus the duration. Use the `to` field as the current UTC time reference for calculating time-in-state. Do not compute or hardcode the current time manually.
 - **`wait`**: Wait for a while. An optional parameter can be provided to specify the wait time in milliseconds.
 - **`send_email_notification`**: Sends an email. Pass `pdfTitle` and `pdfContent` (plain text) to auto-generate and attach a PDF.</td>
 		<td>preview
