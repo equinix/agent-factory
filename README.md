@@ -39,6 +39,7 @@ This agent runs once immediately by default unless scheduled by user.</td>
 		<td>- Enumerate all PROVISIONED connections (or a user-specified subset)<br>- Collect rate-exceeded packet drops, packet errors, utilization, and latency metrics per connection<br>- Compute a reproducible composite 0–100 health score per connection<br>- Rank all connections and flag any with an obvious measurable issue<br>- Recommend concrete remediation for every flagged connection<br>- Deliver a prioritized scorecard as a PDF report via email</td>
 		<td>This skill can use the following tools:
 
+*   **`get_timestamps`**: Generates `from` and `to` UTC timestamps (ISO 8601) from a duration string (e.g. `"24h"`, `"7d"`).
 *   **`search_connections`**: Enumerates PROVISIONED connections and resolves connection context (A/Z ports, A/Z metro codes, provisioned bandwidth).
 *   **`search_metrics`**: Retrieves connection, port, and metro metrics over the scoring window.
 *   **`get_metric`**: Retrieves a single metric series when a targeted lookup is needed.
