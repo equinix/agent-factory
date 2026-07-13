@@ -1,12 +1,12 @@
 ---
 name: create-connection-health-scorecard
-description: Scores and ranks the health of all Fabric connections (rate-exceeded packet drops, packet errors, utilization, latency) and emails a prioritized remediation scorecard.
+description: Scores and ranks the health of Fabric connections (rate-exceeded packet drops, packet errors, utilization, latency) and emails a prioritized remediation scorecard.
 ---
 
 # Connection Health Scorecard Agent
 
 ## Overview
-This agent gives operators a single-pane health view across all Equinix Fabric connections. It collects per-connection performance metrics, computes a composite 0–100 health score for each connection, ranks them, flags any connection with an obvious measurable issue, and recommends remediation for every flagged connection — so troubleshooting effort can be prioritized where it matters most. The result is delivered as a PDF scorecard via email.
+This agent gives operators a single-pane health view across Equinix Fabric connections. It collects per-connection performance metrics, computes a composite 0–100 health score for each connection, ranks them, flags any connection with an obvious measurable issue, and recommends remediation for every flagged connection — so troubleshooting effort can be prioritized where it matters most. The result is delivered as a PDF scorecard via email.
 This agent runs once immediately by default unless scheduled by user.
 
 ## Prerequisites
@@ -40,7 +40,7 @@ This agent runs once immediately by default unless scheduled by user.
 
 2. **Collect metrics per connection** over `scoring_window` (default: last 24 hours) using `search_metrics`. Issue one call per resource; if a response is too large to process, split the metric names across multiple calls (e.g. drops in one call, utilization in another). Collect:
    - **Rate-exceeded packet drops** (connection): `equinix.fabric.connection.packets_dropped_rx_aside_rateexceeded.count`, `equinix.fabric.connection.packets_dropped_rx_zside_rateexceeded.count`, `equinix.fabric.connection.packets_dropped_tx_aside_rateexceeded.count`, `equinix.fabric.connection.packets_dropped_tx_zside_rateexceeded.count`. These count only packets dropped because traffic exceeded the connection's provisioned rate limit — this is **not** general packet loss.
-   - **Utilization** (connection): `equinix.fabric.connection.bandwidth_rx.usage_summary` and `equinix.fabric.connection.bandwidth_tx.usage_summary` — use the p95 value against the provisioned bandwidth. If usage summary is unavailable, fall back to the `max` of `equinix.fabric.connection.bandwidth_rx.usage` / `equinix.fabric.connection.bandwidth_tx.usage`.
+   - **Utilization** (connection): `equinix.fabric.connection.bandwidth_rx.usage` and `equinix.fabric.connection.bandwidth_tx.usage` — use the inbound/outbound usage values against the provisioned bandwidth.
    - **Packet errors** (port): `equinix.fabric.port.packets_erred_rx.count` and `equinix.fabric.port.packets_erred_tx.count` on the A-side and Z-side ports. (A connection-level error metric is not exposed — see Guidelines.)
    - **Latency** (metro): `equinix.fabric.metro.<aside>_<zside>.latency` using the A/Z metro codes. Retrieve the **time series over the window** (not just the latest point) so the current value can be compared against this connection's own prior values.
 
@@ -59,7 +59,7 @@ This agent runs once immediately by default unless scheduled by user.
 4. **Rank** all scored connections from highest (healthiest) to lowest. **Flag** (a simple yes/no) every connection that has at least one obvious, measurable issue over the window:
    - Any non-zero rate-exceeded packet drops, OR
    - Any non-zero packet errors (A or Z port), OR
-   - p95 utilization above 80% of provisioned bandwidth, OR
+   - rx/tx usage above 80% of provisioned bandwidth, OR
    - A sustained rise in latency above the connection's own earlier baseline.
    A connection with none of these is not flagged.
 
