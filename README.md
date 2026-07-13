@@ -129,8 +129,8 @@ This agent runs once immediately by default unless scheduled by user.</td>
 	</tr>
 	<tr>
 		<td><a href="https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/run_once/connection-pending-state-tracker.md">Connection Pending State Tracker Agent<br>[connection-pending-state-tracker.md]</a></td>
-		<td>This agent analyzes the lifecycle state of Equinix Fabric connections to identify those currently in a provisioning or deprovisioning phase, proactively notifying the user.
-This agent runs once immediately by default unless scheduled by user. Recommended schedule: every 4 hours.</td>
+		<td>This agent analyzes the lifecycle state of Equinix Fabric connections to identify those stuck in provisioning or deprovisioning state longer than a configured threshold, proactively notifying the user when action may be needed.
+This agent runs once immediately by default unless scheduled by user. Recommended schedule: every 4 hours. Only sends email if connections exceed the timeout threshold.</td>
 		<td>- Search for all connections currently in a pending (provisioning or deprovisioning) state<br>- Deliver a plain-English summary via email</td>
 		<td>- **`search_connections`**: Searches for connections.
 - **`wait`**: Wait for a while. An optional parameter can be provided to specify the wait time in milliseconds.
