@@ -67,7 +67,7 @@ Using `from_timestamp` and `to_timestamp` established in Step 1, call `search_cl
   "pagination": { "offset": 0, "limit": 100 }
 }
 ```
-Replace `<project_uuid>` with the configured project UUID, `<from_timestamp>` with the value set in Step 1, and `<to_timestamp>` with the value set in Step 1. Do not use any other timestamp source.
+Replace `<project_uuid>` with the configured project UUID or multiple project UUIDs, `<from_timestamp>` with the value set in Step 1, and `<to_timestamp>` with the value set in Step 1. Do not use any other timestamp source.
 
 If total events exceed the page limit, repeat with incremented offsets until all events are collected or 500 events maximum are reached.
 
