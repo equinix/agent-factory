@@ -99,7 +99,7 @@ Structure the report using these sections. Do not include any section numbers in
 
 ```
 <div class="header">
-    <h1>Project Lifecycle Activities Report</h1>
+    <h1>Daily EQuinix Created Assets Report</h1>
 </div>
 
 <div class="section">
