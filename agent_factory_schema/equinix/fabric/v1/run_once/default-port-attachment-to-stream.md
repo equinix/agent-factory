@@ -67,6 +67,7 @@ We can search them all in a single call using the following:
 ```
 If one or more streams are found for the port, remove that port `portList`.
 4. For each and every port remaining in `portList`:  Attach that port to the default stream.  Store the results.
+If the call fails because metrics were enabled, try again without metrics enabled.
 5. Send an email notification describing all the ports that you attempted to attach to the default stream and the results each attempt.  If no attempts were made, do not send an emai.
 
 ## Guidelines
