@@ -98,14 +98,5 @@ If the `search_connections` call fails, retry up to 5 attempts total. Before eac
 - Always use the configured `pending_state_timeout_minutes` value; if not provided, default to 30 minutes.
 
 ## Configuration
-
-**`recipient_email_addresses`** (Required)  
-A list of email addresses to receive the report.
-
-**`pending_state_timeout_minutes`** (Optional)  
-Threshold in minutes — only connections exceeding this time in provisioning/deprovisioning state will be reported and trigger an email alert.
-- **Default**: `30` (minutes)
-- **Example values**: `60`, `120`, `240`
-
-**Behavior**:  
-If no connections exceed this threshold, no email is sent. This ensures alerts only when connections are genuinely stuck longer than acceptable.
+- **`recipient_email_addresses`**: Required. List of email addresses to receive the report.
+- **`pending_state_timeout_minutes`**: Optional. Threshold in minutes; only connections exceeding this time in provisioning/deprovisioning state are reported. If not provided, defaults to 30 minutes.
