@@ -708,14 +708,13 @@ def _write_report_md(results: list[EvalResult], threshold: float, output_path: s
         for tname, w in all_warnings:
             lines.append(f"- **`{tname}`**: {w}")
 
-    # Detailed judge scores for failed templates
-    failed = [r for r in results if not r.passed]
-    if failed:
-        lines += ["", "### Judge Scores (failed templates)", ""]
-        for r in failed:
-            if not r.judge_scores:
-                continue
-            lines.append(f"**`{Path(r.source_path).name}`**")
+    # Detailed judge scores for all evaluated templates
+    judged = [r for r in results if r.judge_ran and r.judge_scores]
+    if judged:
+        lines += ["", "### Judge Scores", ""]
+        for r in judged:
+            verdict_icon = "✅" if r.passed else "❌"
+            lines.append(f"**`{Path(r.source_path).name}`** {verdict_icon}")
             lines.append("")
             lines.append("| Dimension | Score | Comment |")
             lines.append("|---|---|---|")
