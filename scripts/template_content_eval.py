@@ -247,8 +247,11 @@ class TemplateMarkdownParser:
 # Tool corpus builder — builds known tool set from all existing templates
 # ---------------------------------------------------------------------------
 
-def build_tool_corpus(templates_root: Optional[str]) -> set[str]:
-    """Collect all tool identifiers declared across all .md templates as the known corpus."""
+def build_tool_corpus(templates_root: Optional[str], exclude: Optional[Path] = None) -> set[str]:
+    """Collect all tool identifiers declared across all .md templates as the known corpus.
+
+    exclude: if provided, skip this path so a template is not validated against itself.
+    """
     if not templates_root:
         return set()
     root = Path(templates_root)
@@ -257,6 +260,8 @@ def build_tool_corpus(templates_root: Optional[str]) -> set[str]:
     parser = TemplateMarkdownParser()
     corpus: set[str] = set()
     for md_path in root.rglob("*.md"):
+        if exclude and md_path.resolve() == exclude.resolve():
+            continue
         try:
             text = md_path.read_text(encoding="utf-8")
             spec = parser.parse(str(md_path), text)
@@ -411,8 +416,9 @@ class TemplateContentEvalService:
         self._tool_corpus = tool_corpus or set()
 
     def evaluate(self, path: str, markdown: str, threshold: float,
-                 skip_llm: bool = False) -> EvalResult:
+                 skip_llm: bool = False, tool_corpus: set[str] | None = None) -> EvalResult:
         spec = self._parser.parse(path, markdown)
+        active_corpus = tool_corpus if tool_corpus is not None else self._tool_corpus
         checks: dict[str, bool] = {}
         issues: list[str] = []
         warnings: list[str] = []
@@ -459,8 +465,8 @@ class TemplateContentEvalService:
             )
 
         # 7. Unknown tools check (warning, non-blocking) — only when corpus is available
-        if self._tool_corpus and spec.declared_tools:
-            unknown = [t for t in spec.declared_tools if t not in self._tool_corpus]
+        if active_corpus and spec.declared_tools:
+            unknown = [t for t in spec.declared_tools if t not in active_corpus]
             if unknown:
                 warnings.append(
                     f"Tools not seen in any other template (may be new or mistyped): "
@@ -755,20 +761,20 @@ def main() -> None:
         langsmith_client=langsmith.get_client(),
     )
 
-    # Build tool corpus from all existing templates for cross-template unknown-tool warnings
     corpus_root = args.templates_dir or "agent_factory_schema"
-    tool_corpus = build_tool_corpus(corpus_root)
-    if tool_corpus:
-        log.info("Built tool corpus with %d known tools from %s", len(tool_corpus), corpus_root)
-
-    service = TemplateContentEvalService(judge=judge, tool_corpus=tool_corpus)
+    service = TemplateContentEvalService(judge=judge)
 
     results: list[EvalResult] = []
     failures = 0
     for template in templates:
         try:
             markdown = template.read_text(encoding="utf-8")
-            result = service.evaluate(str(template), markdown, args.threshold, skip_llm=args.skip_llm)
+            # Build corpus excluding the current template so tools unique to it are flagged as unknown
+            per_template_corpus = build_tool_corpus(corpus_root, exclude=template)
+            if per_template_corpus:
+                log.debug("path=%s  corpus=%d tools (excluding self)", template, len(per_template_corpus))
+            result = service.evaluate(str(template), markdown, args.threshold,
+                                      skip_llm=args.skip_llm, tool_corpus=per_template_corpus)
             results.append(result)
             if not result.passed:
                 failures += 1
