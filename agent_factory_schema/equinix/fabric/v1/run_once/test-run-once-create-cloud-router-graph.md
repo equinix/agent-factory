@@ -44,7 +44,7 @@ Rules for the extraction:
 - Do not invent values; if a required field is genuinely missing, use an empty string or
   empty array and let the downstream tool surface the error.
 
-The graph then creates the router and confirms it — see `## Steps`.
+The graph then creates the router and confirms it.
 
 ## Guidelines
 *   **Deterministic flow**: tool order is fixed by the graph; the LLM only parses parameters.
@@ -53,70 +53,6 @@ The graph then creates the router and confirms it — see `## Steps`.
 *   **Note**: hard duplicate-prevention (stop if a same-named router already exists) needs a
     transform node to inspect search results and is intentionally omitted from this DAG; the
     `confirm` step reports the final provisioned state instead.
-
-## Steps
-```yaml
-state:
-  params: map
-  created: string
-  report: string
-entry: parse_params
-nodes:
-  - id: parse_params
-    action: llm
-    parseJson: true
-    reads: [prompt]
-    output: params
-    edges:
-      onSuccess: create
-      onError: end_error
-  - id: create
-    action: tool
-    tool: create_router
-    input:
-      router_request:
-        type: "XF_ROUTER"
-        name: "${state.params.name}"
-        location:
-          metroCode: "${state.params.metro_code}"
-        package:
-          code: "${state.params.package_code}"
-        notifications:
-          - type: "ALL"
-            emails: "${state.params.emails}"
-        account:
-          accountNumber: "${state.params.account_number}"
-        project:
-          projectId: "${state.params.project_id}"
-    output: created
-    retry: { max: 2, backoffMs: 1000 }
-    edges:
-      onSuccess: confirm
-      onError: end_error
-  - id: confirm
-    action: tool
-    tool: search_routers
-    input:
-      query:
-        filter:
-          and:
-            - property: "/name"
-              operator: "="
-              values: ["${state.params.name}"]
-            - property: "/project/projectId"
-              operator: "="
-              values: ["${state.params.project_id}"]
-        pagination:
-          limit: 5
-    output: report
-    edges:
-      onSuccess: end_ok
-      onEmpty: end_ok
-      onError: end_error
-terminals:
-  - { id: end_ok,    status: COMPLETED }
-  - { id: end_error, status: FAILED }
-```
 
 ## Configuration
 Parameters are supplied as free text in the agent's `configuration.prompt`; the `parse_params`
