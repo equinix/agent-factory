@@ -44,6 +44,10 @@ This agent runs once immediately by default unless scheduled by user.</td>
 *   **`search_metrics`**: Retrieves connection, port, and metro metrics over the scoring window.
 *   **`get_metric`**: Retrieves a single metric series when a targeted lookup is needed.
 *   **`send_email_notification`**: Sends an email. Pass `pdfTitle` and `pdfContent` (plain text) to auto-generate and attach a PDF.</td>
+		<td>This skill can use the following tools:
+
+*   **`list_timeseries`**: Lists time series data from the Google Cloud Monitoring API.
+*   **`send_email_notification`**: Sends an email notification given a list email of addresses and email body.</td>
 		<td>preview
 	</tr>
 	<tr>
@@ -68,6 +72,26 @@ This agent runs once immediately by default unless scheduled by user.</td>
 - **`search_routers`**: Searches for fabric cloud routers.
 - **`search_ports`**: Searches for ports.
 - **`send_email_notification`**: Sends an email. Pass `pdfTitle` and `pdfContent` (plain text) to auto-generate and attach a PDF.</td>
+		<td>preview
+	</tr>
+	<tr>
+		<td><a href="https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/run_once/upgrade-bw-primary-connection.md">Bandwidth upgrader agent<br>[upgrade-bw-primary-connection.md]</a></td>
+		<td>An Equinix agent that upgrades the bandwidth of a connection.
+This agent runs once immediately by default unless scheduled by user.</td>
+		<td>- Automatically upgrade connection bandwidth<br>- Log all actions and decisions</td>
+		<td>This skill can use the following tools:
+
+		<td><a href="https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/run_once/provision-bgp.md">BGP bootstrap on pending connection<br>[provision-bgp.md]</a></td>
+		<td>This agent targets a connection that is pending interface configuration, sets up a standard BGP routing protocol (ASN, BFD enabled, MD5 authentication), and sends a completion notification with final execution outcome.
+This agent runs once immediately by default unless scheduled by user.</td>
+		<td>- Detect new or updated connections missing routing protocol configuration<br>- Create a baseline BGP routing protocol with required defaults<br>- Enable BFD as part of the standard BGP profile<br>- Configure MD5 authentication for BGP sessions<br>- Send completion notifications with success/failure outcomes</td>
+		<td>This skill can use the following tools:
+
+* **`search_connections`**: Retrieves connection details.
+* **`list_routing_protocols`**: Retrieves existing routing protocols for a connection.
+* **`create_routing_protocol`**: Creates a routing protocol for the target connection.
+* **`wait`**: Waits for a specified number of milliseconds before the next action.
+* **`send_email_notification`**: Sends an email notification.</td>
 		<td>preview
 	</tr>
 	<tr>
