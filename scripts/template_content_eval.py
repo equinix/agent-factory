@@ -10,7 +10,7 @@ Runs two tiers of checks on every agent-factory template markdown file:
        - ## Configuration section, if non-empty, contains at least one parseable parameter
        - ## Instructions section is non-empty
        - Declared tools exist in the known tool corpus (warning, non-blocking)
-  2. LLM judge (Azure OpenAI gpt-4o-mini, 0-1 per dimension):
+  2. LLM judge (Groq llama-3.1-8b-instant, 0-1 per dimension):
        - clarity, nonContradiction, scope, completeness, instructionToolAlignment
 
 Overall pass = all deterministic checks pass AND min judge score >= threshold.
@@ -28,8 +28,7 @@ Options:
     --skip-llm                Run deterministic checks only (no LLM judge)
 
 Environment variables:
-    AZURE_OPENAI_API_KEY      Azure OpenAI API key (required for LLM judge)
-    AZURE_OPENAI_ENDPOINT     Azure OpenAI endpoint URL
+    GROQ_API_KEY              Groq API key (required for LLM judge)
     LANGSMITH_API_KEY         LangSmith API key (optional — disables LangSmith if absent)
 """
 
@@ -277,36 +276,36 @@ def build_tool_corpus(templates_root: Optional[str], exclude: Optional[Path] = N
 
 class TemplateContentJudge:
     """
-    Scores a template on five semantic dimensions using Azure OpenAI gpt-4o-mini.
+    Scores a template on five semantic dimensions using Groq (llama-3.1-8b-instant).
+    Groq is a public internet API — reachable from ubuntu-latest CI runners unlike
+    the internal Azure OpenAI private endpoint.
     Fails open (all dimensions 1.0) on any error so a flaky LLM call never blocks a PR.
     """
 
-    def __init__(self, api_key: str, endpoint: str, deployment: str = "gpt-4o-mini",
-                 langsmith_client=None):
+    DEFAULT_MODEL = "llama-3.1-8b-instant"
+
+    def __init__(self, api_key: str, model: str = DEFAULT_MODEL, langsmith_client=None):
         self._enabled = False
-        if not api_key or not endpoint:
-            log.warning("LLM judge disabled (missing AZURE_OPENAI_API_KEY or AZURE_OPENAI_ENDPOINT)")
+        if not api_key:
+            log.warning("LLM judge disabled (missing GROQ_API_KEY)")
             return
         try:
-            from openai import AzureOpenAI
-            raw_client = AzureOpenAI(
-                api_key=api_key,
-                azure_endpoint=endpoint,
-                api_version="2024-02-01",
-            )
+            from groq import Groq
+            raw_client = Groq(api_key=api_key)
             # Wrap with LangSmith for automatic LLM call tracing if available
             if langsmith_client is not None:
                 try:
                     from langsmith.wrappers import wrap_openai
                     self._client = wrap_openai(raw_client)
-                    log.info("LLM judge: OpenAI client wrapped with LangSmith tracing")
+                    log.info("LLM judge: Groq client wrapped with LangSmith tracing")
                 except Exception as e:
                     log.debug("wrap_openai failed (tracing disabled): %s", e)
                     self._client = raw_client
             else:
                 self._client = raw_client
-            self._deployment = deployment
+            self._model = model
             self._enabled = True
+            log.info("LLM judge: using Groq model %s", model)
         except Exception as e:
             log.warning("LLM judge unavailable (will fail open): %s", e)
 
@@ -317,7 +316,7 @@ class TemplateContentJudge:
         for attempt in range(2):
             try:
                 response = self._client.chat.completions.create(
-                    model=self._deployment,
+                    model=self._model,
                     messages=[{"role": "user", "content": prompt}],
                     temperature=0.0,
                     response_format={"type": "json_object"},
@@ -752,12 +751,9 @@ def main() -> None:
     # LangSmith (init first so we can pass its client to judge for wrap_openai tracing)
     langsmith = LangSmithLogger(api_key=os.environ.get("LANGSMITH_API_KEY", ""))
 
-    # Build judge
-    api_key = os.environ.get("AZURE_OPENAI_API_KEY", "")
-    endpoint = os.environ.get("AZURE_OPENAI_ENDPOINT", "")
+    # Build judge (Groq — public internet API, reachable from ubuntu-latest CI runners)
     judge = TemplateContentJudge(
-        api_key=api_key,
-        endpoint=endpoint,
+        api_key=os.environ.get("GROQ_API_KEY", ""),
         langsmith_client=langsmith.get_client(),
     )
 
