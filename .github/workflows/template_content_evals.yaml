@@ -31,7 +31,7 @@ env:
 
 jobs:
   content-eval:
-    runs-on: [self-hosted, nonprod, ecx, aws]
+    runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
       - name: Check out agent-factory
