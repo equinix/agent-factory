@@ -24,6 +24,24 @@
     },
     "agentFactories": [
         {
+            "name": "equinix.fabric.default.new.connection.stream.attachment",
+            "description": "Attach new connections to default stream",
+            "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/run_once/default-new-connection-attachment-to-stream.md",
+            "releaseStatus": "preview"
+        },
+        {
+            "name": "equinix.fabric.default.new.port.stream.attachment",
+            "description": "Attach new ports to default stream",
+            "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/run_once/default-new-port-attachment-to-stream.md",
+            "releaseStatus": "preview"
+        },
+        {
+            "name": "equinix.fabric.default.new.router.stream.attachment",
+            "description": "Attach new routers to default stream",
+            "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/run_once/default-new-router-attachment-to-stream.md",
+            "releaseStatus": "preview"
+        },
+        {
             "name": "equinix.fabric.connection.bandwidth.upgrade",
             "description": "Upgrade Primary Connection Bandwidth",
             "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/run_once/upgrade-bw-primary-connection.md",
@@ -33,6 +51,18 @@
             "name": "equinix.fabric.router.ping.notify",
             "description": "Ping and Notify Fabric Cloud Router Connection",
             "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/run_once/ping-and-notify.md",
+            "releaseStatus": "preview"
+        },
+        {
+            "name": "equinix.fabric.connection.health.scorecard",
+            "description": "Create Connection Health Scorecard",
+            "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/run_once/create-connection-health-scorecard.md",
+            "releaseStatus": "preview"
+        },
+        {
+            "name": "equinix.fabric.routing.protocol.create",
+            "description": "Creates a standard BGP routing protocol and sends completion notifications for connections that are pending interface configuration.",
+            "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/run_once/provision-bgp.md",
             "releaseStatus": "preview"
         }
     ]
