@@ -8,6 +8,8 @@ Runs two tiers of checks on every agent-factory template markdown file:
        - Frontmatter fields (name, description) present
        - At least one well-formed tool declared under ## Available Tools
        - ## Configuration section, if non-empty, contains at least one parseable parameter
+       - ## Instructions section is non-empty
+       - Declared tools exist in the known tool corpus (warning, non-blocking)
   2. LLM judge (Azure OpenAI gpt-4o-mini, 0-1 per dimension):
        - clarity, nonContradiction, scope, completeness, instructionToolAlignment
 
@@ -23,6 +25,7 @@ Options:
     --threshold=0.8           Minimum judge score to pass (default: 0.8)
     --dataset=<name>          LangSmith dataset name (optional)
     --experiment=<name>       LangSmith experiment name (optional)
+    --skip-llm                Run deterministic checks only (no LLM judge)
 
 Environment variables:
     AZURE_OPENAI_API_KEY      Azure OpenAI API key (required for LLM judge)
@@ -41,6 +44,7 @@ import sys
 import time
 import uuid
 from dataclasses import dataclass, field
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Optional
 
@@ -95,10 +99,11 @@ class TemplateSpec:
     source_path: str
     name: Optional[str]
     description: Optional[str]
-    sections: dict[str, str]          # "## Header" → body text
+    sections: dict[str, str]          # "## Header" -> body text
     declared_tools: list[str]
     config_params: list[ConfigParam]
     raw_markdown: str
+    malformed_tool_tokens: list[str]  # backtick tokens that look like tools but failed _IDENTIFIER
 
     def section(self, header: str) -> str:
         return self.sections.get(header, "")
@@ -117,9 +122,11 @@ class EvalResult:
     passed: bool
     deterministic_checks: dict[str, bool]
     issues: list[str]
+    warnings: list[str]
     judge_scores: dict[str, JudgeScore]
     judge_min_score: float
     threshold: float
+    judge_ran: bool = True  # False when judge failed open on every dimension
 
 
 # ---------------------------------------------------------------------------
@@ -132,7 +139,9 @@ class TemplateMarkdownParser:
         content = (markdown or "").replace("\r\n", "\n")
         name, description, body = self._extract_frontmatter(content)
         sections = self._extract_sections(body)
-        declared_tools = self._extract_identifiers(sections.get("## Available Tools", ""))
+        declared_tools, malformed_tokens = self._extract_identifiers(
+            sections.get("## Available Tools", "")
+        )
         config_params = self._extract_config_params(sections.get("## Configuration", ""))
         return TemplateSpec(
             source_path=path,
@@ -142,6 +151,7 @@ class TemplateMarkdownParser:
             declared_tools=declared_tools,
             config_params=config_params,
             raw_markdown=content,
+            malformed_tool_tokens=malformed_tokens,
         )
 
     # ---- frontmatter -------------------------------------------------------
@@ -204,13 +214,18 @@ class TemplateMarkdownParser:
 
     # ---- tools & config ----------------------------------------------------
 
-    def _extract_identifiers(self, section_body: str) -> list[str]:
+    def _extract_identifiers(self, section_body: str) -> tuple[list[str], list[str]]:
         seen: dict[str, None] = {}  # ordered set via dict
+        malformed: list[str] = []
         for m in _BACKTICK.finditer(section_body):
             token = m.group(1).strip()
-            if _IDENTIFIER.match(token) and token not in seen:
-                seen[token] = None
-        return list(seen)
+            if _IDENTIFIER.match(token):
+                if token not in seen:
+                    seen[token] = None
+            elif token and "_" in token:
+                # Looks like it was meant to be a tool name but failed (e.g. trailing space)
+                malformed.append(token)
+        return list(seen), malformed
 
     def _extract_config_params(self, section_body: str) -> list[ConfigParam]:
         params: list[ConfigParam] = []
@@ -229,6 +244,29 @@ class TemplateMarkdownParser:
 
 
 # ---------------------------------------------------------------------------
+# Tool corpus builder — builds known tool set from all existing templates
+# ---------------------------------------------------------------------------
+
+def build_tool_corpus(templates_root: Optional[str]) -> set[str]:
+    """Collect all tool identifiers declared across all .md templates as the known corpus."""
+    if not templates_root:
+        return set()
+    root = Path(templates_root)
+    if not root.is_dir():
+        return set()
+    parser = TemplateMarkdownParser()
+    corpus: set[str] = set()
+    for md_path in root.rglob("*.md"):
+        try:
+            text = md_path.read_text(encoding="utf-8")
+            spec = parser.parse(str(md_path), text)
+            corpus.update(spec.declared_tools)
+        except Exception:
+            pass
+    return corpus
+
+
+# ---------------------------------------------------------------------------
 # LLM judge
 # ---------------------------------------------------------------------------
 
@@ -238,36 +276,59 @@ class TemplateContentJudge:
     Fails open (all dimensions 1.0) on any error so a flaky LLM call never blocks a PR.
     """
 
-    def __init__(self, api_key: str, endpoint: str, deployment: str = "gpt-4o-mini"):
+    def __init__(self, api_key: str, endpoint: str, deployment: str = "gpt-4o-mini",
+                 langsmith_client=None):
+        self._enabled = False
+        if not api_key or not endpoint:
+            log.warning("LLM judge disabled (missing AZURE_OPENAI_API_KEY or AZURE_OPENAI_ENDPOINT)")
+            return
         try:
             from openai import AzureOpenAI
-            self._client = AzureOpenAI(
+            raw_client = AzureOpenAI(
                 api_key=api_key,
                 azure_endpoint=endpoint,
                 api_version="2024-02-01",
             )
+            # Wrap with LangSmith for automatic LLM call tracing if available
+            if langsmith_client is not None:
+                try:
+                    from langsmith.wrappers import wrap_openai
+                    self._client = wrap_openai(raw_client)
+                    log.info("LLM judge: OpenAI client wrapped with LangSmith tracing")
+                except Exception as e:
+                    log.debug("wrap_openai failed (tracing disabled): %s", e)
+                    self._client = raw_client
+            else:
+                self._client = raw_client
             self._deployment = deployment
             self._enabled = True
         except Exception as e:
             log.warning("LLM judge unavailable (will fail open): %s", e)
-            self._enabled = False
 
     def judge(self, spec: TemplateSpec) -> dict[str, JudgeScore]:
         if not self._enabled:
             return self._fail_open()
-        try:
-            prompt = self._build_prompt(spec)
-            response = self._client.chat.completions.create(
-                model=self._deployment,
-                messages=[{"role": "user", "content": prompt}],
-                temperature=0.3,
-                timeout=30,
-            )
-            raw = response.choices[0].message.content or ""
-            return self._parse(raw)
-        except Exception as e:
-            log.warning("Template content judge failed (failing open) path=%s: %s", spec.source_path, e)
-            return self._fail_open()
+        prompt = self._build_prompt(spec)
+        for attempt in range(2):
+            try:
+                response = self._client.chat.completions.create(
+                    model=self._deployment,
+                    messages=[{"role": "user", "content": prompt}],
+                    temperature=0.0,
+                    response_format={"type": "json_object"},
+                    timeout=30,
+                )
+                raw = response.choices[0].message.content or ""
+                return self._parse(raw)
+            except Exception as e:
+                if attempt == 0:
+                    log.debug("Judge attempt 1 failed, retrying in 2s: %s", e)
+                    time.sleep(2)
+                    continue
+                log.warning("Template content judge failed after retry (failing open) path=%s: %s",
+                            spec.source_path, e)
+                return self._fail_open()
+        return self._fail_open()
 
     def _build_prompt(self, spec: TemplateSpec) -> str:
         declared = ", ".join(spec.declared_tools) if spec.declared_tools else "none declared"
@@ -322,10 +383,20 @@ Dimension guide:
             log.warning("Failed to parse judge response (failing open): %s", e)
             return self._fail_open()
 
+    _FAIL_OPEN_COMMENT = "judge unavailable — failed open"
+
     @staticmethod
     def _fail_open() -> dict[str, JudgeScore]:
-        return {dim: JudgeScore(score=1.0, comment="judge unavailable — failed open")
+        return {dim: JudgeScore(score=1.0, comment=TemplateContentJudge._FAIL_OPEN_COMMENT)
                 for dim in JUDGE_DIMENSIONS}
+
+    @staticmethod
+    def scores_are_fail_open(scores: dict[str, JudgeScore]) -> bool:
+        """True when every dimension carries the fail-open sentinel comment."""
+        return bool(scores) and all(
+            s.comment == TemplateContentJudge._FAIL_OPEN_COMMENT
+            for s in scores.values()
+        )
 
 
 # ---------------------------------------------------------------------------
@@ -334,14 +405,17 @@ Dimension guide:
 
 class TemplateContentEvalService:
 
-    def __init__(self, judge: TemplateContentJudge):
+    def __init__(self, judge: TemplateContentJudge, tool_corpus: set[str] | None = None):
         self._parser = TemplateMarkdownParser()
         self._judge = judge
+        self._tool_corpus = tool_corpus or set()
 
-    def evaluate(self, path: str, markdown: str, threshold: float) -> EvalResult:
+    def evaluate(self, path: str, markdown: str, threshold: float,
+                 skip_llm: bool = False) -> EvalResult:
         spec = self._parser.parse(path, markdown)
         checks: dict[str, bool] = {}
         issues: list[str] = []
+        warnings: list[str] = []
 
         # 1. Required sections
         missing = [s for s in REQUIRED_SECTIONS if s not in spec.sections]
@@ -371,30 +445,62 @@ class TemplateContentEvalService:
         if not config_ok:
             issues.append("## Configuration present but no parameters could be parsed")
 
-        deterministic_passed = all(checks.values())
+        # 5. Instructions non-empty
+        instructions_ok = bool(spec.section("## Instructions").strip())
+        checks["instructionsNonEmpty"] = instructions_ok
+        if not instructions_ok:
+            issues.append("## Instructions section is empty")
 
-        # 5. LLM judge
-        judge_scores = self._judge.judge(spec)
-        judge_min = min((s.score for s in judge_scores.values()), default=1.0)
-        for dim, score in judge_scores.items():
-            if score.score < threshold:
-                issues.append(
-                    f"Judge dimension below threshold: {dim}={score.score:.2f} (< {threshold:.2f}) — {score.comment}"
+        # 6. Malformed tool tokens (warning, non-blocking)
+        if spec.malformed_tool_tokens:
+            warnings.append(
+                f"Possibly malformed tool names in ## Available Tools: "
+                f"{', '.join(repr(t) for t in spec.malformed_tool_tokens)}"
+            )
+
+        # 7. Unknown tools check (warning, non-blocking) — only when corpus is available
+        if self._tool_corpus and spec.declared_tools:
+            unknown = [t for t in spec.declared_tools if t not in self._tool_corpus]
+            if unknown:
+                warnings.append(
+                    f"Tools not seen in any other template (may be new or mistyped): "
+                    f"{', '.join(unknown)}"
                 )
 
-        passed = deterministic_passed and judge_min >= threshold
+        deterministic_passed = all(checks.values())
 
-        log.info("path=%s  passed=%s  deterministic=%s  judgeMin=%.2f",
-                 path, passed, deterministic_passed, judge_min)
+        # 8. LLM judge
+        if skip_llm:
+            judge_scores: dict[str, JudgeScore] = {}
+            judge_min = 1.0
+            judge_ran = False
+        else:
+            judge_scores = self._judge.judge(spec)
+            judge_ran = not TemplateContentJudge.scores_are_fail_open(judge_scores)
+            judge_min = min((s.score for s in judge_scores.values()), default=1.0)
+            if not judge_ran:
+                log.warning("path=%s  LLM judge failed open — scores are unreliable", path)
+            for dim, score in judge_scores.items():
+                if score.score < threshold and judge_ran:
+                    issues.append(
+                        f"Judge dimension below threshold: {dim}={score.score:.2f} (< {threshold:.2f}) — {score.comment}"
+                    )
+
+        passed = deterministic_passed and (not judge_ran or judge_min >= threshold)
+
+        log.info("path=%s  passed=%s  deterministic=%s  judgeMin=%.2f  judgeRan=%s",
+                 path, passed, deterministic_passed, judge_min, judge_ran)
         return EvalResult(
             source_path=path,
             template_name=spec.name,
             passed=passed,
             deterministic_checks=checks,
             issues=issues,
+            warnings=warnings,
             judge_scores=judge_scores,
             judge_min_score=judge_min,
             threshold=threshold,
+            judge_ran=judge_ran,
         )
 
 
@@ -410,6 +516,7 @@ class LangSmithLogger:
 
     def __init__(self, api_key: str):
         self._enabled = bool(api_key and api_key.strip())
+        self._client = None
         if not self._enabled:
             log.info("LangSmith disabled (no api-key) — skipping experiment logging")
             return
@@ -422,6 +529,10 @@ class LangSmithLogger:
         except Exception as e:
             log.warning("LangSmith init failed (ignored): %s", e)
             self._enabled = False
+
+    def get_client(self):
+        """Return the underlying LangSmith client for wrap_openai tracing."""
+        return self._client if self._enabled else None
 
     def log_experiment(self, dataset_name: str, experiment_name: str, results: list[EvalResult]) -> None:
         if not self._enabled:
@@ -453,18 +564,33 @@ class LangSmithLogger:
             "deterministicChecks": result.deterministic_checks,
             "issues": result.issues,
         }
+
+        run_id = str(uuid.uuid4())
+        now = datetime.now(timezone.utc)
+
+        # Upsert example — idempotent across PRs (keyed on source_path via inputs)
+        example_id: Optional[str] = None
         try:
-            example = self._client.create_example(
+            example = self._client.upsert_example(
                 dataset_name=dataset_name,
                 inputs=inputs,
                 outputs=outputs,
             )
             example_id = str(example.id)
-        except Exception:
-            example_id = None
+        except AttributeError:
+            # Older SDK versions may not have upsert_example — fall back to create_example
+            try:
+                example = self._client.create_example(
+                    dataset_name=dataset_name,
+                    inputs=inputs,
+                    outputs=outputs,
+                )
+                example_id = str(example.id)
+            except Exception as e:
+                log.debug("LangSmith example create (fallback) failed: %s", e)
+        except Exception as e:
+            log.debug("LangSmith example upsert failed: %s", e)
 
-        run_id = str(uuid.uuid4())
-        now_ms = int(time.time() * 1000)
         try:
             self._client.create_run(
                 id=run_id,
@@ -472,10 +598,10 @@ class LangSmithLogger:
                 run_type="chain",
                 inputs=inputs,
                 outputs=outputs,
-                session_name=experiment_name,
+                project_name=experiment_name,
                 reference_example_id=example_id,
-                start_time=now_ms,
-                end_time=now_ms,
+                start_time=now,
+                end_time=now,
             )
             # Feedback: overall gate + per judge dimension
             self._client.create_feedback(run_id, key="passed",
@@ -524,6 +650,9 @@ def _print_summary(results: list[EvalResult], threshold: float) -> None:
     for r in results:
         verdict = "PASS" if r.passed else "FAIL"
         lines.append(f"{verdict}  judgeMin={r.judge_min_score:.2f}  {r.source_path}")
+        if r.warnings:
+            for w in r.warnings:
+                lines.append(f"       WARN: {w}")
         if not r.passed:
             for issue in r.issues:
                 lines.append(f"       - {issue}")
@@ -540,9 +669,21 @@ def _write_report_md(results: list[EvalResult], threshold: float, output_path: s
     passed_count = sum(1 for r in results if r.passed)
     overall = "✅ All templates passed" if passed_count == len(results) else f"❌ {len(results) - passed_count} template(s) failed"
 
+    judge_skipped = any(not r.judge_ran for r in results)
+
     lines = [
+        "<!-- template-content-eval-report -->",
         "## 🧪 Template Content Eval Report",
         "",
+    ]
+    if judge_skipped:
+        lines += [
+            "> ⚠️ **LLM judge could not reach the Azure OpenAI endpoint** (network/firewall). "
+            "Deterministic checks ran; judge scores are skipped. "
+            "Templates passed on deterministic checks alone.",
+            "",
+        ]
+    lines += [
         f"**{overall}** &nbsp;·&nbsp; {passed_count}/{len(results)} passed &nbsp;·&nbsp; threshold: `{threshold}`",
         "",
         "| Template | Result | Judge Min | Issues |",
@@ -552,13 +693,23 @@ def _write_report_md(results: list[EvalResult], threshold: float, output_path: s
         verdict = "✅ PASS" if r.passed else "❌ FAIL"
         template_name = Path(r.source_path).name
         issue_text = "<br>".join(r.issues) if r.issues else "—"
-        lines.append(f"| `{template_name}` | {verdict} | `{r.judge_min_score:.2f}` | {issue_text} |")
+        judge_cell = "⚠️ skipped" if not r.judge_ran else f"`{r.judge_min_score:.2f}`"
+        lines.append(f"| `{template_name}` | {verdict} | {judge_cell} | {issue_text} |")
+
+    # Warnings section (non-blocking)
+    all_warnings = [(Path(r.source_path).name, w) for r in results for w in r.warnings]
+    if all_warnings:
+        lines += ["", "### ⚠️ Warnings (non-blocking)", ""]
+        for tname, w in all_warnings:
+            lines.append(f"- **`{tname}`**: {w}")
 
     # Detailed judge scores for failed templates
     failed = [r for r in results if not r.passed]
     if failed:
         lines += ["", "### Judge Scores (failed templates)", ""]
         for r in failed:
+            if not r.judge_scores:
+                continue
             lines.append(f"**`{Path(r.source_path).name}`**")
             lines.append("")
             lines.append("| Dimension | Score | Comment |")
@@ -581,8 +732,10 @@ def main() -> None:
                         help=f"Minimum LLM judge score to pass (default: {DEFAULT_THRESHOLD})")
     parser.add_argument("--dataset", default=DEFAULT_DATASET,
                         help="LangSmith dataset name")
-    parser.add_argument("--experiment", default=f"template-content-eval-{int(time.time() * 1000)}",
+    parser.add_argument("--experiment", default=f"template-content-eval-{int(time.time())}",
                         help="LangSmith experiment name")
+    parser.add_argument("--skip-llm", dest="skip_llm", action="store_true",
+                        help="Run deterministic checks only, skip LLM judge")
     args = parser.parse_args()
 
     templates = _resolve_templates(args)
@@ -590,18 +743,32 @@ def main() -> None:
         log.warning("No templates to evaluate. Provide --changed=<files> or --templates-dir=<dir>.")
         sys.exit(0)
 
-    # Build judge (requires AZURE_OPENAI_API_KEY + AZURE_OPENAI_ENDPOINT)
+    # LangSmith (init first so we can pass its client to judge for wrap_openai tracing)
+    langsmith = LangSmithLogger(api_key=os.environ.get("LANGSMITH_API_KEY", ""))
+
+    # Build judge
     api_key = os.environ.get("AZURE_OPENAI_API_KEY", "")
     endpoint = os.environ.get("AZURE_OPENAI_ENDPOINT", "")
-    judge = TemplateContentJudge(api_key=api_key, endpoint=endpoint)
-    service = TemplateContentEvalService(judge=judge)
+    judge = TemplateContentJudge(
+        api_key=api_key,
+        endpoint=endpoint,
+        langsmith_client=langsmith.get_client(),
+    )
+
+    # Build tool corpus from all existing templates for cross-template unknown-tool warnings
+    corpus_root = args.templates_dir or "agent_factory_schema"
+    tool_corpus = build_tool_corpus(corpus_root)
+    if tool_corpus:
+        log.info("Built tool corpus with %d known tools from %s", len(tool_corpus), corpus_root)
+
+    service = TemplateContentEvalService(judge=judge, tool_corpus=tool_corpus)
 
     results: list[EvalResult] = []
     failures = 0
     for template in templates:
         try:
             markdown = template.read_text(encoding="utf-8")
-            result = service.evaluate(str(template), markdown, args.threshold)
+            result = service.evaluate(str(template), markdown, args.threshold, skip_llm=args.skip_llm)
             results.append(result)
             if not result.passed:
                 failures += 1
@@ -612,7 +779,6 @@ def main() -> None:
     _print_summary(results, args.threshold)
     _write_report_md(results, args.threshold)
 
-    langsmith = LangSmithLogger(api_key=os.environ.get("LANGSMITH_API_KEY", ""))
     langsmith.log_experiment(args.dataset, args.experiment, results)
 
     sys.exit(1 if failures > 0 else 0)
