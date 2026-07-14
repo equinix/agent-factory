@@ -33,6 +33,32 @@ This agent runs once immediately by default unless scheduled by user.</td>
 		<td>preview
 	</tr>
 	<tr>
+		<td><a href="https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/run_once/default-new-connection-attachment-to-stream.md">Detect connections that are not attached to a stream and notify<br>[default-new-connection-attachment-to-stream.md]</a></td>
+		<td>An Equinix agent that automatically detects new connections older than a certain amount of time and ensures they are at least connected to the default stream.</td>
+		<td>- Detect older connections that are not attached to any stream<br>- Attach such connections to the default stream<br>- Email notification of this action to the user<br>- Log all actions and decisions</td>
+		<td>This skill can use the following tools:
+*   **`get_timestamps`**: Generates `from` and `to` UTC timestamps based on a duration string (e.g., `"24h"`, `"7d"`, `"1M"`). Returns a JSON object with `from` and `to` as ISO 8601 UTC strings. Always call this in Step 1 to obtain the reporting window.
+*   **`search_connections`**: Search for any connections that are already provisioned.
+*   **`search_attached_assets`**: Search for any streams which may be attached to a given connection.
+*   **`attach_stream_asset`**: Attach the connection to the default stream.
+*   **`send_email_notification`**: Sends an email notification given an email address and email body.</td>
+		<td>preview
+	</tr>
+	<tr>
+		<td><a href="https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/run_once/create-connection-health-scorecard.md">Connection Health Scorecard Agent<br>[create-connection-health-scorecard.md]</a></td>
+		<td>This agent gives operators a single-pane health view across Equinix Fabric connections. It collects per-connection performance metrics, computes a composite 0–100 health score for each connection, ranks them, flags any connection with an obvious measurable issue, and recommends remediation for every flagged connection — so troubleshooting effort can be prioritized where it matters most. The result is delivered as a PDF scorecard via email.
+This agent runs once immediately by default unless scheduled by user.</td>
+		<td>- Enumerate all PROVISIONED connections (or a user-specified subset)<br>- Collect rate-exceeded packet drops, packet errors, utilization, and latency metrics per connection<br>- Compute a reproducible composite 0–100 health score per connection<br>- Rank all connections and flag any with an obvious measurable issue<br>- Recommend concrete remediation for every flagged connection<br>- Deliver a prioritized scorecard as a PDF report via email</td>
+		<td>This skill can use the following tools:
+
+*   **`get_timestamps`**: Generates `from` and `to` UTC timestamps (ISO 8601) from a duration string (e.g. `"24h"`, `"7d"`).
+*   **`search_connections`**: Enumerates PROVISIONED connections and resolves connection context (A/Z ports, A/Z metro codes, provisioned bandwidth).
+*   **`search_metrics`**: Retrieves connection, port, and metro metrics over the scoring window.
+*   **`get_metric`**: Retrieves a single metric series when a targeted lookup is needed.
+*   **`send_email_notification`**: Sends an email. Pass `pdfTitle` and `pdfContent` (plain text) to auto-generate and attach a PDF.</td>
+		<td>preview
+	</tr>
+	<tr>
 		<td><a href="https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/run_once/upgrade-fcr-package.md">Cloud Router upgrade package agent<br>[upgrade-fcr-package.md]</a></td>
 		<td>This definition sets up and activates an Equinix agent that upgrades the package of a Fabric Cloud Router. 
 When the route usage exceeds a predefined threshold, the agent automatically upgrades the Fabric Cloud Router package to ensure sufficient capacity and uninterrupted operation.
@@ -54,6 +80,32 @@ This agent runs once immediately by default unless scheduled by user.</td>
 - **`search_routers`**: Searches for fabric cloud routers.
 - **`search_ports`**: Searches for ports.
 - **`send_email_notification`**: Sends an email. Pass `pdfTitle` and `pdfContent` (plain text) to auto-generate and attach a PDF.</td>
+		<td>preview
+	</tr>
+	<tr>
+		<td><a href="https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/run_once/provision-bgp.md">BGP bootstrap on pending connection<br>[provision-bgp.md]</a></td>
+		<td>This agent targets a connection that is pending interface configuration, sets up a standard BGP routing protocol (ASN, BFD enabled, MD5 authentication), and sends a completion notification with final execution outcome.
+This agent runs once immediately by default unless scheduled by user.</td>
+		<td>- Detect new or updated connections missing routing protocol configuration<br>- Create a baseline BGP routing protocol with required defaults<br>- Enable BFD as part of the standard BGP profile<br>- Configure MD5 authentication for BGP sessions<br>- Send completion notifications with success/failure outcomes</td>
+		<td>This skill can use the following tools:
+
+* **`search_connections`**: Retrieves connection details.
+* **`list_routing_protocols`**: Retrieves existing routing protocols for a connection.
+* **`create_routing_protocol`**: Creates a routing protocol for the target connection.
+* **`wait`**: Waits for a specified number of milliseconds before the next action.
+* **`send_email_notification`**: Sends an email notification.</td>
+		<td>preview
+	</tr>
+	<tr>
+		<td><a href="https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/run_once/default-new-router-attachment-to-stream.md">Detect routers that are not attached to a stream and notify<br>[default-new-router-attachment-to-stream.md]</a></td>
+		<td>An Equinix agent that automatically detects new routers older than a certain amount of time and ensures they are at least connected to the default stream.</td>
+		<td>- Detect older routers that are not attached to any stream<br>- Attach such routers to the default stream<br>- Email notification of this action to the user<br>- Log all actions and decisions</td>
+		<td>This skill can use the following tools:
+*   **`get_timestamps`**: Generates `from` and `to` UTC timestamps based on a duration string (e.g., `"24h"`, `"7d"`, `"1M"`). Returns a JSON object with `from` and `to` as ISO 8601 UTC strings. Always call this in Step 1 to obtain the reporting window.
+*   **`search_routers`**: Search for any routers that are already provisioned.
+*   **`search_attached_assets`**: Search for any streams which may be attached to a given router.
+*   **`attach_stream_asset`**: Attach the router to the default stream.
+*   **`send_email_notification`**: Sends an email notification given an email address and email body.</td>
 		<td>preview
 	</tr>
 	<tr>
@@ -86,12 +138,15 @@ This agent runs once immediately by default unless scheduled by user.</td>
 		<td>preview
 	</tr>
 	<tr>
-		<td><a href="https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/run_once/daily-create-report.md">Daily Asset Creation Report Agent<br>[daily-create-report.md]</a></td>
-		<td>Identify connections, ports, cloud routers, networks, internet access, and network edge creation events in past 24 hours; compile creation summary with owners and distribute a daily report.</td>
-		<td>- Analyze all cloud events within a given Equinix Fabric project over the past 24 hours<br>- Deliver a plain-English daily report for created assets summary via email as a summarized report in PDF format</td>
-		<td>- **`get_timestamps`**: Generates `from` and `to` UTC timestamps based on a duration string (e.g., `"24h"`, `"7d"`, `"1M"`). Returns a JSON object with `from` and `to` as ISO 8601 UTC strings. Always call this in Step 1 to obtain the reporting window.
-- **`search_cloud_events`**: Searches Equinix Fabric cloud events. Use `/equinixproject` `=` with `/time` `>=` and `<=` to scope by project and time window.
-- **`send_email_notification`**: Sends an email. Pass `pdfTitle` and `pdfContent` (plain text) to auto-generate and attach a PDF.</td>
+		<td><a href="https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/run_once/default-new-port-attachment-to-stream.md">Detect ports that are not attached to a stream and notify<br>[default-new-port-attachment-to-stream.md]</a></td>
+		<td>An Equinix agent that automatically detects new ports older than a certain amount of time and ensures they are at least connected to the default stream.</td>
+		<td>- Detect older ports that are not attached to any stream<br>- Attach such ports to the default stream<br>- Email notification of this action to the user<br>- Log all actions and decisions</td>
+		<td>This skill can use the following tools:
+*   **`get_timestamps`**: Generates `from` and `to` UTC timestamps based on a duration string (e.g., `"24h"`, `"7d"`, `"1M"`). Returns a JSON object with `from` and `to` as ISO 8601 UTC strings. Always call this in Step 1 to obtain the reporting window.
+*   **`search_ports`**: Search for any ports that are already provisioned.
+*   **`search_attached_assets`**: Search for any streams which may be attached to a given port.
+*   **`attach_stream_asset`**: Attach the port to the default stream.
+*   **`send_email_notification`**: Sends an email notification given an email address and email body.</td>
 		<td>preview
 	</tr>
 	<tr>
@@ -101,6 +156,20 @@ This agent runs once immediately by default unless scheduled by user.</td>
 		<td>- **`get_timestamps`**: Generates `from` and `to` UTC timestamps based on a duration string (e.g., `"24h"`, `"7d"`, `"1M"`). Returns a JSON object with `from` and `to` as ISO 8601 UTC strings. Always call this in Step 1 to obtain the reporting window.
 - **`search_cloud_events`**: Searches Equinix Fabric cloud events. Use `/equinixproject` `=` with `/time` `>=` and `<=` to scope by project and time window.
 - **`send_email_notification`**: Sends an email. Pass `pdfTitle` and `pdfContent` (plain text) to auto-generate and attach a PDF.</td>
+		<td>preview
+	</tr>
+	<tr>
+		<td><a href="https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/run_once/recommend-route-aggregation.md">Cloud Router route aggregation recommendation agent<br>[recommend-route-aggregation.md]</a></td>
+		<td>This definition sets up and activates an Equinix agent that recommends, or suggests, aggregate routes for a Fabric Cloud Router (also referred to as FCR or router).
+The agent analyzes the router's active route table entries and suggests an optimized set of aggregate (supernet) IPv4 routes to simplify route advertisement and reduce route table size.
+A router UUID is required, and a connection UUID is optional but recommended for more accurate, connection-scoped aggregation.
+This agent runs once immediately by default unless scheduled by user.</td>
+		<td>- Recommend an optimized set of aggregate (supernet) IPv4 routes for a Fabric Cloud Router based on its active route table entries.<br>- Optionally scope the recommendation to a specific connection on the router for higher accuracy.<br>- Record and log all actions, decisions, and system events for auditing, troubleshooting, and analysis purposes.</td>
+		<td>This skill can use the following tools:
+
+*   **`search_routers`**: Searches for an existing Fabric Cloud Router. Used to confirm the router UUID before generating recommendations.
+*   **`search_routes`**: Searches the routing table of a Fabric Cloud Router. Use `route_type` = `active` to retrieve the router's active route table entries, optionally scoped to a connection via `connection_uuid`. Each returned route exposes a `prefix` field (the CIDR entry) to feed into aggregation.
+*   **`recommend_route_aggregation`**: Recommends or suggests aggregate routes. Given a list of route prefixes (`routePrefixes`) and an optional `connectionUuid`, it excludes IPv6 prefixes, performs deterministic CIDR aggregation on the IPv4 prefixes, and returns the recommended aggregate IPv4 routes.</td>
 		<td>preview
 	</tr>
 	<tr>
