@@ -31,6 +31,11 @@ env:
 
 jobs:
   content-eval:
+    # Skip runs triggered by the auto-commit bot (sync_data_schema_updates.yaml pushes a
+    # regenerated catalog/README back onto the PR branch) — this eval doesn't depend on that
+    # regeneration, and re-running here just duplicates the run already triggered by the
+    # human's push while surfacing a confusing action_required check.
+    if: github.actor != 'github-actions[bot]'
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
