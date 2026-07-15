@@ -282,7 +282,7 @@ class TemplateContentJudge:
     Fails open (all dimensions 1.0) on any error so a flaky LLM call never blocks a PR.
     """
 
-    DEFAULT_MODEL = "llama-3.1-8b-instant"
+    DEFAULT_MODEL = "llama-3.3-70b-versatile"
 
     def __init__(self, api_key: str, model: str = DEFAULT_MODEL, langsmith_client=None):
         self._enabled = False
@@ -336,10 +336,9 @@ class TemplateContentJudge:
 
     def _build_prompt(self, spec: TemplateSpec) -> str:
         declared = ", ".join(spec.declared_tools) if spec.declared_tools else "none declared"
-        return f"""You are evaluating an Equinix agent-factory template for production readiness.
-A template is a natural-language agent specification. Its "## Instructions" describe the
-workflow in prose and deliberately do NOT repeat the snake_case tool names, so judge tool
-alignment by MEANING, not by literal string match.
+        return f"""You are a strict production-readiness reviewer for Equinix agent-factory templates.
+These templates instruct an LLM agent to perform automated network operations — mistakes cause
+real infrastructure failures. Be a skeptical reviewer, not a generous one.
 
 Declared tools: {declared}
 
@@ -348,23 +347,56 @@ Full template markdown:
 {spec.raw_markdown}
 ---
 
-Score these five dimensions from 0.0 (broken/absent) to 1.0 (excellent) and respond with
-ONLY valid JSON, no prose, no code fences:
-{{
-  "clarity":                  {{"score": <0.0-1.0>, "comment": "<brief reason>"}},
-  "nonContradiction":         {{"score": <0.0-1.0>, "comment": "<brief reason>"}},
-  "scope":                    {{"score": <0.0-1.0>, "comment": "<brief reason>"}},
-  "completeness":             {{"score": <0.0-1.0>, "comment": "<brief reason>"}},
-  "instructionToolAlignment": {{"score": <0.0-1.0>, "comment": "<brief reason>"}}
-}}
+SCORING ANCHORS — calibrate against these before assigning any score:
+  1.0  Fully meets the criterion. Nothing missing or ambiguous.
+  0.8  Minor gap that does not affect executability.
+  0.6  Notable gap — an agent could get confused or skip a critical step.
+  0.4  Significant problem — agent will likely fail or behave incorrectly.
+  0.0  Criterion completely unmet.
 
-Dimension guide:
-- clarity:                  Are the objective and steps unambiguous and easy to follow?
-- nonContradiction:         1.0 = no conflicting or circular instructions; lower if any conflict.
-- scope:                    Is the agent's goal specific and bounded (not open-ended)?
-- completeness:             Are prerequisites, termination/success criteria, and failure handling present?
-- instructionToolAlignment: Does every instruction step map to a declared tool, and is every
-                            declared tool actually used by a step? Penalize unused or missing tools.
+DIMENSION RUBRICS — read carefully, every bullet is a potential deduction:
+
+clarity (Is every step specific and unambiguous?):
+  - Penalize for vague verbs with no tool call: "check", "do", "handle", "verify", "continue monitoring".
+  - Penalize for steps that say "wait" or "retry" without specifying a wait/retry tool and its parameters.
+  - Penalize for "if unsuccessful" / "if it works" with no measurable definition of success or failure.
+  - Score ≤ 0.5 if more than one step cannot be executed as written.
+
+nonContradiction (Do guidelines and instructions align with each other and with the declared tools?):
+  - Penalize for any guideline that mandates behavior the declared tools cannot satisfy
+    (e.g. "always log every action" when no logging tool is declared).
+  - Penalize for a guideline that says stop on error but instructions say proceed on failure.
+  - Score ≤ 0.5 if a guideline directly contradicts a declared tool's absence.
+
+scope (Is the agent's goal specific, bounded, and completable?):
+  - Penalize for no defined termination condition (success or give-up state).
+  - Penalize for open-ended steps like "continue monitoring" with no exit criteria.
+  - Score ≤ 0.6 if the agent has no clear end state.
+
+completeness (Are prerequisites, success criteria, timing, and failure handling fully specified?):
+  - Penalize for any remediation action (restart, reset, failover) with no wait/poll step before
+    re-checking outcome — the agent has no way to know if the action took effect.
+  - Penalize for a notification step that specifies no required content, format, or fields.
+  - Penalize for missing timeout or threshold before escalating to the next recovery tier.
+  - Penalize for a failover step with no defined trigger condition or success check.
+  - Score ≤ 0.5 if two or more of the above are missing.
+
+instructionToolAlignment (Does every step use a declared tool, and is every declared tool used?):
+  - For EACH instruction step that performs an action, identify whether a declared tool covers it.
+  - Score ≤ 0.4 if ANY step performs an action (reset, failover, wait, log, update) for which
+    there is NO declared tool — the agent cannot execute that step.
+  - Score ≤ 0.6 if a declared tool is listed but never referenced by any instruction step.
+  - Do NOT assume a tool exists just because the step implies it. Only count tools explicitly
+    listed under ## Available Tools.
+
+Reason through each dimension in one sentence, then output ONLY valid JSON — no prose, no code fences:
+{{
+  "clarity":                  {{"score": <0.0-1.0>, "comment": "<one sentence finding>"}},
+  "nonContradiction":         {{"score": <0.0-1.0>, "comment": "<one sentence finding>"}},
+  "scope":                    {{"score": <0.0-1.0>, "comment": "<one sentence finding>"}},
+  "completeness":             {{"score": <0.0-1.0>, "comment": "<one sentence finding>"}},
+  "instructionToolAlignment": {{"score": <0.0-1.0>, "comment": "<one sentence finding>"}}
+}}
 """
 
     def _parse(self, raw: str) -> dict[str, JudgeScore]:
