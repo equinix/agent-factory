@@ -149,12 +149,12 @@ Structure the report using these sections. Do not include any section numbers in
 
 Section content rules:
 - **Summary**: State the Project UUID and reporting period, then 3–5 sentences — total events, asset types active, headline finding, routine or needs attention.
-- **Connection Created Activity**: Include only if connection events exist — otherwise omit entirely. Note churn (3+ transitions). List each connection as `<data.resource.name> (<full-uuid>)` with plain English description of activity.
-- **Port Created Activity**: Include only if router events exist — otherwise omit entirely. Note churn (3+ transitions) as elevated. List each router as `<data.resource.name> (<full-uuid>)` with plain English description of activity.
-- **Cloud Router Created Activity**: Include only if router events exist — otherwise omit entirely. Note churn (3+ transitions) as elevated. List each router as `<data.resource.name> (<full-uuid>)` with plain English description of activity.
-- **Network Created Activity**: Include only if router events exist — otherwise omit entirely. Note churn (3+ transitions) as elevated. List each router as `<data.resource.name> (<full-uuid>)` with plain English description of activity.
-- **Internet Access Created Activity**: Include only if router events exist — otherwise omit entirely. Note churn (3+ transitions) as elevated. List each router as `<data.resource.name> (<full-uuid>)` with plain English description of activity.
-- **Network Edge Device Activity**: Include only if router events exist — otherwise omit entirely. Note churn (3+ transitions) as elevated. List each router as `<data.resource.name> (<full-uuid>)` with plain English description of activity.
+- **Connection Updated Activity**: Include only if connection events exist — otherwise omit entirely. Note churn (3+ transitions). List each connection as `<data.resource.name> (<full-uuid>)` with plain English description of activity and the attributes that were changed.
+- **Port Updated Activity**: Include only if router events exist — otherwise omit entirely. Note churn (3+ transitions) as elevated. List each router as `<data.resource.name> (<full-uuid>)`  with plain English description of activity and the attributes that were changed.
+- **Cloud Router Updated Activity**: Include only if router events exist — otherwise omit entirely. Note churn (3+ transitions) as elevated. List each router as `<data.resource.name> (<full-uuid>)`  with plain English description of activity and the attributes that were changed.
+- **Network Updated Activity**: Include only if router events exist — otherwise omit entirely. Note churn (3+ transitions) as elevated. List each router as `<data.resource.name> (<full-uuid>)`  with plain English description of activity and the attributes that were changed.
+- **Internet Access Updated Activity**: Include only if router events exist — otherwise omit entirely. Note churn (3+ transitions) as elevated. List each router as `<data.resource.name> (<full-uuid>)`  with plain English description of activity and the attributes that were changed.
+- **Network Edge Device Activity**: Include only if router events exist — otherwise omit entirely. Note churn (3+ transitions) as elevated. List each router as `<data.resource.name> (<full-uuid>)`  with plain English description of activity and the attributes that were changed.
 
 Rules:
 - Plain English always. No raw event type strings, no API jargon.
