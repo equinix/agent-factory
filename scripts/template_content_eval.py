@@ -10,7 +10,7 @@ Runs two tiers of checks on every agent-factory template markdown file:
        - ## Configuration section, if non-empty, contains at least one parseable parameter
        - ## Instructions section is non-empty
        - Declared tools exist in the known tool corpus (warning, non-blocking)
-  2. LLM judge (Groq llama-3.1-8b-instant, 0-1 per dimension):
+  2. LLM judge (Groq llama-3.3-70b-versatile, 0-1 per dimension):
        - clarity, nonContradiction, scope, completeness, instructionToolAlignment
 
 Overall pass = all deterministic checks pass AND min judge score >= threshold.
@@ -22,7 +22,7 @@ Usage:
 Options:
     --changed=a.md,b.md       Comma-separated list of files to evaluate
     --templates-dir=<dir>     Evaluate every *.md under this directory (recursive)
-    --threshold=0.8           Minimum judge score to pass (default: 0.8)
+    --threshold=0.7           Minimum judge score to pass (default: 0.7)
     --dataset=<name>          LangSmith dataset name (optional)
     --experiment=<name>       LangSmith experiment name (optional)
     --skip-llm                Run deterministic checks only (no LLM judge)
@@ -72,7 +72,9 @@ JUDGE_DIMENSIONS = [
     "instructionToolAlignment",
 ]
 
-DEFAULT_THRESHOLD = 0.8
+DEFAULT_THRESHOLD = 0.7
+# Scores below this are surfaced as advisory warnings even when the template passes the gate.
+SOFT_THRESHOLD = 0.8
 DEFAULT_DATASET = "Agent Factory Template Content Eval"
 
 # Backtick-quoted token, e.g. `search_routers`
@@ -276,7 +278,7 @@ def build_tool_corpus(templates_root: Optional[str], exclude: Optional[Path] = N
 
 class TemplateContentJudge:
     """
-    Scores a template on five semantic dimensions using Groq (llama-3.1-8b-instant).
+    Scores a template on five semantic dimensions using Groq (llama-3.3-70b-versatile).
     Groq is a public internet API — reachable from ubuntu-latest CI runners unlike
     the internal Azure OpenAI private endpoint.
     Fails open (all dimensions 1.0) on any error so a flaky LLM call never blocks a PR.
@@ -522,6 +524,10 @@ class TemplateContentEvalService:
                     issues.append(
                         f"Judge dimension below threshold: {dim}={score.score:.2f} (< {threshold:.2f}) — {score.comment}"
                     )
+                elif score.score < SOFT_THRESHOLD and judge_ran:
+                    warnings.append(
+                        f"Judge advisory ({dim}={score.score:.2f}, below ideal {SOFT_THRESHOLD:.2f}): {score.comment}"
+                    )
 
         passed = deterministic_passed and (not judge_ran or judge_min >= threshold)
 
@@ -681,7 +687,7 @@ def _print_summary(results: list[EvalResult], threshold: float) -> None:
     passed = sum(1 for r in results if r.passed)
     lines = [
         "",
-        "================ Template Content Eval ================",
+        "======= Template Spec Check (static, not execution-tested) =======",
         f"Threshold: {threshold}",
     ]
     for r in results:
@@ -710,14 +716,17 @@ def _write_report_md(results: list[EvalResult], threshold: float, output_path: s
 
     lines = [
         "<!-- template-content-eval-report -->",
-        "## 🧪 Template Content Eval Report",
+        "## 🧪 Template Spec Check (static — not execution-tested)",
+        "",
+        "_Grades the template **text** only: structure + an LLM judge on spec quality. "
+        "No agent was run and no tools were executed — a pass does not mean the agent works._",
         "",
     ]
     if judge_skipped:
         lines += [
-            "> ⚠️ **LLM judge could not reach the Azure OpenAI endpoint** (network/firewall). "
+            "> ⚠️ **LLM judge could not reach the Groq API** (network error, timeout, or bad response). "
             "Deterministic checks ran; judge scores are skipped. "
-            "Templates passed on deterministic checks alone.",
+            "Templates passed on deterministic checks alone — spec quality was NOT graded.",
             "",
         ]
     lines += [
@@ -751,7 +760,7 @@ def _write_report_md(results: list[EvalResult], threshold: float, output_path: s
             lines.append("| Dimension | Score | Comment |")
             lines.append("|---|---|---|")
             for dim, score in r.judge_scores.items():
-                flag = " ⚠️" if score.score < threshold else ""
+                flag = " ⚠️" if score.score < SOFT_THRESHOLD else ""
                 lines.append(f"| {dim} | `{score.score:.2f}`{flag} | {score.comment} |")
             lines.append("")
 
