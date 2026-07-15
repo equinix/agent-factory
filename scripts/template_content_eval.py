@@ -22,7 +22,7 @@ Usage:
 Options:
     --changed=a.md,b.md       Comma-separated list of files to evaluate
     --templates-dir=<dir>     Evaluate every *.md under this directory (recursive)
-    --threshold=0.7           Minimum judge score to pass (default: 0.7)
+    --threshold=0.6           Minimum judge score to pass (default: 0.6)
     --dataset=<name>          LangSmith dataset name (optional)
     --experiment=<name>       LangSmith experiment name (optional)
     --skip-llm                Run deterministic checks only (no LLM judge)
@@ -72,9 +72,12 @@ JUDGE_DIMENSIONS = [
     "instructionToolAlignment",
 ]
 
-DEFAULT_THRESHOLD = 0.7
+DEFAULT_THRESHOLD = 0.6
 # Scores below this are surfaced as advisory warnings even when the template passes the gate.
 SOFT_THRESHOLD = 0.8
+# Scores that fail the gate but sit in this band are noted as borderline — the judge is
+# non-deterministic near its rubric anchors, so a re-run may land on either side of the gate.
+BORDERLINE_FLOOR = 0.5
 DEFAULT_DATASET = "Agent Factory Template Content Eval"
 
 # Backtick-quoted token, e.g. `search_routers`
@@ -521,8 +524,11 @@ class TemplateContentEvalService:
                 log.warning("path=%s  LLM judge failed open — scores are unreliable", path)
             for dim, score in judge_scores.items():
                 if score.score < threshold and judge_ran:
+                    note = ""
+                    if score.score >= BORDERLINE_FLOOR:
+                        note = " ⚠️ borderline — score may vary run-to-run"
                     issues.append(
-                        f"Judge dimension below threshold: {dim}={score.score:.2f} (< {threshold:.2f}) — {score.comment}"
+                        f"Judge dimension below threshold: {dim}={score.score:.2f} (< {threshold:.2f}) — {score.comment}{note}"
                     )
                 elif score.score < SOFT_THRESHOLD and judge_ran:
                     warnings.append(

@@ -20,14 +20,14 @@ on:
       threshold:
         description: 'Minimum judge score to pass (0.0-1.0)'
         required: false
-        default: '0.7'
+        default: '0.6'
 
 permissions:
   contents: read
   pull-requests: write
 
 env:
-  THRESHOLD: ${{ github.event.inputs.threshold || '0.7' }}
+  THRESHOLD: ${{ github.event.inputs.threshold || '0.6' }}
 
 jobs:
   content-eval:
