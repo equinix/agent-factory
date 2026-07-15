@@ -9,3 +9,6 @@ local_helper_scripts/*
 
 # Python Generated Files
 __pycache__
+
+# Generated eval output
+eval_report.md
