@@ -8,7 +8,7 @@ description: Scans all Fabric Cloud Routers for missing stream attachments, then
 # Router Attachment Audit Agent
 
 ## Overview
-An Equinix agent that audits all Fabric Cloud Routers to detect routers that are not attached to any stream
+An Equinix agent that audits all Fabric Cloud Routers under one project to detect routers that are not attached to any stream
 and are therefore unmonitored. After collecting the full inventory of PROVISIONED routers, excluding those that are already 
 attached to streams, the agent automatically attaches the unattached routers to the stream provided in configuration prompt:
 attaching all routers if there are fewer than 50, or only the first 50 routers if there are more — without asking the
@@ -16,20 +16,21 @@ user to confirm. It then sends an email report listing which routers were attach
 unattached. This agent runs once immediately by default unless scheduled by user.
 
 ## Capabilities
-- Paginate through all Fabric Cloud Routers in the account
+- Paginate through all Fabric Cloud Routers in the project
 - Use `search_attached_assets` across every stream to determine which routers are already attached
 - Identify unattached (unmonitored) routers by cross-referencing router UUIDs against attached assets
 - Automatically attach unattached routers (up to a maximum of 50) to the configured stream, without user confirmation
 - Send an email report listing every router that was attached and every router that was left unattached
 
 ## Prerequisites
+- A project ID where the routers will be audited
 - A target stream UUID must be provided in configuration (`stream_uuid`). The stream must already exist and be in PROVISIONED state.
 - Routers must be in PROVISIONED state to be eligible for stream attachment.
 
 ## Available Tools
 This skill can use the following tools:
 
-- **`search_routers`**: Searches for existing provisioned Fabric Cloud Routers with pagination support.
+- **`search_routers`**: Searches for existing provisioned Fabric Cloud Routers in the defined project with pagination support.
 - **`list_streams`**: Lists all streams available in the account.
 - **`search_attached_assets`**: Returns all routers attached to a given stream UUID.
 - **`attach_stream_asset`**: Attaches a router to a stream by asset UUID and stream UUID with `"metrics_enabled": false`.
@@ -46,7 +47,7 @@ This skill can use the following tools:
 Retain its `name` for use in the report. If no matching stream is found, stop and inform the user that the provided `stream_uuid` is invalid.
 
 ### Step 2 — Collect All Routers
-2a. Call `search_routers` with:
+2a. Call `search_routers` with projectId and pagination:
 ```json
 {
   "pagination": { "offset": 0, "limit": 100 }
@@ -175,4 +176,5 @@ Section content rules:
 
 ## Configuration
 - **`stream_uuid`**: `"<uuid>"` — **Required**. UUID of the target stream that unattached routers will be attached to. Must reference an existing PROVISIONED stream.
+- - **`project_uuid`**: `"<uuid>"` — **Required**. UUID of project that routers belongs to will be audited. 
 - **`recipient_email_addresses`**: `["<email>", ...]` — Optional. List of email addresses to receive the completion report. If omitted, the summary is presented in the conversation only.
