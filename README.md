@@ -83,6 +83,15 @@ This agent runs once immediately by default unless scheduled by user.</td>
 		<td>preview
 	</tr>
 	<tr>
+		<td><a href="https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/run_once/daily-change-logger.md">Daily Asset Change Report Agent<br>[daily-change-logger.md]</a></td>
+		<td>Identify connections, ports, cloud routers, networks, internet access, and network edge change events in past 24 hours; compile change summary with owners and distribute a daily report.</td>
+		<td>- Analyze all cloud events within a given Equinix Fabric project over the past 24 hours<br>- Deliver a plain-English daily report for changed assets summary via email as a summarized report in PDF format</td>
+		<td>- **`get_timestamps`**: Generates `from` and `to` UTC timestamps based on a duration string (e.g., `"24h"`, `"7d"`, `"1M"`). Returns a JSON object with `from` and `to` as ISO 8601 UTC strings. Always call this in Step 1 to obtain the reporting window.
+- **`search_cloud_events`**: Searches Equinix Fabric cloud events. Use `/equinixproject` `=` with `/time` `>=` and `<=` to scope by project and time window.
+- **`send_email_notification`**: Sends an email. Pass `pdfTitle` and `pdfContent` (plain text) to auto-generate and attach a PDF.</td>
+		<td>preview
+	</tr>
+	<tr>
 		<td><a href="https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/run_once/provision-bgp.md">BGP bootstrap on pending connection<br>[provision-bgp.md]</a></td>
 		<td>This agent targets a connection that is pending interface configuration, sets up a standard BGP routing protocol (ASN, BFD enabled, MD5 authentication), and sends a completion notification with final execution outcome.
 This agent runs once immediately by default unless scheduled by user.</td>
@@ -147,6 +156,15 @@ This agent runs once immediately by default unless scheduled by user.</td>
 *   **`search_attached_assets`**: Search for any streams which may be attached to a given port.
 *   **`attach_stream_asset`**: Attach the port to the default stream.
 *   **`send_email_notification`**: Sends an email notification given an email address and email body.</td>
+		<td>preview
+	</tr>
+	<tr>
+		<td><a href="https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/run_once/daily-create-report.md">Daily Asset Creation Report Agent<br>[daily-create-report.md]</a></td>
+		<td>Identify connections, ports, cloud routers, networks, internet access, and network edge creation events in past 24 hours; compile creation summary with owners and distribute a daily report.</td>
+		<td>- Analyze all cloud events within a given Equinix Fabric project over the past 24 hours<br>- Deliver a plain-English daily report for created assets summary via email as a summarized report in PDF format</td>
+		<td>- **`get_timestamps`**: Generates `from` and `to` UTC timestamps based on a duration string (e.g., `"24h"`, `"7d"`, `"1M"`). Returns a JSON object with `from` and `to` as ISO 8601 UTC strings. Always call this in Step 1 to obtain the reporting window.
+- **`search_cloud_events`**: Searches Equinix Fabric cloud events. Use `/equinixproject` `=` with `/time` `>=` and `<=` to scope by project and time window.
+- **`send_email_notification`**: Sends an email. Pass `pdfTitle` and `pdfContent` (plain text) to auto-generate and attach a PDF.</td>
 		<td>preview
 	</tr>
 	<tr>
