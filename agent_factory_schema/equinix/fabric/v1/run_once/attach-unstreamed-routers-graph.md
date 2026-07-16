@@ -69,8 +69,14 @@ We can search them all in a single call using the following:
     }
 }
 ```
-If one or more streams are found for the router, remove that router `routerList`.
-4. For each and every router remaining in `routerList`:  Attach that router to the default stream without metrics enabled.  Store the results.
+This call returns ONLY routers that are already attached to a stream — every record in the result has
+`attachmentStatus` equal to `"ATTACHED"`. Collect the set of `uuid` values it returns and call this
+`alreadyAttached`. Routers that are not attached to any stream do not appear in the result at all.
+4. Compute the routers to attach as `routerList` MINUS `alreadyAttached`: keep every router in
+`routerList` whose `uuid` does NOT appear in the `search_attached_assets` result, and drop every router
+whose `uuid` does appear. For each router in that remaining (not-yet-attached) set, attach it to the
+default stream without metrics enabled and store the result. Do NOT attach any router that was in
+`alreadyAttached`.
 5. Send an email notification describing all the routers that you attempted to attach to the default stream and the results each attempt.  If no attempts were made, do not send an emai.
 
 ## Guidelines
