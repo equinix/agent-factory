@@ -9,15 +9,15 @@ description: Scans all Fabric Cloud Routers for missing stream attachments, then
 
 ## Overview
 An Equinix agent that audits all Fabric Cloud Routers to detect routers that are not attached to any stream
-and are therefore unmonitored. After collecting the full inventory of routers and their existing stream
-attachments, the agent automatically attaches the unattached routers to the stream provided in configuration —
-attaching all of them if there are fewer than 50, or only the first 50 if there are more — without asking the
+and are therefore unmonitored. After collecting the full inventory of PROVISIONED routers, excluding those that are already 
+attached to streams, the agent automatically attaches the unattached routers to the stream provided in configuration prompt:
+attaching all routers if there are fewer than 50, or only the first 50 routers if there are more — without asking the
 user to confirm. It then sends an email report listing which routers were attached and which were left
 unattached. This agent runs once immediately by default unless scheduled by user.
 
 ## Capabilities
 - Paginate through all Fabric Cloud Routers in the account
-- Use `search_attached_assets` across every stream to determine which routers are already monitored
+- Use `search_attached_assets` across every stream to determine which routers are already attached
 - Identify unattached (unmonitored) routers by cross-referencing router UUIDs against attached assets
 - Automatically attach unattached routers (up to a maximum of 50) to the configured stream, without user confirmation
 - Send an email report listing every router that was attached and every router that was left unattached
@@ -31,7 +31,7 @@ This skill can use the following tools:
 
 - **`search_routers`**: Searches for existing provisioned Fabric Cloud Routers with pagination support.
 - **`list_streams`**: Lists all streams available in the account.
-- **`search_attached_assets`**: Returns all assets currently attached to a given stream UUID.
+- **`search_attached_assets`**: Returns all routers attached to a given stream UUID.
 - **`attach_stream_asset`**: Attaches a router to a stream by asset UUID and stream UUID with `"metrics_enabled": false`.
 - **`wait`**: Waits for a specified number of milliseconds before the next action.
 - **`send_email_notification`**: Sends an email notification to a list of recipients with an optional PDF attachment.
@@ -59,9 +59,10 @@ Retain its `name` for use in the report. If no matching stream is found, stop an
 2d. Filter out routers not in `PROVISIONED` state — they are ineligible for stream attachment.
 
 ### Step 3 — Collect Existing Stream Attachments
-3a. Using the streams returned by `list_streams` in Step 1b, call `search_attached_assets` for **each** stream UUID
-to get the list of assets currently attached to that stream.
-Collect all returned asset UUIDs into a single in-memory set: `attached_asset_uuids`.
+3a. Using the streams returned by `list_streams` in Step 1b, call `search_attached_assets` with "asset_type: router" 
+for **each** stream UUID
+to get the list of routers currently attached to that stream.
+Collect all returned router UUIDs into a single in-memory set: `attached_asset_uuids`.
 
 ### Step 4 — Identify Unattached Routers
 4a. For each router collected in Step 2, check whether its UUID is present in `attached_asset_uuids`.
@@ -75,8 +76,8 @@ Do **not** ask the user for confirmation. Apply the following rule based on the 
 5a. Determine the routers to attach:
 - If `unattached_routers` contains **fewer than 50** routers, select **all** of them.
 - If `unattached_routers` contains **50 or more** routers, select only the **first 50** (by collection order).
-
-Call the selected set `routers_to_attach`. Any unattached routers beyond the first 50 form `routers_over_limit`
+Call the selected set `routers_to_attach`. 
+Put unattached routers beyond the first 50 to form `routers_over_limit`
 and will be reported as left unattached (reason: exceeded 50-router attachment limit).
 
 5b. For each router in `routers_to_attach`, in order:
