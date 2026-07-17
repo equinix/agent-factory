@@ -1,9 +1,9 @@
 ---
-name: default-router-attachment-to-stream
+name: stream-attachment-router-finder
 description: Go through the list of existing provisioned routers and if they are not attached to a stream and older than a certain amount number of hours, attach them to the default stream by uuid.
 ---
 
-# Detect routers that are not attached to a stream and notify
+# Stream Attachment Cloud Router Finder Agent
 
 ## Overview
 An Equinix agent that automatically detects new routers older than a certain amount of time and ensures they are at least connected to the default stream.
