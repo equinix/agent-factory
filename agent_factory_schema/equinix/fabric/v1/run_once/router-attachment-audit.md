@@ -1,36 +1,35 @@
 ---
 name: router-attachment-audit
 description: Scans all Fabric Cloud Routers for missing stream attachments, then automatically attaches
-  unattached routers (up to 50) to a user-specified stream and emails a report of attached and
+  unattached routers (up to 5) to a user-specified stream and emails a report of attached and
   unattached routers on completion.
 ---
 
 # Router Attachment Audit Agent
 
 ## Overview
-An Equinix agent that audits all Fabric Cloud Routers under one project to detect routers that are not attached to any stream
+An Equinix agent that audits all Fabric Cloud Routers to detect routers that are not attached to any stream
 and are therefore unmonitored. After collecting the full inventory of PROVISIONED routers, excluding those that are already 
 attached to streams, the agent automatically attaches the unattached routers to the stream provided in configuration prompt:
-attaching all routers if there are fewer than 50, or only the first 50 routers if there are more — without asking the
+attaching all routers if there are fewer than 5, or only the first 5 routers if there are more — without asking the
 user to confirm. It then sends an email report listing which routers were attached and which were left
 unattached. This agent runs once immediately by default unless scheduled by user.
 
 ## Capabilities
-- Paginate through all Fabric Cloud Routers in the project
+- Paginate through all Fabric Cloud Routers 
 - Use `search_attached_assets` across every stream to determine which routers are already attached
 - Identify unattached (unmonitored) routers by cross-referencing router UUIDs against attached assets
-- Automatically attach unattached routers (up to a maximum of 50) to the configured stream, without user confirmation
+- Automatically attach unattached routers (up to a maximum of 5) to the configured stream, without user confirmation
 - Send an email report listing every router that was attached and every router that was left unattached
 
 ## Prerequisites
-- A project ID where the routers will be audited
 - A target stream UUID must be provided in configuration (`stream_uuid`). The stream must already exist and be in PROVISIONED state.
 - Routers must be in PROVISIONED state to be eligible for stream attachment.
 
 ## Available Tools
 This skill can use the following tools:
 
-- **`search_routers`**: Searches for existing provisioned Fabric Cloud Routers in the defined project with pagination support.
+- **`search_routers`**: Searches for existing provisioned Fabric Cloud Routers with pagination support.
 - **`list_streams`**: Lists all streams available in the account.
 - **`search_attached_assets`**: Returns all routers attached to a given stream UUID.
 - **`attach_stream_asset`**: Attaches a router to a stream by asset UUID and stream UUID with `"metrics_enabled": false`.
@@ -47,7 +46,7 @@ This skill can use the following tools:
 Retain its `name` for use in the report. If no matching stream is found, stop and inform the user that the provided `stream_uuid` is invalid.
 
 ### Step 2 — Collect All Routers
-2a. Call `search_routers` with projectId and pagination:
+2a. Call `search_routers` with pagination:
 ```json
 {
   "pagination": { "offset": 0, "limit": 100 }
@@ -75,11 +74,11 @@ If it is **not** present, add it to the `unattached_routers` list (preserving th
 Do **not** ask the user for confirmation. Apply the following rule based on the number of unattached routers:
 
 5a. Determine the routers to attach:
-- If `unattached_routers` contains **fewer than 50** routers, select **all** of them.
-- If `unattached_routers` contains **50 or more** routers, select only the **first 50** (by collection order).
+- If `unattached_routers` contains **fewer than 5** routers, select **all** of them.
+- If `unattached_routers` contains **50 or more** routers, select only the **first 5** (by collection order).
 Call the selected set `routers_to_attach`. 
-Put unattached routers beyond the first 50 to form `routers_over_limit`
-and will be reported as left unattached (reason: exceeded 50-router attachment limit).
+Put unattached routers beyond the first 5 to form `routers_over_limit`
+and will be reported as left unattached (reason: exceeded 5-router attachment limit).
 
 5b. For each router in `routers_to_attach`, in order:
 - Call `attach_stream_asset` with the router UUID, the configured `stream_uuid`, and `"metrics_enabled": false`.
@@ -92,14 +91,14 @@ Do not abort the run on a single failure.
 5d. After all attempts, tally:
 - `attached`: routers successfully attached to the stream.
 - `failed`: routers whose attachment failed, with error details.
-- `left_unattached`: `routers_over_limit` (skipped due to the 50-router limit) plus every router in `failed`.
+- `left_unattached`: `routers_over_limit` (skipped due to the 5-router limit) plus every router in `failed`.
 
 ### Step 6 — Send Email Report
 6a. Compose the completion report in memory:
 
 ```
 <div class="header">
-    <h1>Router Attachment Audit — Report</h1>
+    <h1>Router Attachment Audit Report</h1>
 </div>
 
 <div class="section">
@@ -166,7 +165,7 @@ Section content rules:
 
 ## Guidelines
 - **Autonomous attachment**: Do not ask the user to confirm attachments. Once unattached routers are identified, attach them per the rules in Step 5 automatically.
-- **50-router cap**: Never attach more than 50 routers in a single run. Routers beyond the first 50 must be reported as left unattached with the limit reason.
+- **50-router cap**: Never attach more than 5 routers in a single run. Routers beyond the first 5 must be reported as left unattached with the limit reason.
 - **Partial success**: A failure on one attachment must not abort the remaining attachments — continue and report all outcomes.
 - **Pagination discipline**: Always paginate routers fully before cross-referencing. Call `search_attached_assets` for every stream returned by `list_streams` before building `attached_asset_uuids` — an incomplete inventory will produce false negatives.
 - **Configuration required**: `stream_uuid` is mandatory. Never guess or invent a stream UUID; stop and ask if it is missing or invalid.
@@ -176,5 +175,4 @@ Section content rules:
 
 ## Configuration
 - **`stream_uuid`**: `"<uuid>"` — **Required**. UUID of the target stream that unattached routers will be attached to. Must reference an existing PROVISIONED stream.
-- - **`project_uuid`**: `"<uuid>"` — **Required**. UUID of project that routers belongs to will be audited. 
 - **`recipient_email_addresses`**: `["<email>", ...]` — Optional. List of email addresses to receive the completion report. If omitted, the summary is presented in the conversation only.
