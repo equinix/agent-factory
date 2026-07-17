@@ -198,6 +198,25 @@ This agent runs once immediately by default unless scheduled by user.</td>
 		<td>preview
 	</tr>
 	<tr>
+		<td><a href="https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/run_once/port-attachment-audit.md">Port Attachment Audit Agent<br>[port-attachment-audit.md]</a></td>
+		<td>An Equinix agent that audits all Fabric Ports to detect ports that are not attached to any stream
+and are therefore unmonitored. After collecting the full inventory of PROVISIONED ports, excluding those that are already 
+attached to streams, the agent automatically attaches the unattached ports to the stream provided in configuration prompt:
+attaching all ports if there are fewer than 5, or only the first 5 ports if there are more — without asking the
+user to confirm. It then sends an email report listing which ports were attached and which were left
+unattached. This agent runs once immediately by default unless scheduled by user.</td>
+		<td>- Paginate through all Fabric Ports <br>- Use `search_attached_assets` across every stream to determine which ports are already attached<br>- Identify unattached (unmonitored) ports by cross-referencing port UUIDs against attached assets<br>- Automatically attach unattached ports (up to a maximum of 5) to the configured stream, without user confirmation<br>- Send an email report listing every port that was attached and every port that was left unattached</td>
+		<td>This skill can use the following tools:
+
+- **`search_ports`**: Searches for existing provisioned Fabric Ports with pagination support.
+- **`list_streams`**: Lists all streams available in the account.
+- **`search_attached_assets`**: Returns all ports attached to a given stream UUID.
+- **`attach_stream_asset`**: Attaches a port to a stream by asset UUID and stream UUID with `"metrics_enabled": false`.
+- **`wait`**: Waits for a specified number of milliseconds before the next action.
+- **`send_email_notification`**: Sends an email notification to a list of recipients with an optional PDF attachment.</td>
+		<td>preview
+	</tr>
+	<tr>
 		<td><a href="https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/run_once/pending-state-tracker.md">Pending State Tracker Agent<br>[pending-state-tracker.md]</a></td>
 		<td>This agent actively analyzes the lifecycle state of Equinix Fabric assets to identify those stuck in provisioning or deprovisioning phases for an extended period, proactively notifying user.
 This agent runs once immediately by default unless scheduled by user.</td>
@@ -269,12 +288,51 @@ This agent runs once immediately by default unless scheduled by user.</td>
 		<td>preview
 	</tr>
 	<tr>
+		<td><a href="https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/run_once/router-attachment-audit.md">Router Attachment Audit Agent<br>[router-attachment-audit.md]</a></td>
+		<td>An Equinix agent that audits all Fabric Cloud Routers to detect routers that are not attached to any stream
+and are therefore unmonitored. After collecting the full inventory of PROVISIONED routers, excluding those that are already 
+attached to streams, the agent automatically attaches the unattached routers to the stream provided in configuration prompt:
+attaching all routers if there are fewer than 5, or only the first 5 routers if there are more — without asking the
+user to confirm. It then sends an email report listing which routers were attached and which were left
+unattached. This agent runs once immediately by default unless scheduled by user.</td>
+		<td>- Paginate through all Fabric Cloud Routers <br>- Use `search_attached_assets` across every stream to determine which routers are already attached<br>- Identify unattached (unmonitored) routers by cross-referencing router UUIDs against attached assets<br>- Automatically attach unattached routers (up to a maximum of 5) to the configured stream, without user confirmation<br>- Send an email report listing every router that was attached and every router that was left unattached</td>
+		<td>This skill can use the following tools:
+
+- **`search_routers`**: Searches for existing provisioned Fabric Cloud Routers with pagination support.
+- **`list_streams`**: Lists all streams available in the account.
+- **`search_attached_assets`**: Returns all routers attached to a given stream UUID.
+- **`attach_stream_asset`**: Attaches a router to a stream by asset UUID and stream UUID with `"metrics_enabled": false`.
+- **`wait`**: Waits for a specified number of milliseconds before the next action.
+- **`send_email_notification`**: Sends an email notification to a list of recipients with an optional PDF attachment.</td>
+		<td>preview
+	</tr>
+	<tr>
 		<td><a href="https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/run_once/daily-change-logger.md">Daily Asset Change Report Agent<br>[daily-change-logger.md]</a></td>
 		<td>Identify connections, ports, cloud routers, networks, internet access, and network edge change events in past 24 hours; compile change summary with owners and distribute a daily report.</td>
 		<td>- Analyze all cloud events within a given Equinix Fabric project over the past 24 hours<br>- Deliver a plain-English daily report for changed assets summary via email as a summarized report in PDF format</td>
 		<td>- **`get_timestamps`**: Generates `from` and `to` UTC timestamps based on a duration string (e.g., `"24h"`, `"7d"`, `"1M"`). Returns a JSON object with `from` and `to` as ISO 8601 UTC strings. Always call this in Step 1 to obtain the reporting window.
 - **`search_cloud_events`**: Searches Equinix Fabric cloud events. Use `/equinixproject` `=` with `/time` `>=` and `<=` to scope by project and time window.
 - **`send_email_notification`**: Sends an email. Pass `pdfTitle` and `pdfContent` (plain text) to auto-generate and attach a PDF.</td>
+		<td>preview
+	</tr>
+	<tr>
+		<td><a href="https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/run_once/ipwan-fcr-network-setup.md">IPWAN & FCR Network Setup Agent<br>[ipwan-fcr-network-setup.md]</a></td>
+		<td>An Equinix agent that provisions a complete IPWAN-based network topology by creating a Network, one or more Fabric Cloud Routers (FCRs) at user-specified metro locations, and FCR2IPWAN connections to link each FCR to the network. When multiple metros are specified the topology spans regions; a single metro results in a regional deployment. After all resources reach PROVISIONED state the agent attaches them to a stream (creating one if needed) and sends a completion summary via email.
+This agent runs once immediately by default unless scheduled by user.</td>
+		<td>- Create a Fabric Network of type IPWAN scoped to a project<br>- Create one FCR per specified metro location with a configurable package<br>- Create FCR2IPWAN connections between each FCR and the network<br>- Poll all resources until they reach PROVISIONED state before proceeding<br>- Create a stream automatically if no stream UUID is provided, then attach every provisioned resource to it<br>- Send an email completion report summarizing all created resources and their states</td>
+		<td>This skill can use the following tools:
+
+- **`create_network`**: Creates a Fabric Network. Accepts name, type (`IPWAN`), scope (`REGIONAL` or `GLOBAL`), location (metro code), and project UUID.
+- **`search_networks`**: Searches for existing Fabric Networks by filter.
+- **`create_router`**: Creates a Fabric Cloud Router. Accepts name, location (metro code), package, notifications, and project UUID.
+- **`search_routers`**: Searches for existing Fabric Cloud Routers by filter to check provisioning state.
+- **`create_connection`**: Creates a connection. Used to create FCR2IPWAN connections between an FCR and a Network.
+- **`search_connections`**: Searches for existing connections to verify provisioning state.
+- **`get_stream_details`**: Fetches stream details given a stream UUID.
+- **`create_stream`**: Creates a new stream given a name and project UUID.
+- **`attach_stream_asset`**: Attaches a resource (network, router, or connection) to a stream by UUID.
+- **`wait`**: Waits for a specified number of milliseconds before the next action.
+- **`send_email_notification`**: Sends an email notification to a list of recipients with an optional PDF attachment.</td>
 		<td>preview
 	</tr>
 	<tr>
@@ -308,6 +366,25 @@ This agent runs once immediately by default unless scheduled by user.</td>
 *   **`wait`**: Wait for a while. An optional parameter can be provided to specify the wait time in milliseconds.
 *   **`search_router_commands`**: Search for commands (e.g., TRACEROUTE) on a Fabric Cloud Router.
 *   **`send_email_notification`**: Sends an email notification given a list email of addresses and email body.</td>
+		<td>preview
+	</tr>
+	<tr>
+		<td><a href="https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/run_once/connection-attachment-audit.md">Connection Attachment Audit Agent<br>[connection-attachment-audit.md]</a></td>
+		<td>An Equinix agent that audits all Fabric Connections to detect connections that are not attached to any stream
+and are therefore unmonitored. After collecting the full inventory of PROVISIONED connections, excluding those that are already 
+attached to streams, the agent automatically attaches the unattached connections to the stream provided in configuration prompt:
+attaching all connections if there are fewer than 5, or only the first 5 connections if there are more — without asking the
+user to confirm. It then sends an email report listing which connections were attached and which were left
+unattached. This agent runs once immediately by default unless scheduled by user.</td>
+		<td>- Paginate through all Fabric Connections <br>- Use `search_attached_assets` across every stream to determine which connections are already attached<br>- Identify unattached (unmonitored) connections by cross-referencing connection UUIDs against attached assets<br>- Automatically attach unattached connections (up to a maximum of 5) to the configured stream, without user confirmation<br>- Send an email report listing every connection that was attached and every connection that was left unattached</td>
+		<td>This skill can use the following tools:
+
+- **`search_connections`**: Searches for existing provisioned Fabric Connections with pagination support.
+- **`list_streams`**: Lists all streams available in the account.
+- **`search_attached_assets`**: Returns all connections attached to a given stream UUID.
+- **`attach_stream_asset`**: Attaches a connection to a stream by asset UUID and stream UUID with `"metrics_enabled": false`.
+- **`wait`**: Waits for a specified number of milliseconds before the next action.
+- **`send_email_notification`**: Sends an email notification to a list of recipients with an optional PDF attachment.</td>
 		<td>preview
 	</tr>
 </table>
