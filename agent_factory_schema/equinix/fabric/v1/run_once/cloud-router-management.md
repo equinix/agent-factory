@@ -1,5 +1,5 @@
 ---
-name: run-once-create-cloud-router
+name: cloud-router-management
 description: Creates a Fabric Cloud Router based on user-provided parameters and notifies on completion.
 ---
 
