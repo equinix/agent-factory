@@ -43,42 +43,45 @@
                     "releaseStatus": "preview"
                 },
                 {
+                    "name": "equinix.fabric.connection.health.scorecard",
+                    "description": "Create Connection Health Scorecard",
+                    "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/run_once/create-connection-health-scorecard.md",
+                    "releaseStatus": "preview"
+                },
+                {
+                    "name": "equinix.fabric.connection.pending.notify",
+                    "description": "Track connections pending in provisioning or deprovisioning state and notify",
+                    "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/run_once/connection-pending-state-tracker.md",
+                    "releaseStatus": "preview"
+                },
+                {
+                    "name": "equinix.fabric.default.new.connection.stream.attachment",
+                    "description": "Attach new connections to default stream",
+                    "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/run_once/default-new-connection-attachment-to-stream.md",
+                    "releaseStatus": "preview"
+                },
+                {
+                    "name": "equinix.fabric.default.new.port.stream.attachment",
+                    "description": "Attach new ports to default stream",
+                    "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/run_once/default-new-port-attachment-to-stream.md",
+                    "releaseStatus": "preview"
+                },
+                {
+                    "name": "equinix.fabric.default.new.router.stream.attachment",
+                    "description": "Attach new routers to default stream",
+                    "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/run_once/default-new-router-attachment-to-stream.md",
+                    "releaseStatus": "preview"
+                },
+                {
                     "name": "equinix.fabric.router.ping.notify",
                     "description": "Ping and Notify Fabric Cloud Router Connection",
                     "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/run_once/ping-and-notify.md",
                     "releaseStatus": "preview"
-                }
-            ]
-        },
-        {
-            "url": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/Scheduled.json",
-            "domain": "Equinix Fabric Agent Factory Scheduled",
-            "title": "Scheduled",
-            "description": "Equinix Fabric Agent Factory Scheduled",
-            "datatype": "equinix.fabric.v1.scheduled",
-            "agentFactories": [
-                {
-                    "name": "equinix.fabric.connection.bandwidth.upgrade",
-                    "description": "Upgrade Primary Connection Bandwidth",
-                    "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/scheduled/upgrade-bw-primary-connection.md",
-                    "releaseStatus": "preview"
                 },
                 {
-                    "name": "equinix.fabric.connection.notify",
-                    "description": "GCP and Equinix Metrics Monitor Emailer Agent",
-                    "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/scheduled/gcp-metrics-monitor-emailer.md",
-                    "releaseStatus": "preview"
-                },
-                {
-                    "name": "equinix.fabric.router.ping.notify",
-                    "description": "Ping and Notify Fabric Cloud Router Connection",
-                    "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/scheduled/ping-and-notify.md",
-                    "releaseStatus": "preview"
-                },
-                {
-                    "name": "equinix.fabric.router.upgrade",
-                    "description": "Upgrade FCR Package",
-                    "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/scheduled/upgrade-fcr-package.md",
+                    "name": "equinix.fabric.routing.protocol.create",
+                    "description": "Creates a standard BGP routing protocol and sends completion notifications for connections that are pending interface configuration.",
+                    "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/run_once/provision-bgp.md",
                     "releaseStatus": "preview"
                 }
             ]
@@ -97,14 +100,6 @@
             "title": "RunOnce",
             "description": "Equinix Network Edge Agent Factory Run Once",
             "datatype": "equinix.network_edge.v1.runonce",
-            "agentFactories": []
-        },
-        {
-            "url": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/network_edge/v1/RunOnce.json",
-            "domain": "Equinix Network Edge Agent Factory Scheduled",
-            "title": "Scheduled",
-            "description": "Equinix Network Edge Agent Factory Scheduled",
-            "datatype": "equinix.network_edge.v1.Scheduled",
             "agentFactories": []
         }
     ]
