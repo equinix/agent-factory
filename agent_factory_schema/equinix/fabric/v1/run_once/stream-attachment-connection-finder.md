@@ -1,5 +1,5 @@
 ---
-name: default-connection-attachment-to-stream
+name: stream-attachment-connection-finder.md
 description: Go through the list of existing provisioned connections and if they are not attached to a stream and older than a certain amount number of hours, attach them to the default stream by uuid.
 ---
 

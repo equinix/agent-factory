@@ -3,7 +3,7 @@ name: metro-latency-notify
 description: Automatically email a list of connections that are over the metros where latency spike.
 ---
 
-# Collect connections over metros with latency spikes and notify
+# Metro Latency Spikes and Connections Over Metros Report Agent
 
 ## Overview
 An Equinix agent that automatically email a list of connections that are over the metros where latency spike.

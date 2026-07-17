@@ -1,9 +1,9 @@
 ---
-name: recommend-route-aggregation
+name: cloud-router-route-aggregation-recommendation
 description: Recommends aggregate (supernet) routes for a Fabric Cloud Router based on its active route table entries.
 ---
 
-# Cloud Router route aggregation recommendation agent
+# Cloud Router Route Aggregation Recommendation Agent
 
 ## Overview
 This definition sets up and activates an Equinix agent that recommends, or suggests, aggregate routes for a Fabric Cloud Router (also referred to as FCR or router).

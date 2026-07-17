@@ -1,9 +1,9 @@
 ---
-name: TRACEROUTE-fcr-and-notify
+name: cloud-router-tracerouter-and-notify
 description: Initiates a TRACEROUTE command on a Fabric Cloud Router.
 ---
 
-# TRACEROUTE FCR agent
+# Cloud Router Traceroute and Report Agent
 
 ## Overview
 An Equinix agent that initiates a TRACEROUTE command on a Fabric Cloud Router in order to perform a network connectivity check.

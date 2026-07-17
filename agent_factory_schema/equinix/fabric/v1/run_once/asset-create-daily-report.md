@@ -1,16 +1,16 @@
 ---
-name: daily-change-report
-description: Identify connections, ports, cloud routers, networks, internet access, and network edge change events in past 24 hours; compile change summary with owners and distribute a daily report.
+name: stream-attachment-router-finder
+description: Identify connections, ports, cloud routers, networks, internet access, and network edge creation events in past 24 hours; compile creation summary with owners and distribute a daily report.
 ---
 
-# Daily Asset Change Report Agent
+# Daily Asset Creation Report Agent
 
 ## Overview
-Identify connections, ports, cloud routers, networks, internet access, and network edge change events in past 24 hours; compile change summary with owners and distribute a daily report.
+Identify connections, ports, cloud routers, networks, internet access, and network edge creation events in past 24 hours; compile creation summary with owners and distribute a daily report.
 
 ## Capabilities
 - Analyze all cloud events within a given Equinix Fabric project over the past 24 hours
-- Deliver a plain-English daily report for changed assets summary via email as a summarized report in PDF format
+- Deliver a plain-English daily report for created assets summary via email as a summarized report in PDF format
 
 ## Prerequisites
 - Valid Equinix Fabric project UUIDs must be available. The project must have cloud events enabled and assets attached to it.
@@ -39,33 +39,25 @@ Using `from_timestamp` and `to_timestamp` established in Step 1, call `search_cl
   "filter": {
     "and": [
       { "property": "/type", "operator": "IN", "values": [
-        "equinix.fabric.connection.attribute.changed",
-        "equinix.fabric.connection.state.deprovisioned",
-        "equinix.fabric.connection.state.deprovisioning",
-        "equinix.fabric.connection.state.reprovisioning",
-        "equinix.fabric.port.state.deprovisioned",
-        "equinix.fabric.port.state.deprovisioning",
-        "equinix.fabric.port.state.inactive",
-        "equinix.fabric.port.state.reprovisioning",
-        "equinix.fabric.router.attribute.changed",
-        "equinix.fabric.router.state.deprovisioned",
-        "equinix.fabric.router.state.deprovisioning",
-        "equinix.fabric.router.state.not_deprovisioned",
-        "equinix.fabric.router.state.not_provisioned",
-        "equinix.fabric.router.state.reprovisioning",
-        "equinix.fabric.network.attribute.changed",
-        "equinix.fabric.network.state.deprovisioned",
-        "equinix.fabric.network.state.deprovisioning",
-        "equinix.fabric.internet_access.attribute.changed",
-        "equinix.fabric.internet_access.attribute.changing",
-        "equinix.fabric.internet_access.attribute.failed",
-        "equinix.fabric.internet_access.state.deprovisioned",
-        "equinix.fabric.internet_access.state.deprovisioning",
-        "equinix.network_edge.device.attribute.changed",
-        "equinix.network_edge.device.reboot.completed",
-        "equinix.network_edge.device.reboot.started",
-        "equinix.network_edge.device.state.cancelled",
-        "equinix.network_edge.device.state.deleted"
+        "equinix.fabric.connection.state.provisioned",
+        "equinix.fabric.connection.state.provisioning",
+        "equinix.fabric.connection.state.pending",
+        "equinix.fabric.connection.state.failed",
+        "equinix.fabric.port.state.provisioned",
+        "equinix.fabric.port.state.provisioning",
+        "equinix.fabric.port.state.pending_cross_connect",
+        "equinix.fabric.port.state.failed",
+        "equinix.fabric.router.state.provisioned",
+        "equinix.fabric.router.state.provisioning",
+        "equinix.fabric.router.state.failed",
+        "equinix.fabric.network.state.provisioned",
+        "equinix.fabric.network.state.provisioning",
+        "equinix.fabric.internet_access.state.provisioned",
+        "equinix.fabric.internet_access.state.provisioning",
+        "equinix.fabric.internet_access.state.failed",
+        "equinix.network_edge.device.state.created",
+        "equinix.network_edge.device.state.provisioned",
+        "equinix.network_edge.device.state.provisioning"
       ] },
       { "property": "/equinixproject", "operator": "IN", "values": ["<project_uuid>","<project_uuid>"] },
       { "property": "/time", "operator": ">=", "values": ["<from_timestamp>"] },
@@ -83,16 +75,16 @@ If total events exceed the page limit, repeat with incremented offsets until all
 Build the following in-memory groupings:
 
 #### 3a. Classify each creation event:
-- **Connection Updated Events**: anything beginning with `equinix.fabric.connection.`
-- **Port Updated Events**: anything beginning with `equinix.fabric.port.`
-- **Cloud Router Updated Events**: anything beginning with `equinix.fabric.router.`
-- **Network Updated Events**: anything beginning with `equinix.fabric.network.`
-- **Internet Access Updated Events**: anything beginning with `equinix.fabric.internet_access.`
-- **Network Edge Device Updated Events**: anything beginning with `equinix.network_edge.`
+- **Connection Created Events**: `equinix.fabric.connection.state.provisioned`, `equinix.fabric.connection.state.provisioning`, `equinix.fabric.connection.state.pending`,`equinix.fabric.connection.state.failed`
+- **Port Created Events**: `equinix.fabric.port.state.provisioned`, `equinix.fabric.port.state.provisioning`, `equinix.fabric.port.state.pending_cross_connect`, `equinix.fabric.port.state.failed`
+- **Cloud Router Created Events**: `equinix.fabric.router.state.provisioned`, `equinix.fabric.router.state.provisioning`, `equinix.fabric.router.state.failed`
+- **Network Created Events**: `equinix.fabric.network.state.provisioned`, `equinix.fabric.network.state.provisioning`
+- **Internet Access Created Events**: `equinix.fabric.internet_access.state.provisioned`, `equinix.fabric.internet_access.state.provisioning`, `equinix.fabric.internet_access.state.failed`,
+- **Network Edge Device Created Events**: `equinix.network_edge.device.state.created`, `equinix.network_edge.device.state.provisioned`, `equinix.network_edge.device.state.provisioning`,
 
 #### 3b. Group provisioned, provisioning, failed, pending, events by asset:
 - Key: subject UUID
-- Track count of deprovisioning, attribute changed, deprovisioned, reprovisioned, and failed transitions per asset.
+- Track count of provisioning, pending, provisioned, created, and failed transitions per asset.
 - Extract and retain `data.resource.name` for the asset where present.
 - For user-initiated events, extract and retain `data.auth.name` (human-readable name) alongside `authid` from the event root.
 
@@ -107,7 +99,7 @@ Structure the report using these sections. Do not include any section numbers in
 
 ```
 <div class="header">
-    <h1>Daily Equinix Updated Assets Report</h1>
+    <h1>Daily Equinix Created Assets Report</h1>
 </div>
 
 <div class="section">
@@ -116,32 +108,42 @@ Structure the report using these sections. Do not include any section numbers in
     </div>
 </div>
 <div class="section">
-    <h2>Connection Updated Events</h2>
+    <h2>Connection Created Events</h2>
     <div class="content">
     </div>
 </div>
 <div class="section">
-    <h2>Port Updated Events</h2>
+    <h2>Port Created Events</h2>
     <div class="content">
     </div>
 </div>
 <div class="section">
-    <h2>Cloud Router Updated Events </h2>
+    <h2>Cloud Router Created Events </h2>
     <div class="content">
     </div>
 </div>
 <div class="section">
-    <h2>Network Updated Events</h2>
+    <h2>Network Created Events</h2>
     <div class="content">
     </div>
 </div>
 <div class="section">
-    <h2>Internet Access Updated Events</h2>
+    <h2>Internet Access Created Events</h2>
     <div class="content">
     </div>
 </div>
 <div class="section">
-    <h2>Network Edge Device Updated Events</h2>
+    <h2>Network Edge Device Created Events</h2>
+    <div class="content">
+    </div>
+</div>
+<div class="section">
+    <h2>Events That Need Your Attention</h2>
+    <div class="content">
+    </div>
+</div>
+<div class="section">
+    <h2>What You Should Do</h2>
     <div class="content">
     </div>
 </div>
@@ -149,16 +151,19 @@ Structure the report using these sections. Do not include any section numbers in
 
 Section content rules:
 - **Summary**: State the Project UUID and reporting period, then 3–5 sentences — total events, asset types active, headline finding, routine or needs attention.
-- **Connection Updated Activity**: Include only if connection events exist — otherwise omit entirely. Note churn (3+ transitions). List each connection as `<data.resource.name> (<full-uuid>)` with plain English description of activity and the exact list of attributes that were changed.
-- **Port Updated Activity**: Include only if router events exist — otherwise omit entirely. Note churn (3+ transitions) as elevated. List each router as `<data.resource.name> (<full-uuid>)`  with plain English description of activity and the exact list of attributes that were changed.
-- **Cloud Router Updated Activity**: Include only if router events exist — otherwise omit entirely. Note churn (3+ transitions) as elevated. List each router as `<data.resource.name> (<full-uuid>)`  with plain English description of activity and the exact list of attributes that were changed.
-- **Network Updated Activity**: Include only if router events exist — otherwise omit entirely. Note churn (3+ transitions) as elevated. List each router as `<data.resource.name> (<full-uuid>)`  with plain English description of activity and the exact list of attributes that were changed.
-- **Internet Access Updated Activity**: Include only if router events exist — otherwise omit entirely. Note churn (3+ transitions) as elevated. List each router as `<data.resource.name> (<full-uuid>)`  with plain English description of activity and the exact list of attributes that were changed.
-- **Network Edge Device Activity**: Include only if router events exist — otherwise omit entirely. Note churn (3+ transitions) as elevated. List each router as `<data.resource.name> (<full-uuid>)`  with plain English description of activity and the exact list of attributes that were changed.
+- **Connection Created Activity**: Include only if connection events exist — otherwise omit entirely. Note churn (3+ transitions). List each connection as `<data.resource.name> (<full-uuid>)` with description and last observed state.
+- **Port Created Activity**: Include only if router events exist — otherwise omit entirely. Note churn (3+ transitions) as elevated. List each router as `<data.resource.name> (<full-uuid>)` with plain English description of activity.
+- **Cloud Router Created Activity**: Include only if router events exist — otherwise omit entirely. Note churn (3+ transitions) as elevated. List each router as `<data.resource.name> (<full-uuid>)` with plain English description of activity.
+- **Network Created Activity**: Include only if router events exist — otherwise omit entirely. Note churn (3+ transitions) as elevated. List each router as `<data.resource.name> (<full-uuid>)` with plain English description of activity.
+- **Internet Access Created Activity**: Include only if router events exist — otherwise omit entirely. Note churn (3+ transitions) as elevated. List each router as `<data.resource.name> (<full-uuid>)` with plain English description of activity.
+- **Network Edge Device Activity**: Include only if router events exist — otherwise omit entirely. Note churn (3+ transitions) as elevated. List each router as `<data.resource.name> (<full-uuid>)` with plain English description of activity.
+- **Events That Need Your Attention**: Include only if failed/pending state events exist — otherwise omit entirely. List up to 10, humanized — no raw event type strings. Format: `[WARN] <time UTC> - <description>`, Asset (use name + full UUID), Detail, Severity.
+- **What You Should Do**: 1–3 plain English recommendations based only on detected findings. If nothing needs action, always end with: "No issues were detected and no action is required at this time. I will continue monitoring any new events for you."
 
 Rules:
 - Plain English always. No raw event type strings, no API jargon.
 - Always use both the human-readable name AND the full UUID when referencing any asset (router, connection, port, routing protocol) or user. Format: `<name> (<full-uuid>)` for assets and `<data.auth.name> (id: <authid>)` for users. If a name is not available, fall back to the full UUID only.
+- Final observed state must be stated for any asset with multiple transitions.
 
 ### Step 5 — Send the Report
 Use `send_email_notification` to send the report to `recipient_email_addresses`.
