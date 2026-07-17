@@ -93,18 +93,18 @@
         },
         {
             "url": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/network_edge/v1/RunOnce.json",
-            "domain": "Equinix Network Edge Agent Factory Run Once",
-            "title": "RunOnce",
-            "description": "Equinix Network Edge Agent Factory Run Once",
-            "datatype": "equinix.network_edge.v1.runonce",
-            "agentFactories": []
-        },
-        {
-            "url": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/network_edge/v1/RunOnce.json",
             "domain": "Equinix Network Edge Agent Factory Scheduled",
             "title": "Scheduled",
             "description": "Equinix Network Edge Agent Factory Scheduled",
             "datatype": "equinix.network_edge.v1.Scheduled",
+            "agentFactories": []
+        },
+        {
+            "url": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/network_edge/v1/RunOnce.json",
+            "domain": "Equinix Network Edge Agent Factory Run Once",
+            "title": "RunOnce",
+            "description": "Equinix Network Edge Agent Factory Run Once",
+            "datatype": "equinix.network_edge.v1.runonce",
             "agentFactories": []
         }
     ]
