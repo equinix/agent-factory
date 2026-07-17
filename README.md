@@ -196,7 +196,7 @@ This agent runs once immediately by default unless scheduled by user.</td>
 		<td>preview
 	</tr>
 	<tr>
-		<td><a href="https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/run_once/stream-attachment-connection-finder.md">Detect connections that are not attached to a stream and notify<br>[stream-attachment-connection-finder.md]</a></td>
+		<td><a href="https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/run_once/stream-attachment-connection-finder.md">Stream Attachment Connection Finder Agent<br>[stream-attachment-connection-finder.md]</a></td>
 		<td>An Equinix agent that automatically detects new connections older than a certain amount of time and ensures they are at least connected to the default stream.</td>
 		<td>- Detect older connections that are not attached to any stream<br>- Attach such connections to the default stream<br>- Email notification of this action to the user<br>- Log all actions and decisions</td>
 		<td>This skill can use the following tools:
@@ -208,7 +208,7 @@ This agent runs once immediately by default unless scheduled by user.</td>
 		<td>preview
 	</tr>
 	<tr>
-		<td><a href="https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/run_once/stream-attachment-router-finder.md">Detect routers that are not attached to a stream and notify<br>[stream-attachment-router-finder.md]</a></td>
+		<td><a href="https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/run_once/stream-attachment-router-finder.md">Stream Attachment Cloud Router Finder Agent<br>[stream-attachment-router-finder.md]</a></td>
 		<td>An Equinix agent that automatically detects new routers older than a certain amount of time and ensures they are at least connected to the default stream.</td>
 		<td>- Detect older routers that are not attached to any stream<br>- Attach such routers to the default stream<br>- Email notification of this action to the user<br>- Log all actions and decisions</td>
 		<td>This skill can use the following tools:
@@ -248,7 +248,7 @@ This agent runs once immediately by default unless scheduled by user.</td>
 		<td>preview
 	</tr>
 	<tr>
-		<td><a href="https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/run_once/stream-attachment-port-finder.md">Detect ports that are not attached to a stream and notify<br>[stream-attachment-port-finder.md]</a></td>
+		<td><a href="https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/run_once/stream-attachment-port-finder.md">Stream Attachment Port Finder Agent<br>[stream-attachment-port-finder.md]</a></td>
 		<td>An Equinix agent that automatically detects new ports older than a certain amount of time and ensures they are at least connected to the default stream.</td>
 		<td>- Detect older ports that are not attached to any stream<br>- Attach such ports to the default stream<br>- Email notification of this action to the user<br>- Log all actions and decisions</td>
 		<td>This skill can use the following tools:
