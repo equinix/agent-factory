@@ -15,7 +15,7 @@ Available via [CODE_OF_CONDUCT.md](./CODE_OF_CONDUCT.md)
 ## MD Files Gating
 
 Each Markdown (.md) file is created to support Agent Factory workflows.
-The team responsible for the Agent Factory will add their Markdown files under the directory of their domain and one of the supported categories: `event_driven`, `run_once`, or `scheduled`.
+The team responsible for the Agent Factory will add their Markdown files under the directory of their domain and one of the supported categories: `event_driven` or `run_once`.
 
 Each Markdown file(.md) must contain the following sections:
 * `# <High Level Title>` - The title of the Agent Factory.
@@ -77,7 +77,7 @@ This skill can use the following tools:
 
 ## Agent Factory Schema Registration and Gating
 
-Each team will add Agent Factory schemas in JSON format to their domain or add Agent Factories under the supported category JSON files: `EventDriven.json`, `RunOnce.json`, or `Scheduled.json`. The data schema is used to organize Agent Factory workflows and indicate their production readiness.
+Each team will add Agent Factory schemas in JSON format to their domain or add Agent Factories under the supported category JSON files: `EventDriven.json` or `RunOnce.json`. The data schema is used to organize Agent Factory workflows and indicate their production readiness.
 
 Domains are added under `agent_factory_schema/equinix` in the repository, following this directory pattern: `agent_factory_schema/equinix/<domain>/<major_version>/<agent_factory_category>`.
 A complete example is:`agent_factory_schema/equinix/fabric/v1/EventDriven.json`.
