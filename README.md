@@ -11,7 +11,8 @@ The following md files are supported for Equinix Agent Factory
 <!-- CATALOG_GENERATION_START -->
 
 ---
-### Equinix Fabric   On-Event
+### Equinix Fabric On-Event
+#### Equinix Fabric Agent Factory Event-Driven Scenarios
 
 <table>
 	<tr>
@@ -87,7 +88,8 @@ This agent only executes once.</td>
 
 
 ---
-### Equinix Fabric   On-Schedule
+### Equinix Fabric On-Schedule
+#### Equinix Fabric Agent Factory On Schedule and On Demand Scenarios
 
 <table>
 	<tr>
