@@ -1,10 +1,10 @@
 {
     "$id": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/network_edge/v1/RunOnce.json",
-    "name": "RunOnce",
+    "name": "OnSchedule",
     "examples": [],
     "package": "equinix.network_edge.v1",
-    "datatype": "equinix.network_edge.v1.runonce",
-    "domain": "Equinix Network Edge Agent Factory Run Once",
+    "datatype": "equinix.network_edge.v1.on_schedule",
+    "domain": "Equinix Network Edge Agent Factory OnSchedule",
     "$schema": "http://json-schema.org/draft-04/schema#",
     "$ref": "#/definitions/Data",
     "definitions": {
@@ -13,13 +13,13 @@
                 "agentFactories": {
                     "$ref": "#/definitions/agentFactories",
                     "additionalProperties": true,
-                    "description": "The agent factories within all run-once scenarios."
+                    "description": "The agent factories within all on-schedule and on-demand scenarios."
                 }
             },
             "additionalProperties": true,
             "type": "object",
-            "title": "Equinix Network Edge Agent Factory Run Once",
-            "description": "Equinix Network Edge Agent Factory Run Once"
+            "title": "Equinix Network Edge Agent Factory On Schedule",
+            "description": "Equinix Network Edge Agent Factory On Schedule and On Demand Scenarios"
         }
     },
     "agentFactories": []

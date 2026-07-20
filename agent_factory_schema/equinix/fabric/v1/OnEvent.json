@@ -26,25 +26,25 @@
         {
             "name": "equinix.fabric.connection.bandwidth.upgrade",
             "description": "Upgrade Primary Connection Bandwidth",
-            "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_demand/upgrade-bw-primary-connection.md",
-            "releaseStatus": "test-releasee"
+            "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_demand/connection-upgrade-bw-primary.md",
+            "releaseStatus": "release"
         },
         {
             "name": "equinix.fabric.connection.bandwidth.upgrade",
             "description": "Upgrade Secondary Connection Bandwidth",
-            "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_demand/upgrade-bw-secondary-connection.md",
+            "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_demand/connection-upgrade-bw-secondary.md",
             "releaseStatus": "preview"
         },
         {
             "name": "equinix.fabric.connection.bandwidth.upgrade",
             "description": "Upgrade Connection Bandwidth from Packet Drop Alert",
-            "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_demand/upgrade-bw-on-packet-drop-alert.md",
+            "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_demand/connection-upgrade-bw-on-packet-drop-alert.md",
             "releaseStatus": "preview"
         },
         {
             "name": "equinix.fabric.router.upgrade",
             "description": "Upgrade FCR Package",
-            "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_demand/upgrade-fcr-package.md",
+            "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_demand/cloud-router-upgrade-package.md",
             "releaseStatus": "preview"
         },
         {
