@@ -77,10 +77,11 @@ This skill can use the following tools:
 
 ## Agent Factory Schema Registration and Gating
 
-Each team will add Agent Factory schemas in JSON format to their domain or add Agent Factories under the supported category JSON files: `EventDriven.json` or `RunOnce.json`. The data schema is used to organize Agent Factory workflows and indicate their production readiness.
+Each team will add Agent Factory schemas in JSON format to their domain or add Agent Factories under the supported category JSON files: `OnEvent.json` or `OnSchedule.json`. The data schema is used to organize Agent Factory workflows and indicate their production readiness.
+Contributor does not need to update the README.md file or catalog.json file. The Github Actions will automatically update those files when a Pull Request is merged into main.
 
 Domains are added under `agent_factory_schema/equinix` in the repository, following this directory pattern: `agent_factory_schema/equinix/<domain>/<major_version>/<agent_factory_category>`.
-A complete example is:`agent_factory_schema/equinix/fabric/v1/EventDriven.json`.
+A complete example is:`agent_factory_schema/equinix/fabric/v1/OnEvent.json`.
 
 Each Agent Factory schema is created to support Agent Factory category types. Please ensure the
 [MD Gating](#md-files-gating) and [Agent Factory Scehma Registration and Gating](#agent-factory-schema-registration-and-gating) and section are read and properly understood to abide by those
@@ -96,8 +97,8 @@ Each contributed agent factory schema requires the following attributes:
 * "examples" - Provided examples of what the Agent Factory schema could contain in an Agent Factory Workflow. Can be an empty list `[]` to
 start.
 * "package" - The name of the package containing the data schema. Example: `equinix.fabric.v1`
-* "datatype" - The full name of the datatype within the package. Example: `equinix.fabric.v1.EventDriven`
-* "domain" - The description of the domain within the package. Example: `Equinix Fabric Agent Factory Event Driven`
+* "datatype" - The full name of the datatype within the package. Example: `equinix.fabric.v1.on_event`
+* "domain" - The description of the domain within the package. Example: `Equinix Fabric Agent Factory On Event`
 * "$schema" - The JSON Schema Specification used to draft the data schema. Use `"http://json-schema.org/draft-04/schema#"` for all
 * "$ref" - The reference to the definition provided for the data schema. Example: `#/definitions/Data`
 * "definitions" - The JSON Schema definition that describes the contents of the Agent Factory schema for what will be contained

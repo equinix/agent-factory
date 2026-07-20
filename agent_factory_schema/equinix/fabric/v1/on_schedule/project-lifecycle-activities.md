@@ -1,5 +1,5 @@
 ---
-name: project-lifecycle-activities-insight
+name: project-lifecycle-activities
 description: Analyzes all cloud events within a given Equinix Fabric project and delivers a summarized status report over a specified time range
 ---
 

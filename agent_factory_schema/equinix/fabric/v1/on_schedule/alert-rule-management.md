@@ -3,7 +3,7 @@ name: alert-rule-management
 description: Sets up an alert rule for a connection.
 ---
 
-# Alert Rule Manager
+# Alert Rule Manager Agent
 
 ## Overview
 An Equinix agent that sets up an alert rule for a connection.

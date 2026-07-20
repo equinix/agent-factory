@@ -1,9 +1,9 @@
 ---
-name: provision-bgp
+name: cloud-router-bgp-boostrap-provisioner
 description: Creates a standard BGP routing protocol and sends completion notifications for connections that are pending interface configuration.
 ---
 
-# BGP bootstrap on pending connection
+# Cloud Router BGP Bootstrap Provisioner Agent
 
 ## Overview
 This agent targets a connection that is pending interface configuration, sets up a standard BGP routing protocol (ASN, BFD enabled, MD5 authentication), and sends a completion notification with final execution outcome.

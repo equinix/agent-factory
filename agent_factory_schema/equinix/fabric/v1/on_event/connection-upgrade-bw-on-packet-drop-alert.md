@@ -1,9 +1,9 @@
 ---
-name: upgrade-bw-on-packet-drop-alert
+name: connection-upgrade-bw-on-packet-drop-alert
 description: Automatically boosts connection bandwidth to mitigate traffic-induced packet loss.
 ---
 
-# Network connection packets drop monitoring and upgrade agent
+# Connection Packet Drop Monitoring and Upgrade Agent
 
 ## Overview
 An Equinix agent that automatically boosts connection bandwidth to mitigate traffic-induced packet loss.
