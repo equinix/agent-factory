@@ -41,7 +41,7 @@ jobs:
         echo -e "\nGit status:"
         echo `git status`
         cdate=`date`
-        cmsg="Auto commit generated client synchronization changes for Agent Factory Schema Updates - $cdate"
+        cmsg="Auto commit generated client synchronization changes for Agent Factory Schema Updates - $cdate [skip ci]"
         echo -e "\nCommit message created : $cmsg"
         echo -e "\nCommitting if there are files to update in client dir:"
         echo `git commit -m "$cmsg"`
