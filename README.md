@@ -319,17 +319,6 @@ This agent runs once immediately by default unless scheduled by user.</td>
 *   **`get_next_available_bandwidth_tier `**: Fetches the next available billing tier based on a bandwidth input.</td>
 		<td>preview
 	</tr>
-	<tr>
-		<td><a href="https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_schedule/connection/gcp-monitoring.md">GCP Monitoring Agent<br>[gcp-monitoring.md]</a></td>
-		<td>An Equinix agent that sends gcp monitoring metrics to an email.
-This agent runs once immediately by default unless scheduled by user.</td>
-		<td>- An automated monitoring solution utilizing an Equinix-hosted agent to track and transmit real-time GCP performance metrics. <br>- This system is designed to provide stakeholders with regular visibility into cloud health by delivering comprehensive metric reports directly to designated email recipients.</td>
-		<td>This skill can use the following tools:
-
-*   **`list_timeseries`**: Lists time series data from the Google Cloud Monitoring API.
-*   **`send_email_notification`**: Sends an email notification given a list email of addresses and email body.</td>
-		<td>preview
-	</tr>
 </table>
 
 </details>
