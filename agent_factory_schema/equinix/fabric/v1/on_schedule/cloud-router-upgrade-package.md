@@ -3,7 +3,7 @@ name: cloud-router-upgrade-package
 description: Upgrades the package of a Fabric Cloud Router. 
 ---
 
-# Cloud Route Upgrade Package Agent
+# Cloud Router Upgrade Package Agent
 
 ## Overview
 This definition sets up and activates an Equinix agent that upgrades the package of a Fabric Cloud Router. 
