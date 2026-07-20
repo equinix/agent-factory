@@ -26,31 +26,31 @@
         {
             "name": "equinix.fabric.connection.bandwidth.upgrade",
             "description": "Upgrade Primary Connection Bandwidth",
-            "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_demand/connection-upgrade-bw-primary.md",
+            "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_event/connection-upgrade-bw-primary.md",
             "releaseStatus": "preview"
         },
         {
             "name": "equinix.fabric.connection.bandwidth.upgrade",
             "description": "Upgrade Secondary Connection Bandwidth",
-            "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_demand/connection-upgrade-bw-secondary.md",
+            "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_event/connection-upgrade-bw-secondary.md",
             "releaseStatus": "preview"
         },
         {
             "name": "equinix.fabric.connection.bandwidth.upgrade",
             "description": "Upgrade Connection Bandwidth from Packet Drop Alert",
-            "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_demand/connection-upgrade-bw-on-packet-drop-alert.md",
+            "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_event/connection-upgrade-bw-on-packet-drop-alert.md",
             "releaseStatus": "preview"
         },
         {
             "name": "equinix.fabric.router.upgrade",
             "description": "Upgrade Cloud Router Package",
-            "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_demand/cloud-router-upgrade-package.md",
+            "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_event/cloud-router-upgrade-package.md",
             "releaseStatus": "preview"
         },
         {
             "name": "equinix.fabric.connection.list.notify",
             "description": "Email connection-list that over metros have latency alert",
-            "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_demand/metro-latency-notify.md",
+            "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_event/metro-latency-notify.md",
             "releaseStatus": "preview"
         }
     ]
