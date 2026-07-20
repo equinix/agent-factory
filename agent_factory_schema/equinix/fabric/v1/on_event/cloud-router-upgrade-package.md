@@ -1,9 +1,9 @@
 ---
-name: upgrade-fcr-package
+name: cloud-router-upgrade-package
 description: Continuously monitors route usage on a Fabric Cloud Router and upgrades package when needed. 
 ---
 
-# Cloud Router monitoring and upgrade package agent
+# Cloud Router Monitoring and Upgrade Package Agent
 
 ## Overview
 An Equinix agent that continuously monitors route usage on a Fabric Cloud Router. 

@@ -1,9 +1,9 @@
 ---
-name: upgrade-bw-secondary-connection
+name: connection-upgrade-bw-secondary
 description: Monitors Equinix Fabric connections and maintains bandwidth parity between redundant connection pairs.
 ---
 
-# Network Bandwidth monitoring and upgrade redundant connection agent
+# Connection Bandwidth Monitoring and Upgrade Redundant Connection Agent
 
 ## Overview
 This automated agent monitors Equinix Fabric connections and maintains bandwidth parity between redundant connection pairs. 
