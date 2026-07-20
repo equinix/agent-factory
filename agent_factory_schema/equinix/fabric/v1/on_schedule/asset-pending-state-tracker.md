@@ -1,9 +1,9 @@
 ---
-name: pending-state-tracker
+name: asset-pending-state-tracker
 description: Monitors and notifies user for long running Fabric assets in provisioning or deprovisioning states.
 ---
 
-# Pending State Tracker Agent
+# Asset Pending State Tracker Agent
 
 ## Overview
 This agent actively analyzes the lifecycle state of Equinix Fabric assets to identify those stuck in provisioning or deprovisioning phases for an extended period, proactively notifying user.

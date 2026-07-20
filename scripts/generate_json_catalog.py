@@ -10,8 +10,14 @@ def main():
 
 def sortedRemoveDuplicates(listOfDict):
     filtered_List = [d for d in listOfDict if isinstance(d, dict) and "name" in d]
-
-    return sorted({d["name"]: d for d in filtered_List}.values(), key=lambda x: x["name"])
+    seen = set()
+    unique = []
+    for d in filtered_List:
+        key = (d["name"], d.get("uri", ""))
+        if key not in seen:
+            seen.add(key)
+            unique.append(d)
+    return sorted(unique, key=lambda x: x["name"])
 
 
 def retrieve_json_schemas():

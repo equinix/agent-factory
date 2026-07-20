@@ -1,9 +1,9 @@
 ---
-name: ping-fcr-and-notify
+name: cloud-router-ping-and-notify
 description: Initiates a PING command on a Fabric Cloud Router.
 ---
 
-# Ping FCR agent
+# Cloud Router Ping and Report Agent
 
 ## Overview
 An Equinix agent that initiates a PING command on a Fabric Cloud Router in order to perform a network connectivity check.

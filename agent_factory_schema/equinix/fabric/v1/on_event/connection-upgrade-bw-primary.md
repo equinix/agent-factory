@@ -1,9 +1,9 @@
 ---
-name: upgrade-bw-primary-connection
+name: connection-upgrade-bw-primary
 description: Automatically upgrades the bandwidth of a connection when usage reaches a certain threshold.
 ---
 
-# Network Bandwidth monitoring and upgrade agent
+# Connection Bandwidth Monitoring and Upgrade Agent
 
 ## Overview
 An Equinix agent that automatically upgrades the bandwidth of a connection when usage reaches a certain threshold. 

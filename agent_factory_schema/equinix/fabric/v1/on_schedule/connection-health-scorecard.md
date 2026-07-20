@@ -1,5 +1,5 @@
 ---
-name: create-connection-health-scorecard
+name: connection-health-scorecard
 description: Scores and ranks the health of Fabric connections (rate-exceeded packet drops, packet errors, utilization, latency) and emails a prioritized remediation scorecard.
 ---
 

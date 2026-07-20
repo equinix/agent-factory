@@ -1,9 +1,9 @@
 ---
-name: run-once-upgrade-bw-primary-connection
+name: connection-upgrade-bw-primary
 description: Upgrades the bandwidth of a connection.
 ---
 
-# Bandwidth upgrader agent
+# Connection Bandwidth Upgrade Agent
 
 ## Overview
 An Equinix agent that upgrades the bandwidth of a connection.
