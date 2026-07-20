@@ -3,6 +3,11 @@ import re
 import json
 import script_constants as sc
 
+TRIGGER_DISPLAY = {
+    "on_event": "On Event Agents",
+    "on_schedule": "On Schedule Agents",
+}
+
 def extract_md_sections(md_content, current_md_file):
     name = re.search(r'^#\s+(.+)', md_content, re.MULTILINE)
     overview = re.search(r'## Overview\s*\n(.*?)(?:\n##|\Z)', md_content, re.DOTALL)
@@ -14,7 +19,7 @@ def extract_md_sections(md_content, current_md_file):
         rel_path = os.path.relpath(current_md_file, os.path.dirname(__file__) + "/../")
         url = f"{base_url}{rel_path.replace(os.sep, '/')}"
         current_md_file_last_index = rel_path.rfind("/")
-        md_file =  rel_path[current_md_file_last_index + 1:]
+        md_file = rel_path[current_md_file_last_index + 1:]
         html_name = f'<a href="{url}">{name.group(1).strip()}<br>[{md_file}]</a>'
     else:
         html_name = ""
@@ -54,10 +59,6 @@ def catalog_schema_entry(schema):
 """
 
 def extract_schema_factory_status(entry_name, catalog):
-    # Check if any agentFactory uri is in entry["name"]
-    matching_schema = None
-    matching_uri = None
-    release_status = None
     for schema in catalog["schemas"]:
         for agent_factory in schema.get("agentFactories", []):
             catalog_agent_factory_uri = agent_factory.get("uri", "")
@@ -74,6 +75,9 @@ def create_table(entries):
     table += "</table>\n"
     return table
 
+def format_title(name):
+    return re.sub(r'-', ' ', name).title() + " Agents"
+
 def replace_readme_catalog():
     root = os.path.dirname(os.path.abspath(__file__)) + "/../agent_factory_schema"
     readme_path = os.path.dirname(os.path.abspath(__file__)) + "/../README.md"
@@ -81,43 +85,71 @@ def replace_readme_catalog():
 
     with open(catalog_path, "r") as catalog_file:
         catalog = json.load(catalog_file)
-        schemas = "\n".join(map(catalog_schema_entry, catalog["schemas"]))
 
-    dir_to_description = {}
+    # Build trigger-type → schema description mapping
+    trigger_description = {}
     for schema in catalog["schemas"]:
-        url_path = schema["url"].replace("https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/", "")
-        schema_dir = url_path.rsplit("/", 1)[0]
         datatype_suffix = schema["datatype"].rsplit(".", 1)[-1]
-        dir_key = f"{schema_dir}/{datatype_suffix}"
-        dir_to_description[dir_key] = schema.get("description", "")
+        if datatype_suffix in TRIGGER_DISPLAY and datatype_suffix not in trigger_description:
+            trigger_description[datatype_suffix] = schema.get("description", "")
 
-    section_blocks = []
+    # Create groups for displaying sub-directories under main categories (On Event or On Schedule) in the README.
+    # groups: { (product_key, trigger_type): { subdir: [entries] } }
+    # product_key is the path prefix before the trigger dir (e.g. "equinix/fabric/v1")
+    groups = {}
+
     for dirpath, dirnames, filenames in os.walk(root):
-        # get md files in each directory starting at agent_factory_schema/equinix
         md_files = sorted([os.path.join(dirpath, f) for f in filenames if f.endswith('.md')])
-        rel_dir = os.path.relpath(dirpath, root)
-        formatted_section_dir = re.sub(r'[/]|v1', ' ', rel_dir, flags=re.IGNORECASE)
-        formatted_section_dir = re.sub(r'_', '-', formatted_section_dir).title()
-        if os.path.isdir(dirpath) and md_files:
-            entries = []
-            for md_file in md_files:
-                with open(md_file, "r") as f:
-                    content = f.read()
-                    entry = extract_md_sections(content, md_file)
-                    entry["release_status"] = extract_schema_factory_status(entry["name"], catalog)
-                    entries.append(entry)
-            rel_dir_key = rel_dir.replace(os.sep, "/")
-            section_description = dir_to_description.get(rel_dir_key, "")
-            section_blocks.append((formatted_section_dir, section_description, create_table(entries)))
+        if not md_files:
+            continue
 
-    section_blocks.sort(key=lambda x: x[0])
+        rel_dir = os.path.relpath(dirpath, root).replace(os.sep, "/")
+        parts = rel_dir.split("/")
+
+        # Find the trigger type component in the path
+        trigger_type = None
+        trigger_idx = None
+        for i, part in enumerate(parts):
+            if part in TRIGGER_DISPLAY:
+                trigger_type = part
+                trigger_idx = i
+                break
+
+        if trigger_type is None:
+            continue
+
+        product_key = "/".join(parts[:trigger_idx])
+        subdir = "/".join(parts[trigger_idx + 1:]) if trigger_idx + 1 < len(parts) else ""
+
+        entries = []
+        for md_file in md_files:
+            with open(md_file, "r") as f:
+                content = f.read()
+            entry = extract_md_sections(content, md_file)
+            entry["release_status"] = extract_schema_factory_status(entry["name"], catalog)
+            entries.append(entry)
+
+        key = (product_key, trigger_type)
+        if key not in groups:
+            groups[key] = {}
+        groups[key][subdir] = entries
+
     sections = []
-    for title, description, table in section_blocks:
-        header = f"\n---\n### {title}\n"
+    for (product_key, trigger_type) in sorted(groups.keys()):
+        product_title = re.sub(r'[/_]|v\d+', ' ', product_key).title().strip()
+        trigger_title = TRIGGER_DISPLAY[trigger_type]
+        description = trigger_description.get(trigger_type, "")
+
+        sections.append(f"\n---\n## {product_title} {trigger_title}\n")
         if description:
-            header += f"{description}\n"
-        sections.append(header)
-        sections.append(table)
+            sections.append(f"{description}\n")
+
+        for subdir in sorted(groups[(product_key, trigger_type)].keys()):
+            entries = groups[(product_key, trigger_type)][subdir]
+            if subdir:
+                sections.append(f"\n### {format_title(subdir)}\n\n<details>\n<summary>Show agents</summary>\n\n{create_table(entries)}\n</details>\n")
+            else:
+                sections.append(create_table(entries))
 
     schemas_str = "\n".join(sections)
 
