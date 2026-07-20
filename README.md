@@ -207,7 +207,7 @@ This agent runs once immediately by default unless scheduled by user.</td>
 		<td>preview
 	</tr>
 	<tr>
-		<td><a href="https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_schedule/cloud-router-upgrade-package.md">Cloud Route Upgrade Package Agent<br>[cloud-router-upgrade-package.md]</a></td>
+		<td><a href="https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_schedule/cloud-router-upgrade-package.md">Cloud Router Upgrade Package Agent<br>[cloud-router-upgrade-package.md]</a></td>
 		<td>This definition sets up and activates an Equinix agent that upgrades the package of a Fabric Cloud Router. 
 When the route usage exceeds a predefined threshold, the agent automatically upgrades the Fabric Cloud Router package to ensure sufficient capacity and uninterrupted operation.
 This agent runs once immediately by default unless scheduled by user.</td>
