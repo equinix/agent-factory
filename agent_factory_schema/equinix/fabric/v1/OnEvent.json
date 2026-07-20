@@ -1,5 +1,5 @@
 {
-    "$id": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/EventDriven.json",
+    "$id": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/OnEvent.json",
     "name": "OnEvent",
     "examples": [],
     "package": "equinix.fabric.v1",
@@ -27,7 +27,7 @@
             "name": "equinix.fabric.connection.bandwidth.upgrade",
             "description": "Upgrade Primary Connection Bandwidth",
             "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_demand/connection-upgrade-bw-primary.md",
-            "releaseStatus": "release"
+            "releaseStatus": "preview"
         },
         {
             "name": "equinix.fabric.connection.bandwidth.upgrade",
@@ -43,7 +43,7 @@
         },
         {
             "name": "equinix.fabric.router.upgrade",
-            "description": "Upgrade FCR Package",
+            "description": "Upgrade Cloud Router Package",
             "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_demand/cloud-router-upgrade-package.md",
             "releaseStatus": "preview"
         },
