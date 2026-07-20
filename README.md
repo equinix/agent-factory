@@ -134,6 +134,17 @@ This agent runs once immediately by default unless scheduled by user.</td>
 		<td>preview
 	</tr>
 	<tr>
+		<td><a href="https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_schedule/asset-pending-state-tracker.md">Asset Pending State Tracker Agent<br>[asset-pending-state-tracker.md]</a></td>
+		<td>This agent actively analyzes the lifecycle state of Equinix Fabric assets to identify those stuck in provisioning or deprovisioning phases for an extended period, proactively notifying user.
+This agent runs once immediately by default unless scheduled by user.</td>
+		<td>- Analyze all pending connections, ports, and routers over a specified time range<br>- Deliver a plain-English summary via email as a PDF report</td>
+		<td>- **`search_connections`**: Searches for connections.
+- **`search_routers`**: Searches for fabric cloud routers.
+- **`search_ports`**: Searches for ports.
+- **`send_email_notification`**: Sends an email. Pass `pdfTitle` and `pdfContent` (plain text) to auto-generate and attach a PDF.</td>
+		<td>preview
+	</tr>
+	<tr>
 		<td><a href="https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_schedule/cloud-router-bgp-boostrap-provisioner.md">Cloud Router BGP Bootstrap Provisioner Agent<br>[cloud-router-bgp-boostrap-provisioner.md]</a></td>
 		<td>This agent targets a connection that is pending interface configuration, sets up a standard BGP routing protocol (ASN, BFD enabled, MD5 authentication), and sends a completion notification with final execution outcome.
 This agent runs once immediately by default unless scheduled by user.</td>
@@ -243,6 +254,17 @@ This agent runs once immediately by default unless scheduled by user.</td>
 *   **`search_connections`**: Searches for an existing connection.
 *   **`update_connection`**: Update connection. Used to upgrade bandwidth.
 *   **`get_next_available_bandwidth_tier `**: Fetches the next available billing tier based on a bandwidth input.</td>
+		<td>preview
+	</tr>
+	<tr>
+		<td><a href="https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_schedule/gcp-monitoring.md">GCP Monitoring Agent<br>[gcp-monitoring.md]</a></td>
+		<td>An Equinix agent that sends gcp monitoring metrics to an email.
+This agent runs once immediately by default unless scheduled by user.</td>
+		<td>- An automated monitoring solution utilizing an Equinix-hosted agent to track and transmit real-time GCP performance metrics. <br>- This system is designed to provide stakeholders with regular visibility into cloud health by delivering comprehensive metric reports directly to designated email recipients.</td>
+		<td>This skill can use the following tools:
+
+*   **`list_timeseries`**: Lists time series data from the Google Cloud Monitoring API.
+*   **`send_email_notification`**: Sends an email notification given a list email of addresses and email body.</td>
 		<td>preview
 	</tr>
 	<tr>
