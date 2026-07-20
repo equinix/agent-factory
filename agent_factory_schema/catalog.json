@@ -4,10 +4,10 @@
     "schemas": [
         {
             "url": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/EventDriven.json",
-            "domain": "Equinix Fabric Agent Factory Event Driven",
-            "title": "EventDriven",
-            "description": "Equinix Fabric Agent Factory Event Driven",
-            "datatype": "equinix.fabric.v1.eventdriven",
+            "domain": "Equinix Fabric Agent Factory OnEvent",
+            "title": "OnEvent",
+            "description": "Equinix Fabric Agent Factory Event-Driven Scenarios",
+            "datatype": "equinix.fabric.v1.on_event",
             "agentFactories": [
                 {
                     "name": "equinix.fabric.connection.bandwidth.upgrade",
@@ -31,10 +31,10 @@
         },
         {
             "url": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/RunOnce.json",
-            "domain": "Equinix Fabric Agent Factory Run Once",
-            "title": "RunOnce",
-            "description": "Equinix Fabric Agent Factory Run Once",
-            "datatype": "equinix.fabric.v1.runonce",
+            "domain": "Equinix Fabric Agent Factory OnSchedule",
+            "title": "OnSchedule",
+            "description": "Equinix Fabric Agent Factory On Schedule and On Demand Scenarios",
+            "datatype": "equinix.fabric.v1.on_schedule",
             "agentFactories": [
                 {
                     "name": "equinix.fabric.connection.bandwidth.upgrade",
