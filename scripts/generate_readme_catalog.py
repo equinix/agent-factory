@@ -85,7 +85,7 @@ def replace_readme_catalog():
 
     dir_to_description = {}
     for schema in catalog["schemas"]:
-        url_path = schema["url"].replace("https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/", "")
+        url_path = schema["url"].replace("https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/", "")
         schema_dir = url_path.rsplit("/", 1)[0]
         datatype_suffix = schema["datatype"].rsplit(".", 1)[-1]
         dir_key = f"{schema_dir}/{datatype_suffix}"
