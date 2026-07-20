@@ -11,7 +11,7 @@ The following md files are supported for Equinix Agent Factory
 <!-- CATALOG_GENERATION_START -->
 
 ---
-### Equinix Fabric   Event-Driven
+### Equinix Fabric   On-Event
 
 <table>
 	<tr>
@@ -22,7 +22,7 @@ The following md files are supported for Equinix Agent Factory
 		<th>Release Status</th>
 	</tr>
 	<tr>
-		<td><a href="https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/event_driven/cloud-router-upgrade-package.md">Cloud Router Monitoring and Upgrade Package Agent<br>[cloud-router-upgrade-package.md]</a></td>
+		<td><a href="https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_event/cloud-router-upgrade-package.md">Cloud Router Monitoring and Upgrade Package Agent<br>[cloud-router-upgrade-package.md]</a></td>
 		<td>An Equinix agent that continuously monitors route usage on a Fabric Cloud Router. 
 When the route usage exceeds a predefined threshold, the agent automatically upgrades the Fabric Cloud Router package to ensure sufficient capacity and uninterrupted operation.
 This agent only executes once.</td>
@@ -36,7 +36,7 @@ This agent only executes once.</td>
 		<td>preview
 	</tr>
 	<tr>
-		<td><a href="https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/event_driven/connection-upgrade-bw-on-packet-drop-alert.md">Connection Packet Drop Monitoring and Upgrade Agent<br>[connection-upgrade-bw-on-packet-drop-alert.md]</a></td>
+		<td><a href="https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_event/connection-upgrade-bw-on-packet-drop-alert.md">Connection Packet Drop Monitoring and Upgrade Agent<br>[connection-upgrade-bw-on-packet-drop-alert.md]</a></td>
 		<td>An Equinix agent that automatically boosts connection bandwidth to mitigate traffic-induced packet loss.
 This agent only executes once.</td>
 		<td>- Monitor real-time network event streams<br>- Detect packet drop alerts<br>- Analyze connection utilization patterns<br>- Automatically upgrade connection bandwidth<br>- Log all actions and decisions<br>- Send notifications for critical events</td>
@@ -49,7 +49,7 @@ This agent only executes once.</td>
 		<td>preview
 	</tr>
 	<tr>
-		<td><a href="https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/event_driven/metro-latency-notify.md">Metro Latency Spikes and Connections Over Metros Report Agent<br>[metro-latency-notify.md]</a></td>
+		<td><a href="https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_event/metro-latency-notify.md">Metro Latency Spikes and Connections Over Metros Report Agent<br>[metro-latency-notify.md]</a></td>
 		<td>An Equinix agent that automatically email a list of connections that are over the metros where latency spike.</td>
 		<td>- Detect metro latency alerts<br>- Identify the source and destination metros<br>- Identify the active connections over the metros<br>- Email notification with the connections list<br>- Log all actions and decisions</td>
 		<td>This skill can use the following tools:
@@ -58,7 +58,7 @@ This agent only executes once.</td>
 		<td>preview
 	</tr>
 	<tr>
-		<td><a href="https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/event_driven/connection-upgrade-bw-secondary.md">Connection Bandwidth Monitoring and Upgrade Redundant Connection Agent<br>[connection-upgrade-bw-secondary.md]</a></td>
+		<td><a href="https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_event/connection-upgrade-bw-secondary.md">Connection Bandwidth Monitoring and Upgrade Redundant Connection Agent<br>[connection-upgrade-bw-secondary.md]</a></td>
 		<td>This automated agent monitors Equinix Fabric connections and maintains bandwidth parity between redundant connection pairs. 
 When bandwidth utilization on a primary connection reaches a configured threshold, the agent automatically upgrades the secondary connection to match the primary connection's bandwidth, ensuring consistent performance across the redundant pair.
 This agent only executes once.</td>
@@ -71,7 +71,7 @@ This agent only executes once.</td>
 		<td>preview
 	</tr>
 	<tr>
-		<td><a href="https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/event_driven/connection-upgrade-bw-primary.md">Connection Bandwidth Monitoring and Upgrade Agent<br>[connection-upgrade-bw-primary.md]</a></td>
+		<td><a href="https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_event/connection-upgrade-bw-primary.md">Connection Bandwidth Monitoring and Upgrade Agent<br>[connection-upgrade-bw-primary.md]</a></td>
 		<td>An Equinix agent that automatically upgrades the bandwidth of a connection when usage reaches a certain threshold. 
 This agent only executes once.</td>
 		<td>- Monitor real-time network event streams<br>- Detect bandwidth threshold alerts<br>- Analyze connection utilization patterns<br>- Automatically upgrade connection bandwidth<br>- Log all actions and decisions<br>- Send notifications for critical events</td>
@@ -87,7 +87,7 @@ This agent only executes once.</td>
 
 
 ---
-### Equinix Fabric   Run-Once
+### Equinix Fabric   On-Schedule
 
 <table>
 	<tr>
@@ -98,7 +98,7 @@ This agent only executes once.</td>
 		<th>Release Status</th>
 	</tr>
 	<tr>
-		<td><a href="https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/run_once/cloud-router-traceroute-and-notify.md">Cloud Router Traceroute and Report Agent<br>[cloud-router-traceroute-and-notify.md]</a></td>
+		<td><a href="https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_schedule/cloud-router-traceroute-and-notify.md">Cloud Router Traceroute and Report Agent<br>[cloud-router-traceroute-and-notify.md]</a></td>
 		<td>An Equinix agent that initiates a TRACEROUTE command on a Fabric Cloud Router in order to perform a network connectivity check.
 Once the TRACEROUTE operation is completed, the resulting output is collected and used to generate an email notification.
 The email is then sent to the specified recipient, ensuring that the results of the connectivity test are communicated clearly and promptly.
@@ -115,7 +115,7 @@ This agent runs once immediately by default unless scheduled by user.</td>
 		<td>preview
 	</tr>
 	<tr>
-		<td><a href="https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/run_once/connection-pending-state-tracker.md">Connection Pending State Tracker Agent<br>[connection-pending-state-tracker.md]</a></td>
+		<td><a href="https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_schedule/connection-pending-state-tracker.md">Connection Pending State Tracker Agent<br>[connection-pending-state-tracker.md]</a></td>
 		<td>This agent analyzes the lifecycle state of Equinix Fabric connections to identify those stuck in provisioning or deprovisioning state longer than a configured threshold, proactively notifying the user when action may be needed.
 This agent runs once immediately by default unless scheduled by user. Recommended schedule: every 4 hours. Only sends email if connections exceed the timeout threshold.</td>
 		<td>- Search for all connections currently in a pending (provisioning or deprovisioning) state<br>- Deliver a plain-English summary via email</td>
@@ -126,7 +126,7 @@ This agent runs once immediately by default unless scheduled by user. Recommende
 		<td>preview
 	</tr>
 	<tr>
-		<td><a href="https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/run_once/cloud-router-bgp-boostrap-provisioner.md">Cloud Router BGP Bootstrap Provisioner Agent<br>[cloud-router-bgp-boostrap-provisioner.md]</a></td>
+		<td><a href="https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_schedule/cloud-router-bgp-boostrap-provisioner.md">Cloud Router BGP Bootstrap Provisioner Agent<br>[cloud-router-bgp-boostrap-provisioner.md]</a></td>
 		<td>This agent targets a connection that is pending interface configuration, sets up a standard BGP routing protocol (ASN, BFD enabled, MD5 authentication), and sends a completion notification with final execution outcome.
 This agent runs once immediately by default unless scheduled by user.</td>
 		<td>- Detect new or updated connections missing routing protocol configuration<br>- Create a baseline BGP routing protocol with required defaults<br>- Enable BFD as part of the standard BGP profile<br>- Configure MD5 authentication for BGP sessions<br>- Send completion notifications with success/failure outcomes</td>
@@ -140,7 +140,7 @@ This agent runs once immediately by default unless scheduled by user.</td>
 		<td>preview
 	</tr>
 	<tr>
-		<td><a href="https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/run_once/project-lifecycle-activities.md">Project Lifecycle Activities Insight Report Agent<br>[project-lifecycle-activities.md]</a></td>
+		<td><a href="https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_schedule/project-lifecycle-activities.md">Project Lifecycle Activities Insight Report Agent<br>[project-lifecycle-activities.md]</a></td>
 		<td>This reporting agent analyzes all cloud events within a given Equinix Fabric project over a specified time range and delivers a plain-English operational health summary report via email. This agent runs once immediately by default unless scheduled by user.</td>
 		<td>- Analyze all cloud events within a given Equinix Fabric project over a specified time range<br>- Detect BGP/routing instability, provisioning churn, and critical events<br>- Deliver a plain-English operational health summary via email as a summarized report in PDF format</td>
 		<td>- **`get_timestamps`**: Generates `from` and `to` UTC timestamps based on a duration string (e.g., `"24h"`, `"7d"`, `"1M"`). Returns a JSON object with `from` and `to` as ISO 8601 UTC strings. Always call this in Step 1 to obtain the reporting window.
@@ -149,7 +149,7 @@ This agent runs once immediately by default unless scheduled by user.</td>
 		<td>preview
 	</tr>
 	<tr>
-		<td><a href="https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/run_once/cloud-router-upgrade-package.md">Cloud Route Upgrade Package Agent<br>[cloud-router-upgrade-package.md]</a></td>
+		<td><a href="https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_schedule/cloud-router-upgrade-package.md">Cloud Route Upgrade Package Agent<br>[cloud-router-upgrade-package.md]</a></td>
 		<td>This definition sets up and activates an Equinix agent that upgrades the package of a Fabric Cloud Router. 
 When the route usage exceeds a predefined threshold, the agent automatically upgrades the Fabric Cloud Router package to ensure sufficient capacity and uninterrupted operation.
 This agent runs once immediately by default unless scheduled by user.</td>
@@ -162,7 +162,7 @@ This agent runs once immediately by default unless scheduled by user.</td>
 		<td>preview
 	</tr>
 	<tr>
-		<td><a href="https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/run_once/asset-change-daily-logger.md">Daily Asset Change Report Agent<br>[asset-change-daily-logger.md]</a></td>
+		<td><a href="https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_schedule/asset-change-daily-logger.md">Daily Asset Change Report Agent<br>[asset-change-daily-logger.md]</a></td>
 		<td>Identify connections, ports, cloud routers, networks, internet access, and network edge change events in past 24 hours; compile change summary with owners and distribute a daily report.</td>
 		<td>- Analyze all cloud events within a given Equinix Fabric project over the past 24 hours<br>- Deliver a plain-English daily report for changed assets summary via email as a summarized report in PDF format</td>
 		<td>- **`get_timestamps`**: Generates `from` and `to` UTC timestamps based on a duration string (e.g., `"24h"`, `"7d"`, `"1M"`). Returns a JSON object with `from` and `to` as ISO 8601 UTC strings. Always call this in Step 1 to obtain the reporting window.
@@ -171,7 +171,7 @@ This agent runs once immediately by default unless scheduled by user.</td>
 		<td>preview
 	</tr>
 	<tr>
-		<td><a href="https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/run_once/pending-state-tracker.md">Pending State Tracker Agent<br>[pending-state-tracker.md]</a></td>
+		<td><a href="https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_schedule/pending-state-tracker.md">Pending State Tracker Agent<br>[pending-state-tracker.md]</a></td>
 		<td>This agent actively analyzes the lifecycle state of Equinix Fabric assets to identify those stuck in provisioning or deprovisioning phases for an extended period, proactively notifying user.
 This agent runs once immediately by default unless scheduled by user.</td>
 		<td>- Analyze all pending connections, ports, and routers over a specified time range<br>- Deliver a plain-English summary via email as a PDF report</td>
@@ -182,7 +182,7 @@ This agent runs once immediately by default unless scheduled by user.</td>
 		<td>preview
 	</tr>
 	<tr>
-		<td><a href="https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/run_once/cloud-router-route-aggregation-recommendation.md">Cloud Router Route Aggregation Recommendation Agent<br>[cloud-router-route-aggregation-recommendation.md]</a></td>
+		<td><a href="https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_schedule/cloud-router-route-aggregation-recommendation.md">Cloud Router Route Aggregation Recommendation Agent<br>[cloud-router-route-aggregation-recommendation.md]</a></td>
 		<td>This definition sets up and activates an Equinix agent that recommends, or suggests, aggregate routes for a Fabric Cloud Router (also referred to as FCR or router).
 The agent analyzes the router's active route table entries and suggests an optimized set of aggregate (supernet) IPv4 routes to simplify route advertisement and reduce route table size.
 A router UUID is required, and a connection UUID is optional but recommended for more accurate, connection-scoped aggregation.
@@ -196,7 +196,7 @@ This agent runs once immediately by default unless scheduled by user.</td>
 		<td>preview
 	</tr>
 	<tr>
-		<td><a href="https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/run_once/stream-attachment-connection-finder.md">Stream Attachment Connection Finder Agent<br>[stream-attachment-connection-finder.md]</a></td>
+		<td><a href="https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_schedule/stream-attachment-connection-finder.md">Stream Attachment Connection Finder Agent<br>[stream-attachment-connection-finder.md]</a></td>
 		<td>An Equinix agent that automatically detects new connections older than a certain amount of time and ensures they are at least connected to the default stream.</td>
 		<td>- Detect older connections that are not attached to any stream<br>- Attach such connections to the default stream<br>- Email notification of this action to the user<br>- Log all actions and decisions</td>
 		<td>This skill can use the following tools:
@@ -208,7 +208,7 @@ This agent runs once immediately by default unless scheduled by user.</td>
 		<td>preview
 	</tr>
 	<tr>
-		<td><a href="https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/run_once/stream-attachment-router-finder.md">Stream Attachment Cloud Router Finder Agent<br>[stream-attachment-router-finder.md]</a></td>
+		<td><a href="https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_schedule/stream-attachment-router-finder.md">Stream Attachment Cloud Router Finder Agent<br>[stream-attachment-router-finder.md]</a></td>
 		<td>An Equinix agent that automatically detects new routers older than a certain amount of time and ensures they are at least connected to the default stream.</td>
 		<td>- Detect older routers that are not attached to any stream<br>- Attach such routers to the default stream<br>- Email notification of this action to the user<br>- Log all actions and decisions</td>
 		<td>This skill can use the following tools:
@@ -220,7 +220,7 @@ This agent runs once immediately by default unless scheduled by user.</td>
 		<td>preview
 	</tr>
 	<tr>
-		<td><a href="https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/run_once/gcp-monitoring.md">GCP Monitoring Agent<br>[gcp-monitoring.md]</a></td>
+		<td><a href="https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_schedule/gcp-monitoring.md">GCP Monitoring Agent<br>[gcp-monitoring.md]</a></td>
 		<td>An Equinix agent that sends gcp monitoring metrics to an email.
 This agent runs once immediately by default unless scheduled by user.</td>
 		<td>- An automated monitoring solution utilizing an Equinix-hosted agent to track and transmit real-time GCP performance metrics. <br>- This system is designed to provide stakeholders with regular visibility into cloud health by delivering comprehensive metric reports directly to designated email recipients.</td>
@@ -231,7 +231,7 @@ This agent runs once immediately by default unless scheduled by user.</td>
 		<td>preview
 	</tr>
 	<tr>
-		<td><a href="https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/run_once/cloud-router-ping-and-notify.md">Cloud Router Ping and Report Agent<br>[cloud-router-ping-and-notify.md]</a></td>
+		<td><a href="https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_schedule/cloud-router-ping-and-notify.md">Cloud Router Ping and Report Agent<br>[cloud-router-ping-and-notify.md]</a></td>
 		<td>An Equinix agent that initiates a PING command on a Fabric Cloud Router in order to perform a network connectivity check.
 Once the PING operation is completed, the resulting output is collected and used to generate an email notification.
 The email is then sent to the specified recipient, ensuring that the results of the connectivity test are communicated clearly and promptly.
@@ -248,7 +248,7 @@ This agent runs once immediately by default unless scheduled by user.</td>
 		<td>preview
 	</tr>
 	<tr>
-		<td><a href="https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/run_once/stream-attachment-port-finder.md">Stream Attachment Port Finder Agent<br>[stream-attachment-port-finder.md]</a></td>
+		<td><a href="https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_schedule/stream-attachment-port-finder.md">Stream Attachment Port Finder Agent<br>[stream-attachment-port-finder.md]</a></td>
 		<td>An Equinix agent that automatically detects new ports older than a certain amount of time and ensures they are at least connected to the default stream.</td>
 		<td>- Detect older ports that are not attached to any stream<br>- Attach such ports to the default stream<br>- Email notification of this action to the user<br>- Log all actions and decisions</td>
 		<td>This skill can use the following tools:
@@ -260,7 +260,7 @@ This agent runs once immediately by default unless scheduled by user.</td>
 		<td>preview
 	</tr>
 	<tr>
-		<td><a href="https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/run_once/asset-create-daily-report.md">Daily Asset Creation Report Agent<br>[asset-create-daily-report.md]</a></td>
+		<td><a href="https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_schedule/asset-create-daily-report.md">Daily Asset Creation Report Agent<br>[asset-create-daily-report.md]</a></td>
 		<td>Identify connections, ports, cloud routers, networks, internet access, and network edge creation events in past 24 hours; compile creation summary with owners and distribute a daily report.</td>
 		<td>- Analyze all cloud events within a given Equinix Fabric project over the past 24 hours<br>- Deliver a plain-English daily report for created assets summary via email as a summarized report in PDF format</td>
 		<td>- **`get_timestamps`**: Generates `from` and `to` UTC timestamps based on a duration string (e.g., `"24h"`, `"7d"`, `"1M"`). Returns a JSON object with `from` and `to` as ISO 8601 UTC strings. Always call this in Step 1 to obtain the reporting window.
@@ -269,7 +269,7 @@ This agent runs once immediately by default unless scheduled by user.</td>
 		<td>preview
 	</tr>
 	<tr>
-		<td><a href="https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/run_once/connection-health-scorecard.md">Connection Health Scorecard Agent<br>[connection-health-scorecard.md]</a></td>
+		<td><a href="https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_schedule/connection-health-scorecard.md">Connection Health Scorecard Agent<br>[connection-health-scorecard.md]</a></td>
 		<td>This agent gives operators a single-pane health view across Equinix Fabric connections. It collects per-connection performance metrics, computes a composite 0–100 health score for each connection, ranks them, flags any connection with an obvious measurable issue, and recommends remediation for every flagged connection — so troubleshooting effort can be prioritized where it matters most. The result is delivered as a PDF scorecard via email.
 This agent runs once immediately by default unless scheduled by user.</td>
 		<td>- Enumerate all PROVISIONED connections (or a user-specified subset)<br>- Collect rate-exceeded packet drops, packet errors, utilization, and latency metrics per connection<br>- Compute a reproducible composite 0–100 health score per connection<br>- Rank all connections and flag any with an obvious measurable issue<br>- Recommend concrete remediation for every flagged connection<br>- Deliver a prioritized scorecard as a PDF report via email</td>
@@ -283,7 +283,7 @@ This agent runs once immediately by default unless scheduled by user.</td>
 		<td>preview
 	</tr>
 	<tr>
-		<td><a href="https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/run_once/connection-upgrade-bw-primary.md">Connection Bandwidth Upgrade Agent<br>[connection-upgrade-bw-primary.md]</a></td>
+		<td><a href="https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_schedule/connection-upgrade-bw-primary.md">Connection Bandwidth Upgrade Agent<br>[connection-upgrade-bw-primary.md]</a></td>
 		<td>An Equinix agent that upgrades the bandwidth of a connection.
 This agent runs once immediately by default unless scheduled by user.</td>
 		<td>- Automatically upgrade connection bandwidth<br>- Log all actions and decisions</td>
@@ -295,7 +295,7 @@ This agent runs once immediately by default unless scheduled by user.</td>
 		<td>preview
 	</tr>
 	<tr>
-		<td><a href="https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/run_once/alert-rule-management.md">Alert Rule Manager Agent<br>[alert-rule-management.md]</a></td>
+		<td><a href="https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_schedule/alert-rule-management.md">Alert Rule Manager Agent<br>[alert-rule-management.md]</a></td>
 		<td>An Equinix agent that sets up an alert rule for a connection.
 This agent runs once immediately by default unless scheduled by user.</td>
 		<td>- Automatically creates an alert rule based on user-defined parameters<br>- Instantly creates a stream if one does not exist and attaches the resource to it<br>- Log all actions and decisions</td>
