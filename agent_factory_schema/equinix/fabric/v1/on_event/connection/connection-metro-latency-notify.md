@@ -1,5 +1,5 @@
 ---
-name: metro-latency-notify
+name: connection-metro-latency-notify
 description: Automatically email a list of connections that are over the metros where latency spike.
 ---
 
