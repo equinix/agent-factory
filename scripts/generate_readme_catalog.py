@@ -83,10 +83,18 @@ def replace_readme_catalog():
         catalog = json.load(catalog_file)
         schemas = "\n".join(map(catalog_schema_entry, catalog["schemas"]))
 
-    sections = []
+    dir_to_description = {}
+    for schema in catalog["schemas"]:
+        url_path = schema["url"].replace("https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/", "")
+        schema_dir = url_path.rsplit("/", 1)[0]
+        datatype_suffix = schema["datatype"].rsplit(".", 1)[-1]
+        dir_key = f"{schema_dir}/{datatype_suffix}"
+        dir_to_description[dir_key] = schema.get("description", "")
+
+    section_blocks = []
     for dirpath, dirnames, filenames in os.walk(root):
         # get md files in each directory starting at agent_factory_schema/equinix
-        md_files = [os.path.join(dirpath, f) for f in filenames if f.endswith('.md')]
+        md_files = sorted([os.path.join(dirpath, f) for f in filenames if f.endswith('.md')])
         rel_dir = os.path.relpath(dirpath, root)
         formatted_section_dir = re.sub(r'[/]|v1', ' ', rel_dir, flags=re.IGNORECASE)
         formatted_section_dir = re.sub(r'_', '-', formatted_section_dir).title()
@@ -98,8 +106,18 @@ def replace_readme_catalog():
                     entry = extract_md_sections(content, md_file)
                     entry["release_status"] = extract_schema_factory_status(entry["name"], catalog)
                     entries.append(entry)
-            sections.append(f"\n---\n### {formatted_section_dir}\n")
-            sections.append(create_table(entries))
+            rel_dir_key = rel_dir.replace(os.sep, "/")
+            section_description = dir_to_description.get(rel_dir_key, "")
+            section_blocks.append((formatted_section_dir, section_description, create_table(entries)))
+
+    section_blocks.sort(key=lambda x: x[0])
+    sections = []
+    for title, description, table in section_blocks:
+        header = f"\n---\n### {title}\n"
+        if description:
+            header += f"{description}\n"
+        sections.append(header)
+        sections.append(table)
 
     schemas_str = "\n".join(sections)
 
