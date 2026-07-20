@@ -12,7 +12,7 @@
                 {
                     "name": "equinix.fabric.connection.bandwidth.upgrade",
                     "description": "Upgrade Connection Bandwidth from Packet Drop Alert",
-                    "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_demand/upgrade-bw-on-packet-drop-alert.md",
+                    "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_demand/connection-upgrade-bw-on-packet-drop-alert.md",
                     "releaseStatus": "preview"
                 },
                 {
@@ -24,7 +24,7 @@
                 {
                     "name": "equinix.fabric.router.upgrade",
                     "description": "Upgrade FCR Package",
-                    "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_demand/upgrade-fcr-package.md",
+                    "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_demand/cloud-router-upgrade-package.md",
                     "releaseStatus": "preview"
                 }
             ]
@@ -88,18 +88,18 @@
         },
         {
             "url": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/network_edge/v1/EventDriven.json",
-            "domain": "Equinix Network Edge Agent Factory Event Driven",
-            "title": "EventDriven",
-            "description": "Equinix Network Edge Agent Factory Event Driven",
-            "datatype": "equinix.network_edge.v1.eventdriven",
+            "domain": "Equinix Network Edge Agent Factory OnEvent",
+            "title": "OnEvent",
+            "description": "Equinix Network Edge Agent Factory Event-Driven Scenarios",
+            "datatype": "equinix.network_edge.v1.on_event",
             "agentFactories": []
         },
         {
             "url": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/network_edge/v1/RunOnce.json",
-            "domain": "Equinix Network Edge Agent Factory Run Once",
-            "title": "RunOnce",
-            "description": "Equinix Network Edge Agent Factory Run Once",
-            "datatype": "equinix.network_edge.v1.runonce",
+            "domain": "Equinix Network Edge Agent Factory OnSchedule",
+            "title": "OnSchedule",
+            "description": "Equinix Network Edge Agent Factory On Schedule and On Demand Scenarios",
+            "datatype": "equinix.network_edge.v1.on_schedule",
             "agentFactories": []
         }
     ]
