@@ -8,8 +8,8 @@ description: Scans all Fabric Cloud Routers for missing stream attachments, then
 # Router Attachment Audit Agent
 
 ## Overview
-An Equinix agent that audits all Fabric Cloud Routers to detect routers that are not attached to any stream
-and are therefore unmonitored. After collecting the full inventory of PROVISIONED routers, excluding those that are already 
+An Equinix agent that audits Fabric Cloud Routers to detect routers that are unmonitored and attach to stream.
+After collecting the full inventory of PROVISIONED routers, excluding those that are already 
 attached to streams, the agent automatically attaches the unattached routers to the stream provided in configuration prompt:
 attaching all routers if there are fewer than 5, or only the first 5 routers if there are more — without asking the
 user to confirm. It then sends an email report listing which routers were attached and which were left

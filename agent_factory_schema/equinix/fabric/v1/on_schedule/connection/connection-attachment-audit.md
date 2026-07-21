@@ -8,8 +8,8 @@ description: Scans all Fabric Connections for missing stream attachments, then a
 # Connection Attachment Audit Agent
 
 ## Overview
-An Equinix agent that audits all Fabric Connections to detect connections that are not attached to any stream
-and are therefore unmonitored. After collecting the full inventory of PROVISIONED connections, excluding those that are already 
+An Equinix agent that audits Fabric connections to detect that are unmonitored and attach to stream.
+After collecting the full inventory of PROVISIONED connections, excluding those that are already 
 attached to streams, the agent automatically attaches the unattached connections to the stream provided in configuration prompt:
 attaching all connections if there are fewer than 5, or only the first 5 connections if there are more — without asking the
 user to confirm. It then sends an email report listing which connections were attached and which were left
