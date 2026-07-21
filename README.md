@@ -204,6 +204,17 @@ This agent runs once immediately by default unless scheduled by user.</td>
 		<td>preview
 	</tr>
 	<tr>
+		<td><a href="https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_schedule/cloud-router/cloud-router-management.md">Cloud Router Management Agent<br>[cloud-router-management.md]</a></td>
+		<td>An Equinix agent that creates a Fabric Cloud Router with user-specified parameters.
+This agent runs once immediately by default unless scheduled by user.</td>
+		<td>- Automatically create a Fabric Cloud Router with user-defined configuration<br>- Validate router package availability before creation<br>- Notify the user upon successful creation or failure<br>- Log all actions and decisions</td>
+		<td>This skill can use the following tools:
+
+*   **`search_routers`**: Searches for existing cloud routers. Used to check for duplicates and to confirm post-creation status.
+*   **`create_router`**: Creates a new Fabric Cloud Router with the specified configuration.</td>
+		<td>preview
+	</tr>
+	<tr>
 		<td><a href="https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_schedule/cloud-router/cloud-router-ping-and-notify.md">Cloud Router Ping and Report Agent<br>[cloud-router-ping-and-notify.md]</a></td>
 		<td>An Equinix agent that initiates a PING command on a Fabric Cloud Router in order to perform a network connectivity check.
 Once the PING operation is completed, the resulting output is collected and used to generate an email notification.
