@@ -3,7 +3,7 @@ name: cloud-router-management
 description: Creates a Fabric Cloud Router based on user-provided parameters and notifies on completion.
 ---
 
-# Cloud Router Creator Agent
+# Cloud Router Management Agent
 
 ## Overview
 An Equinix agent that creates a Fabric Cloud Router with user-specified parameters.
