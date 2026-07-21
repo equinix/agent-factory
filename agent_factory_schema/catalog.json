@@ -75,7 +75,7 @@
                 {
                     "name": "equinix.fabric.cloud_router.create",
                     "description": "Creates a Fabric Cloud Router based on user-provided parameters and notifies on completion.",
-                    "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_schedule/cloud-router-management.md",
+                    "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_schedule/cloud-router/cloud-router-management.md",
                     "releaseStatus": "preview"
                 },
                 {
