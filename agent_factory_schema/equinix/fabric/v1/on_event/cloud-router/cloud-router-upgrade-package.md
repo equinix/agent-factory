@@ -34,8 +34,9 @@ This skill can use the following tools:
 1. When a cloud event is received, analyze the event message and identify the alert rule referenced in the payload.
 2. Using the alert rule UUID extracted from the cloud event message, search the system to determine whether the corresponding alert rule already exists.
 3. From the same cloud event message, extract the subject router UUID and use it to locate the associated Fabric Cloud Router in the system.
-4. Once the router details are retrieved, determine the current package assigned to the router and identify the next available package tier based on that package.
-5. Finally, upgrade the Fabric Cloud Router to the newly selected package tier to accommodate the increased route usage.
+4. Once the router details are retrieved, determine the current package assigned to the router and identify the next available package tier based on that package. If no higher package tier is available, log this as a critical event — this serves as the notification for critical events — and stop.
+5. Upgrade the Fabric Cloud Router to the newly selected package tier to accommodate the increased route usage. If the upgrade call fails, log the failure with the error details as a critical event and stop. This is a single-attempt action — do not retry automatically.
+6. Search for the router again to confirm the package now matches the newly selected tier. Success criteria: the router's package equals the newly selected tier and no errors were logged during the process.
 
 ## Guidelines
 *   **Prioritize Clarity**: Ensure all parameters for the MCP tools are clearly identified from the user's request before making the tool call.
