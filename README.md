@@ -190,10 +190,9 @@ This agent runs once immediately by default unless scheduled by user.</td>
 		<th>Release Status</th>
 	</tr>
 	<tr>
-		<td><a href="https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_schedule/cloud-router/cloud-router-attachment-audit.md">Router Attachment Audit Agent<br>[cloud-router-attachment-audit.md]</a></td>
-		<td>An Equinix agent that audits all Fabric Cloud Routers to detect routers that are not attached to any stream
-and are therefore unmonitored. After collecting the full inventory of PROVISIONED routers, excluding those that are already 
-attached to streams, the agent automatically attaches the unattached routers to the stream provided in configuration prompt:
+		<td><a href="https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_schedule/cloud-router/cloud-router-attachment-audit.md">Cloud Router Attachment Audit Agent<br>[cloud-router-attachment-audit.md]</a></td>
+		<td>An Equinix agent that audits Fabric Cloud Routers to detect routers that are unmonitored and attach to stream.
+After collecting the full inventory of PROVISIONED routers, excluding those that are already attached to streams, the agent automatically attaches the unattached routers to the stream provided in configuration prompt:
 attaching all routers if there are fewer than 5, or only the first 5 routers if there are more — without asking the
 user to confirm. It then sends an email report listing which routers were attached and which were left
 unattached. This agent runs once immediately by default unless scheduled by user.</td>
@@ -314,9 +313,8 @@ This agent runs once immediately by default unless scheduled by user.</td>
 	</tr>
 	<tr>
 		<td><a href="https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_schedule/connection/connection-attachment-audit.md">Connection Attachment Audit Agent<br>[connection-attachment-audit.md]</a></td>
-		<td>An Equinix agent that audits all Fabric Connections to detect connections that are not attached to any stream
-and are therefore unmonitored. After collecting the full inventory of PROVISIONED connections, excluding those that are already 
-attached to streams, the agent automatically attaches the unattached connections to the stream provided in configuration prompt:
+		<td>An Equinix agent that audits Fabric connections to detect that are unmonitored and attach to stream.
+After collecting the full inventory of PROVISIONED connections, excluding those that are already attached to streams, the agent automatically attaches the unattached connections to the stream provided in configuration prompt:
 attaching all connections if there are fewer than 5, or only the first 5 connections if there are more — without asking the
 user to confirm. It then sends an email report listing which connections were attached and which were left
 unattached. This agent runs once immediately by default unless scheduled by user.</td>
@@ -388,9 +386,8 @@ This agent runs once immediately by default unless scheduled by user.</td>
 	</tr>
 	<tr>
 		<td><a href="https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_schedule/port/port-attachment-audit.md">Port Attachment Audit Agent<br>[port-attachment-audit.md]</a></td>
-		<td>An Equinix agent that audits all Fabric Ports to detect ports that are not attached to any stream
-and are therefore unmonitored. After collecting the full inventory of PROVISIONED ports, excluding those that are already 
-attached to streams, the agent automatically attaches the unattached ports to the stream provided in configuration prompt:
+		<td>An Equinix agent that audits all Fabric Ports to detect ports that are unmonitored then attachs them to stream. 
+After collecting the full inventory of PROVISIONED ports, excluding those that are already attached to streams, the agent automatically attaches the unattached ports to the stream provided in configuration prompt:
 attaching all ports if there are fewer than 5, or only the first 5 ports if there are more — without asking the
 user to confirm. It then sends an email report listing which ports were attached and which were left
 unattached. This agent runs once immediately by default unless scheduled by user.</td>
