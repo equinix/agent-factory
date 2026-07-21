@@ -73,6 +73,12 @@
                     "releaseStatus": "preview"
                 },
                 {
+                    "name": "equinix.fabric.cloud_router.attachment.audit",
+                    "description": "Attach unmonitored routers to default stream",
+                    "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_schedule/cloud-router/cloud-router-attachment-audit.md",
+                    "releaseStatus": "preview"
+                },
+                {
                     "name": "equinix.fabric.cloud_router.create",
                     "description": "Creates a Fabric Cloud Router based on user-provided parameters and notifies on completion.",
                     "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_schedule/cloud-router/cloud-router-management.md",
@@ -109,6 +115,12 @@
                     "releaseStatus": "preview"
                 },
                 {
+                    "name": "equinix.fabric.connection.attachment.audit",
+                    "description": "Attach unmonitored connections to default stream",
+                    "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_schedule/connection/connection-attachment-audit.md",
+                    "releaseStatus": "preview"
+                },
+                {
                     "name": "equinix.fabric.connection.bandwidth.upgrade",
                     "description": "Upgrade Primary Connection Bandwidth",
                     "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_schedule/connection/connection-upgrade-bw-primary.md",
@@ -124,6 +136,12 @@
                     "name": "equinix.fabric.connection.pending.notify",
                     "description": "Track connections pending in provisioning or deprovisioning state and notify",
                     "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_schedule/connection/connection-pending-state-tracker.md",
+                    "releaseStatus": "preview"
+                },
+                {
+                    "name": "equinix.fabric.port.attachment.audit",
+                    "description": "Attach unmonitored ports to default stream",
+                    "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_schedule/port/port-attachment-audit.md",
                     "releaseStatus": "preview"
                 },
                 {
