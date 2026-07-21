@@ -9,8 +9,7 @@ description: Scans all Fabric Ports for missing stream attachments, then automat
 
 ## Overview
 An Equinix agent that audits all Fabric Ports to detect ports that are unmonitored then attachs them to stream. 
-After collecting the full inventory of PROVISIONED ports, excluding those that are already 
-attached to streams, the agent automatically attaches the unattached ports to the stream provided in configuration prompt:
+After collecting the full inventory of PROVISIONED ports, excluding those that are already attached to streams, the agent automatically attaches the unattached ports to the stream provided in configuration prompt:
 attaching all ports if there are fewer than 5, or only the first 5 ports if there are more — without asking the
 user to confirm. It then sends an email report listing which ports were attached and which were left
 unattached. This agent runs once immediately by default unless scheduled by user.
