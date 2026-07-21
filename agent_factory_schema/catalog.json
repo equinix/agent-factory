@@ -12,38 +12,38 @@
                 {
                     "name": "equinix.fabric.connection.bandwidth.upgrade",
                     "description": "Upgrade Primary Connection Bandwidth",
-                    "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_event/connection-upgrade-bw-primary.md",
+                    "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_event/connection/connection-upgrade-bw-primary.md",
                     "releaseStatus": "preview"
                 },
                 {
                     "name": "equinix.fabric.connection.bandwidth.upgrade",
                     "description": "Upgrade Secondary Connection Bandwidth",
-                    "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_event/connection-upgrade-bw-secondary.md",
+                    "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_event/connection/connection-upgrade-bw-secondary.md",
                     "releaseStatus": "preview"
                 },
                 {
                     "name": "equinix.fabric.connection.bandwidth.upgrade",
                     "description": "Upgrade Connection Bandwidth from Packet Drop Alert",
-                    "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_event/connection-upgrade-bw-on-packet-drop-alert.md",
+                    "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_event/connection/connection-upgrade-bw-on-packet-drop-alert.md",
                     "releaseStatus": "preview"
                 },
                 {
                     "name": "equinix.fabric.connection.list.notify",
                     "description": "Email connection-list that over metros have latency alert",
-                    "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_event/metro-latency-notify.md",
+                    "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_event/connection/connection-metro-latency-notify.md",
                     "releaseStatus": "preview"
                 },
                 {
                     "name": "equinix.fabric.router.upgrade",
                     "description": "Upgrade Cloud Router Package",
-                    "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_event/cloud-router-upgrade-package.md",
+                    "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_event/cloud-router/cloud-router-upgrade-package.md",
                     "releaseStatus": "preview"
                 }
             ]
         },
         {
             "url": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/OnSchedule.json",
-            "domain": "Equinix Fabric Agent Factory OnSchedule",
+            "domain": "Equinix Fabric Agent Factory On Schedule",
             "title": "OnSchedule",
             "description": "Equinix Fabric Agent Factory On Schedule and On Demand Scenarios",
             "datatype": "equinix.fabric.v1.on_schedule",
@@ -51,25 +51,25 @@
                 {
                     "name": "equinix.fabric.alert_rule.create",
                     "description": "Sets up an alert rule for a connection",
-                    "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_schedule/alert-rule-management.md",
+                    "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_schedule/stream/alert-rule-management.md",
                     "releaseStatus": "preview"
                 },
                 {
                     "name": "equinix.fabric.asset.change.logger",
                     "description": "Compile change summary with owners and distribute a daily report",
-                    "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_schedule/asset-change-daily-logger.md",
+                    "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_schedule/asset/asset-change-daily-logger.md",
                     "releaseStatus": "preview"
                 },
                 {
                     "name": "equinix.fabric.asset.create.logger",
                     "description": "Compile creation summary with owners and distribute a daily report",
-                    "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_schedule/asset-create-daily-report.md",
+                    "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_schedule/asset/asset-create-daily-report.md",
                     "releaseStatus": "preview"
                 },
                 {
                     "name": "equinix.fabric.asset.pending.notify",
                     "description": "Track assets pending in provisioning or deprovisioning state and notify",
-                    "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_schedule/asset-pending-state-tracker.md",
+                    "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_schedule/asset/asset-pending-state-tracker.md",
                     "releaseStatus": "preview"
                 },
                 {
@@ -81,73 +81,73 @@
                 {
                     "name": "equinix.fabric.cloud_router.package.upgrade",
                     "description": "Monitor and Upgrade Cloud Router Package",
-                    "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_schedule/cloud-router-upgrade-package.md",
+                    "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_schedule/cloud-router/cloud-router-upgrade-package.md",
                     "releaseStatus": "preview"
                 },
                 {
                     "name": "equinix.fabric.cloud_router.ping.notify",
                     "description": "Ping and Notify Fabric Cloud Router Connection",
-                    "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_schedule/cloud-router-ping-and-notify.md",
+                    "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_schedule/cloud-router/cloud-router-ping-and-notify.md",
                     "releaseStatus": "preview"
                 },
                 {
                     "name": "equinix.fabric.cloud_router.route_aggregation.recommendation",
                     "description": "Recommends, or suggests, aggregate routes for a Fabric Cloud Router",
-                    "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_schedule/cloud-router-route-aggregation-recommendation.md",
+                    "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_schedule/cloud-router/cloud-router-route-aggregation-recommendation.md",
                     "releaseStatus": "preview"
                 },
                 {
                     "name": "equinix.fabric.cloud_router.routing_protocol.create",
                     "description": "Creates a standard BGP routing protocol and sends completion notifications for connections that are pending interface configuration.",
-                    "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_schedule/cloud-router-bgp-boostrap-provisioner.md",
+                    "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_schedule/cloud-router/cloud-router-bgp-boostrap-provisioner.md",
                     "releaseStatus": "preview"
                 },
                 {
                     "name": "equinix.fabric.cloud_router.traceroute.notify",
                     "description": "Trace and Notify Fabric Cloud Router Connection",
-                    "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_schedule/cloud-router-traceroute-and-notify.md",
+                    "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_schedule/cloud-router/cloud-router-traceroute-and-notify.md",
                     "releaseStatus": "preview"
                 },
                 {
                     "name": "equinix.fabric.connection.bandwidth.upgrade",
                     "description": "Upgrade Primary Connection Bandwidth",
-                    "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_schedule/connection-upgrade-bw-primary.md",
+                    "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_schedule/connection/connection-upgrade-bw-primary.md",
                     "releaseStatus": "preview"
                 },
                 {
                     "name": "equinix.fabric.connection.health.scorecard",
                     "description": "Create Connection Health Scorecard",
-                    "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_schedule/connection-health-scorecard.md",
+                    "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_schedule/connection/connection-health-scorecard.md",
                     "releaseStatus": "preview"
                 },
                 {
                     "name": "equinix.fabric.connection.pending.notify",
                     "description": "Track connections pending in provisioning or deprovisioning state and notify",
-                    "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_schedule/connection-pending-state-tracker.md",
+                    "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_schedule/connection/connection-pending-state-tracker.md",
                     "releaseStatus": "preview"
                 },
                 {
                     "name": "equinix.fabric.project.lifecycle.logger",
                     "description": "Analyzes all cloud events within a given Equinix Fabric project",
-                    "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_schedule/project-lifecycle-activities.md",
+                    "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_schedule/asset/project-lifecycle-activities.md",
                     "releaseStatus": "preview"
                 },
                 {
                     "name": "equinix.fabric.stream.attachment.cloud_router.finder",
                     "description": "Attach new routers to default stream",
-                    "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_schedule/stream-attachment-router-finder.md",
+                    "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_schedule/stream/stream-attachment-router-finder.md",
                     "releaseStatus": "preview"
                 },
                 {
                     "name": "equinix.fabric.stream.attachment.connection.finder",
                     "description": "Attach new connections to default stream",
-                    "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_schedule/stream-attachment-connection-finder.md",
+                    "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_schedule/stream/stream-attachment-connection-finder.md",
                     "releaseStatus": "preview"
                 },
                 {
                     "name": "equinix.fabric.stream.attachment.port.finder",
                     "description": "Attach new ports to default stream",
-                    "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_schedule/stream-attachment-port-finder.md",
+                    "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_schedule/stream/stream-attachment-port-finder.md",
                     "releaseStatus": "preview"
                 }
             ]
