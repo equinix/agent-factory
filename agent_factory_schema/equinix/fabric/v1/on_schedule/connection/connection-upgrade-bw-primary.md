@@ -17,9 +17,10 @@ This agent runs once immediately by default unless scheduled by user.
 Connections should be in PROVISIONED state to be eligible for bandwidth upgrade.
 
 ## Instructions
-1. Search for the existing connection given the connection uuid.
-2. Obtain the current bandwidth from the connection details. Check whether user entered "bandwith_in_mb" in Configuration. If yes, use this bandwidth value. Otherwise, determine the next available bandwidth tier based on the current bandwidth value.
-3. Upgrade the bandwidth of the connection given the new bandwidth.
+1. Search for the existing connection given the connection uuid. Stop if the connection is not found.
+2. Obtain the current bandwidth from the connection details. If the user provided a `bandwidth_in_mb` value in Configuration, use it directly. Otherwise, determine the next available bandwidth tier based on the current bandwidth value. If no higher bandwidth tier is available, log that the connection is already at its maximum bandwidth and stop — this is not a failure.
+3. Upgrade the bandwidth of the connection given the new bandwidth. If the upgrade call fails, log the error with the failure reason and stop. This is a single-attempt action — do not retry automatically.
+4. Search for the connection again to confirm the bandwidth now matches the newly selected value. Success criteria: the connection is found, its bandwidth equals the newly selected value, and no errors were logged during the process.
 
 
 ## Available Tools
@@ -36,4 +37,4 @@ This skill can use the following tools:
 
 ## Configuration
 * **`connection_uuid`**: < A connection UUID > - Required - User should specify a connection uuid.
-* **`bandwith_in_mb`**: < bandwidth in MB > - Optional - User can specify if user wants to upgrade to a certain bandwidth in MB.
+* **`bandwidth_in_mb`**: < bandwidth in MB > - Optional - User can specify if user wants to upgrade to a certain bandwidth in MB.

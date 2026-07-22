@@ -38,8 +38,9 @@ This skill can use the following tools:
 6. Using the alert rule UUID extracted from the event, check whether a corresponding alert rule already exists.
 7. Locate the associated primary connection using the subject connection UUID provided in the cloud event message.
 8. Locate the secondary connection by filtering priority as SECONDARY and redundant_group as the redundant_group of the primary connection. If connection is not found, Stop.
-9. Obtain the bandwidth to be used for upgrading. Check whether user entered "bandwith_in_mb" in Configuration. If yes, use this bandwidth value. Otherwise, use the current primary connection bandwidth value.
+9. Obtain the bandwidth to be used for upgrading. If the user provided a `bandwidth_in_mb` value in Configuration, use it directly. Otherwise, use the current primary connection bandwidth value.
 10. Upgrade the secondary connection to the newly determined bandwidth tier.
+11. Search for the connection again to confirm the bandwidth now matches the newly selected value. Success criteria: the secondary connection's bandwidth equals the newly selected value and no errors were logged during the process.
 
 ## Guidelines
 *   **Prioritize Clarity**: Ensure all parameters for the MCP tools are clearly identified from the user's request before making the tool call.

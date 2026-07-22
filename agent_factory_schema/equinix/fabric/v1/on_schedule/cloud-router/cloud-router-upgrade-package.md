@@ -26,8 +26,9 @@ This skill can use the following tools:
 
 ## Instructions
 1. Search for the existing fabric cloud router given the router uuid. Stop if the router is not found.
-2. Once the router details are retrieved, determine the current package assigned to the router and identify the next available package tier based on that package.
-3. Finally, upgrade the Fabric Cloud Router to the newly selected package tier to accommodate the increased route usage.
+2. Once the router details are retrieved, determine the current package assigned to the router and identify the next available package tier based on that package. If no higher package tier is available, log that the router is already at its maximum package and stop — this is not a failure.
+3. Upgrade the Fabric Cloud Router to the newly selected package tier to accommodate the increased route usage. If the upgrade call fails, log the error with the failure reason and stop. This is a single-attempt action — do not retry automatically.
+4. Search for the router again to confirm the package now matches the newly selected tier. Success criteria: the router is found, its package equals the newly selected tier, and no errors were logged during the process.
 
 ## Guidelines
 *   **Prioritize Clarity**: Ensure all parameters for the MCP tools are clearly identified from the user's request before making the tool call.

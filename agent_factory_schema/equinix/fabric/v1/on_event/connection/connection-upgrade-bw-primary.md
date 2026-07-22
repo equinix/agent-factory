@@ -37,8 +37,9 @@ This skill can use the following tools:
 5. Parse the cloud event message to identify the alert rule.
 6. Using the alert rule UUID extracted from the event, check whether a corresponding alert rule already exists.
 7. Locate the associated connection using the subject connection UUID provided in the cloud event message.
-8. Obtain the current bandwidth from the connection details. Check whether user entered "bandwith_in_mb" in Configuration. If yes, use this bandwidth value. Otherwise, determine the next available bandwidth tier based on the current bandwidth value.
-9. Upgrade the connection to the newly determined bandwidth tier.
+8. Obtain the current bandwidth from the connection details. If the user provided a `bandwidth_in_mb` value in Configuration, use it directly. Otherwise, determine the next available bandwidth tier based on the current bandwidth value. If no higher bandwidth tier is available, log this as a critical event — this serves as the notification for critical events — and stop.
+9. Upgrade the connection to the newly determined bandwidth tier. If the upgrade call fails, log the failure with the error details as a critical event and stop. This is a single-attempt action — do not retry automatically.
+10. Search for the connection again to confirm the bandwidth now matches the newly selected value. Success criteria: the connection's bandwidth equals the newly selected value and no errors were logged during the process.
 
 ## Guidelines
 *   **Prioritize Clarity**: Ensure all parameters for the MCP tools are clearly identified from the user's request before making the tool call.
