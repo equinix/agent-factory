@@ -28,20 +28,20 @@
                     "releaseStatus": "preview"
                 },
                 {
+                    "name": "Connection High Latency Auto-Runbook Agent",
+                    "description": "An Equinix agent that runs an automated diagnostic runbook when a metro latency alert fires.",
+                    "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_event/connection/connection-high-latency-runbook.md",
+                    "releaseStatus": "preview"
+                },
+                {
                     "name": "Connection Packet Drop Monitoring and Upgrade Agent",
                     "description": "An Equinix agent that automatically boosts connection bandwidth to mitigate traffic-induced packet loss.",
                     "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_event/connection/connection-upgrade-bw-on-packet-drop-alert.md",
                     "releaseStatus": "preview"
                 },
                 {
-                    "name": "equinix.fabric.connection.latency.diagnose",
-                    "description": "Diagnose a metro latency alert and email an incident brief (blast radius, targeted FCR pings, headroom, isolated vs metro-wide verdict, recommended next-best action)",
-                    "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_event/connection/connection-high-latency-runbook.md",
-                    "releaseStatus": "preview"
-                },
-                {
-                    "name": "equinix.fabric.connection.list.notify",
-                    "description": "Email connection-list that over metros have latency alert",
+                    "name": "Metro Latency Spikes and Connections Over Metros Report Agent",
+                    "description": "An Equinix agent that automatically email a list of connections that are over the metros where latency spike.",
                     "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_event/connection/connection-metro-latency-notify.md",
                     "releaseStatus": "preview"
                 }
