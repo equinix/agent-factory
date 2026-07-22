@@ -1,6 +1,6 @@
 ---
 name: connection-high-latency-runbook
-description: Diagnoses a metro high-latency alert by scoping the blast radius of affected connections, running targeted FCR pings, checking bandwidth headroom, correlating isolated vs metro-wide latency, and emailing a diagnostic incident brief with a recommended next-best action.
+description: Diagnoses a metro high-latency alert by scoping the blast radius of affected connections of any type, running a targeted live ping for the subset backed by a Fabric Cloud Router (FCR), checking bandwidth headroom across the full blast radius, correlating isolated vs metro-wide latency, and emailing a diagnostic incident brief with a recommended next-best action.
 ---
 
 # Connection High Latency Auto-Runbook Agent
@@ -8,13 +8,13 @@ description: Diagnoses a metro high-latency alert by scoping the blast radius of
 ## Overview
 An Equinix agent that runs an automated diagnostic runbook when a metro latency alert fires.
 
-It identifies every connection sharing the alerting metro pair, then runs a targeted FCR ping against each for live connectivity readings and checks bandwidth/utilization headroom. From those per-connection signals, weighed against the shared metro-latency backdrop, it classifies whether the spike is isolated to one connection or metro-wide. It then emails a one-page incident brief with a clearly-labeled likely contributing factor and a recommended next-best action. This agent is diagnostic only. It never modifies a connection, route, or bandwidth setting, and recommendations are for the NOC to action manually.
+It identifies every connection sharing the alerting metro pair, of any connection type. For the subset whose A-side is a Fabric Cloud Router (FCR), it runs a targeted live ping for connectivity readings; other connection types (for example port-to-port or IPWAN-to-port) have no BGP peer to ping and are skipped for this check, with the gap noted in the brief. Bandwidth/utilization headroom is checked for every connection in the blast radius regardless of type. From those per-connection signals, weighed against the shared metro-latency backdrop, it classifies whether the spike is isolated to one connection or metro-wide. It then emails a one-page incident brief with a clearly-labeled likely contributing factor and a recommended next-best action. This agent is diagnostic only. It never modifies a connection, route, or bandwidth setting, and recommendations are for the NOC to action manually.
 
 ## Capabilities
 - Detect metro high-latency alert cloud events
-- Identify the full blast radius of connections sharing the alerting metro pair
-- Resolve each connection's BGP peer IP and run a targeted FCR ping for live connectivity readings
-- Check bandwidth/utilization headroom per affected connection
+- Identify the full blast radius of connections sharing the alerting metro pair, across all connection types
+- For connections backed by a Fabric Cloud Router (FCR), resolve the BGP peer IP and run a targeted live ping for connectivity readings; other connection types have no BGP peer to ping and are skipped for this check only
+- Check bandwidth/utilization headroom per affected connection, regardless of connection type
 - Classify isolated vs. metro-wide from per-connection ping and headroom signals, against the shared metro-latency backdrop
 - Produce a diagnostic incident brief with a labeled "likely contributing factor"
 - Recommend a concrete next-best action for the NOC to take manually
@@ -57,6 +57,12 @@ This skill can use the following tools:
    - **Metro-wide** if the degraded count ≥ `min(metro_wide_min_connections, ceil(metro_wide_min_fraction × blast-radius size))` — impact is broad across the metro pair.
    - **Isolated** otherwise — degradation is confined to one or a few connections while the rest ride the same metro pair without local symptoms.
 
+   **Tag each connection's evidence basis** alongside its degraded/clean verdict — this is not a fifth classification, just a confidence label carried into the brief:
+   - **Ping + headroom** — both signals were collected (FCR-backed connection, no metric-collection gap).
+   - **Ping only** — FCR-backed, but headroom metrics failed to collect.
+   - **Headroom only** — no BGP peer to ping (non-FCR connection, e.g. port-to-port or IPWAN-to-port) or the router UUID was missing; a clean headroom reading here means "not flagged by the one signal available," not "confirmed healthy."
+   - **No data** — neither signal was collected for this connection (ping timed out or failed, and headroom metrics failed); report as "ping timed out" / "no reading" rather than implying a clean verdict.
+
    **Stop here only if no diagnostic data was collected at all** — i.e. the shared metro-latency series could not be retrieved AND no connection produced either a ping result (Step 6) or a headroom reading (Step 7). In that case log the error and do not send an email, since there is nothing to report on. Otherwise continue to Step 9 with whatever data was collected, noting any connections that were skipped.
 9. **Determine the likely contributing factor.** Label this section as inference, not fact:
    - Metro-wide + few or no connections show a headroom concern → likely a shared network-path/metro issue, not congestion (broad degradation with no local saturation points to the path).
@@ -64,12 +70,13 @@ This skill can use the following tools:
    - Isolated + no headroom concern on the affected connection(s) → inconclusive from available data; recommend manual investigation.
    - Metro-wide + one or more connections also headroom-flagged → note both a shared-path signal and local congestion are present; do not assume causation between them.
    - Cite the Step 6 live ping results (elevated RTT / packet loss) as the per-connection evidence wherever available — together with headroom, these are the signals that drove the isolated/metro-wide split in Step 8, so reference them explicitly rather than the shared metro latency alone.
+   - When the verdict rests on connections whose evidence basis (from Step 8) is **headroom only** or **no data**, say so explicitly — e.g. "isolated, but the affected connection has no live ping (non-FCR) so this reflects headroom alone." Do not present a headroom-only "clean" reading with the same confidence as a ping-confirmed clean reading.
 10. **Recommend a next-best action.** Map the Step 9 verdict to one concrete, manual action for the NOC — this is a recommendation only, never auto-applied:
     - Metro-wide + few or no headroom concerns → recommend a path/metro review; note this is likely beyond a single connection's control and may need escalation to network operations.
     - Isolated + the affected connection(s) headroom is flagged → recommend a bandwidth upgrade or rate-limit review for the affected connection(s).
     - Isolated + no headroom concern → recommend manual investigation of the affected connection(s); data available is inconclusive.
     - Metro-wide + one or more connections also headroom-flagged → recommend both a path/metro review and a bandwidth review for the flagged connection(s), noted as two independent next steps.
-11. **Compose the brief** using the HTML report block below. Populate the Alert Summary, Blast Radius, Live Ping Results, Headroom Status, Metro Correlation Verdict, Likely Contributing Factor, and Recommended Next-Best Action sections. Skip a section only if it genuinely has no data — never leave placeholder text.
+11. **Compose the brief** using the HTML report block below. Populate the Alert Summary, Blast Radius, Live Ping Results, Headroom Status, Metro Correlation Verdict, Likely Contributing Factor, and Recommended Next-Best Action sections. In the Blast Radius table, set each row's **Evidence Basis** to one of `Ping + Headroom`, `Ping only`, `Headroom only`, or `No data` per the tagging in Step 8 — this is what lets the NOC tell a ping-confirmed clean connection apart from one that was only ever eligible for a headroom reading. Skip a section only if it genuinely has no data — never leave placeholder text.
 
    ```
    <div class="header">
@@ -93,6 +100,7 @@ This skill can use the following tools:
                    <li>A-Side Metro</li>
                    <li>Z-Side Metro</li>
                    <li>Latency Status</li>
+                   <li>Evidence Basis</li>
                </ul>
 
                <!-- Data Row -->
