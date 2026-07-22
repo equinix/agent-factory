@@ -16,7 +16,8 @@ configurable timeouts for `PROVISIONING` vs. `DEPROVISIONING`, and enriches each
 most recent related cloud event for extra context.
 
 ## Prerequisites
-None
+The `search_connections`, `search_ports`, `search_routers`, `search_cloud_events_by_asset`, `get_timestamps`, `wait`,
+and `send_email_notification` tools must all be enabled for this agent.
 
 ## Capabilities
 - Analyze all connections, ports, and routers currently in a provisioning or deprovisioning state
@@ -65,17 +66,25 @@ None
   "pagination": { "offset": 0, "limit": 100 }
 }
 ```
-4. For each resource returned in steps 1–3, determine its current state (`/operation/equinixStatus` for connections,
-   `/state` for ports and routers) and compute elapsed minutes as `now - /changeLog/updatedDateTime` (fall back to
-   `/changeLog/createdDateTime` if `updatedDateTime` is absent). Note: the search APIs do not expose a dedicated
-   "entered this state at" timestamp, so `updatedDateTime` is used as the best available proxy for state-entry time.
+If any of the searches in steps 1–3 fails, retry up to 5 attempts total for that search. Before each retry, `wait`
+briefly, then call the same search tool again with the same payload. Stop retrying that search as soon as it
+succeeds. If a search still fails after 5 attempts, abort the entire run — do not send a partial report, and do not
+proceed to step 4.
+4. Call `get_timestamps` with `duration` = `"24h"` to obtain the current UTC time. Use the `to` field as `now`
+   (ignore `from`) — never estimate or hardcode the current time. For each resource returned in steps 1–3, determine
+   its current state (`/operation/equinixStatus` for connections, `/state` for ports and routers) and compute
+   elapsed minutes as `now - /changeLog/updatedDateTime` (fall back to `/changeLog/createdDateTime` if
+   `updatedDateTime` is absent). Note: the search APIs do not expose a dedicated "entered this state at" timestamp,
+   so `updatedDateTime` is used as the best available proxy for state-entry time.
 5. Flag a resource as stuck only if:
    - state is `PROVISIONING` and elapsed minutes > `provisioning_timeout_minutes`, OR
    - state is `DEPROVISIONING` and elapsed minutes > `deprovisioning_timeout_minutes`.
    Discard resources within their timeout — they must not appear in the report.
 6. For each stuck connection or port, call `search_cloud_events_by_asset` with the resource's `uuid` and a
    `fromDateTime` covering the elapsed window to retrieve the most recent related cloud event as extra context.
-   Skip this step for routers — this tool does not support the router resource type.
+   Skip this step for routers — this tool does not support the router resource type. This lookup is best-effort and
+   is not retried: if the call fails for a given resource, omit the "Last Related Event" field for that resource
+   only — do not abort the run and do not omit the resource itself from the report.
 7. Structure the report below:
 ### Section content
 - **Summary**: 3–5 sentences — total stuck count by resource type, headline finding, insights.
@@ -167,13 +176,16 @@ None
 - **`search_routers`**: Searches for fabric cloud routers.
 - **`search_ports`**: Searches for ports.
 - **`search_cloud_events_by_asset`**: Retrieves recent cloud events for a given connection or port UUID. Not supported for routers.
+- **`get_timestamps`**: Generates `from` and `to` UTC timestamps based on a duration string (e.g., `"24h"`). Use the `to` field as the current UTC time reference for calculating elapsed minutes. Do not compute or hardcode the current time manually.
+- **`wait`**: Wait for a while before retrying a failed search call. An optional parameter can be provided to specify the wait time in milliseconds.
 - **`send_email_notification`**: Sends an email. Pass `pdfTitle` and `pdfContent` (plain text) to auto-generate and attach a PDF.
 
 ## Guidelines
 - Plain English, no API jargon, no raw event strings, full UUIDs always. Insight over data — derive meaning from patterns, not raw counts.
 - Skip empty sections entirely — no placeholder text. If no resource exceeds its timeout, send email with "No resources exceeded timeout thresholds".
 - Never call any tool that modifies, upgrades, cancels, or deletes a resource. This agent is strictly read-only.
-- If any of the tool calls in steps 1–3 fail, do not send email.
+- If any search in steps 1–3 still fails after 5 retries, do not send email.
+- Never estimate or hardcode the current time — always call `get_timestamps` to get an authoritative `now` before calculating elapsed minutes in step 4.
 - Known limitation — no cross-run deduplication: this agent has no durable state store or ticket-search tool available, so a resource that remains stuck across multiple runs will reappear in every report until it clears. Do not claim or imply deduplication.
 - Known limitation — no owner resolution: there is no tool to resolve a resource's owner or account contact, so all reports go to the configured `recipient_email_addresses` rather than a per-resource owner.
 - Known limitation — no ticket creation: there is no Jira or support-ticket tool available in this environment. This agent only emails a report; opening a ticket per stuck resource is out of scope until such a tool exists.
