@@ -151,6 +151,12 @@
                     "releaseStatus": "preview"
                 },
                 {
+                    "name": "Resource Stuck State Timeout Notifier Agent",
+                    "description": "This agent identifies Equinix Fabric connections, ports, and routers stuck in a `PROVISIONING` or `DEPROVISIONING` state past a configurable timeout.",
+                    "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_schedule/asset/resource-stuck-state-timeout-notifier.md",
+                    "releaseStatus": "preview"
+                },
+                {
                     "name": "Stream Attachment Cloud Router Finder Agent",
                     "description": "An Equinix agent that automatically detects new routers older than a certain amount of time and ensures they are at least connected to the default stream.",
                     "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_schedule/stream/stream-attachment-router-finder.md",

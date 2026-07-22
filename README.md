@@ -173,6 +173,25 @@ This agent runs once immediately by default unless scheduled by user.</td>
 - **`send_email_notification`**: Sends an email. Pass `pdfTitle` and `pdfContent` (plain text) to auto-generate and attach a PDF.</td>
 		<td>preview
 	</tr>
+	<tr>
+		<td><a href="https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_schedule/asset/resource-stuck-state-timeout-notifier.md">Resource Stuck State Timeout Notifier Agent<br>[resource-stuck-state-timeout-notifier.md]</a></td>
+		<td>This agent identifies Equinix Fabric connections, ports, and routers stuck in a `PROVISIONING` or `DEPROVISIONING` state past a configurable timeout.
+This agent runs once immediately by default unless scheduled by user, and emails a report of the affected resources.
+This agent is read-only — it never modifies, upgrades, or cancels any resource.
+
+Differs from `asset-pending-state-tracker` and `connection-pending-state-tracker`: this agent applies separate
+configurable timeouts for `PROVISIONING` vs. `DEPROVISIONING`, and enriches each stuck connection/port with its
+most recent related cloud event for extra context.</td>
+		<td>- Analyze all connections, ports, and routers currently in a provisioning or deprovisioning state<br>- Flag only the resources that have exceeded a state-specific timeout<br>- Deliver a plain-English summary via email as a PDF report</td>
+		<td>- **`search_connections`**: Searches for connections.
+- **`search_routers`**: Searches for fabric cloud routers.
+- **`search_ports`**: Searches for ports.
+- **`search_cloud_events_by_asset`**: Retrieves recent cloud events for a given connection or port UUID. Not supported for routers.
+- **`get_timestamps`**: Generates `from` and `to` UTC timestamps based on a duration string (e.g., `"24h"`). Use the `to` field as the current UTC time reference for calculating elapsed minutes. Do not compute or hardcode the current time manually.
+- **`wait`**: Wait for a while before retrying a failed search call. An optional parameter can be provided to specify the wait time in milliseconds.
+- **`send_email_notification`**: Sends an email. Pass `pdfTitle` and `pdfContent` (plain text) to auto-generate and attach a PDF.</td>
+		<td>preview
+	</tr>
 </table>
 
 </details>
