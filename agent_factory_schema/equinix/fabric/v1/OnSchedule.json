@@ -126,6 +126,12 @@
             "releaseStatus": "preview"
         },
         {
+            "name": "equinix.fabric.resource.stuck.state.notify",
+            "description": "Detect Fabric Resources Stuck Past Provisioning or Deprovisioning Timeout",
+            "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_schedule/asset/resource-stuck-state-timeout-notifier.md",
+            "releaseStatus": "preview"
+        },
+        {
             "name": "equinix.fabric.stream.attachment.connection.finder",
             "description": "Attach new connections to default stream",
             "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_schedule/stream/stream-attachment-connection-finder.md",
