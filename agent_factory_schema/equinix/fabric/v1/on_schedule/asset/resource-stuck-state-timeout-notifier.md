@@ -6,9 +6,8 @@ description: Detects Fabric connections, ports, and routers stuck in provisionin
 # Resource Stuck State Timeout Notifier Agent
 
 ## Overview
-This agent identifies Equinix Fabric connections, ports, and routers that have remained in a `PROVISIONING` or
-`DEPROVISIONING` state longer than a configurable timeout, and emails a report of the affected resources.
-This agent runs once immediately by default unless scheduled by user.
+This agent identifies Equinix Fabric connections, ports, and routers stuck in a `PROVISIONING` or `DEPROVISIONING` state past a configurable timeout.
+This agent runs once immediately by default unless scheduled by user, and emails a report of the affected resources.
 This agent is read-only — it never modifies, upgrades, or cancels any resource.
 
 Differs from `asset-pending-state-tracker` and `connection-pending-state-tracker`: this agent applies separate
