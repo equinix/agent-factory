@@ -6,7 +6,7 @@ description: Recommends aggregate (supernet) routes for a Fabric Cloud Router ba
 # Cloud Router Route Aggregation Recommendation Agent
 
 ## Overview
-This definition sets up and activates an Equinix agent that recommends, or suggests, aggregate routes for a Fabric Cloud Router (also referred to as FCR or router).
+An Equinix agent that recommends, or suggests, aggregate routes for a Fabric Cloud Router.
 The agent analyzes the router's active route table entries and suggests an optimized set of aggregate (supernet) IPv4 routes to simplify route advertisement and reduce route table size.
 A router UUID is required, and a connection UUID is optional but recommended for more accurate, connection-scoped aggregation.
 This agent runs once immediately by default unless scheduled by user.
