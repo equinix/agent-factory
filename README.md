@@ -62,6 +62,20 @@ This agent only executes once.</td>
 		<th>Release Status</th>
 	</tr>
 	<tr>
+		<td><a href="https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_event/connection/connection-high-latency-runbook.md">Connection High Latency Auto-Runbook Agent<br>[connection-high-latency-runbook.md]</a></td>
+		<td>An Equinix agent that runs an automated diagnostic runbook when a metro latency alert fires. It identifies every connection sharing the alerting metro pair, checks bandwidth/utilization headroom on each, correlates the alert against metro-wide latency to determine whether the spike is isolated to one connection or metro-wide, and emails a one-page incident brief with a clearly-labeled "likely contributing factor" and a recommended next-best action. This agent is diagnostic only — it never modifies a connection, route, or bandwidth setting; recommendations are for the NOC to action manually.</td>
+		<td>- Detect metro high-latency alert cloud events<br>- Identify the full blast radius of connections sharing the alerting metro pair<br>- Check bandwidth/utilization headroom per affected connection<br>- Correlate against metro-wide latency to classify isolated vs. metro-wide<br>- Produce a diagnostic incident brief with a labeled "likely contributing factor"<br>- Recommend a concrete next-best action for the NOC to take manually<br>- Email the brief as a PDF report<br>- Log all actions and decisions</td>
+		<td>This skill can use the following tools:
+
+*   **`get_timestamps`**: Generates `from` and `to` UTC timestamps (ISO 8601) from a duration string (e.g. `"1h"`, `"6h"`). Used to establish the recent lookback window for this agent.
+*   **`get_stream_alert_rule_details`**: Fetches the full details of an alert rule (thresholds, window size) given the stream/alert rule href or uuid.
+*   **`search_connections`**: Searches for connections by A-side/Z-side metro code to resolve the blast radius, and resolves provisioned bandwidth per connection.
+*   **`search_metrics`**: Retrieves connection bandwidth-usage and metro-latency time series over the lookback window.
+*   **`get_metric`**: Retrieves a single metric series when a targeted lookup is needed.
+*   **`send_email_notification`**: Sends an email. Pass `pdfTitle` and `pdfContent` (plain text) to auto-generate and attach a PDF.</td>
+		<td>preview
+	</tr>
+	<tr>
 		<td><a href="https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_event/connection/connection-metro-latency-notify.md">Metro Latency Spikes and Connections Over Metros Report Agent<br>[connection-metro-latency-notify.md]</a></td>
 		<td>An Equinix agent that automatically email a list of connections that are over the metros where latency spike.</td>
 		<td>- Detect metro latency alerts<br>- Identify the source and destination metros<br>- Identify the active connections over the metros<br>- Email notification with the connections list<br>- Log all actions and decisions</td>
