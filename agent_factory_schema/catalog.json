@@ -35,7 +35,7 @@
                 },
                 {
                     "name": "equinix.fabric.connection.latency.diagnose",
-                    "description": "Diagnose a metro latency alert and email an incident brief (blast radius, headroom, isolated vs metro-wide verdict, recommended next-best action)",
+                    "description": "Diagnose a metro latency alert and email an incident brief (blast radius, targeted FCR pings, headroom, isolated vs metro-wide verdict, recommended next-best action)",
                     "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_event/connection/connection-high-latency-runbook.md",
                     "releaseStatus": "preview"
                 },
