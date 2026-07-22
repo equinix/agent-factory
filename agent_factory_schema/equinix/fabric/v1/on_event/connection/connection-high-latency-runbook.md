@@ -36,11 +36,13 @@ This skill can use the following tools:
 1. Upon receiving the cloud event, validate the `equinixalert` attribute. Continue only if the value is a `raise` (e.g. `raise/62gzx8/Kn8EUdm3F04VMGA`). Stop if the value is a `clear`.
 2. Parse the cloud event: from `data.metrics[]`, find the metric named `equinix.fabric.metro.<aside>_<zside>.latency` and split it into the source (`aside`) and destination (`zside`) metro codes. Capture the breaching value from `data.metrics[].datapoints.{value,unit,endDateTime}` — this is what alerted. If `data.alertRule.href` is present, call `get_stream_alert_rule_details` to retrieve `warningThreshold`, `criticalThreshold`, and `windowSize` for context in the brief. Stop if the metro codes cannot be determined from the event.
 3. Call `get_timestamps` with the `lookback_window` duration (default `"1h"`) to get `from` and `to`. Use this window for every metric lookup below — this agent diagnoses the live/recent situation only, it does not model historical trends.
-4. **Determine the blast radius.** Search for `PROVISIONED` connections where the A-side/Z-side metro codes match the source/destination pair from Step 2 in either direction. For each connection returned, capture its UUID, name, A-side/Z-side metro codes, and provisioned bandwidth. This full set is the blast radius — not just the connection that alerted.
-5. **Headroom check.** For each connection in the blast radius, retrieve `equinix.fabric.connection.bandwidth_rx.usage` and `equinix.fabric.connection.bandwidth_tx.usage` over the lookback window. Flag a connection's headroom as a concern if its rx or tx usage exceeds **80%** of its provisioned bandwidth (same threshold as Connection Health Scorecard). If no connection in the blast radius shows a headroom concern, still include the section in the brief — state explicitly that no headroom issue was found.
+4. **Determine the blast radius.** Search for `PROVISIONED` connections where the A-side/Z-side metro codes match the source/destination pair from Step 2 in either direction. For each connection returned, capture its UUID, name, A-side/Z-side metro codes, and provisioned bandwidth. This full set is the blast radius — not just the connection that alerted. **Stop if zero connections are returned** — log that no provisioned connections were found for the alerting metro pair, and do not send an email.
+5. **Headroom check.** For each connection in the blast radius, retrieve `equinix.fabric.connection.bandwidth_rx.usage` and `equinix.fabric.connection.bandwidth_tx.usage` over the lookback window. Flag a connection's headroom as a concern if its rx or tx usage exceeds **80%** of its provisioned bandwidth (same threshold as Connection Health Scorecard). If no connection in the blast radius shows a headroom concern, still include the section in the brief — state explicitly that no headroom issue was found. If metric collection fails for a subset of connections, proceed with the rest and note the gap; do not stop here even if it fails for all of them — Step 6 also collects metrics, and the combined outcome is evaluated after Step 6.
 6. **Metro correlation.** Retrieve the `equinix.fabric.metro.<aside>_<zside>.latency` time series for the lookback window. For each connection in the blast radius, compare the current (latest) value against its own earlier values in the same window to decide if it is individually elevated — do not compare across connections. Count how many blast-radius connections are elevated, then classify:
    - **Metro-wide** if the elevated count ≥ `min(metro_wide_min_connections, ceil(metro_wide_min_fraction × blast-radius size))`.
    - **Isolated** otherwise.
+
+   **Stop here if metric collection failed for every connection in the blast radius across both Step 5 and this step** — log the error and do not send an email, since there is no data left to report on. Otherwise continue to Step 7 with whatever data was collected, noting any connections that were skipped.
 7. **Determine the likely contributing factor.** Label this section as inference, not fact:
    - Metro-wide + no headroom concern anywhere in the blast radius → likely a shared network-path/metro issue, not congestion.
    - Isolated to one or a few connections + that connection's headroom is flagged → likely congestion-driven.
@@ -110,9 +112,11 @@ This skill can use the following tools:
    ```
 
 10. **Send the report** with `send_email_notification` to `recipient_email_addresses`:
-   - `pdfContent`: the full report text from Step 9.
-   - `body`: one-paragraph summary of the alert, blast-radius size, correlation verdict, and the recommended next-best action.
-   - `pdfTitle`: `HighLatencyIncidentBrief`
+    - `pdfContent`: the full report text from Step 9.
+    - `body`: one-paragraph summary of the alert, blast-radius size, correlation verdict, and the recommended next-best action.
+    - `pdfTitle`: `HighLatencyIncidentBrief`
+
+    Once the email has been sent, this agent's run for this alert is complete. Take no further action — do not poll, wait, or re-check any of the above — until the next alert cloud event triggers a new run.
 
 ## Guidelines
 *   **Diagnostic only — no auto-remediation**: this agent never modifies a connection, route, or bandwidth setting. It only reads telemetry and reports.
@@ -121,7 +125,7 @@ This skill can use the following tools:
 *   **Live/recent data only**: this agent does not model historical trends. Keep `lookback_window` short — see Configuration.
 *   **Labeled inference**: the "Likely Contributing Factor" section is inference from available signals, not a diagnosis. Always call this out explicitly in the report body.
 *   **Recommendations, not actions**: the "Recommended Next-Best Action" section is a suggestion for the NOC to act on manually. This agent never creates a ticket, opens a change request, or applies the recommendation itself.
-*   **Error handling**: if the blast radius cannot be determined (Steps 2/4), or metric collection fails entirely, log the error and do not send an email. If only some connections fail metric collection, evaluate the rest and note the gaps in the brief.
+*   **Error handling**: the stop conditions in Steps 1, 2, 4, and 6 are the only cases where this agent halts without sending an email — every other failure (e.g. metric collection failing for some, but not all, blast-radius connections) degrades gracefully: proceed with whatever data is available and note the gap in the brief.
 *   **Token Efficiency**: only call the tools when all necessary parameters are present, avoiding unnecessary context loading.
 
 ## Configuration
