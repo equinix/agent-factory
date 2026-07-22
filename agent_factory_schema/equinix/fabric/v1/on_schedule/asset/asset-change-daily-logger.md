@@ -6,7 +6,8 @@ description: Identify connections, ports, cloud routers, networks, internet acce
 # Daily Asset Change Report Agent
 
 ## Overview
-Identify connections, ports, cloud routers, networks, internet access, and network edge change events in past 24 hours; compile change summary with owners and distribute a daily report.
+An Equinix Agent that identifies connections, ports, cloud routers, networks, internet access, and network edge change events in past 24 hours.
+This agent compile change summary with owners and distribute a daily report.
 
 ## Capabilities
 - Analyze all cloud events within a given Equinix Fabric project over the past 24 hours

@@ -135,7 +135,8 @@ Equinix Fabric Agent Factory On Schedule and On Demand Scenarios
 	</tr>
 	<tr>
 		<td><a href="https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_schedule/asset/asset-change-daily-logger.md">Daily Asset Change Report Agent<br>[asset-change-daily-logger.md]</a></td>
-		<td>Identify connections, ports, cloud routers, networks, internet access, and network edge change events in past 24 hours; compile change summary with owners and distribute a daily report.</td>
+		<td>An Equinix Agent that identifies connections, ports, cloud routers, networks, internet access, and network edge change events in past 24 hours.
+This agent compile change summary with owners and distribute a daily report.</td>
 		<td>- Analyze all cloud events within a given Equinix Fabric project over the past 24 hours<br>- Deliver a plain-English daily report for changed assets summary via email as a summarized report in PDF format</td>
 		<td>- **`get_timestamps`**: Generates `from` and `to` UTC timestamps based on a duration string (e.g., `"24h"`, `"7d"`, `"1M"`). Returns a JSON object with `from` and `to` as ISO 8601 UTC strings. Always call this in Step 1 to obtain the reporting window.
 - **`search_cloud_events`**: Searches Equinix Fabric cloud events. Use `/equinixproject` `=` with `/time` `>=` and `<=` to scope by project and time window.
@@ -144,7 +145,8 @@ Equinix Fabric Agent Factory On Schedule and On Demand Scenarios
 	</tr>
 	<tr>
 		<td><a href="https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_schedule/asset/asset-create-daily-report.md">Daily Asset Creation Report Agent<br>[asset-create-daily-report.md]</a></td>
-		<td>Identify connections, ports, cloud routers, networks, internet access, and network edge creation events in past 24 hours; compile creation summary with owners and distribute a daily report.</td>
+		<td>An Equinix Agent that identifies connections, ports, cloud routers, networks, internet access, and network edge creation events in past 24 hours.
+This agent compile creation summary with owners and distribute a daily report.</td>
 		<td>- Analyze all cloud events within a given Equinix Fabric project over the past 24 hours<br>- Deliver a plain-English daily report for created assets summary via email as a summarized report in PDF format</td>
 		<td>- **`get_timestamps`**: Generates `from` and `to` UTC timestamps based on a duration string (e.g., `"24h"`, `"7d"`, `"1M"`). Returns a JSON object with `from` and `to` as ISO 8601 UTC strings. Always call this in Step 1 to obtain the reporting window.
 - **`search_cloud_events`**: Searches Equinix Fabric cloud events. Use `/equinixproject` `=` with `/time` `>=` and `<=` to scope by project and time window.
@@ -228,7 +230,8 @@ unattached. This agent runs once immediately by default unless scheduled by user
 	</tr>
 	<tr>
 		<td><a href="https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_schedule/cloud-router/cloud-router-bgp-boostrap-provisioner.md">Cloud Router BGP Bootstrap Provisioner Agent<br>[cloud-router-bgp-boostrap-provisioner.md]</a></td>
-		<td>This agent targets a connection that is pending interface configuration, sets up a standard BGP routing protocol (ASN, BFD enabled, MD5 authentication), and sends a completion notification with final execution outcome.
+		<td>An Equinix agent targets a connection that is pending interface configuration, sets up a standard BGP routing protocol, and sends a completion notification with final execution outcome.
+The agent is set up BGP routing protocol using ASN, BFD enabled, or MD5 authentication.
 This agent runs once immediately by default unless scheduled by user.</td>
 		<td>- Detect new or updated connections missing routing protocol configuration<br>- Create a baseline BGP routing protocol with required defaults<br>- Enable BFD as part of the standard BGP profile<br>- Configure MD5 authentication for BGP sessions<br>- Send completion notifications with success/failure outcomes</td>
 		<td>This skill can use the following tools:
@@ -270,7 +273,7 @@ This agent runs once immediately by default unless scheduled by user.</td>
 	</tr>
 	<tr>
 		<td><a href="https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_schedule/cloud-router/cloud-router-route-aggregation-recommendation.md">Cloud Router Route Aggregation Recommendation Agent<br>[cloud-router-route-aggregation-recommendation.md]</a></td>
-		<td>This definition sets up and activates an Equinix agent that recommends, or suggests, aggregate routes for a Fabric Cloud Router (also referred to as FCR or router).
+		<td>An Equinix agent that recommends, or suggests, aggregate routes for a Fabric Cloud Router.
 The agent analyzes the router's active route table entries and suggests an optimized set of aggregate (supernet) IPv4 routes to simplify route advertisement and reduce route table size.
 A router UUID is required, and a connection UUID is optional but recommended for more accurate, connection-scoped aggregation.
 This agent runs once immediately by default unless scheduled by user.</td>
@@ -350,7 +353,8 @@ unattached. This agent runs once immediately by default unless scheduled by user
 	</tr>
 	<tr>
 		<td><a href="https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_schedule/connection/connection-health-scorecard.md">Connection Health Scorecard Agent<br>[connection-health-scorecard.md]</a></td>
-		<td>This agent gives operators a single-pane health view across Equinix Fabric connections. It collects per-connection performance metrics, computes a composite 0–100 health score for each connection, ranks them, flags any connection with an obvious measurable issue, and recommends remediation for every flagged connection — so troubleshooting effort can be prioritized where it matters most. The result is delivered as a PDF scorecard via email.
+		<td>An Equinix Agent that gives operators a single-pane health view across Equinix Fabric connections. It collects per-connection performance metrics, computes a composite 0 to 100 health score for each connection, ranks them, flags any connection with an obvious measurable issue, and recommends remediation for every flagged connection.
+This agent helps troubleshooting effort so it can be prioritized where it matters most. The result is delivered as a PDF scorecard via email.
 This agent runs once immediately by default unless scheduled by user.</td>
 		<td>- Enumerate all PROVISIONED connections (or a user-specified subset)<br>- Collect rate-exceeded packet drops, packet errors, utilization, and latency metrics per connection<br>- Compute a reproducible composite 0–100 health score per connection<br>- Rank all connections and flag any with an obvious measurable issue<br>- Recommend concrete remediation for every flagged connection<br>- Deliver a prioritized scorecard as a PDF report via email</td>
 		<td>This skill can use the following tools:

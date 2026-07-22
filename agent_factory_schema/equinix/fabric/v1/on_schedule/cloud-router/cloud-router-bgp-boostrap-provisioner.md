@@ -6,7 +6,8 @@ description: Creates a standard BGP routing protocol and sends completion notifi
 # Cloud Router BGP Bootstrap Provisioner Agent
 
 ## Overview
-This agent targets a connection that is pending interface configuration, sets up a standard BGP routing protocol (ASN, BFD enabled, MD5 authentication), and sends a completion notification with final execution outcome.
+An Equinix agent targets a connection that is pending interface configuration, sets up a standard BGP routing protocol, and sends a completion notification with final execution outcome.
+The agent is set up BGP routing protocol using ASN, BFD enabled, or MD5 authentication.
 This agent runs once immediately by default unless scheduled by user.
 
 ## Capabilities

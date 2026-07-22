@@ -1,6 +1,29 @@
 import os
+import re
 import json
 import script_constants as sc
+
+BASE_URL = "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/"
+
+
+def read_md(uri):
+    schema_root = os.path.dirname(os.path.abspath(__file__)) + "/../agent_factory_schema"
+    rel_path = uri.replace(BASE_URL + "agent_factory_schema/", "")
+    local_path = os.path.join(schema_root, rel_path)
+    if not os.path.exists(local_path):
+        return ""
+    with open(local_path, "r") as f:
+        return f.read()
+
+
+def extract_md_overview(content):
+    match = re.search(r'## Overview\s*\n(.+)', content)
+    return match.group(1).strip() if match else ""
+
+
+def extract_md_title(content):
+    match = re.search(r'^#\s+(.+)', content, re.MULTILINE)
+    return match.group(1).strip() if match else ""
 
 
 def main():
@@ -28,6 +51,11 @@ def retrieve_json_schemas():
             if file.endswith('.json') and os.path.basename(root) != "agent_factory_schema":
                 with open(root + "/" + file, "r") as jsonFiles:
                     data = json.load(jsonFiles)
+                    for factory in data.get("agentFactories", []):
+                        content = read_md(factory.get("uri", ""))
+                        if content:
+                            factory["description"] = extract_md_overview(content)
+                            factory["name"] = extract_md_title(content)
                     agentFactories = sortedRemoveDuplicates(data.get("agentFactories", []))
                     newItem = {
                         "url": data["$id"],
