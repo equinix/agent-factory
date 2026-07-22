@@ -186,6 +186,8 @@ most recent related cloud event for extra context.</td>
 - **`search_routers`**: Searches for fabric cloud routers.
 - **`search_ports`**: Searches for ports.
 - **`search_cloud_events_by_asset`**: Retrieves recent cloud events for a given connection or port UUID. Not supported for routers.
+- **`get_timestamps`**: Generates `from` and `to` UTC timestamps based on a duration string (e.g., `"24h"`). Use the `to` field as the current UTC time reference for calculating elapsed minutes. Do not compute or hardcode the current time manually.
+- **`wait`**: Wait for a while before retrying a failed search call. An optional parameter can be provided to specify the wait time in milliseconds.
 - **`send_email_notification`**: Sends an email. Pass `pdfTitle` and `pdfContent` (plain text) to auto-generate and attach a PDF.</td>
 		<td>preview
 	</tr>
