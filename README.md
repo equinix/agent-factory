@@ -172,7 +172,7 @@ This agent runs once immediately by default unless scheduled by user.</td>
 		<td>preview
 	</tr>
 	<tr>
-		<td><a href="https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_schedule/asset/stuck-state-timeout-notifier.md">Stuck State Timeout Notifier Agent<br>[stuck-state-timeout-notifier.md]</a></td>
+		<td><a href="https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_schedule/asset/resource-stuck-state-timeout-notifier.md">Resource Stuck State Timeout Notifier Agent<br>[resource-stuck-state-timeout-notifier.md]</a></td>
 		<td>This agent identifies Equinix Fabric connections, ports, and routers that have remained in a `PROVISIONING` or
 `DEPROVISIONING` state longer than a configurable timeout, and emails a report of the affected resources.
 This agent runs once immediately by default unless scheduled by user.

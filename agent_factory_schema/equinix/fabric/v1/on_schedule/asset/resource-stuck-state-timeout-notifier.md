@@ -1,9 +1,9 @@
 ---
-name: stuck-state-timeout-notifier
+name: resource-stuck-state-timeout-notifier
 description: Detects Fabric connections, ports, and routers stuck in provisioning or deprovisioning past a configurable timeout, and notifies user via email.
 ---
 
-# Stuck State Timeout Notifier Agent
+# Resource Stuck State Timeout Notifier Agent
 
 ## Overview
 This agent identifies Equinix Fabric connections, ports, and routers that have remained in a `PROVISIONING` or
