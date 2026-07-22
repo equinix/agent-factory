@@ -58,7 +58,8 @@ Using `from_timestamp` and `to_timestamp` established in Step 1, call `search_cl
         "equinix.fabric.internet_access.state.failed",
         "equinix.network_edge.device.state.created",
         "equinix.network_edge.device.state.provisioned",
-        "equinix.network_edge.device.state.provisioning"
+        "equinix.network_edge.device.state.provisioning",
+        "equinix.fabric.service_profile.connection.provisioned"
       ] },
       { "property": "/equinixproject", "operator": "IN", "values": ["<project_uuid>","<project_uuid>"] },
       { "property": "/time", "operator": ">=", "values": ["<from_timestamp>"] },

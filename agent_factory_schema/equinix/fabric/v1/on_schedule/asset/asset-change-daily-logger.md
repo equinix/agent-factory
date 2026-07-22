@@ -66,7 +66,8 @@ Using `from_timestamp` and `to_timestamp` established in Step 1, call `search_cl
         "equinix.network_edge.device.reboot.completed",
         "equinix.network_edge.device.reboot.started",
         "equinix.network_edge.device.state.cancelled",
-        "equinix.network_edge.device.state.deleted"
+        "equinix.network_edge.device.state.deleted",
+        "equinix.fabric.service_profile.connection.deprovisioned"
       ] },
       { "property": "/equinixproject", "operator": "IN", "values": ["<project_uuid>","<project_uuid>"] },
       { "property": "/time", "operator": ">=", "values": ["<from_timestamp>"] },
