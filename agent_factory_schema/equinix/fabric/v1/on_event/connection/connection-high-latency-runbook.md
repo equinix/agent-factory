@@ -6,7 +6,9 @@ description: Diagnoses a metro high-latency alert by scoping the blast radius of
 # Connection High Latency Auto-Runbook Agent
 
 ## Overview
-An Equinix agent that runs an automated diagnostic runbook when a metro latency alert fires. It identifies every connection sharing the alerting metro pair, runs a targeted FCR ping against each to get live connectivity readings, checks bandwidth/utilization headroom, correlates the alert against metro-wide latency to determine whether the spike is isolated to one connection or metro-wide, and emails a one-page incident brief with a clearly-labeled "likely contributing factor" and a recommended next-best action. This agent is diagnostic only — it never modifies a connection, route, or bandwidth setting; recommendations are for the NOC to action manually.
+An Equinix agent that runs an automated diagnostic runbook when a metro latency alert fires.
+
+It identifies every connection sharing the alerting metro pair, then runs a targeted FCR ping against each for live connectivity readings and checks bandwidth/utilization headroom. From those per-connection signals, weighed against the shared metro-latency backdrop, it classifies whether the spike is isolated to one connection or metro-wide. It then emails a one-page incident brief with a clearly-labeled likely contributing factor and a recommended next-best action. This agent is diagnostic only. It never modifies a connection, route, or bandwidth setting, and recommendations are for the NOC to action manually.
 
 ## Capabilities
 - Detect metro high-latency alert cloud events
