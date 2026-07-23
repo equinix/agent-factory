@@ -12,10 +12,10 @@ local_helper_scripts/*
 
 # Python Generated Files
 __pycache__
+.venv
 
 # Generated eval output
 eval_report.md
-.venv
 
 # Packages #
 ############
