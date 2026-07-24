@@ -139,6 +139,12 @@
                     "releaseStatus": "preview"
                 },
                 {
+                    "name": "IPWAN & Cloud Router Network Setup Agent",
+                    "description": "An Equinix agent that provisions a single IPWAN-based network topology with FCR.",
+                    "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_schedule/network/ipwan-fcr-network-setup.md",
+                    "releaseStatus": "preview"
+                },
+                {
                     "name": "Port Attachment Audit Agent",
                     "description": "An Equinix agent that audits all Fabric Ports to detect ports that are unmonitored then attachs them to stream.",
                     "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_schedule/port/port-attachment-audit.md",
