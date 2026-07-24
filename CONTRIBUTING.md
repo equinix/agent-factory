@@ -8,7 +8,10 @@ Agent Factory Schemas related to the md files and categories that will be publis
 Every Agent Factory Json Schema and MD Files are published to Github Pages through this repo on merges to the `main` branch. Contribution guidelines
 for registration and promotion are provided in this document. Please read it thoroughly.
 
-Before getting started please run: `pip install pre-commit && pre-commit install`
+Before getting started please run:
+`brew install pre-commit && pre-commit install`
+or
+`pip install pre-commit && pre-commit install`
 
 ## Code of Conduct
 
