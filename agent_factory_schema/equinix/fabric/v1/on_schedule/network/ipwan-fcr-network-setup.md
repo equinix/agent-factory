@@ -27,11 +27,11 @@ This agent runs once immediately by default unless scheduled by user.
 ## Available Tools
 This skill can use the following tools:
 
-- **`create_network`**: Creates a Fabric Network. Accepts name, type (`IPWAN`), scope (`REGIONAL` or `GLOBAL`), location (metro code), and project UUID.
+- **`create_network`**: Creates a Fabric Network. Accepts name, type (`IPWAN`), scope (`REGIONAL` or `GLOBAL`), location (metro code), notifications (mandatory), and project UUID.
 - **`search_networks`**: Searches for existing Fabric Networks by filter.
-- **`create_router`**: Creates a Fabric Cloud Router. Accepts name, location (metro code), package, billing account number, notifications, and project UUID.
+- **`create_router`**: Creates a Fabric Cloud Router. Accepts name, location (metro code), package, billing account number, notifications (mandatory), and project UUID.
 - **`search_routers`**: Searches for existing Fabric Cloud Routers by filter to check provisioning state.
-- **`create_connection`**: Creates a connection. Used to create FCR2IPWAN connections between a Cloud Router and a Network.
+- **`create_connection`**: Creates a connection. Used to create FCR2IPWAN connections between a Cloud Router and a Network. Accepts notifications.
 - **`search_connections`**: Searches for existing connections to verify provisioning state.
 - **`get_stream_details`**: Fetches stream details given a stream UUID.
 - **`create_stream`**: Creates a new stream given a name and project UUID.
@@ -61,6 +61,7 @@ This skill can use the following tools:
 - `type`: `IPWAN`
 - `scope`: `GLOBAL`
 - `location.metroCode`: `metro`
+- `notifications`: `[{"type": "ALL", "emails": recipient_email_addresses}]`
 - `project.projectId`: `project_uuid` (if provided)
 
 2b. Record the returned network UUID as `network_uuid`. Stop if creation fails.
@@ -71,6 +72,7 @@ This skill can use the following tools:
 - `location.metroCode`: `metro`
 - `package.code`: `fcr_package`
 - `account.accountNumber`: `account_number`
+- `notifications`: `[{"type": "ALL", "emails": recipient_email_addresses}]`
 - `project.projectId`: `project_uuid` (if provided)
 
 3b. Record the returned router UUID as `fcr_uuid`. Stop if creation fails.
@@ -92,6 +94,7 @@ This skill can use the following tools:
 - `aSide.accessPoint.router.uuid`: `fcr_uuid`
 - `zSide.accessPoint.type`: `NETWORK`
 - `zSide.accessPoint.network.uuid`: `network_uuid`
+- `notifications`: `[{"type": "ALL", "emails": recipient_email_addresses}]`
 - `project.projectId`: `project_uuid` (if provided)
 
 5b. Record the returned connection UUID as `connection_uuid`. Stop if creation fails.
@@ -233,4 +236,4 @@ Section content rules:
 - **`fcr_name`**: `<name>` — Optional. Name for the created Cloud Router (default: `fcr`; max 24 characters).
 - **`stream_uuid`**: `<UUID>` — Optional. UUID of an existing stream to attach resources to. If omitted, a new stream is created.
 - **`stream_name`**: `<name>` — Optional. Name for the new stream when no `stream_uuid` is provided (default: `ipwan-stream`; max 24 characters).
-- **`recipient_email_addresses`**: `["<email>", ...]` — Required. List of email addresses to receive the completion report.
+- **`recipient_email_addresses`**: `["<email>", ...]` — Required. List of email addresses to receive the completion report, and used as the `notifications` emails on the Network, Cloud Router, and connection creation calls.
