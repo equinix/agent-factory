@@ -64,7 +64,7 @@ This skill can use the following tools:
 - `notifications`: `[{"type": "ALL", "emails": recipient_email_addresses}]`
 - `project.projectId`: `project_uuid` (if provided)
 
-2b. Record the returned network UUID as `network_uuid`. Stop if creation fails.
+2b. Record the returned network UUID as `network_uuid`. If creation fails, skip Steps 3–7 and go directly to Step 8 to send a completion email reporting the network creation failure and its error detail.
 
 ### Step 3 — Create the Fabric Cloud Router
 3a. Call `create_router` with:
@@ -75,7 +75,7 @@ This skill can use the following tools:
 - `notifications`: `[{"type": "ALL", "emails": recipient_email_addresses}]`
 - `project.projectId`: `project_uuid` (if provided)
 
-3b. Record the returned router UUID as `fcr_uuid`. Stop if creation fails.
+3b. Record the returned router UUID as `fcr_uuid`. If creation fails, skip Steps 4–7 and go directly to Step 8 to send a completion email reporting the Network as created, the Cloud Router creation failure, and its error detail.
 
 ### Step 4 — Wait for the Cloud Router to Provision
 4a. Repeat up to 30 times or until the Cloud Router is PROVISIONED:
@@ -83,7 +83,7 @@ This skill can use the following tools:
 - Call `search_routers` filtering by `fcr_uuid` and check `state`.
 - Break early once `state` = `PROVISIONED`.
 
-4b. If the Cloud Router has not reached PROVISIONED after 30 retries, stop and report a timeout error identifying the Cloud Router that failed.
+4b. If the Cloud Router has not reached PROVISIONED after 30 retries, skip Steps 5–7 and go directly to Step 8 to send a completion email reporting a timeout error identifying the Cloud Router that failed.
 
 ### Step 5 — Create the IPWAN Connection
 5a. Call `create_connection` with:
@@ -97,7 +97,7 @@ This skill can use the following tools:
 - `notifications`: `[{"type": "ALL", "emails": recipient_email_addresses}]`
 - `project.projectId`: `project_uuid` (if provided)
 
-5b. Record the returned connection UUID as `connection_uuid`. Stop if creation fails.
+5b. Record the returned connection UUID as `connection_uuid`. If creation fails, skip Steps 6–7 and go directly to Step 8 to send a completion email reporting the Network and Cloud Router as created, the connection creation failure, and its error detail.
 
 ### Step 6 — Wait for the Connection to Provision
 6a. Repeat up to 30 times or until the connection is PROVISIONED:
@@ -105,7 +105,7 @@ This skill can use the following tools:
 - Call `search_connections` filtering by `connection_uuid` and check `state`.
 - Break early once `state` = `PROVISIONED`.
 
-6b. If the connection has not reached PROVISIONED after 30 retries, stop and report a timeout error identifying the connection that failed.
+6b. If the connection has not reached PROVISIONED after 30 retries, skip Step 7 and go directly to Step 8 to send a completion email reporting a timeout error identifying the connection that failed.
 
 ### Step 7 — Set Up Stream
 7a. If `stream_uuid` is provided, call `get_stream_details` to verify the stream exists. Stop if it does not.
@@ -205,12 +205,12 @@ Wait 3000 milliseconds after each attachment to allow the platform to register t
 ```
 
 Section content rules:
-- **Summary**: State the metro, and overall outcome in 3–5 sentences.
-- **Network**: One row — name, UUID, type (`IPWAN`), scope (`GLOBAL`), and final state.
-- **Fabric Cloud Router**: One row — name, UUID, metro, package, and final state.
-- **IPWAN Connection**: One row — name, UUID, the Cloud Router UUID it links, bandwidth, and final state.
-- **Stream Attachment**: Confirm all resources were successfully attached to stream UUID. State whether the stream was newly created or pre-existing.
-- **Next Steps**: 1–3 plain-English recommendations (e.g., configure a BGP routing protocol on the Cloud Router, set up an alert rule on the connection, validate end-to-end connectivity with a PING command).
+- **Summary**: State the metro and overall outcome in 3–5 sentences. If any resource failed to create or provision, name the failing resource, include its error detail, and state that stream attachment was skipped as a result.
+- **Network**: One row — name, UUID, type (`IPWAN`), scope (`GLOBAL`), and final state. If the network was never created, state "Not created" and the error detail in place of UUID/state.
+- **Fabric Cloud Router**: One row — name, UUID, metro, package, and final state. If the router was never created, state "Not created" and the error detail in place of UUID/state; if creation was skipped because the network failed, state "Skipped — network creation failed".
+- **IPWAN Connection**: One row — name, UUID, the Cloud Router UUID it links, bandwidth, and final state. If the connection was never created, state "Not created" and the error detail in place of UUID/state; if creation was skipped because an earlier resource failed, state "Skipped — <resource> creation failed".
+- **Stream Attachment**: If all resources were successfully attached to stream UUID, confirm this and state whether the stream was newly created or pre-existing. If stream attachment was skipped due to an earlier failure, state that explicitly.
+- **Next Steps**: If the run succeeded, give 1–3 plain-English recommendations (e.g., configure a BGP routing protocol on the Cloud Router, set up an alert rule on the connection, validate end-to-end connectivity with a PING command). If the run failed, recommend remediation for the reported error and re-running the agent.
 
 8b. Call `send_email_notification` with:
 - `pdfContent`: the full report from Step 8a.
@@ -220,7 +220,7 @@ Section content rules:
 
 ## Guidelines
 - **Prioritize Clarity**: Confirm all required parameters are present before making any tool call.
-- **Error Handling**: If any creation or provisioning step fails, stop immediately and report the failing resource UUID and error detail. Do not proceed to stream attachment or notification.
+- **Error Handling**: If any creation or provisioning step fails, do not abort silently. Skip the remaining creation, provisioning, and stream-attachment steps, and go directly to Step 8 to send a completion email reporting the failing resource and its error detail.
 - **Polling discipline**: Always wait between state polls. Never skip the wait step even if a resource appears fast to provision.
 - **Name length**: Keep all generated names to 24 characters or fewer for platform compatibility.
 - **Token Efficiency**: Carry only UUIDs and state values forward between steps — do not pass full resource payloads downstream.
