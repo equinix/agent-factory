@@ -450,6 +450,27 @@ This agent runs once immediately by default unless scheduled by user.</td>
 - **`send_email_notification`**: Sends an email notification to a list of recipients with an optional PDF attachment.</td>
 		<td>preview
 	</tr>
+	<tr>
+		<td><a href="https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_schedule/network/ipwan-fcr-network-setup.md">IPWAN & Cloud Router Network Setup Agent<br>[ipwan-fcr-network-setup.md]</a></td>
+		<td>An Equinix agent that provisions a single IPWAN-based network topology with FCR. 
+It creates one Network, one Cloud Router at a user-specified metro location, and one IPWAN connection linking the Cloud Router to the network. After the Cloud Router and connection reach PROVISIONED state the agent attaches them to a stream (creating one if needed; the Network itself cannot be attached to a stream) and sends a completion summary via email.
+This agent runs once immediately by default unless scheduled by user.</td>
+		<td>- Create a Fabric Network of type IPWAN scoped to a project<br>- Create one Cloud Router at the specified metro location with a configurable package<br>- Create one IPWAN connection between the Cloud Router and the network<br>- Poll all resources until they reach PROVISIONED state before proceeding<br>- Create a stream automatically if no stream UUID is provided, then attach the provisioned Cloud Router and connection to it (networks cannot be attached to a stream)<br>- Send an email completion report summarizing all created resources and their states</td>
+		<td>This skill can use the following tools:
+
+- **`create_network`**: Creates a Fabric Network. Accepts name, type (`IPWAN`), scope (`REGIONAL` or `GLOBAL`), location (region or metro code), notifications (mandatory), and project UUID.
+- **`search_networks`**: Searches for existing Fabric Networks by filter.
+- **`create_router`**: Creates a Fabric Cloud Router. Accepts name, location (metro code), package, billing account number, notifications (mandatory), and project UUID.
+- **`search_routers`**: Searches for existing Fabric Cloud Routers by filter to check provisioning state.
+- **`create_connection`**: Creates a connection. Used to create IPWAN connections between a Cloud Router and a Network. Accepts notifications.
+- **`search_connections`**: Searches for existing connections to verify provisioning state.
+- **`get_stream_details`**: Fetches stream details given a stream UUID.
+- **`create_stream`**: Creates a new stream given a name and project UUID.
+- **`attach_stream_asset`**: Attaches a resource (router or connection) to a stream by UUID. Networks cannot be attached to a stream.
+- **`wait`**: Waits for a specified number of milliseconds before the next action.
+- **`send_email_notification`**: Sends an email notification to a list of recipients with an optional PDF attachment.</td>
+		<td>preview
+	</tr>
 </table>
 
 </details>
