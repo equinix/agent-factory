@@ -63,7 +63,7 @@ This skill can use the following tools:
 - `type`: `IPWAN`
 - `scope`: `REGIONAL`
 - `location.region`: `region`
-- `notifications`: `[{"type": "ALL", "emails": []}]`
+- `notifications`: `[{"type": "ALL", "emails": recipient_email_addresses}]`
 - `project.projectId`: `project_uuid` (if provided)
 
 2b. Record the returned network UUID as `network_uuid`. If creation fails, skip Steps 3–7 and go directly to Step 8 to send a completion email reporting the network creation failure and its error detail.
@@ -74,7 +74,7 @@ This skill can use the following tools:
 - `location.metroCode`: `metro`
 - `package.code`: `fcr_package`
 - `account.accountNumber`: `account_number`
-- `notifications`: `[{"type": "ALL", "emails": []}]`
+- `notifications`: `[{"type": "ALL", "emails": recipient_email_addresses}]`
 - `project.projectId`: `project_uuid` (if provided)
 
 3b. Record the returned router UUID as `fcr_uuid`. If creation fails, skip Steps 4–7 and go directly to Step 8 to send a completion email reporting the Network as created, the Cloud Router creation failure, and its error detail.
@@ -96,7 +96,7 @@ This skill can use the following tools:
 - `aSide.accessPoint.router.uuid`: `fcr_uuid`
 - `zSide.accessPoint.type`: `NETWORK`
 - `zSide.accessPoint.network.uuid`: `network_uuid`
-- `notifications`: `[{"type": "ALL", "emails": []}]`
+- `notifications`: `[{"type": "ALL", "emails": recipient_email_addresses}]`
 - `project.projectId`: `project_uuid` (if provided)
 
 5b. Record the returned connection UUID as `connection_uuid`. If creation fails, skip Steps 6–7 and go directly to Step 8 to send a completion email reporting the Network and Cloud Router as created, the connection creation failure, and its error detail.
@@ -238,4 +238,4 @@ Section content rules:
 - **`fcr_name`**: `<name>` — Optional. Name for the created Cloud Router (default: `fcr`; max 24 characters).
 - **`stream_uuid`**: `<UUID>` — Optional. UUID of an existing stream to attach resources to. If omitted, a new stream is created.
 - **`stream_name`**: `<name>` — Optional. Name for the new stream when no `stream_uuid` is provided (default: `ipwan-stream`; max 24 characters).
-- **`recipient_email_addresses`**: `["<email>", ...]` — Required. List of email addresses to receive the single completion report email sent in Step 8. The `notifications` block on the Network, Cloud Router, and connection creation calls is left empty so the platform does not send its own per-resource emails.
+- **`recipient_email_addresses`**: `["<email>", ...]` — Required. List of email addresses to receive the completion report email sent in Step 8. Note: the Fabric platform also sends its own separate notification for each of the Network, Cloud Router, and connection creation calls to this same list (its `notifications.emails` field cannot be empty), so recipients will see those in addition to the Step 8 report.
