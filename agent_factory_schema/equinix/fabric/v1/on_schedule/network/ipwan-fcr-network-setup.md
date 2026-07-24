@@ -7,7 +7,7 @@ description: Creates one Network, one Cloud Router, and one IPWAN connection bet
 
 ## Overview
 An Equinix agent that provisions a single IPWAN-based network topology with FCR. 
-It creates one Network, one Cloud Router at a user-specified metro location, and one IPWAN connection linking the Cloud Router to the network. After all resources reach PROVISIONED state the agent attaches them to a stream (creating one if needed) and sends a completion summary via email.
+It creates one Network, one Cloud Router at a user-specified metro location, and one IPWAN connection linking the Cloud Router to the network. After the Cloud Router and connection reach PROVISIONED state the agent attaches them to a stream (creating one if needed; the Network itself cannot be attached to a stream) and sends a completion summary via email.
 This agent runs once immediately by default unless scheduled by user.
 
 ## Capabilities
@@ -15,7 +15,7 @@ This agent runs once immediately by default unless scheduled by user.
 - Create one Cloud Router at the specified metro location with a configurable package
 - Create one IPWAN connection between the Cloud Router and the network
 - Poll all resources until they reach PROVISIONED state before proceeding
-- Create a stream automatically if no stream UUID is provided, then attach every provisioned resource to it
+- Create a stream automatically if no stream UUID is provided, then attach the provisioned Cloud Router and connection to it (networks cannot be attached to a stream)
 - Send an email completion report summarizing all created resources and their states
 
 ## Prerequisites
@@ -27,7 +27,7 @@ This agent runs once immediately by default unless scheduled by user.
 ## Available Tools
 This skill can use the following tools:
 
-- **`create_network`**: Creates a Fabric Network. Accepts name, type (`IPWAN`), scope (`REGIONAL` or `GLOBAL`), location (metro code), notifications (mandatory), and project UUID.
+- **`create_network`**: Creates a Fabric Network. Accepts name, type (`IPWAN`), scope (`REGIONAL` or `GLOBAL`), location (region or metro code), notifications (mandatory), and project UUID.
 - **`search_networks`**: Searches for existing Fabric Networks by filter.
 - **`create_router`**: Creates a Fabric Cloud Router. Accepts name, location (metro code), package, billing account number, notifications (mandatory), and project UUID.
 - **`search_routers`**: Searches for existing Fabric Cloud Routers by filter to check provisioning state.
@@ -35,7 +35,7 @@ This skill can use the following tools:
 - **`search_connections`**: Searches for existing connections to verify provisioning state.
 - **`get_stream_details`**: Fetches stream details given a stream UUID.
 - **`create_stream`**: Creates a new stream given a name and project UUID.
-- **`attach_stream_asset`**: Attaches a resource (network, router, or connection) to a stream by UUID.
+- **`attach_stream_asset`**: Attaches a resource (router or connection) to a stream by UUID. Networks cannot be attached to a stream.
 - **`wait`**: Waits for a specified number of milliseconds before the next action.
 - **`send_email_notification`**: Sends an email notification to a list of recipients with an optional PDF attachment.
 
@@ -46,12 +46,14 @@ This skill can use the following tools:
 
 1b. Confirm that `account_number` is provided. Stop and report an error if it is empty or missing.
 
-1c. Apply naming defaults if the optional name fields are not provided:
+1c. Determine `region` from `metro`'s Equinix continental region — one of `AMER`, `EMEA`, or `APAC` (e.g., metros such as SV, DC, NY, CH, DA, MI map to `AMER`; LD, FR, AM, PA, MD, ML, ZH map to `EMEA`; SG, HK, TY, OS, SY map to `APAC`). Stop and report an error if the metro's region cannot be determined.
+
+1d. Apply naming defaults if the optional name fields are not provided:
 - `network_name` → `ipwan-network`
 - `fcr_name` → `fcr`
 - `stream_name` → `ipwan-stream`
 
-1d. Apply numeric defaults if not provided:
+1e. Apply numeric defaults if not provided:
 - `bandwidth_in_mbps` → `1000`
 - `fcr_package` → `STANDARD`
 
@@ -59,9 +61,9 @@ This skill can use the following tools:
 2a. Call `create_network` with:
 - `name`: `network_name`
 - `type`: `IPWAN`
-- `scope`: `GLOBAL`
-- `location.metroCode`: `metro`
-- `notifications`: `[{"type": "ALL", "emails": recipient_email_addresses}]`
+- `scope`: `REGIONAL`
+- `location.region`: `region`
+- `notifications`: `[{"type": "ALL", "emails": []}]`
 - `project.projectId`: `project_uuid` (if provided)
 
 2b. Record the returned network UUID as `network_uuid`. If creation fails, skip Steps 3–7 and go directly to Step 8 to send a completion email reporting the network creation failure and its error detail.
@@ -72,7 +74,7 @@ This skill can use the following tools:
 - `location.metroCode`: `metro`
 - `package.code`: `fcr_package`
 - `account.accountNumber`: `account_number`
-- `notifications`: `[{"type": "ALL", "emails": recipient_email_addresses}]`
+- `notifications`: `[{"type": "ALL", "emails": []}]`
 - `project.projectId`: `project_uuid` (if provided)
 
 3b. Record the returned router UUID as `fcr_uuid`. If creation fails, skip Steps 4–7 and go directly to Step 8 to send a completion email reporting the Network as created, the Cloud Router creation failure, and its error detail.
@@ -94,7 +96,7 @@ This skill can use the following tools:
 - `aSide.accessPoint.router.uuid`: `fcr_uuid`
 - `zSide.accessPoint.type`: `NETWORK`
 - `zSide.accessPoint.network.uuid`: `network_uuid`
-- `notifications`: `[{"type": "ALL", "emails": recipient_email_addresses}]`
+- `notifications`: `[{"type": "ALL", "emails": []}]`
 - `project.projectId`: `project_uuid` (if provided)
 
 5b. Record the returned connection UUID as `connection_uuid`. If creation fails, skip Steps 6–7 and go directly to Step 8 to send a completion email reporting the Network and Cloud Router as created, the connection creation failure, and its error detail.
@@ -116,10 +118,9 @@ This skill can use the following tools:
 
 Record the returned UUID as `stream_uuid`.
 
-7c. Attach all resources to the stream in order:
-1. Call `attach_stream_asset` with the `network_uuid` and `"metrics_enabled": false`.
-2. Call `attach_stream_asset` with the `fcr_uuid` and `"metrics_enabled": false`.
-3. Call `attach_stream_asset` with the `connection_uuid`.
+7c. Attach the Cloud Router and connection to the stream in order (Networks cannot be attached to a stream):
+1. Call `attach_stream_asset` with the `fcr_uuid` and `"metrics_enabled": false`.
+2. Call `attach_stream_asset` with the `connection_uuid`.
 
 Wait 3000 milliseconds after each attachment to allow the platform to register the asset.
 
@@ -146,6 +147,7 @@ Wait 3000 milliseconds after each attachment to allow the platform to register t
                 <li>UUID</li>
                 <li>Type</li>
                 <li>Scope</li>
+                <li>Region</li>
                 <li>State</li>
             </ul>
             <!-- Data Row -->
@@ -206,10 +208,10 @@ Wait 3000 milliseconds after each attachment to allow the platform to register t
 
 Section content rules:
 - **Summary**: State the metro and overall outcome in 3–5 sentences. If any resource failed to create or provision, name the failing resource, include its error detail, and state that stream attachment was skipped as a result.
-- **Network**: One row — name, UUID, type (`IPWAN`), scope (`GLOBAL`), and final state. If the network was never created, state "Not created" and the error detail in place of UUID/state.
+- **Network**: One row — name, UUID, type (`IPWAN`), scope (`REGIONAL`), region, and final state. If the network was never created, state "Not created" and the error detail in place of UUID/state.
 - **Fabric Cloud Router**: One row — name, UUID, metro, package, and final state. If the router was never created, state "Not created" and the error detail in place of UUID/state; if creation was skipped because the network failed, state "Skipped — network creation failed".
 - **IPWAN Connection**: One row — name, UUID, the Cloud Router UUID it links, bandwidth, and final state. If the connection was never created, state "Not created" and the error detail in place of UUID/state; if creation was skipped because an earlier resource failed, state "Skipped — <resource> creation failed".
-- **Stream Attachment**: If all resources were successfully attached to stream UUID, confirm this and state whether the stream was newly created or pre-existing. If stream attachment was skipped due to an earlier failure, state that explicitly.
+- **Stream Attachment**: If the Cloud Router and connection were successfully attached to stream UUID, confirm this and state whether the stream was newly created or pre-existing (note that the Network is not attached, as networks cannot be attached to a stream). If stream attachment was skipped due to an earlier failure, state that explicitly.
 - **Next Steps**: If the run succeeded, give 1–3 plain-English recommendations (e.g., configure a BGP routing protocol on the Cloud Router, set up an alert rule on the connection, validate end-to-end connectivity with a PING command). If the run failed, recommend remediation for the reported error and re-running the agent.
 
 8b. Call `send_email_notification` with:
@@ -227,7 +229,7 @@ Section content rules:
 - **Plain English**: Report section text must use plain English with no raw API jargon.
 
 ## Configuration
-- **`metro`**: `<metro_code>` — Required. Equinix metro code where the Network and Cloud Router will be created (e.g., `SV`).
+- **`metro`**: `<metro_code>` — Required. Equinix metro code where the Cloud Router will be created (e.g., `SV`). Also used to derive the `region` (`AMER`, `EMEA`, or `APAC`) for the REGIONAL-scope Network.
 - **`project_uuid`**: `<UUID>` — Optional. Scopes all created resources to the specified Equinix Fabric project.
 - **`fcr_package`**: `<package_code>` — Optional. Cloud Router package tier (default: `STANDARD`).
 - `account_number`: < Equinix account number (integer) > — Required — The billing account number to associate with the router.
@@ -236,4 +238,4 @@ Section content rules:
 - **`fcr_name`**: `<name>` — Optional. Name for the created Cloud Router (default: `fcr`; max 24 characters).
 - **`stream_uuid`**: `<UUID>` — Optional. UUID of an existing stream to attach resources to. If omitted, a new stream is created.
 - **`stream_name`**: `<name>` — Optional. Name for the new stream when no `stream_uuid` is provided (default: `ipwan-stream`; max 24 characters).
-- **`recipient_email_addresses`**: `["<email>", ...]` — Required. List of email addresses to receive the completion report, and used as the `notifications` emails on the Network, Cloud Router, and connection creation calls.
+- **`recipient_email_addresses`**: `["<email>", ...]` — Required. List of email addresses to receive the single completion report email sent in Step 8. The `notifications` block on the Network, Cloud Router, and connection creation calls is left empty so the platform does not send its own per-resource emails.
