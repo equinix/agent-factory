@@ -1,19 +1,19 @@
 ---
 name: ipwan-fcr-network-setup
-description: Creates one Network, one Cloud Router, and one FCR2IPWAN connection between them, attaches all resources to a stream, and notifies on completion.
+description: Creates one Network, one Cloud Router, and one IPWAN connection between them, attaches all resources to a stream, and notifies on completion.
 ---
 
 # IPWAN & Cloud Router Network Setup Agent
 
 ## Overview
 An Equinix agent that provisions a single IPWAN-based network topology with FCR. 
-It creates one Network, one Cloud Router at a user-specified metro location, and one FCR2IPWAN connection linking the Cloud Router to the network. After all resources reach PROVISIONED state the agent attaches them to a stream (creating one if needed) and sends a completion summary via email.
+It creates one Network, one Cloud Router at a user-specified metro location, and one IPWAN connection linking the Cloud Router to the network. After all resources reach PROVISIONED state the agent attaches them to a stream (creating one if needed) and sends a completion summary via email.
 This agent runs once immediately by default unless scheduled by user.
 
 ## Capabilities
 - Create a Fabric Network of type IPWAN scoped to a project
 - Create one Cloud Router at the specified metro location with a configurable package
-- Create one FCR2IPWAN connection between the Cloud Router and the network
+- Create one IPWAN connection between the Cloud Router and the network
 - Poll all resources until they reach PROVISIONED state before proceeding
 - Create a stream automatically if no stream UUID is provided, then attach every provisioned resource to it
 - Send an email completion report summarizing all created resources and their states
@@ -31,7 +31,7 @@ This skill can use the following tools:
 - **`search_networks`**: Searches for existing Fabric Networks by filter.
 - **`create_router`**: Creates a Fabric Cloud Router. Accepts name, location (metro code), package, billing account number, notifications (mandatory), and project UUID.
 - **`search_routers`**: Searches for existing Fabric Cloud Routers by filter to check provisioning state.
-- **`create_connection`**: Creates a connection. Used to create FCR2IPWAN connections between a Cloud Router and a Network. Accepts notifications.
+- **`create_connection`**: Creates a connection. Used to create IPWAN connections between a Cloud Router and a Network. Accepts notifications.
 - **`search_connections`**: Searches for existing connections to verify provisioning state.
 - **`get_stream_details`**: Fetches stream details given a stream UUID.
 - **`create_stream`**: Creates a new stream given a name and project UUID.
@@ -85,10 +85,10 @@ This skill can use the following tools:
 
 4b. If the Cloud Router has not reached PROVISIONED after 30 retries, stop and report a timeout error identifying the Cloud Router that failed.
 
-### Step 5 — Create the FCR2IPWAN Connection
+### Step 5 — Create the IPWAN Connection
 5a. Call `create_connection` with:
 - `name`: `conn-<metro>-ipwan`
-- `type`: `FCR2IPWAN`
+- `type`: `IPWAN_VC`
 - `bandwidth`: `bandwidth_in_mbps`
 - `aSide.accessPoint.type`: `CLOUD_ROUTER`
 - `aSide.accessPoint.router.uuid`: `fcr_uuid`
@@ -174,7 +174,7 @@ Wait 3000 milliseconds after each attachment to allow the platform to register t
 </div>
 
 <div class="section">
-    <h2>FCR2IPWAN Connection</h2>
+    <h2>IPWAN Connection</h2>
     <div class="content">
         <div class="table-container">
             <ul class="table-row table-header">
@@ -208,7 +208,7 @@ Section content rules:
 - **Summary**: State the metro, and overall outcome in 3–5 sentences.
 - **Network**: One row — name, UUID, type (`IPWAN`), scope (`GLOBAL`), and final state.
 - **Fabric Cloud Router**: One row — name, UUID, metro, package, and final state.
-- **FCR2IPWAN Connection**: One row — name, UUID, the Cloud Router UUID it links, bandwidth, and final state.
+- **IPWAN Connection**: One row — name, UUID, the Cloud Router UUID it links, bandwidth, and final state.
 - **Stream Attachment**: Confirm all resources were successfully attached to stream UUID. State whether the stream was newly created or pre-existing.
 - **Next Steps**: 1–3 plain-English recommendations (e.g., configure a BGP routing protocol on the Cloud Router, set up an alert rule on the connection, validate end-to-end connectivity with a PING command).
 
@@ -231,7 +231,7 @@ Section content rules:
 - **`project_uuid`**: `<UUID>` — Optional. Scopes all created resources to the specified Equinix Fabric project.
 - **`fcr_package`**: `<package_code>` — Optional. Cloud Router package tier (default: `STANDARD`).
 - `account_number`: < Equinix account number (integer) > — Required — The billing account number to associate with the router.
-- **`bandwidth_in_mbps`**: `<number>` — Optional. Bandwidth for the FCR2IPWAN connection in Mbps (default: `1000`).
+- **`bandwidth_in_mbps`**: `<number>` — Optional. Bandwidth for the IPWAN connection in Mbps (default: `1000`).
 - **`network_name`**: `<name>` — Optional. Name for the created Network (default: `ipwan-network`; max 24 characters).
 - **`fcr_name`**: `<name>` — Optional. Name for the created Cloud Router (default: `fcr`; max 24 characters).
 - **`stream_uuid`**: `<UUID>` — Optional. UUID of an existing stream to attach resources to. If omitted, a new stream is created.
