@@ -22,13 +22,14 @@ This agent runs once immediately by default unless scheduled by user.
 - A valid Equinix Fabric project UUID must be available.
 - The project must have sufficient quota for one Cloud Router and one connection.
 - The target metro location must be a valid Equinix Fabric metro code.
+- A valid Equinix billing account number must be available to associate with the Cloud Router.
 
 ## Available Tools
 This skill can use the following tools:
 
 - **`create_network`**: Creates a Fabric Network. Accepts name, type (`IPWAN`), scope (`REGIONAL` or `GLOBAL`), location (metro code), and project UUID.
 - **`search_networks`**: Searches for existing Fabric Networks by filter.
-- **`create_router`**: Creates a Fabric Cloud Router. Accepts name, location (metro code), package, notifications, and project UUID.
+- **`create_router`**: Creates a Fabric Cloud Router. Accepts name, location (metro code), package, billing account number, notifications, and project UUID.
 - **`search_routers`**: Searches for existing Fabric Cloud Routers by filter to check provisioning state.
 - **`create_connection`**: Creates a connection. Used to create FCR2IPWAN connections between a Cloud Router and a Network.
 - **`search_connections`**: Searches for existing connections to verify provisioning state.
@@ -43,12 +44,14 @@ This skill can use the following tools:
 ### Step 1 — Validate Inputs
 1a. Confirm that `metro` is a valid metro code. Stop and report an error if it is empty or missing.
 
-1b. Apply naming defaults if the optional name fields are not provided:
+1b. Confirm that `account_number` is provided. Stop and report an error if it is empty or missing.
+
+1c. Apply naming defaults if the optional name fields are not provided:
 - `network_name` → `ipwan-network`
 - `fcr_name` → `fcr`
 - `stream_name` → `ipwan-stream`
 
-1c. Apply numeric defaults if not provided:
+1d. Apply numeric defaults if not provided:
 - `bandwidth_in_mbps` → `1000`
 - `fcr_package` → `STANDARD`
 
@@ -67,6 +70,7 @@ This skill can use the following tools:
 - `name`: `fcr_name`
 - `location.metroCode`: `metro`
 - `package.code`: `fcr_package`
+- `account.accountNumber`: `account_number`
 - `project.projectId`: `project_uuid` (if provided)
 
 3b. Record the returned router UUID as `fcr_uuid`. Stop if creation fails.
@@ -223,6 +227,7 @@ Section content rules:
 - **`metro`**: `<metro_code>` — Required. Equinix metro code where the Network and Cloud Router will be created (e.g., `SV`).
 - **`project_uuid`**: `<UUID>` — Optional. Scopes all created resources to the specified Equinix Fabric project.
 - **`fcr_package`**: `<package_code>` — Optional. Cloud Router package tier (default: `STANDARD`).
+- `account_number`: < Equinix account number (integer) > — Required — The billing account number to associate with the router.
 - **`bandwidth_in_mbps`**: `<number>` — Optional. Bandwidth for the FCR2IPWAN connection in Mbps (default: `1000`).
 - **`network_name`**: `<name>` — Optional. Name for the created Network (default: `ipwan-network`; max 24 characters).
 - **`fcr_name`**: `<name>` — Optional. Name for the created Cloud Router (default: `fcr`; max 24 characters).
