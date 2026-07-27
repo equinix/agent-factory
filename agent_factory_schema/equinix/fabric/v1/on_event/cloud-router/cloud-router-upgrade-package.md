@@ -1,6 +1,7 @@
 ---
 name: cloud-router-upgrade-package
 description: Continuously monitors route usage on a Fabric Cloud Router and upgrades package when needed. 
+categories: ["Deployment & Change Agents"]
 ---
 
 # Cloud Router Monitoring and Upgrade Package Agent

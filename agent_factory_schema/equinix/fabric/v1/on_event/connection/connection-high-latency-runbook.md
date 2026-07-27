@@ -1,6 +1,7 @@
 ---
 name: connection-high-latency-runbook
 description: Diagnoses a metro high-latency alert by scoping the blast radius of affected connections of any type, running a targeted live ping for the subset backed by a Fabric Cloud Router (FCR), checking bandwidth headroom across the full blast radius, correlating isolated vs metro-wide latency, and emailing a diagnostic incident brief with a recommended next-best action.
+categories: ["Deployment & Change Agents"]
 ---
 
 # Connection High Latency Auto-Runbook Agent

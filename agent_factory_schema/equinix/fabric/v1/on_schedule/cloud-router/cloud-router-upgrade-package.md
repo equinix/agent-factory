@@ -1,6 +1,7 @@
 ---
 name: cloud-router-upgrade-package
-description: Upgrades the package of a Fabric Cloud Router. 
+description: Upgrades the package of a Fabric Cloud Router.
+categories: ["Deployment & Change Agents"]
 ---
 
 # Cloud Router Upgrade Package Agent

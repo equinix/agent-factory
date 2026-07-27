@@ -1,6 +1,7 @@
 ---
 name: connection-health-scorecard
 description: Scores and ranks the health of Fabric connections (rate-exceeded packet drops, packet errors, utilization, latency) and emails a prioritized remediation scorecard.
+categories: ["Troubleshooting, Analysis, Usage, Compliance, and Documentation Agents"]
 ---
 
 # Connection Health Scorecard Agent
