@@ -1,6 +1,7 @@
 ---
 name: alert-rule-management
 description: Sets up an alert rule for a connection.
+categories: ["Deployment & Change Agents"]
 ---
 
 # Alert Rule Manager Agent

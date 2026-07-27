@@ -1,6 +1,7 @@
 ---
 name: connection-upgrade-bw-primary
 description: Automatically upgrades the bandwidth of a connection when usage reaches a certain threshold.
+categories: ["Deployment & Change Agents"]
 ---
 
 # Connection Bandwidth Monitoring and Upgrade Agent

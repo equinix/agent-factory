@@ -1,6 +1,7 @@
 ---
 name: connection-pending-state-tracker
 description: Monitors and notifies user for connections stuck in provisioning or deprovisioning states.
+categories: ["Troubleshooting, Analysis, Usage, Compliance, and Documentation Agents"]
 ---
 
 # Connection Pending State Tracker Agent

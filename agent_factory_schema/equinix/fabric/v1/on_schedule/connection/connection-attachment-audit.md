@@ -3,6 +3,7 @@ name: connection-attachment-audit
 description: Scans all Fabric Connections for missing stream attachments, then automatically attaches
   unattached connections (up to 5) to a user-specified stream and emails a report of attached and
   unattached connections on completion.
+categories: ["Troubleshooting, Analysis, Usage, Compliance, and Documentation Agents"]
 ---
 
 # Connection Attachment Audit Agent

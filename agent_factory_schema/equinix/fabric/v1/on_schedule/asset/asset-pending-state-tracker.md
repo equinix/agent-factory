@@ -1,6 +1,7 @@
 ---
 name: asset-pending-state-tracker
 description: Monitors and notifies user for long running Fabric assets in provisioning or deprovisioning states.
+categories: ["Troubleshooting, Analysis, Usage, Compliance, and Documentation Agents"]
 ---
 
 # Asset Pending State Tracker Agent
