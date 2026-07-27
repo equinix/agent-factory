@@ -25,7 +25,7 @@ This agent runs once immediately by default unless scheduled by user.
 
 ## Prerequisites
 - The agent's Fabric API credentials must have permission to create networks, cloud routers, and connections; to create and read streams and stream assets; and to send email notifications.
-- If `project_uuid` is provided, it must reference a project the credentials can access; if omitted, resources are created in the default project for the credentials.
+- `project_uuid` must be provided and must reference a project the credentials can access — `create_connection` requires it, so the Network, Cloud Router, connection, and stream are all scoped to this same project.
 - The project's plan must have unused quota for at least 1 additional Network, 1 additional Cloud Router, and 1 additional connection — insufficient quota causes a 4xx error from `create_network`/`create_router`/`create_connection` and is treated as a creation failure (see Guidelines).
 - `metro` must be a valid, currently-active Equinix Fabric metro code with Cloud Router availability (e.g., `SV`, `DC`, `LD`, `SG`) and must resolve to one of the three supported regions (`AMER`, `EMEA`, `APAC`).
 - `account_number` must be a billing account number the requesting user/credentials are authorized to bill against; an unauthorized or nonexistent account number causes `create_router` to fail.
@@ -55,14 +55,16 @@ This skill can use the following tools:
 
 1b. Confirm that `account_number` is provided. Stop and report an error if it is empty or missing.
 
-1c. Determine `region` from `metro`'s Equinix continental region — one of `AMER`, `EMEA`, or `APAC` (e.g., metros such as SV, DC, NY, CH, DA, MI map to `AMER`; LD, FR, AM, PA, MD, ML, ZH map to `EMEA`; SG, HK, TY, OS, SY map to `APAC`). Stop and report an error if the metro's region cannot be determined.
+1c. Confirm that `project_uuid` is provided. Stop and report an error if it is empty or missing — `create_connection` requires it, so all resources must be scoped to the same project.
 
-1d. Apply naming defaults if the optional name fields are not provided:
+1d. Determine `region` from `metro`'s Equinix continental region — one of `AMER`, `EMEA`, or `APAC` (e.g., metros such as SV, DC, NY, CH, DA, MI map to `AMER`; LD, FR, AM, PA, MD, ML, ZH map to `EMEA`; SG, HK, TY, OS, SY map to `APAC`). Stop and report an error if the metro's region cannot be determined.
+
+1e. Apply naming defaults if the optional name fields are not provided:
 - `network_name` → `ipwan-network`
 - `fcr_name` → `fcr`
 - `stream_name` → `ipwan-stream`
 
-1e. Apply numeric defaults if not provided:
+1f. Apply numeric defaults if not provided:
 - `bandwidth_in_mbps` → `1000`
 - `fcr_package` → `STANDARD`
 
@@ -73,7 +75,7 @@ This skill can use the following tools:
 - `scope`: `REGIONAL`
 - `location.region`: `region`
 - `notifications`: `[{"type": "ALL", "emails": recipient_email_addresses}]`
-- `project.projectId`: `project_uuid` (if provided)
+- `project.projectId`: `project_uuid`
 
 2b. Record the returned network UUID as `network_uuid`. If creation fails, skip Steps 3–8 and go directly to Step 9 to send a completion email reporting the network creation failure and its error detail.
 
@@ -84,7 +86,7 @@ This skill can use the following tools:
 - `package.code`: `fcr_package`
 - `account.accountNumber`: `account_number`
 - `notifications`: `[{"type": "ALL", "emails": recipient_email_addresses}]`
-- `project.projectId`: `project_uuid` (if provided)
+- `project.projectId`: `project_uuid`
 
 3b. Record the returned router UUID as `fcr_uuid`. If creation fails, skip Steps 4–8 and go directly to Step 9 to send a completion email reporting the Network as created, the Cloud Router creation failure, and its error detail.
 
@@ -114,7 +116,7 @@ This skill can use the following tools:
 - `zSide.accessPoint.type`: `NETWORK`
 - `zSide.accessPoint.network.uuid`: `network_uuid`
 - `notifications`: `[{"type": "ALL", "emails": recipient_email_addresses}]`
-- `project.projectId`: `project_uuid` (if provided)
+- `project.projectId`: `project_uuid`
 
 6b. Record the returned connection UUID as `connection_uuid`. If creation fails, skip Steps 7–8 and go directly to Step 9 to send a completion email reporting the Network and Cloud Router as created, the connection creation failure, and its error detail.
 
@@ -131,7 +133,7 @@ This skill can use the following tools:
 
 8b. If `stream_uuid` is not provided, call `create_stream` with:
 - `name`: `stream_name`
-- `project.projectId`: `project_uuid` (if provided)
+- `project.projectId`: `project_uuid`
 
 Record the returned UUID as `stream_uuid`.
 
@@ -255,7 +257,7 @@ Section content rules:
 
 ## Configuration
 - **`metro`**: `<metro_code>` — Required. Equinix metro code where the Cloud Router will be created (e.g., `SV`). Also used to derive the `region` (`AMER`, `EMEA`, or `APAC`) for the REGIONAL-scope Network.
-- **`project_uuid`**: `<UUID>` — Optional. Scopes all created resources to the specified Equinix Fabric project.
+- **`project_uuid`**: `<UUID>` — Required. Scopes the Network, Cloud Router, connection, and stream to the specified Equinix Fabric project (`create_connection` fails without it).
 - **`fcr_package`**: `<package_code>` — Optional. Cloud Router package tier (default: `STANDARD`).
 - `account_number`: < Equinix account number (integer) > — Required — The billing account number to associate with the router.
 - **`bandwidth_in_mbps`**: `<number>` — Optional. Bandwidth for the IPWAN connection in Mbps (default: `1000`).
