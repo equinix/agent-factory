@@ -11,9 +11,9 @@ It creates one Network, one Cloud Router at a user-specified metro location, and
 This agent runs once immediately by default unless scheduled by user.
 
 ## Success Criteria & Termination
-- **Success**: The Network, Cloud Router, and connection are all created and reach `PROVISIONED` state, the Cloud Router and connection are attached to the stream, and a completion email is sent. The run ends after Step 8 — no further action is taken.
-- **Partial failure**: Any one of Steps 1–7 fails or times out. The agent stops attempting further creation/provisioning/attachment work immediately, reports exactly what succeeded and what failed (with the resource and error detail) in the completion email, and ends the run there. It never retries automatically and never leaves the run silently unfinished — every run terminates with exactly one completion email.
-- **Escalation**: The agent does not escalate to a human directly. All success and failure outcomes are surfaced only via the Step 8 completion email to `recipient_email_addresses`; a human must read that email and re-run the agent (after remediating, per Guidelines below) if the outcome was a failure.
+- **Success**: The Network, Cloud Router, and connection are all created and reach a ready state (`ACTIVE` for the Network, `PROVISIONED` for the Cloud Router and connection), the Cloud Router and connection are attached to the stream, and a completion email is sent. The run ends after Step 9 — no further action is taken.
+- **Partial failure**: Any one of Steps 1–8 fails or times out. The agent stops attempting further creation/provisioning/attachment work immediately, reports exactly what succeeded and what failed (with the resource and error detail) in the completion email, and ends the run there. It never retries automatically and never leaves the run silently unfinished — every run terminates with exactly one completion email.
+- **Escalation**: The agent does not escalate to a human directly. All success and failure outcomes are surfaced only via the Step 9 completion email to `recipient_email_addresses`; a human must read that email and re-run the agent (after remediating, per Guidelines below) if the outcome was a failure.
 
 ## Capabilities
 - Create a Fabric Network of type IPWAN scoped to a project
@@ -75,7 +75,7 @@ This skill can use the following tools:
 - `notifications`: `[{"type": "ALL", "emails": recipient_email_addresses}]`
 - `project.projectId`: `project_uuid` (if provided)
 
-2b. Record the returned network UUID as `network_uuid`. If creation fails, skip Steps 3–7 and go directly to Step 8 to send a completion email reporting the network creation failure and its error detail.
+2b. Record the returned network UUID as `network_uuid`. If creation fails, skip Steps 3–8 and go directly to Step 9 to send a completion email reporting the network creation failure and its error detail.
 
 ### Step 3 — Create the Fabric Cloud Router
 3a. Call `create_router` with:
@@ -86,7 +86,7 @@ This skill can use the following tools:
 - `notifications`: `[{"type": "ALL", "emails": recipient_email_addresses}]`
 - `project.projectId`: `project_uuid` (if provided)
 
-3b. Record the returned router UUID as `fcr_uuid`. If creation fails, skip Steps 4–7 and go directly to Step 8 to send a completion email reporting the Network as created, the Cloud Router creation failure, and its error detail.
+3b. Record the returned router UUID as `fcr_uuid`. If creation fails, skip Steps 4–8 and go directly to Step 9 to send a completion email reporting the Network as created, the Cloud Router creation failure, and its error detail.
 
 ### Step 4 — Wait for the Cloud Router to Provision
 4a. Repeat up to 30 times (30 × 15000 ms = 450 seconds / 7.5 minutes maximum) or until the Cloud Router is PROVISIONED:
@@ -94,10 +94,18 @@ This skill can use the following tools:
 - Call `search_routers` filtering by `fcr_uuid` and check `state`.
 - Break early once `state` = `PROVISIONED`.
 
-4b. If the Cloud Router has not reached PROVISIONED after 30 retries (450 seconds), treat this as a provisioning timeout: skip Steps 5–7 and go directly to Step 8 to send a completion email reporting a timeout error identifying the Cloud Router that failed and the 450-second threshold exceeded.
+4b. If the Cloud Router has not reached PROVISIONED after 30 retries (450 seconds), treat this as a provisioning timeout: skip Steps 5–8 and go directly to Step 9 to send a completion email reporting a timeout error identifying the Cloud Router that failed and the 450-second threshold exceeded.
 
-### Step 5 — Create the IPWAN Connection
-5a. Call `create_connection` with:
+### Step 5 — Wait for the Network to Provision
+5a. Repeat up to 30 times (30 × 15000 ms = 450 seconds / 7.5 minutes maximum) or until the Network is ready:
+- Call `wait` for 15000 milliseconds.
+- Call `search_networks` filtering by `network_uuid` and check `state`.
+- Break early once `state` = `ACTIVE` (Networks use `ACTIVE`/`INACTIVE`/`DELETED`, not `PROVISIONED`, as their state values).
+
+5b. If the Network has not reached `ACTIVE` after 30 retries (450 seconds), treat this as a provisioning timeout: skip Steps 6–8 and go directly to Step 9 to send a completion email reporting a timeout error identifying the Network that failed and the 450-second threshold exceeded. Do not attempt to create the connection against a Network that is not yet `ACTIVE` — doing so can produce an opaque internal error from `create_connection` (e.g., `EQ-3142502`) instead of a clear validation error.
+
+### Step 6 — Create the IPWAN Connection
+6a. Call `create_connection` with:
 - `name`: `conn-<metro>-ipwan`
 - `type`: `IPWAN_VC`
 - `bandwidth`: `bandwidth_in_mbps`
@@ -108,33 +116,33 @@ This skill can use the following tools:
 - `notifications`: `[{"type": "ALL", "emails": recipient_email_addresses}]`
 - `project.projectId`: `project_uuid` (if provided)
 
-5b. Record the returned connection UUID as `connection_uuid`. If creation fails, skip Steps 6–7 and go directly to Step 8 to send a completion email reporting the Network and Cloud Router as created, the connection creation failure, and its error detail.
+6b. Record the returned connection UUID as `connection_uuid`. If creation fails, skip Steps 7–8 and go directly to Step 9 to send a completion email reporting the Network and Cloud Router as created, the connection creation failure, and its error detail.
 
-### Step 6 — Wait for the Connection to Provision
-6a. Repeat up to 30 times (30 × 15000 ms = 450 seconds / 7.5 minutes maximum) or until the connection is PROVISIONED:
+### Step 7 — Wait for the Connection to Provision
+7a. Repeat up to 30 times (30 × 15000 ms = 450 seconds / 7.5 minutes maximum) or until the connection is PROVISIONED:
 - Call `wait` for 15000 milliseconds.
 - Call `search_connections` filtering by `connection_uuid` and check `state`.
 - Break early once `state` = `PROVISIONED`.
 
-6b. If the connection has not reached PROVISIONED after 30 retries (450 seconds), treat this as a provisioning timeout: skip Step 7 and go directly to Step 8 to send a completion email reporting a timeout error identifying the connection that failed and the 450-second threshold exceeded.
+7b. If the connection has not reached PROVISIONED after 30 retries (450 seconds), treat this as a provisioning timeout: skip Step 8 and go directly to Step 9 to send a completion email reporting a timeout error identifying the connection that failed and the 450-second threshold exceeded.
 
-### Step 7 — Set Up Stream
-7a. If `stream_uuid` is provided, call `get_stream_details` to verify the stream exists. Stop if it does not.
+### Step 8 — Set Up Stream
+8a. If `stream_uuid` is provided, call `get_stream_details` to verify the stream exists. Stop if it does not.
 
-7b. If `stream_uuid` is not provided, call `create_stream` with:
+8b. If `stream_uuid` is not provided, call `create_stream` with:
 - `name`: `stream_name`
 - `project.projectId`: `project_uuid` (if provided)
 
 Record the returned UUID as `stream_uuid`.
 
-7c. Attach the Cloud Router and connection to the stream in order (Networks cannot be attached to a stream):
+8c. Attach the Cloud Router and connection to the stream in order (Networks cannot be attached to a stream):
 1. Call `attach_stream_asset` with the `fcr_uuid` and `"metrics_enabled": false`.
 2. Call `attach_stream_asset` with the `connection_uuid`.
 
 Wait 3000 milliseconds after each attachment to allow the platform to register the asset.
 
-### Step 8 — Send Completion Notification
-8a. Compose the completion report in memory using the structure below.
+### Step 9 — Send Completion Notification
+9a. Compose the completion report in memory using the structure below.
 
 ```
 <div class="header">
@@ -223,22 +231,23 @@ Section content rules:
 - **Stream Attachment**: If the Cloud Router and connection were successfully attached to stream UUID, confirm this and state whether the stream was newly created or pre-existing (note that the Network is not attached, as networks cannot be attached to a stream). If stream attachment was skipped due to an earlier failure, state that explicitly.
 - **Next Steps**: If the run succeeded, give 1–3 plain-English recommendations (e.g., configure a BGP routing protocol on the Cloud Router, set up an alert rule on the connection, validate end-to-end connectivity with a PING command). If the run failed, state the specific remediation from the Guidelines' Remediation mapping that matches the reported error, and note that the agent must be re-run manually after remediating.
 
-8b. Call `send_email_notification` with:
-- `pdfContent`: the full report from Step 8a.
+9b. Call `send_email_notification` with:
+- `pdfContent`: the full report from Step 9a.
 - `body`: one-paragraph summary of what was created and the final topology state.
 - `pdfTitle`: `FabricIPWAN_<network_uuid>_Setup_Complete`
 - `recipients`: `recipient_email_addresses`
 
 ## Guidelines
 - **Prioritize Clarity**: Confirm all required parameters are present before making any tool call.
-- **Error Handling**: If any creation or provisioning step fails, do not abort silently. Skip the remaining creation, provisioning, and stream-attachment steps, and go directly to Step 8 to send a completion email reporting the failing resource and its error detail.
+- **Error Handling**: If any creation or provisioning step fails, do not abort silently. Skip the remaining creation, provisioning, and stream-attachment steps, and go directly to Step 9 to send a completion email reporting the failing resource and its error detail.
 - **No automatic retry**: The agent never automatically retries a failed creation call or re-runs after a timeout. Remediation and re-running are manual, human-driven steps triggered by reading the completion email.
 - **Remediation mapping** — match the reported error to a specific fix before re-running:
   - Quota exceeded (4xx from `create_network`/`create_router`/`create_connection`): request a quota increase for the project, or delete unused resources, then re-run.
   - Invalid or unsupported `metro`/region, `fcr_package`, or `bandwidth_in_mbps`: correct the configuration value to one valid for the target metro, then re-run.
   - Invalid or unauthorized `account_number`: verify the billing account number and its authorization for the project, then re-run.
   - `notifications` or `recipient_email_addresses` empty/invalid: supply at least one valid recipient email address, then re-run.
-  - Provisioning timeout (450 seconds exceeded) on the Cloud Router or connection: check Equinix Fabric platform status for the metro, then re-run once the resource either provisions on its own or is confirmed stuck and removed.
+  - Provisioning timeout (450 seconds exceeded) on the Network, Cloud Router, or connection: check Equinix Fabric platform status for the metro/region, then re-run once the resource either provisions on its own or is confirmed stuck and removed.
+  - Internal system error from `create_connection` (e.g., `EQ-3142502`) immediately after network creation: this typically means the Network had not yet reached `ACTIVE` when the connection was attempted; confirm the Network's state via `search_networks`, wait for it to become `ACTIVE`, then re-run.
 - **Polling discipline**: Always wait between state polls. Never skip the wait step even if a resource appears fast to provision.
 - **Name length**: Keep all generated names to 24 characters or fewer for platform compatibility.
 - **Token Efficiency**: Carry only UUIDs and state values forward between steps — do not pass full resource payloads downstream.
@@ -254,4 +263,4 @@ Section content rules:
 - **`fcr_name`**: `<name>` — Optional. Name for the created Cloud Router (default: `fcr`; max 24 characters).
 - **`stream_uuid`**: `<UUID>` — Optional. UUID of an existing stream to attach resources to. If omitted, a new stream is created.
 - **`stream_name`**: `<name>` — Optional. Name for the new stream when no `stream_uuid` is provided (default: `ipwan-stream`; max 24 characters).
-- **`recipient_email_addresses`**: `["<email>", ...]` — Required. List of email addresses to receive the completion report email sent in Step 8. Note: the Fabric platform also sends its own separate notification for each of the Network, Cloud Router, and connection creation calls to this same list (its `notifications.emails` field cannot be empty), so recipients will see those in addition to the Step 8 report.
+- **`recipient_email_addresses`**: `["<email>", ...]` — Required. List of email addresses to receive the completion report email sent in Step 9. Note: the Fabric platform also sends its own separate notification for each of the Network, Cloud Router, and connection creation calls to this same list (its `notifications.emails` field cannot be empty), so recipients will see those in addition to the Step 9 report.
