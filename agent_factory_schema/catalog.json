@@ -28,6 +28,12 @@
                     "releaseStatus": "preview"
                 },
                 {
+                    "name": "Connection High Latency Auto-Runbook Agent",
+                    "description": "An Equinix agent that runs an automated diagnostic runbook when a metro latency alert fires.",
+                    "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_event/connection/connection-high-latency-runbook.md",
+                    "releaseStatus": "preview"
+                },
+                {
                     "name": "Connection Packet Drop Monitoring and Upgrade Agent",
                     "description": "An Equinix agent that automatically boosts connection bandwidth to mitigate traffic-induced packet loss.",
                     "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_event/connection/connection-upgrade-bw-on-packet-drop-alert.md",
