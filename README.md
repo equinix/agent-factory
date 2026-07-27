@@ -444,8 +444,8 @@ This agent runs once immediately by default unless scheduled by user.</td>
 - **`create_connection`**: Creates a connection. Used to create one connection per source access point, linking it to the Network. Accepts notifications.
 - **`search_connections`**: Searches for existing connections by filter, used to poll provisioning state via `/operation/equinixStatus`.
 - **`get_stream_details`**: Fetches stream details given a stream UUID.
-- **`create_stream`**: Creates a new stream. Accepts `type` (e.g. `TELEMETRY_STREAM`), name, description, and project UUID.
-- **`attach_stream_asset`**: Attaches an asset to a stream. Accepts `stream_uuid`, `asset_type` (use `connection`), `asset_uuid` (the connection UUID), and a request body `{"metrics_enabled": true}`. Networks cannot be attached to a stream (there is no `network` asset type).
+- **`create_stream`**: Creates a new stream. Accepts a stream type (for example TELEMETRY_STREAM), name, description, and project UUID.
+- **`attach_stream_asset`**: Attaches an asset to a stream. Accepts the stream UUID, an asset type (set it to "connection"), the asset UUID (the connection's UUID), and a request body that enables metrics collection. Networks cannot be attached to a stream — there is no network asset type.
 - **`wait`**: Waits for a specified number of milliseconds before the next action.
 - **`send_email_notification`**: Sends an email notification to a list of recipients with an optional PDF attachment.</td>
 		<td>preview
