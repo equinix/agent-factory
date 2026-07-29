@@ -60,6 +60,12 @@
             "releaseStatus": "preview"
         },
         {
+            "name": "equinix.fabric.cloud_router.dry_run",
+            "description": "Validates a Fabric Cloud Router creation request without provisioning the router.",
+            "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_schedule/cloud-router/cloud-router-dry-run.md",
+            "releaseStatus": "preview"
+        },
+        {
             "name": "equinix.fabric.cloud_router.ping.notify",
             "description": "Ping and Notify Fabric Cloud Router Connection",
             "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_schedule/cloud-router/cloud-router-ping-and-notify.md",

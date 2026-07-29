@@ -1,3 +1,7 @@
+---
+name: cloud-router-dry-run
+description: Validates an Equinix Fabric Cloud Router creation request via dry-run — checking package availability, quota limits, and account permissions — without provisioning the router.
+---
 # Fabric Cloud Router dry-run validator agent
 ## Overview
 Validate a new Equinix Fabric Cloud Router (FCR) request by calling the `create_router` tool with `dry_run: true`. This validates the full request — package availability in the target metro, quota limits, and account permissions — without creating the router. Return the dry-run result to the user. Do not proceed to real creation under any circumstances.

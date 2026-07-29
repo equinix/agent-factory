@@ -73,6 +73,12 @@
                     "releaseStatus": "preview"
                 },
                 {
+                    "name": "Cloud Router Dry-Run Validator Agent",
+                    "description": "An Equinix agent that validates a Fabric Cloud Router creation request via dry-run, checking package availability, quota limits, and account permissions without provisioning the router.",
+                    "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_schedule/cloud-router/cloud-router-dry-run.md",
+                    "releaseStatus": "preview"
+                },
+                {
                     "name": "Cloud Router Management Agent",
                     "description": "An Equinix agent that creates a Fabric Cloud Router with user-specified parameters.",
                     "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_schedule/cloud-router/cloud-router-management.md",
