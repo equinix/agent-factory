@@ -1,6 +1,6 @@
 ---
 name: cloud-router-connection-bgp-health-report
-description: Runs on a schedule, scans eligible connections attached to a required Fabric Cloud Router UUID (or one connection via override), checks BGP session health, waits for natural recovery, attempts at most one soft restart for non-recovered non-storm flaps, and sends one batched incident email report for the entire run.
+description: Runs on a schedule, scans eligible connections attached to a Fabric Cloud Router UUID (or one connection via override), checks BGP session health, waits for natural recovery, attempts at most one soft restart for non-recovered non-storm flaps, and sends one batched incident email report only when unhealthy sessions are found.
 ---
 
 # Cloud Router Connection BGP Session Restart Agent (Scheduled Batch)
@@ -15,7 +15,7 @@ This agent runs once immediately by default unless scheduled by the user. It sen
 ## Capabilities
 - Run on schedule and evaluate BGP health across a scoped set of FCR-attached connections
 - Support optional `connection_uuid` override to target one connection
-- Require `fcr_uuid` and scope discovery to connections attached to that cloud router
+- Support optional `fcr_uuid` to scope discovery to connections attached to that cloud router
 - Discover BGP routing protocols and evaluate both `bgpIpv4` and `bgpIpv6` families when present
 - Skip non-actionable states (still provisioning, administratively disabled, already healthy)
 - Detect flap storms from recent cloud events before remediation
@@ -27,10 +27,10 @@ This agent runs once immediately by default unless scheduled by the user. It sen
 
 ## Prerequisites
 - Target connections must be FCR-backed and have BGP routing protocols.
-- This scheduled agent requires `fcr_uuid` for every run.
-- This scheduled agent also requires scope input:
+- This scheduled agent requires scoped input:
   - either `connection_uuid` (single-connection mode), or
-  - `project_uuid` (FCR-scoped project-scan mode).
+  - `fcr_uuid` (FCR-scoped project-scan mode).
+- In FCR-scoped project-scan mode, project context is taken from the invoking agent (`project.projectId` in the create-agent payload), not from a separate configuration parameter.
 - The routing protocol PATCH API must permit toggling `/bgpIpv4/enabled` or `/bgpIpv6/enabled`.
 - Recipient addresses must be configured for final batch report delivery.
 
@@ -48,10 +48,10 @@ This skill can use the following tools:
 ## Instructions
 
 1. **Resolve scope.**
-   - If `fcr_uuid` is missing, log `No fcr_uuid configured` and stop.
    - If `connection_uuid` is configured, run in single-connection mode for that connection only.
-   - Else if `project_uuid` is configured, run in FCR-scoped project-scan mode and discover only connections attached to that FCR.
-   - If neither `connection_uuid` nor `project_uuid` is configured, log `No connection_uuid override and no project_uuid configured` and stop.
+   - Else if `fcr_uuid` is configured, run in FCR-scoped project-scan mode and discover only connections attached to that FCR.
+   - If neither `connection_uuid` nor `fcr_uuid` is configured, log `No connection_uuid or fcr_uuid configured` and stop.
+   - In FCR-scoped project-scan mode, resolve `project_id` from invocation context (`project.projectId`). If not available, log `No project.projectId in invocation context for FCR scan mode` and stop.
    - Initialize in-memory batch result collections:
      - `connections_scanned`
      - `sessions_evaluated`
@@ -71,9 +71,9 @@ This skill can use the following tools:
    - Single-connection mode:
      - call `search_connections` for `connection_uuid`.
      - if the connection is not found, record one error finding and continue to final report.
-     - if found but `aSide.accessPoint.router.uuid` is not equal to `fcr_uuid`, record `Skipped - Connection Not Attached To Configured FCR` and continue to final report.
+     - if `fcr_uuid` is also configured and `aSide.accessPoint.router.uuid` is not equal to `fcr_uuid`, record `Skipped - Connection Not Attached To Configured FCR` and continue to final report.
    - FCR-scoped project-scan mode: call `search_connections` with payload shaped as below and paginate by updating `pagination.offset` until exhausted (or `max_connections_per_run` is reached):
-     - `{"filter":{"and":[{"property":"/direction","operator":"=","values":["OUTGOING","INTERNAL"]},{"type":"EXACT_FIELD","property":"/project/projectId","operator":"=","values":["<project_uuid>"]},{"property":"/aSide/accessPoint/router/uuid","operator":"=","values":["<fcr_uuid>"]},{"property":"/operation/equinixStatus","operator":"=","values":["REJECTED_ACK","REJECTED","PENDING_DELETE","PROVISIONED","BEING_REPROVISIONED","BEING_DEPROVISIONED","BEING_PROVISIONED","CREATED","ERRORED","PENDING_DEPROVISIONING","APPROVED","ORDERING","PENDING_APPROVAL","NOT_PROVISIONED","DEPROVISIONING","NOT_DEPROVISIONED","PENDING_AUTO_APPROVAL","PROVISIONING","PENDING_BGP_PEERING","PENDING_PROVIDER_VLAN","PENDING_BANDWIDTH_APPROVAL","AUTO_APPROVAL_FAILED","UPDATE_PENDING","MODIFIED","PENDING_PROVIDER_VLAN_ERROR","DRAFT","CANCELLED","PENDING_INTERFACE_CONFIGURATION"]}]},"pagination":{"offset":0,"limit":25},"sort":[{"direction":"ASC","property":"/name"}]}`
+     - `{"filter":{"and":[{"property":"/direction","operator":"=","values":["OUTGOING","INTERNAL"]},{"type":"EXACT_FIELD","property":"/project/projectId","operator":"=","values":["<project_id_from_invocation_context>"]},{"property":"/aSide/accessPoint/router/uuid","operator":"=","values":["<fcr_uuid>"]},{"property":"/operation/equinixStatus","operator":"=","values":["REJECTED_ACK","REJECTED","PENDING_DELETE","PROVISIONED","BEING_REPROVISIONED","BEING_DEPROVISIONED","BEING_PROVISIONED","CREATED","ERRORED","PENDING_DEPROVISIONING","APPROVED","ORDERING","PENDING_APPROVAL","NOT_PROVISIONED","DEPROVISIONING","NOT_DEPROVISIONED","PENDING_AUTO_APPROVAL","PROVISIONING","PENDING_BGP_PEERING","PENDING_PROVIDER_VLAN","PENDING_BANDWIDTH_APPROVAL","AUTO_APPROVAL_FAILED","UPDATE_PENDING","MODIFIED","PENDING_PROVIDER_VLAN_ERROR","DRAFT","CANCELLED","PENDING_INTERFACE_CONFIGURATION"]}]},"pagination":{"offset":0,"limit":25},"sort":[{"direction":"ASC","property":"/name"}]}`
    - In project-scan mode, use exactly this FCR filter path: `/aSide/accessPoint/router/uuid = <fcr_uuid>`.
    - For each discovered connection, increment `connections_scanned`.
 
@@ -116,8 +116,8 @@ This skill can use the following tools:
 6. **Flap-storm check (before wait/restart).**
    - Call `get_timestamps` with `flap_storm_lookback_window` (default `"30m"`).
    - Call `search_cloud_events` with one top-level argument `search_request` containing nested `filter` and `pagination`:
-     - `/subject LIKE /fabric/v4/connections/<connection_uuid>/*`
-     - `/type IN [equinix.fabric.connection_bgpipv4_session.status.*, equinix.fabric.connection_bgpipv6_session.status.*]`
+     - `/subject LIKE /fabric/v4/connections/<connection_uuid>/`
+     - `/type LIKE [equinix.fabric.connection_bgpipv4_session.status.*, equinix.fabric.connection_bgpipv6_session.status.*]`
      - `/time BETWEEN [from, to]`
      - `pagination: {offset: 0, limit: 1}`
    - Read `recent_flap_count` from `pagination.total`.
@@ -127,7 +127,7 @@ This skill can use the following tools:
      - record `recent_flap_count` and threshold
      - skip Step 7/8 for this family and continue.
    - If flap-storm query fails:
-     - record `recent_flap_count = unknown`, note query failure in finding, and continue as if no flap storm detected.
+     - do not retry repeatedly; record `recent_flap_count = unknown`, note query failure in finding, and continue as if no flap storm detected.
 
 7. **Self-heal grace period (wait and observe).**
    - Repeat until `self_heal_grace_period` exhausted (default `3m`):
@@ -168,17 +168,19 @@ This skill can use the following tools:
      - increment `sessions_not_restored`
    - Record final status and attempts used.
 
-10. **Build one batched report for the run.**
-   - Compose a single HTML report that includes:
-     - run timestamp and scope (`connection_uuid` or `project_uuid`) plus `fcr_uuid`
+10. **Build one batched report for the run only when unhealthy BGP is detected.**
+   - If `sessions_unhealthy == 0`, skip report composition and proceed to Step 11 clean-run handling.
+   - If `sessions_unhealthy > 0`, compose a single HTML report that includes:
+     - run timestamp and scope (`connection_uuid` or `fcr_uuid`)
+     - effective project context value used in FCR-scan mode
      - effective config values (thresholds/timers)
      - aggregate counters
      - findings table/list with one row per evaluated family
      - explicit error section (if any)
      - recommendation section by outcome category
-   - Determine run-level status for title:
-     - `IssuesFound` if any unhealthy candidates existed
-     - or `PartialErrors` if there were item-level errors while also having unhealthy candidates
+   - Determine run-level status for `pdfTitle`:
+     - `PartialErrors` if there were item-level errors
+     - otherwise `IssuesFound`
 
 11. **Send one email only when unhealthy BGP is detected.**
    - If `sessions_unhealthy == 0`, log `No unhealthy BGP sessions found in this run; skipping email notification` and stop without calling `send_email_notification`.
@@ -235,7 +237,7 @@ Use the following structure for `pdfContent`:
 ```
 
 Content rules:
-- **Run Summary**: run timestamp, scope type/value, configured `fcr_uuid`, total connections scanned.
+- **Run Summary**: run timestamp, scope type/value (`connection_uuid` or `fcr_uuid`), effective project context value used in scan mode, total connections scanned.
 - **Scope & Configuration**: effective values for `flap_storm_lookback_window`, `flap_storm_threshold`, grace/restart/recovery timers and attempts, `max_connections_per_run`.
 - **Aggregate Results**: all counters from Step 1.
 - **Per-Session Findings**: one entry per evaluated connection+routing protocol+family including baseline status, flap count (or unknown), action, final status, outcome.
@@ -247,7 +249,8 @@ Content rules:
 
 ## Guidelines
 * **Unattended execution:** never ask clarifying questions during run. Use configured scope only.
-* **Mandatory FCR scoping:** `fcr_uuid` is required; in scan mode, only evaluate connections returned by the `/aSide/accessPoint/router/uuid = <fcr_uuid>` filter.
+* **Mandatory scope rule:** at least one of `connection_uuid` or `fcr_uuid` must be configured.
+* **FCR scan project source:** when running in FCR scan mode, derive project scope from invocation context (`project.projectId`), not from a separate `project_uuid` configuration parameter.
 * **Single restart attempt per affected family per run:** never retry toggles within same invocation.
 * **Do not override intent:** never enable sessions with `enabled=false` unless this run itself disabled it in Step 8 for restart.
 * **Do not act on non-`PROVISIONED`:** treat as initialization/provisioning and skip remediation.
@@ -258,9 +261,8 @@ Content rules:
 
 ## Configuration
 * **`recipient_email_addresses`**: <List of email addresses> - Required.
-* **`fcr_uuid`**: <Cloud Router UUID> - Required. All run activity is constrained to this FCR context.
 * **`connection_uuid`**: <Connection UUID> - Optional. If set, runs single-connection mode.
-* **`project_uuid`**: <Project UUID> - Required when `connection_uuid` is not set; used with `fcr_uuid` to discover attached connections.
+* **`fcr_uuid`**: <Cloud Router UUID> - Optional. Required when `connection_uuid` is not set; used to discover attached connections.
 * **`max_connections_per_run`**: <Integer> - Optional safety cap for large projects.
 
 * **`flap_storm_lookback_window`**: <Duration string> - Optional. Default `30m`.
