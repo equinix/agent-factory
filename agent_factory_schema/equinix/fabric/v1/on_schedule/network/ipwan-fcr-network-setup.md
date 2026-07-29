@@ -139,7 +139,7 @@ Record the returned UUID as `stream_uuid`.
 
 8c. Attach the Cloud Router and connection to the stream in order (Networks cannot be attached to a stream):
 1. Call `attach_stream_asset` with the `fcr_uuid` and `"metrics_enabled": false`.
-2. Call `attach_stream_asset` with the `connection_uuid`.
+2. Call `attach_stream_asset` with the `connection_uuid` and `"metrics_enabled": false`.
 
 Wait 3000 milliseconds after each attachment to allow the platform to register the asset.
 
