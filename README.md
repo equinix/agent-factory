@@ -244,15 +244,12 @@ This agent runs once immediately by default unless scheduled by user.</td>
 		<td>preview
 	</tr>
 	<tr>
-		<td><a href="https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_schedule/cloud-router/cloud-router-dry-run.md">Cloud Router Dry-Run Validator Agent<br>[cloud-router-dry-run.md]</a></td>
-		<td>An Equinix agent that validates a Fabric Cloud Router creation request via dry-run — checking package availability, quota limits, and account permissions — without provisioning the router.
-This agent runs once immediately by default unless scheduled by user.</td>
-		<td>- Execute the FCR validation (dry-run) API before creation<br>- Verify package availability in the target metro<br>- Check quota limits (e.g. the 3-Lab-per-org cap)<br>- Validate account permissions<br>- Surface errors early with clear remediation<br>- Never proceed to real creation — this agent is validation-only</td>
-		<td>This skill can use the following tools:
-
-*   **`create_router`**: Call with `dry_run: true` to validate without provisioning. This is the only call this skill makes.
-*   **`list_metro`**: Get available metro locations (used for remediation if metro check fails).
-*   **`get_router_package`**: Get fabric cloud router package details (used for remediation if package check fails).</td>
+		<td><a href="https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_schedule/cloud-router/cloud-router-dry-run.md">Fabric Cloud Router dry-run validator agent<br>[cloud-router-dry-run.md]</a></td>
+		<td>Validate a new Equinix Fabric Cloud Router (FCR) request by calling the `create_router` tool with `dry_run: true`. This validates the full request — package availability in the target metro, quota limits, and account permissions — without creating the router. Return the dry-run result to the user. Do not proceed to real creation under any circumstances.</td>
+		<td>- Execute the FCR validation (dry-run) API before creation<br>- Verify package availability in the target metro<br>- Check quota limits (e.g. the 3-Lab-per-org cap)<br>- Validate account permissions<br>- Surface errors early with clear remediation<br>- Never proceed to real creation — this skill is validation-only</td>
+		<td>- **`create_router`**: Call with `dry_run: true` to validate without provisioning. This is the only call this skill makes.
+- **`list_metro`**: Get available metro locations (used for remediation if metro check fails).
+- **`get_router_package`**: Get fabric cloud router package details (used for remediation if package check fails).</td>
 		<td>preview
 	</tr>
 	<tr>
