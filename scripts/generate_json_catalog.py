@@ -26,9 +26,17 @@ def extract_md_title(content):
     return match.group(1).strip() if match else ""
 
 
+def extract_md_categories(content):
+    match = re.search(r'^categories:\s*(\[.+?\])', content, re.MULTILINE)
+    if not match:
+        return []
+    return json.loads(match.group(1))
+
+
 def main():
     json_schemas = retrieve_json_schemas()
     write_json_schemas_to_catalog_file(json_schemas)
+    write_catalog_sorted_by_categories(json_schemas)
 
 
 def sortedRemoveDuplicates(listOfDict):
@@ -52,10 +60,13 @@ def retrieve_json_schemas():
                 with open(root + "/" + file, "r") as jsonFiles:
                     data = json.load(jsonFiles)
                     for factory in data.get("agentFactories", []):
+                        #  content from json files
                         content = read_md(factory.get("uri", ""))
+                        #  content from md
                         if content:
                             factory["description"] = extract_md_overview(content)
                             factory["name"] = extract_md_title(content)
+                            factory["categories"] = extract_md_categories(content)
                     agentFactories = sortedRemoveDuplicates(data.get("agentFactories", []))
                     newItem = {
                         "url": data["$id"],
@@ -79,6 +90,26 @@ def write_json_schemas_to_catalog_file(json_schemas):
     with open(os.path.dirname(os.path.abspath(__file__)) + "/../agent_factory_schema/catalog.json", "w") as catalogFile:
         catalogFile.write(json.dumps(catalog, indent=4))
         catalogFile.write("\n")
+
+
+def write_catalog_sorted_by_categories(json_schemas):
+    categories = {}
+    for schema in json_schemas:
+        for factory in schema.get("agentFactories", []):
+            for category in factory.get("categories", ["Uncategorized"]):
+                categories.setdefault(category, []).append(factory)
+
+    catalog2 = {
+        "$schema": 'https://json.schemastore.org/schema-catalog',
+        "version": 1,
+        "categories": [
+            {"category": cat, "agentFactories": sorted(factories, key=lambda x: x["name"])}
+            for cat, factories in sorted(categories.items())
+        ]
+    }
+    with open(os.path.dirname(os.path.abspath(__file__)) + "/../agent_factory_schema/catalog2.json", "w") as f:
+        f.write(json.dumps(catalog2, indent=4))
+        f.write("\n")
 
 
 if __name__ == "__main__":

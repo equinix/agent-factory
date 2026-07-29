@@ -1,6 +1,7 @@
 ---
 name: stream-attachment-connection-finder
 description: Go through the list of existing provisioned connections and if they are not attached to a stream and older than a certain amount number of hours, attach them to the default stream by uuid.
+categories: ["Troubleshooting, Analysis, Usage, Compliance, and Documentation Agents"]
 ---
 
 # Stream Attachment Connection Finder Agent

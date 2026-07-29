@@ -3,6 +3,7 @@ name: port-attachment-audit
 description: Scans all Fabric Ports for missing stream attachments, then automatically attaches
   unattached ports (up to 5) to a user-specified stream and emails a report of attached and
   unattached ports on completion.
+categories: ["Troubleshooting, Analysis, Usage, Compliance, and Documentation Agents"]
 ---
 
 # Port Attachment Audit Agent

@@ -1,6 +1,7 @@
 ---
 name: asset-create-daily-logger
 description: Identify connections, ports, cloud routers, networks, internet access, and network edge creation events in past 24 hours; compile creation summary with owners and distribute a daily report.
+categories: ["Troubleshooting, Analysis, Usage, Compliance, and Documentation Agents"]
 ---
 
 # Daily Asset Creation Report Agent
