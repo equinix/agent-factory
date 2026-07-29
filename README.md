@@ -30,6 +30,23 @@ Equinix Fabric Agent Factory Event-Driven Scenarios
 		<th>Release Status</th>
 	</tr>
 	<tr>
+		<td><a href="https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_event/cloud-router/cloud-router-connection-bgp-health-monitor.md">Cloud Router Connection BGP Session Restart Agent<br>[cloud-router-connection-bgp-health-monitor.md]</a></td>
+		<td>An Equinix agent that reacts to a Fabric Cloud Router connection's BGP session status event — a native Equinix Fabric cloud event fired directly by the platform on every BGP session state transition, with no customer-configured alert rule required. Because BGP is a self-healing protocol (a session's finite-state machine continuously retries the connection on its own), this agent first waits and observes for a bounded grace period rather than acting immediately: most transient session drops resolve without any external intervention. Only if the session is still down after that grace period does the agent attempt a single automated remediation step: a soft restart of the affected BGP session (disable, then re-enable). It also rules out two situations where restarting would be wrong or pointless before ever reaching that point — a session still completing its initial provisioning, and a session an operator has intentionally left disabled. It emails an incident report in every case.
+
+This agent performs exactly one remediation tier: a single enabled-flag toggle, attempted only after the grace period. The underlying routing protocol PATCH API supports no other remediation operation — there is no distinct "graceful restart", "peer reset", or "failover to a secondary path" call available to this agent. Because this agent has no visibility into the customer's own router, a restart can only help two narrow cases: the local (Equinix-side) session state is stuck, or the session is waiting out a retry backoff after the underlying issue already cleared — it cannot fix a fault that genuinely lives on the downstream/customer side. If the single restart attempt does not restore the session, the report recommends manual escalation instead of attempting anything further.</td>
+		<td>- Detect a Fabric Cloud Router connection's BGP session status event and read the reported session state directly from the event `type`<br>- Ignore events reporting a healthy (`established`) transition — only act on a session leaving the established state<br>- Wait and observe for a bounded grace period to give BGP's own self-healing retry a chance before considering any restart<br>- Distinguish a genuine post-provisioning session flap from a session still completing initial provisioning<br>- Recognize and skip a session an operator has intentionally administratively disabled, rather than forcing it online<br>- Detect a flap storm (repeated recent session-status events for the same session) and escalate instead of repeatedly auto-restarting an unstable session<br>- Attempt one soft BGP session restart via the routing protocol's `enabled` flag (disable, then re-enable) — only after the session fails to recover on its own<br>- Verify whether the session returns to the `UP` operational state after the restart, within a bounded polling budget<br>- Email an incident report with the action taken (or the reason no action was taken) and the outcome<br>- Log all actions and decisions</td>
+		<td>This skill can use the following tools:
+
+*   **`search_connections`**: Confirms the connection exists and reads its current state before acting.
+*   **`list_routing_protocols`**: Reads the connection's routing protocols, including each BGP address family's `enabled` flag and `operation.operationalStatus`/`operation.sessionStatus`/`operation.opStatusChangedAt` (when present), and the routing protocol's own `state` (e.g. `PROVISIONED`). Used for the initial live check, the self-heal observation poll, and the post-restart recovery poll.
+*   **`get_timestamps`**: Generates `from` and `to` UTC timestamps (ISO 8601) from a duration string (e.g. `"30m"`). Used to build the lookback window for the flap-storm check.
+*   **`search_cloud_events`**: Searches Equinix Fabric cloud events by type, subject, and time range. Takes a single `search_request` argument containing both `filter` and `pagination` (pagination is not a separate top-level argument). The `/subject` filter with the `LIKE` operator only accepts an asset-type-path wildcard one segment deep (e.g. `/fabric/v4/connections/<uuid>/*`) — it cannot be scoped further into a nested resource path. Used to count recent BGP session status events for this connection before remediating, to detect a flap storm.
+*   **`update_routing_protocol`**: Updates a routing protocol via JSON Patch. Limited to toggling `/bgpIpv4/enabled` or `/bgpIpv6/enabled` — this is the only remediation lever this agent has, and is how the soft restart is performed.
+*   **`wait`**: Waits for a specified number of milliseconds. Used during the self-heal grace period, between disabling and re-enabling the session, and between post-restart recovery-verification poll attempts.
+*   **`send_email_notification`**: Sends the incident report as an email with an attached PDF.</td>
+		<td>preview
+	</tr>
+	<tr>
 		<td><a href="https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_event/cloud-router/cloud-router-upgrade-package.md">Cloud Router Monitoring and Upgrade Package Agent<br>[cloud-router-upgrade-package.md]</a></td>
 		<td>An Equinix agent that continuously monitors route usage on a Fabric Cloud Router. 
 When the route usage exceeds a predefined threshold, the agent automatically upgrades the Fabric Cloud Router package to ensure sufficient capacity and uninterrupted operation.
@@ -241,6 +258,25 @@ This agent runs once immediately by default unless scheduled by user.</td>
 * **`create_routing_protocol`**: Creates a routing protocol for the target connection.
 * **`wait`**: Waits for a specified number of milliseconds before the next action.
 * **`send_email_notification`**: Sends an email notification.</td>
+		<td>preview
+	</tr>
+	<tr>
+		<td><a href="https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_schedule/cloud-router/cloud-router-connection-bgp-health-report.md">Cloud Router Connection BGP Session Restart Agent (Scheduled Batch)<br>[cloud-router-connection-bgp-health-report.md]</a></td>
+		<td>An Equinix scheduled agent that evaluates BGP session health for Fabric Cloud Router (FCR)-backed connections and performs narrow, bounded remediation only when needed. Unlike the event-driven variant, this run is initiated by schedule and discovers unhealthy sessions from live API state rather than from a triggering BGP status event.
+
+Because BGP is a self-healing protocol, the agent first waits and observes for a bounded grace period before attempting any restart. It attempts exactly one remediation tier per affected session/address family: a soft restart by toggling the routing protocol address family's `enabled` flag (disable, then re-enable). It never retries this toggle in the same run, never performs peer reset, and never performs path failover.
+
+This agent runs once immediately by default unless scheduled by the user. It sends at most one batched email report at the end of a run, and only when at least one unhealthy BGP session is detected.</td>
+		<td>- Run on schedule and evaluate BGP health across a scoped set of FCR-attached connections<br>- Support optional `connection_uuid` override to target one connection<br>- Require `fcr_uuid` and scope discovery to connections attached to that cloud router<br>- Discover BGP routing protocols and evaluate both `bgpIpv4` and `bgpIpv6` families when present<br>- Skip non-actionable states (still provisioning, administratively disabled, already healthy)<br>- Detect flap storms from recent cloud events before remediation<br>- Wait for natural BGP recovery (self-heal grace period) before restarting<br>- Attempt one soft restart (disable/enable) per affected session family at most<br>- Verify post-restart recovery within bounded polling limits<br>- Aggregate all findings/actions into one batched incident email with PDF attachment when unhealthy sessions are detected<br>- Log all per-item decisions, actions, and errors</td>
+		<td>This skill can use the following tools:
+
+* **`search_connections`**: Finds connections by UUID or by scoped filter and reads connection state.
+* **`list_routing_protocols`**: Reads routing protocols for a connection, including `state`, family `enabled`, and operation status fields.
+* **`get_timestamps`**: Produces UTC `from`/`to` timestamps from a duration (for flap-storm lookback).
+* **`search_cloud_events`**: Counts recent BGP status events for a connection to detect flap storms.
+* **`update_routing_protocol`**: Applies JSON Patch operations for `enabled` toggles.
+* **`wait`**: Sleeps between checks and restart phases.
+* **`send_email_notification`**: Sends exactly one batched email report with attached PDF.</td>
 		<td>preview
 	</tr>
 	<tr>
