@@ -1,7 +1,7 @@
 ---
 name: stream-attachment-port-finder
 description: Go through the list of existing provisioned ports and if they are not attached to a stream and older than a certain amount number of hours, attach them to the default stream by uuid.
-categories: ["Troubleshooting, Analysis, Usage, Compliance, and Documentation Agents"]
+categories: ["Monitor & Report Agents"]
 ---
 
 # Stream Attachment Port Finder Agent
