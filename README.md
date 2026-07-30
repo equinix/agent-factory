@@ -249,6 +249,20 @@ unattached. This agent runs once immediately by default unless scheduled by user
 		<td>preview
 	</tr>
 	<tr>
+		<td><a href="https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_schedule/cloud-router/cloud-router-bgp-bfd-enabler.md">Cloud Router BGP BFD Enabler Agent<br>[cloud-router-bgp-bfd-enabler.md]</a></td>
+		<td>An Equinix agent that scans all provisioned Fabric Cloud Router (FCR) connections with bandwidth greater than 10 Gbps, identifies those with an existing BGP routing protocol where BFD is not yet enabled, enables BFD on each qualifying BGP session, and sends a completion email report summarizing all changes made.
+This agent runs once immediately by default unless scheduled by user.</td>
+		<td>- Search for all provisioned FCR connections with bandwidth greater than 10 Gbps<br>- Inspect each connection's routing protocols and identify BGP sessions with BFD disabled<br>- Enable BFD on qualifying BGP routing protocols using a configurable interval<br>- Skip connections where BFD is already enabled or where no BGP routing protocol exists<br>- Send a completion email report listing updated, skipped, and failed connections</td>
+		<td>This skill can use the following tools:
+
+* **`search_connections`**: Searches for provisioned FCR connections filtered by bandwidth.
+* **`list_routing_protocols`**: Lists all routing protocols for a given connection.
+* **`replace_routing_protocol`**: Replaces a routing protocol configuration; used here to enable BFD on an existing BGP session while preserving all other fields.
+* **`wait`**: Waits for a specified number of milliseconds before the next action.
+* **`send_email_notification`**: Sends an email notification with an optional PDF report.</td>
+		<td>preview
+	</tr>
+	<tr>
 		<td><a href="https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_schedule/cloud-router/cloud-router-bgp-boostrap-provisioner.md">Cloud Router BGP Bootstrap Provisioner Agent<br>[cloud-router-bgp-boostrap-provisioner.md]</a></td>
 		<td>An Equinix agent targets a connection that is pending interface configuration, sets up a standard BGP routing protocol, and sends a completion notification with final execution outcome.
 The agent is set up BGP routing protocol using ASN, BFD enabled, or MD5 authentication.
