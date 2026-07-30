@@ -40,7 +40,7 @@ This agent runs once immediately by default unless scheduled by user.
      "pagination": { "offset": 0, "limit": 100 }
    }
    ```
-   - For each connection, capture the **provisioned bandwidth** from the connection details. This is needed to compute utilization against capacity.
+   - For each connection, capture the **A-side port UUID**, **Z-side port UUID**, **A-side metro code**, **Z-side metro code**, and **provisioned bandwidth** from the connection details. This is needed to compute utilization against capacity.
 
 3. **Collect metrics per connection** over the `from`–`to` window from Step 1 using `search_metrics`, applying the `BETWEEN` operator on `/time`. Issue one call per resource; if a response is too large to process, split the metric names across multiple calls (e.g. drops in one call, utilization in another). Collect:
    - **Rate-exceeded packet drops** (connection): `equinix.fabric.connection.packets_dropped_rx_aside_rateexceeded.count`, `equinix.fabric.connection.packets_dropped_rx_zside_rateexceeded.count`, `equinix.fabric.connection.packets_dropped_tx_aside_rateexceeded.count`, `equinix.fabric.connection.packets_dropped_tx_zside_rateexceeded.count`. These count only packets dropped because traffic exceeded the connection's provisioned rate limit — this is **not** general packet loss.
@@ -156,7 +156,7 @@ This agent runs once immediately by default unless scheduled by user.
 This skill can use the following tools:
 
 *   **`get_timestamps`**: Generates `from` and `to` UTC timestamps (ISO 8601) from a duration string (e.g. `"24h"`, `"7d"`).
-*   **`search_connections`**: Enumerates PROVISIONED connections and resolves connection context (A/Z ports, provisioned bandwidth).
+*   **`search_connections`**: Enumerates PROVISIONED connections and resolves connection context (A/Z ports, A/Z metro codes, provisioned bandwidth).
 *   **`search_metrics`**: Retrieves connection and port over the scoring window.
 *   **`get_metric`**: Retrieves a single metric series when a targeted lookup is needed.
 *   **`send_email_notification`**: Sends an email. Pass `pdfTitle` and `pdfContent` (plain text) to auto-generate and attach a PDF.
