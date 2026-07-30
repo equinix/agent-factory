@@ -40,7 +40,7 @@ This skill can use the following tools:
 * **`search_connections`**: Finds connections by UUID or by scoped filter and reads connection state.
 * **`list_routing_protocols`**: Reads routing protocols for a connection, including `state`, family `enabled`, and operation status fields.
 * **`get_timestamps`**: Produces UTC `from`/`to` timestamps from a duration (for flap-storm lookback).
-* **`search_cloud_events`**: Counts recent BGP status events for a connection to detect flap storms.
+* **`search_cloud_events`**: Counts recent BGP status events for a connection to detect flap storms. Use `/equinixproject` with `=` plus `/subject` with `IN` and `/type` with `LIKE`.
 * **`update_routing_protocol`**: Applies JSON Patch operations for `enabled` toggles.
 * **`wait`**: Sleeps between checks and restart phases.
 * **`send_email_notification`**: Sends exactly one batched email report with attached PDF.
@@ -115,19 +115,30 @@ This skill can use the following tools:
 
 6. **Flap-storm check (before wait/restart).**
    - Call `get_timestamps` with `flap_storm_lookback_window` (default `"30m"`).
-   - Call `search_cloud_events` with one top-level argument `search_request` containing nested `filter` and `pagination`:
-     - `/subject LIKE /fabric/v4/connections/<connection_uuid>/`
-     - `/type LIKE [equinix.fabric.connection_bgpipv4_session.status.*, equinix.fabric.connection_bgpipv6_session.status.*]`
+   - Build a `search_cloud_events` request using this working filter pattern:
+     - `/equinixproject = [<project_id_from_invocation_context>]`
+     - `/subject IN ["/fabric/v4/connections/<connection_uuid>*"]`
+     - `/type LIKE ["equinix.fabric.connection_bgpipv4_*", "equinix.fabric.connection_bgpipv6_*"]`
      - `/time BETWEEN [from, to]`
-     - `pagination: {offset: 0, limit: 1}`
-   - Read `recent_flap_count` from `pagination.total`.
-   - If `recent_flap_count >= flap_storm_threshold` (default `3`):
+     - `pagination: {offset: 0, limit: 20}`
+   - Read `recent_bgp_event_count` from `pagination.total`.
+   - Run a second `search_cloud_events` query for idle transitions only:
+     - `/equinixproject = [<project_id_from_invocation_context>]`
+     - `/subject IN ["/fabric/v4/connections/<connection_uuid>*"]`
+     - `/type LIKE ["equinix.fabric.connection_bgpipv4_session.status.idle", "equinix.fabric.connection_bgpipv6_session.status.idle"]`
+     - `/time BETWEEN [from, to]`
+     - `pagination: {offset: 0, limit: 20}`
+   - Read `recent_idle_event_count` from `pagination.total`.
+   - Treat as flap storm if either condition is true:
+     - `recent_idle_event_count >= idle_flap_threshold` (default `3`) **or**
+     - `recent_bgp_event_count >= flap_storm_threshold` (default `3`)
+   - If flap storm is detected:
      - outcome `Skipped - Flap Storm`
      - increment `sessions_skipped_flap_storm`
-     - record `recent_flap_count` and threshold
+     - record `recent_idle_event_count`, `idle_flap_threshold`, `recent_bgp_event_count`, and `flap_storm_threshold`
      - skip Step 7/8 for this family and continue.
-   - If flap-storm query fails:
-     - do not retry repeatedly; record `recent_flap_count = unknown`, note query failure in finding, and continue as if no flap storm detected.
+   - If either flap-storm query fails:
+     - do not retry repeatedly; record the missing count(s) as `unknown`, note query failure in finding, and continue as if no flap storm was detected.
 
 7. **Self-heal grace period (wait and observe).**
    - Repeat until `self_heal_grace_period` exhausted (default `3m`):
@@ -144,15 +155,15 @@ This skill can use the following tools:
    - Increment `sessions_restart_attempted`.
    - Call `update_routing_protocol` with:
      - `operations = [{"op":"replace","path":"/<family>/enabled","value":false}]`
-   - Call `wait` for `restart_toggle_wait_ms` (default `5000`).
+   - Call `wait` for `restart_toggle_wait_ms` (default `20000`).
    - Settle check before re-enable:
      - poll up to `restart_reenable_max_wait_ms` (default `20000`):
        - call `list_routing_protocols`, read `routing_protocol_state`
        - stop early if `routing_protocol_state == PROVISIONED`
        - otherwise `wait` `restart_reenable_poll_interval_ms` (default `5000`) and continue
-   - Call `update_routing_protocol` to re-enable:
+   - Call `update_routing_protocol` to re-enable **only after** `routing_protocol_state == PROVISIONED`.
      - `operations = [{"op":"replace","path":"/<family>/enabled","value":true}]`
-   - If settle budget exhausted before re-enable, still attempt re-enable and note that protocol was not yet fully settled.
+   - If settle budget is exhausted and the routing protocol is still not `PROVISIONED`, do not call re-enable. Record `Skipped - Re-enable Blocked By Transient State` as an item-level error and continue to the next family.
    - If any mandatory tool call in this step fails, record error for this family and continue next family (do not abort entire batch).
 
 9. **Recovery verification (bounded).**
@@ -178,6 +189,7 @@ This skill can use the following tools:
      - findings table/list with one row per evaluated family
      - explicit error section (if any)
      - recommendation section by outcome category
+   - Before sending, HTML-escape all dynamic values inserted into `pdfContent` (at minimum `&`, `<`, `>`, `"`, `'`) to prevent malformed entity errors.
    - Determine run-level status for `pdfTitle`:
      - `PartialErrors` if there were item-level errors
      - otherwise `IssuesFound`
@@ -242,6 +254,7 @@ Content rules:
 - **Aggregate Results**: all counters from Step 1.
 - **Per-Session Findings**: one entry per evaluated connection+routing protocol+family including baseline status, flap count (or unknown), action, final status, outcome.
 - **Failures / Tool Errors**: all per-item errors with context.
+- **HTML safety**: escape all dynamic values before interpolation into the HTML template (for example `&` -> `&amp;`, `<` -> `&lt;`, `>` -> `&gt;`, `"` -> `&quot;`, `'` -> `&#39;`).
 - **Recommended Next Steps**:
   - Any `Not Restored`: recommend manual escalation to network engineering for peer-side reset or manual failover if secondary path exists; state this agent does not perform either.
   - Any `Skipped - Flap Storm`: recommend escalation instead of repeated automation.
@@ -255,8 +268,10 @@ Content rules:
 * **Do not override intent:** never enable sessions with `enabled=false` unless this run itself disabled it in Step 8 for restart.
 * **Do not act on non-`PROVISIONED`:** treat as initialization/provisioning and skip remediation.
 * **Flap-storm check is protective, not exact:** event indexing latency can affect window counts.
+* **Cloud-events filter operators:** use `/subject` with `IN` and `/type` with `LIKE` for flap checks; include `/equinixproject = <project_id>` in the filter.
 * **Error handling is item-scoped in batch mode:** record and continue for other items; do not abort entire scan due to one failure.
 * **One email only when needed:** send one batched notification only if at least one unhealthy BGP session was detected in the run.
+* **Transient-state safety:** never re-enable while routing protocol state is non-`PROVISIONED`; record and skip that family if settle timeout is reached.
 * **Token efficiency:** only call tools when required parameters are known; avoid redundant polls outside bounded loops.
 
 ## Configuration
@@ -267,11 +282,12 @@ Content rules:
 
 * **`flap_storm_lookback_window`**: <Duration string> - Optional. Default `30m`.
 * **`flap_storm_threshold`**: <Integer> - Optional. Default `3`.
+* **`idle_flap_threshold`**: <Integer> - Optional. Default `3`. If idle events reach this count in the lookback window, treat as flap storm.
 
 * **`self_heal_grace_period`**: <Duration string> - Optional. Default `3m`.
 * **`self_heal_poll_interval_ms`**: <Integer> - Optional. Default `20000`.
 
-* **`restart_toggle_wait_ms`**: <Integer> - Optional. Default `5000`.
+* **`restart_toggle_wait_ms`**: <Integer> - Optional. Default `20000`.
 * **`restart_reenable_max_wait_ms`**: <Integer> - Optional. Default `20000`.
 * **`restart_reenable_poll_interval_ms`**: <Integer> - Optional. Default `5000`.
 
