@@ -61,7 +61,7 @@
         },
         {
             "name": "equinix.fabric.cloud_router.bgp.bfd.enable",
-            "description": "Enable BFD on BGP routing protocols for FCR connections with bandwidth above 10 Gbps.",
+            "description": "Enable BFD on BGP routing protocols for FCR connections exceeding a configurable bandwidth threshold (default 1 Gbps).",
             "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_schedule/cloud-router/cloud-router-bgp-bfd-enabler.md",
             "releaseStatus": "preview",
             "categories": [
