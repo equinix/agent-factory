@@ -38,9 +38,9 @@ None
 }
 ```
 
-If the `search_ports` call fails, retry up to 5 attempts total. Before each retry, `wait` briefly, then call `search_ports` again with the same payload. Stop retrying as soon as a call succeeds, and continue to Step 2 with that result. Only give up after all 5 attempts fail.
+If the `search_ports` call fails, retry up to 5 attempts total. Before each retry, call `wait` with `waitInMilliseconds` = `3000` (3 seconds), then call `search_ports` again with the same payload. Stop retrying as soon as a call succeeds, and continue to Step 2 with that result. Only give up after all 5 attempts fail.
 
-2. Call `get_timestamps` with `duration` = `"24h"` to obtain the current UTC time. Use the `to` field as `now` (ignore `from`). For each port from Step 1, calculate `minutes_in_pending_state` = `now` − `changeLog.updatedDateTime`, in minutes. Keep only ports where `minutes_in_pending_state > pending_state_timeout_minutes` (default: 30 minutes). If no ports exceed the threshold, stop here and do not send an email. Otherwise, proceed to Step 3 with the filtered list.
+2. Call `get_timestamps` with `duration` = `"24h"` to obtain the current UTC time. If the call fails, do not send an email and stop processing. If the call succeeds, use the `to` field as `now` (ignore `from`). For each port from Step 1, calculate `minutes_in_pending_state` = `now` − `changeLog.updatedDateTime`, in minutes. Keep only ports where `minutes_in_pending_state > pending_state_timeout_minutes` (default: 30 minutes). If no ports exceed the threshold, stop here and do not send an email. Otherwise, proceed to Step 3 with the filtered list.
 
 3. Structure the report below:
 ### Section content
@@ -97,8 +97,10 @@ If the `search_ports` call fails, retry up to 5 attempts total. Before each retr
 - Plain English, no API jargon, no raw event strings, full UUIDs always. Insight over data — derive meaning from patterns, not raw counts.
 - Only send email if ports exceed the timeout threshold. Do not send email if all ports are within acceptable time.
 - If `search_ports` fails on all 5 attempts, do not send email.
+- If `get_timestamps` fails at any point, do not send email — a reliable current time is essential for accurate time-in-state calculation.
 - Always use the configured `pending_state_timeout_minutes` value; if not provided, default to 30 minutes.
 - Never estimate or hardcode the current time — always call `get_timestamps` to get an authoritative `now` before calculating time-in-state.
+- Wait 3 seconds between `search_ports` retry attempts to avoid overwhelming the API with rapid retries.
 
 ## Configuration
 - **`recipient_email_addresses`**: Required. List of email addresses to receive the report.
