@@ -72,7 +72,7 @@ A failure on one connection must not stop processing of the remaining connection
 
 ```
 <div class="header">
-    <h1>BGP BFD Enabler — Completion Report</h1>
+    <h1>BGP BFD Enabler Completion Report</h1>
 </div>
 
 <div class="section">
