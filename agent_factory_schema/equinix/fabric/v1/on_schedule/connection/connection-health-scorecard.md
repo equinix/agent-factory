@@ -1,6 +1,6 @@
 ---
 name: connection-health-scorecard
-description: Scores and ranks the health of Fabric connections (rate-exceeded packet drops, packet errors, utilization, latency) and emails a prioritized remediation scorecard.
+description: Scores and ranks the health of Fabric connections (rate-exceeded packet drops, packet errors, utilization) and emails a prioritized remediation scorecard.
 categories: ["Troubleshooting, Analysis, Usage, Compliance, and Documentation Agents"]
 ---
 
@@ -17,7 +17,7 @@ This agent runs once immediately by default unless scheduled by user.
 
 ## Capabilities
 - Enumerate all PROVISIONED connections (or a user-specified subset)
-- Collect rate-exceeded packet drops, packet errors, utilization, and latency metrics per connection
+- Collect rate-exceeded packet drops, packet errors, and utilization metrics per connection
 - Compute a reproducible composite 0–100 health score per connection
 - Rank all connections and flag any with an obvious measurable issue
 - Recommend concrete remediation for every flagged connection
@@ -40,22 +40,20 @@ This agent runs once immediately by default unless scheduled by user.
      "pagination": { "offset": 0, "limit": 100 }
    }
    ```
-   - For each connection, capture the **A-side port UUID**, **Z-side port UUID**, **A-side metro code**, **Z-side metro code**, and **provisioned bandwidth** from the connection details. These are needed to compute utilization against capacity and to look up inter-metro latency.
+   - For each connection, capture the **provisioned bandwidth** from the connection details. This is needed to compute utilization against capacity.
 
 3. **Collect metrics per connection** over the `from`–`to` window from Step 1 using `search_metrics`, applying the `BETWEEN` operator on `/time`. Issue one call per resource; if a response is too large to process, split the metric names across multiple calls (e.g. drops in one call, utilization in another). Collect:
    - **Rate-exceeded packet drops** (connection): `equinix.fabric.connection.packets_dropped_rx_aside_rateexceeded.count`, `equinix.fabric.connection.packets_dropped_rx_zside_rateexceeded.count`, `equinix.fabric.connection.packets_dropped_tx_aside_rateexceeded.count`, `equinix.fabric.connection.packets_dropped_tx_zside_rateexceeded.count`. These count only packets dropped because traffic exceeded the connection's provisioned rate limit — this is **not** general packet loss.
-   - **Utilization** (connection): `equinix.fabric.connection.bandwidth_rx.usage` and `equinix.fabric.connection.bandwidth_tx.usage` — use the inbound/outbound usage values against the provisioned bandwidth.
+   - **Utilization** (connection): `equinix.fabric.connection.bandwidth_rx.usage_summary` and `equinix.fabric.connection.bandwidth_tx.usage_summary` — use the inbound/outbound p95 usage values against the provisioned bandwidth. Always apply the /interval=PT0M filter.
    - **Packet errors** (port): `equinix.fabric.port.packets_erred_rx.count` and `equinix.fabric.port.packets_erred_tx.count` on the A-side and Z-side ports. (A connection-level error metric is not exposed — see Guidelines.)
-   - **Latency** (metro): `equinix.fabric.metro.<aside>_<zside>.latency` using the A/Z metro codes. Retrieve the **time series over the window** (not just the latest point) so the current value can be compared against this connection's own prior values.
 
 4. **Compute a composite 0–100 health score** per connection as a weighted blend of normalized sub-scores, where 100 = perfect health. Use the following default weights so results are reproducible:
 
-   | Component | Weight | Scoring rule                                                                                                                                                                                                                                                                |
-   |-----------|--------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-   | Rate-exceeded packet drops | 30%    | Zero drops over the window = 100. Score degrades as the drop count rises; any non-zero drops cap the sub-score below 100.                                                                                                                                                   |
-   | Packet errors | 20%    | Zero errors (A+Z ports) = 100. Score degrades as the error count rises.                                                                                                                                                                                                     |
-   | Utilization headroom | 30%    | 100 when rx/tx usage is well below capacity. Sub-score degrades as usage approaches capacity and drops sharply once usage exceeds **80%** of provisioned bandwidth.                                                                                                         |
-   | Latency | 20%    | Compare the current (latest) latency value to this connection's own prior values over the window. Steady or improving latency scores near 100; a sustained rise above the connection's earlier baseline lowers the sub-score. Do **not** compare against other connections. |
+   | Component | Weight | Scoring rule                                                                                                                                                                |
+   |-----------|--------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+   | Rate-exceeded packet drops | 35%    | Zero drops over the window = 100. Score degrades as the drop count rises; any non-zero drops cap the sub-score below 100.                                                   |
+   | Packet errors | 35%    | Zero errors (A+Z ports) = 100. Score degrades as the error count rises.                                                                                                     |
+   | Utilization headroom | 30%    | 100 when rx/tx usage is well below capacity. Sub-score degrades as p95 usage approaches capacity and drops sharply once p95 usage exceeds **80%** of provisioned bandwidth. |
 
    - The composite score is the weighted average of the available sub-scores.
    - **Missing components**: if a component has no data, exclude it and renormalize the remaining weights so they sum to 100%. Note any excluded component in the report.
@@ -64,13 +62,11 @@ This agent runs once immediately by default unless scheduled by user.
    - Any non-zero rate-exceeded packet drops, OR
    - Any non-zero packet errors (A or Z port), OR
    - rx/tx usage above 80% of provisioned bandwidth, OR
-   - A sustained rise in latency above the connection's own earlier baseline.
    A connection with none of these is not flagged.
 
 6. **Recommend remediation for every flagged connection** (from Step 5), tied to the issue(s) present:
    - Rate-exceeded drops or utilization above 80% → recommend a bandwidth upgrade / review of the rate limit.
    - Packet errors → recommend physical-layer / port investigation (cabling, optics) on the affected port.
-   - Rising latency → recommend a path / metro review.
 
 7. **Build the report.** Structure it using the HTML report block below. Populate the Summary, the ranked scorecard table, the flagged-connections section, and the remediation section. Skip any component or section that has no data — no placeholder text.
 
@@ -160,13 +156,13 @@ This agent runs once immediately by default unless scheduled by user.
 This skill can use the following tools:
 
 *   **`get_timestamps`**: Generates `from` and `to` UTC timestamps (ISO 8601) from a duration string (e.g. `"24h"`, `"7d"`).
-*   **`search_connections`**: Enumerates PROVISIONED connections and resolves connection context (A/Z ports, A/Z metro codes, provisioned bandwidth).
-*   **`search_metrics`**: Retrieves connection, port, and metro metrics over the scoring window.
+*   **`search_connections`**: Enumerates PROVISIONED connections and resolves connection context (A/Z ports, provisioned bandwidth).
+*   **`search_metrics`**: Retrieves connection and port over the scoring window.
 *   **`get_metric`**: Retrieves a single metric series when a targeted lookup is needed.
 *   **`send_email_notification`**: Sends an email. Pass `pdfTitle` and `pdfContent` (plain text) to auto-generate and attach a PDF.
 
 ## Guidelines
-*   **Single-resource metric calls**: each `search_metrics` / `get_metric` call can request metrics for only one resource (one connection, port, or metro). Execute one call per resource. If a response is too large to process, split the request by metric name across multiple calls.
+*   **Single-resource metric calls**: each `search_metrics` / `get_metric` call can request metrics for only one resource (one connection or port). Execute one call per resource. If a response is too large to process, split the request by metric name across multiple calls.
 *   **Default window**: if `scoring_window` is not provided, score over the last 24 hours.
 *   **Reproducibility**: apply the default weights and normalization rules in Step 4 exactly so the same inputs always produce the same score. State the weights and any renormalization (excluded components) in the report.
 *   **Connection-level error metric is not exposed**: derive packet errors from the A-side and Z-side port metrics.
