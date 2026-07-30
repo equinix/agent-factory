@@ -223,6 +223,15 @@
                     ]
                 },
                 {
+                    "name": "Port Pending State Tracker Agent",
+                    "description": "This agent analyzes the lifecycle state of Equinix Fabric ports to identify those stuck in provisioning or deprovisioning state longer than a configured threshold, proactively notifying the user when action may be needed.",
+                    "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_schedule/port/port-pending-state-tracker.md",
+                    "releaseStatus": "preview",
+                    "categories": [
+                        "Troubleshooting, Analysis, Usage, Compliance, and Documentation Agents"
+                    ]
+                },
+                {
                     "name": "Project Lifecycle Activities Insight Report Agent",
                     "description": "This reporting agent analyzes all cloud events within a given Equinix Fabric project over a specified time range and delivers a plain-English operational health summary report via email. This agent runs once immediately by default unless scheduled by user.",
                     "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_schedule/asset/project-lifecycle-activities.md",
