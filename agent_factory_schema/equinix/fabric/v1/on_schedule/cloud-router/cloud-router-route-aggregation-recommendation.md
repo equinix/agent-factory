@@ -1,7 +1,7 @@
 ---
 name: cloud-router-route-aggregation-recommendation
 description: Recommends aggregate (supernet) routes for a Fabric Cloud Router based on its active route table entries.
-categories: ["Design & Planning Agents"]
+categories: ["Design & Plan Agents"]
 ---
 
 # Cloud Router Route Aggregation Recommendation Agent
