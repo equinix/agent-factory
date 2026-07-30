@@ -1,7 +1,7 @@
 ---
 name: port-pending-state-tracker
 description: Monitors and notifies user for ports stuck in provisioning or deprovisioning states.
-categories: ["Troubleshooting, Analysis, Usage, Compliance, and Documentation Agents"]
+categories: ["Monitor & Report Agents""]
 ---
 
 # Port Pending State Tracker Agent
