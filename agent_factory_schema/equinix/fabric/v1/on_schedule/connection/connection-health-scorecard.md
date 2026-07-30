@@ -14,8 +14,8 @@ This agent runs once immediately by default unless scheduled by user.
 
 ## Success Criteria & Termination
 - **Success**: at least one in-scope connection was scored on at least one component and the scorecard email was accepted by `send_email_notification`. The run ends after Step 8.
-- **Partial success (still a completed run)**: some connections were scored and others were skipped — no metric data over the window, a metric call failed, or the `max_connections` cap was reached before they were reached. The agent scores what it can, states in the Summary the exact count scored, the count skipped with the reason, and the count not attempted because of the cap, sends the email, and ends. A connection that could not be measured is **excluded from the ranking, never scored 0** — absence of data is not evidence of poor health.
-- **No report sent**: the run ends with no email in exactly three cases, and in each one the agent states the reason in the conversation and stops: (1) `get_timestamps` failed, so no scoring window could be established (Step 1c); (2) the connection set resolves to zero PROVISIONED connections, none of the supplied `connection_uuids` resolved, or `search_connections` failed on the first page (Step 2); (3) zero connections produced any usable metric data, so no score can be computed (Step 3). An empty or all-blank scorecard is never emailed.
+- **Partial success (still a completed run)**: some connections were scored and others were skipped — no metric data over the window, or a metric call failed. The agent scores what it can, states in the Summary the exact count scored and the count skipped with the reason, sends the email, and ends. A connection that could not be measured is **excluded from the ranking, never scored 0** — absence of data is not evidence of poor health.
+- **No report sent**: the run ends with no email in exactly four cases, and in each one the agent states the reason in the conversation and stops: (1) `recipient_email_addresses` is empty or contains no syntactically valid address (Step 1a); (2) `get_timestamps` failed, so no scoring window could be established (Step 1b); (3) the connection set resolves to zero PROVISIONED connections, none of the supplied `connection_uuids` resolved, or `search_connections` failed on the first page (Step 2); (4) zero connections produced any usable metric data, so no score can be computed (Step 3). An empty or all-blank scorecard is never emailed.
 
 ## Prerequisites
 - Connections should be in `PROVISIONED` state to be scored.
@@ -37,12 +37,11 @@ This agent runs once immediately by default unless scheduled by user.
 
 1. **Validate configuration and determine the metrics time window.**
    1a. Confirm `recipient_email_addresses` is present and contains at least one syntactically valid email address. If not, stop immediately — before any other tool call — and inform the user: "No valid recipient email address was provided. The scorecard cannot be delivered." Do not collect metrics for a report that cannot be sent.
-   1b. Resolve `max_connections` per the rules in Step 2. Substituting a default is never a reason to stop.
-   1c. Convert `scoring_window` to a duration string (e.g. 24 hours -> "24h", 30 days -> "30d"; default to `"24h"`), then call `get_timestamps` with that duration. Save the returned `from` and `to` (ISO 8601 UTC) as the reporting window — use them with the `BETWEEN` operator on `/time` for every `search_metrics` / `get_metric` call in Step 3, and record the window length in hours as `window_hours` for Step 4. If `get_timestamps` fails, stop and report that the scoring window could not be established; no window means no comparable metric query.
+   1b. Convert `scoring_window` to a duration string (e.g. 24 hours -> "24h", 30 days -> "30d"; default to `"24h"`), then call `get_timestamps` with that duration. Save the returned `from` and `to` (ISO 8601 UTC) as the reporting window — use them with the `BETWEEN` operator on `/time` for every `search_metrics` / `get_metric` call in Step 3, and record the window length in hours as `window_hours` for Step 4. If `get_timestamps` fails, stop and report that the scoring window could not be established; no window means no comparable metric query.
 
 2. **Resolve the connection set.**
-   - If `connection_uuids` is provided, score only those connections.
-   - Otherwise, call `search_connections` for all PROVISIONED connections. Follow the request payload below (paginate with increasing `offset` until all results are retrieved, maximum 25):
+   - If `connection_uuids` is provided, score those connections and only those. Attempt metric collection for **every** UUID in the list — do not truncate, sample, or re-order it. A UUID that returns no metric data is reported as skipped with its reason, not silently dropped.
+   - Otherwise, call `search_connections` for all PROVISIONED connections. Follow the request payload below (paginate with increasing `offset` until all results are retrieved):
    ```json
    {
      "filter": {
@@ -54,11 +53,7 @@ This agent runs once immediately by default unless scheduled by user.
    }
    ```
    - For each connection, capture the **connection UUID**, **name**, **provisioned bandwidth in Mbps**, and the **A-side and Z-side port UUIDs** (`/aSide/accessPoint/port/uuid`, `/zSide/accessPoint/port/uuid`) where present. Provisioned bandwidth is the denominator for utilization in Step 4; the port UUIDs are the resources for the packet-error metrics in Step 3. A side whose access point is not a port — a Cloud Router, a Network, or a virtual device — has no port UUID: record it as "no port" and collect errors from the other side only. **Never invent or infer a port UUID.**
-   - **Bound the run.** If the resolved set is larger than `max_connections` (default 15), score only the first `max_connections` and carry the remainder forward as **not attempted**:
-     - When the set came from a PROVISIONED search: sort by provisioned bandwidth descending, ties broken by connection UUID ascending, and take the first `max_connections`. Bandwidth is the only impact proxy available before a metric call is spent, and it is already in hand from this step — when only part of the estate can be inspected, inspect the largest circuits first.
-     - When the set came from an explicit `connection_uuids` list: take the first `max_connections` **in the order given**. An explicit list already expresses the operator's own priority; do not re-sort it.
-     - Both rules are deterministic, so two runs on the same estate select the same connections. Never sample randomly and never rotate the selection — that would break the reproducibility guarantee in the Guidelines.
-     - `max_connections` must be an integer between 1 and 100. Treat a larger value as 100, and a missing, zero, negative, or non-integer value as the default 25. Note either substitution in the Summary.
+   - Every connection in the resolved set is scored. Do not sample, truncate, or re-order the set — the scorecard covers the whole set it resolved, so two runs on the same estate score the same connections.
    - **Failure handling for this step:**
      - If `search_connections` fails or times out on the first page, stop. Report in the conversation that the connection inventory could not be retrieved, including the error detail. Send no email — there is nothing to score.
      - If it fails on a later page, do not retry. Treat the pages already retrieved as the full scope, and state in the Summary that the inventory is incomplete ("pages 1 through k of an unknown total were retrieved") before any count, so a partial inventory is never mistaken for the whole estate.
@@ -137,7 +132,7 @@ This agent runs once immediately by default unless scheduled by user.
 7. **Build the report.** Structure it using the HTML report block below. Populate the Summary, the ranked scorecard table, the flagged-connections section, and the remediation section. Skip any component or section that has no data — no placeholder text.
 
    ### Section content
-   - **Summary**: 4–6 sentences — the scoring window; the number of connections in scope; the number scored; the number skipped for no metric data, with the most common reason; the number **not attempted because the `max_connections` cap was reached**, naming the selection rule applied ("the N highest-bandwidth connections were scored"); average and median score; the number flagged; and the headline finding. If any connection was not attempted, state that a follow-up run with `connection_uuids` set to the remaining connections will score them. If the connection inventory itself was incomplete (see the failure handling in Step 2), say so before any counts, so no reader mistakes a partial inventory for the whole estate.
+   - **Summary**: 4–6 sentences — the scoring window; the number of connections in scope; the number scored; the number skipped for no metric data, with the most common reason; average and median score; the number flagged; and the headline finding. If the connection inventory itself was incomplete (see the failure handling in Step 2), say so before any counts, so no reader mistakes a partial inventory for the whole estate.
    - **Scorecard Ranking**: every scored connection ranked by score. Include rank, connection name, UUID, composite score, and the top deductions (which components cost the most points).
    - **Flagged Connections**: every connection with at least one measurable issue (per Step 5), with the primary issue. Include only if any exist.
    - **Recommended Remediation**: every flagged connection with its recommended action. Include only if any exist.
@@ -216,7 +211,7 @@ This agent runs once immediately by default unless scheduled by user.
 8. **Send the report** with `send_email_notification` to `recipient_email_addresses`. Follow the email rules below:
    - `recipients`: `recipient_email_addresses`.
    - `pdfContent`: the full report text from Step 7.
-   - `body`: one-paragraph summary of overall connection health, the coverage actually achieved (scored / skipped / not-attempted counts), and the headline finding.
+   - `body`: one-paragraph summary of overall connection health, the coverage actually achieved (scored / skipped counts), and the headline finding.
    - `pdfTitle`: `ConnectionHealthScorecard`
 
    Also present the Summary and the ranked scorecard directly in the conversation, so the run's output survives even if delivery fails. If `send_email_notification` fails, do not retry: print the full Step 7 report text and the delivery error into the conversation, state that the report was produced but not delivered, and end the run.
@@ -254,4 +249,3 @@ This skill can use the following tools:
 * **`recipient_email_addresses`**: < A list of email addresses > - Required. List of email addresses to receive the scorecard report.
 * **`connection_uuids`**: < A list of connection UUIDs > - Optional. Restrict scoring to a specific subset of connections. If omitted, all PROVISIONED connections are scored.
 * **`scoring_window`**: < A time range, e.g. "last 24 hours" > - Optional. The window over which metrics are collected. Default last 24 hours.
-* **`max_connections`**: < An integer between 1 and 100 > - Optional. Default `15`. Hard ceiling on how many connections a single run collects metrics for and scores. Each scored connection costs one to two connection-level metric calls plus its share of per-port calls, so this is what keeps a run bounded on a large estate. When the estate is larger than this cap, the highest-bandwidth connections are scored first and the remainder are disclosed as not attempted in the Summary. Values above 100 are treated as 100.
