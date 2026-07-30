@@ -179,9 +179,11 @@ This skill can use the following tools:
      - increment `sessions_not_restored`
    - Record final status and attempts used.
 
-10. **Build one batched report for the run only when unhealthy BGP is detected.**
-   - If `sessions_unhealthy == 0`, skip report composition and proceed to Step 11 clean-run handling.
-   - If `sessions_unhealthy > 0`, compose a single HTML report that includes:
+10. **Build one batched report for the run when notification criteria are met.**
+   - If `sessions_unhealthy > 0`, compose a single HTML report.
+   - If `sessions_unhealthy == 0` and `send_email_on_clean_run == true`, compose a clean-run summary report.
+   - If `sessions_unhealthy == 0` and `send_email_on_clean_run != true`, skip report composition and proceed to Step 11 clean-run handling.
+   - Report content must include:
      - run timestamp and scope (`connection_uuid` or `fcr_uuid`)
      - effective project context value used in FCR-scan mode
      - effective config values (thresholds/timers)
@@ -189,17 +191,20 @@ This skill can use the following tools:
      - findings table/list with one row per evaluated family
      - explicit error section (if any)
      - recommendation section by outcome category
-   - Before sending, HTML-escape all dynamic values inserted into `pdfContent` (at minimum `&`, `<`, `>`, `"`, `'`) to prevent malformed entity errors.
    - Determine run-level status for `pdfTitle`:
      - `PartialErrors` if there were item-level errors
-     - otherwise `IssuesFound`
+     - `IssuesFound` if `sessions_unhealthy > 0` and no item-level errors
+     - `NoIssues` if `sessions_unhealthy == 0` and clean-run notification is enabled
+   - Before sending, HTML-escape all dynamic values inserted into `pdfContent` (at minimum `&`, `<`, `>`, `"`, `'`) to prevent malformed entity errors.
 
-11. **Send one email only when unhealthy BGP is detected.**
-   - If `sessions_unhealthy == 0`, log `No unhealthy BGP sessions found in this run; skipping email notification` and stop without calling `send_email_notification`.
-   - If `sessions_unhealthy > 0`, call `send_email_notification` once with `recipient_email_addresses`:
-     - `pdfContent`: full batch report
+11. **Send one email based on notification policy.**
+   - If `sessions_unhealthy > 0`, call `send_email_notification` once with `recipient_email_addresses`.
+   - If `sessions_unhealthy == 0` and `send_email_on_clean_run == true`, call `send_email_notification` once with `recipient_email_addresses` using the clean-run summary report.
+   - If `sessions_unhealthy == 0` and `send_email_on_clean_run != true`, log `No unhealthy BGP sessions found in this run; skipping email notification` and stop without calling `send_email_notification`.
+   - For sent emails:
+     - `pdfContent`: composed batch report
      - `body`: one-paragraph digest with key counters and top recommendation
-     - `pdfTitle`: `BgpSessionDailyBatch_<scope>_<YYYYMMDD>_<IssuesFound|PartialErrors>`
+     - `pdfTitle`: `BgpSessionDailyBatch_<scope>_<YYYYMMDD>_<IssuesFound|PartialErrors|NoIssues>`
    - After send attempt (or clean-run skip), run is complete. Take no further action until next schedule trigger.
 
 ## Batch Report HTML Template
@@ -279,6 +284,7 @@ Content rules:
 * **`connection_uuid`**: <Connection UUID> - Optional. If set, runs single-connection mode.
 * **`fcr_uuid`**: <Cloud Router UUID> - Optional. Required when `connection_uuid` is not set; used to discover attached connections.
 * **`max_connections_per_run`**: <Integer> - Optional safety cap for large projects.
+* **`send_email_on_clean_run`**: <Boolean> - Optional. Default `false`. If `true`, send a batch summary email even when no unhealthy BGP sessions are detected.
 
 * **`flap_storm_lookback_window`**: <Duration string> - Optional. Default `30m`.
 * **`flap_storm_threshold`**: <Integer> - Optional. Default `3`.
