@@ -1,6 +1,7 @@
 ---
 name: ipwan-fcr-network-setup
 description: Creates one Network, one Cloud Router, and one IPWAN connection between them, attaches the Cloud Router and connection to a stream, and notifies on completion.
+categories: ["Deploy & Change Agents"]
 ---
 
 # IPWAN & Cloud Router Network Setup Agent

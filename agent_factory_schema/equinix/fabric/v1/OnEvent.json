@@ -29,7 +29,7 @@
             "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_event/connection/connection-upgrade-bw-primary.md",
             "releaseStatus": "preview",
             "categories": [
-                "Deployment & Change Agents"
+                "Deploy & Change Agents"
             ]
         },
         {
@@ -38,7 +38,7 @@
             "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_event/connection/connection-upgrade-bw-secondary.md",
             "releaseStatus": "preview",
             "categories": [
-                "Deployment & Change Agents"
+                "Deploy & Change Agents"
             ]
         },
         {
@@ -47,7 +47,7 @@
             "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_event/connection/connection-upgrade-bw-on-packet-drop-alert.md",
             "releaseStatus": "preview",
             "categories": [
-                "Deployment & Change Agents"
+                "Deploy & Change Agents"
             ]
         },
         {
@@ -56,7 +56,7 @@
             "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_event/cloud-router/cloud-router-upgrade-package.md",
             "releaseStatus": "preview",
             "categories": [
-                "Deployment & Change Agents"
+                "Deploy & Change Agents"
             ]
         },
         {
@@ -65,7 +65,7 @@
             "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_event/connection/connection-metro-latency-notify.md",
             "releaseStatus": "preview",
             "categories": [
-                "Deployment & Change Agents"
+                "Deploy & Change Agents"
             ]
         },
         {
@@ -74,7 +74,7 @@
             "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_event/connection/connection-high-latency-runbook.md",
             "releaseStatus": "preview",
             "categories": [
-                "Deployment & Change Agents"
+                "Deploy & Change Agents"
             ]
         }
     ]
