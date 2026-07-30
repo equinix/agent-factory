@@ -89,6 +89,11 @@ This skill can use the following tools:
 
 4. **Per-routing-protocol, per-family evaluation.**
    - For each selected BGP protocol, evaluate each present family block (`bgpIpv4`, `bgpIpv6`) independently.
+   - **A healthy family's status must never influence a sibling family's classification on the same
+     connection or routing protocol.** `bgpIpv4` and `bgpIpv6` on the same connection are two separate
+     findings with two separate outcomes — record each one using only that family's own latest observed
+     `operationalStatus`. A connection with one healthy family and one unhealthy family is **not** a healthy
+     connection; it produces one healthy finding and one unhealthy finding.
    - Capture baseline fields for finding:
      - `connection_uuid`
      - `routing_protocol_uuid`
@@ -182,10 +187,24 @@ This skill can use the following tools:
      - increment `sessions_not_restored`
    - Record final status and attempts used.
 
-10. **Build one batched report for the run when notification criteria are met.**
+10. **Reconciliation check (mandatory, before any report is composed).**
+   - Re-list every family evaluation recorded in `findings[]` alongside its last-observed `operationalStatus`
+     (the most recent value read for that family across Steps 4, 7, and 9).
+   - Verify each recorded outcome is consistent with that status: a finding cannot be
+     `Skipped - Already Healthy` or `Self-Recovered - No Action Taken` unless its last-observed
+     `operationalStatus` for that specific family was actually `UP` at the point that outcome was recorded.
+     An outcome of `Restored` requires Step 9 to have observed `UP`; anything else that never observed `UP`
+     must be `Not Restored`, a skip category, or an error — never healthy.
+   - Verify the aggregate counters sum correctly: `sessions_unhealthy + sessions_skipped_provisioning +
+     sessions_skipped_disabled + sessions_skipped_healthy + sessions_skipped_flap_storm +
+     sessions_self_recovered + sessions_restored + sessions_not_restored == sessions_evaluated`.
+   - If any finding or counter is inconsistent, correct it now — do not proceed to report composition with an
+     uncorrected finding or counter.
+
+11. **Build one batched report for the run when notification criteria are met.**
    - If `sessions_unhealthy > 0`, compose a single HTML report.
    - If `sessions_unhealthy == 0` and `send_email_on_clean_run == true`, compose a clean-run summary report.
-   - If `sessions_unhealthy == 0` and `send_email_on_clean_run != true`, skip report composition and proceed to Step 11 clean-run handling.
+   - If `sessions_unhealthy == 0` and `send_email_on_clean_run != true`, skip report composition and proceed to Step 12 clean-run handling.
    - Report content must include:
      - run timestamp and scope (`connection_uuid` or `fcr_uuid`)
      - configured `project_id`
@@ -200,7 +219,7 @@ This skill can use the following tools:
      - `NoIssues` if `sessions_unhealthy == 0` and clean-run notification is enabled
    - Before sending, HTML-escape all dynamic values inserted into `pdfContent` (at minimum `&`, `<`, `>`, `"`, `'`) to prevent malformed entity errors.
 
-11. **Send one email based on notification policy.**
+12. **Send one email based on notification policy.**
    - If `sessions_unhealthy > 0`, call `send_email_notification` once with `recipient_email_addresses`.
    - If `sessions_unhealthy == 0` and `send_email_on_clean_run == true`, call `send_email_notification` once with `recipient_email_addresses` using the clean-run summary report.
    - If `sessions_unhealthy == 0` and `send_email_on_clean_run != true`, log `No unhealthy BGP sessions found in this run; skipping email notification` and stop without calling `send_email_notification`.
@@ -226,7 +245,7 @@ Use the following structure for `pdfContent`:
 </div>
 
 <div class="section">
-  <h2>Scope & Configuration</h2>
+  <h2>Scope &amp; Configuration</h2>
   <div class="content">
   </div>
 </div>
