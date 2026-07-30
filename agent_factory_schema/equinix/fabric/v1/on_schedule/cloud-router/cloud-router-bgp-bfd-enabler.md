@@ -7,11 +7,11 @@ categories: ["Deployment & Change Agents"]
 # Cloud Router BGP BFD Enabler Agent
 
 ## Overview
-An Equinix agent that scans all provisioned Fabric Cloud Router (FCR) connections with bandwidth greater than 10 Gbps, identifies those with an existing BGP routing protocol where BFD is not yet enabled, enables BFD on each qualifying BGP session, and sends a completion email report summarizing all changes made.
+An Equinix agent that scans all provisioned Fabric Cloud Router (FCR) connections with bandwidth greater than 5 Gbps, identifies those with an existing BGP routing protocol where BFD is not yet enabled, enables BFD on each qualifying BGP session, and sends a completion email report summarizing all changes made.
 This agent runs once immediately by default unless scheduled by user.
 
 ## Capabilities
-- Search for all provisioned FCR connections with bandwidth greater than 10 Gbps
+- Search for all provisioned FCR connections with bandwidth greater than 5 Gbps
 - Inspect each connection's routing protocols and identify BGP sessions with BFD disabled
 - Enable BFD on qualifying BGP routing protocols using a configurable interval
 - Skip connections where BFD is already enabled or where no BGP routing protocol exists
@@ -19,7 +19,7 @@ This agent runs once immediately by default unless scheduled by user.
 
 ## Prerequisites
 - IAM role required: `Fabric Cloud Router Manager` or `Fabric Manager`
-- Target connections must be FCR-backed and in `PROVISIONED` state with bandwidth > 10 Gbps
+- Target connections must be FCR-backed and in `PROVISIONED` state with bandwidth > 5 Gbps
 - Each qualifying connection must have at least one BGP routing protocol
 
 ## Available Tools
@@ -34,9 +34,9 @@ This skill can use the following tools:
 ## Instructions
 
 ### Step 1 — Find Qualifying FCR Connections
-Call `search_connections` to retrieve all provisioned FCR connections with bandwidth greater than 10 Gbps (10000 Mbps).
+Call `search_connections` to retrieve all provisioned FCR connections with bandwidth greater than 5 Gbps (5000 Mbps).
 
-- Filter: `state` = `PROVISIONED`, connection type must be FCR-backed (`aSide` device type `XF_ROUTER`), `bandwidth` > `10000`.
+- Filter: `/operation/equinixStatus` = `PROVISIONED`, connection type must be FCR-backed (`aSide` device type `CLOUD_ROUTER`), `bandwidth` > `5000`.
 - Paginate until all results are collected.
 - If no connections are found, skip to Step 4 and report that no qualifying connections were found.
 
