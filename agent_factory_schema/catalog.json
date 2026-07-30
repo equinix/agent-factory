@@ -100,6 +100,15 @@
                     ]
                 },
                 {
+                    "name": "Cloud Router BGP BFD Enabler Agent",
+                    "description": "An Equinix agent that scans provisioned FCR connections with bandwidth above 10 Gbps, enables BFD on BGP routing protocols where it is not yet active, and emails a completion report.",
+                    "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_schedule/cloud-router/cloud-router-bgp-bfd-enabler.md",
+                    "releaseStatus": "preview",
+                    "categories": [
+                        "Deployment & Change Agents"
+                    ]
+                },
+                {
                     "name": "Cloud Router BGP Bootstrap Provisioner Agent",
                     "description": "An Equinix agent targets a connection that is pending interface configuration, sets up a standard BGP routing protocol, and sends a completion notification with final execution outcome.",
                     "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_schedule/cloud-router/cloud-router-bgp-boostrap-provisioner.md",
