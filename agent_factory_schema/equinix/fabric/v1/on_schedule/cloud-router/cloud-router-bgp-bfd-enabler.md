@@ -1,17 +1,17 @@
 ---
 name: cloud-router-bgp-bfd-enabler
-description: Finds FCR connections with bandwidth above 10 Gbps that have a BGP routing protocol and enables BFD on those BGP sessions, then sends a completion report.
+description: Finds FCR connections whose bandwidth exceeds a configurable threshold (default 1 Gbps) that have a BGP routing protocol and enables BFD on those BGP sessions, then sends a completion report.
 categories: ["Deployment & Change Agents"]
 ---
 
 # Cloud Router BGP BFD Enabler Agent
 
 ## Overview
-An Equinix agent that scans all provisioned Fabric Cloud Router (FCR) connections with bandwidth greater than 5 Gbps, identifies those with an existing BGP routing protocol where BFD is not yet enabled, enables BFD on each qualifying BGP session, and sends a completion email report summarizing all changes made.
+An Equinix agent that scans all provisioned Fabric Cloud Router (FCR) connections whose bandwidth exceeds a configurable threshold (default 1 Gbps), identifies those with an existing BGP routing protocol where BFD is not yet enabled, enables BFD on each qualifying BGP session, and sends a completion email report summarizing all changes made.
 This agent runs once immediately by default unless scheduled by user.
 
 ## Capabilities
-- Search for all provisioned FCR connections with bandwidth greater than 5 Gbps
+- Search for all provisioned FCR connections exceeding a configurable bandwidth threshold (default 1 Gbps)
 - Inspect each connection's routing protocols and identify BGP sessions with BFD disabled
 - Enable BFD on qualifying BGP routing protocols using a configurable interval
 - Skip connections where BFD is already enabled or where no BGP routing protocol exists
@@ -19,7 +19,7 @@ This agent runs once immediately by default unless scheduled by user.
 
 ## Prerequisites
 - IAM role required: `Fabric Cloud Router Manager` or `Fabric Manager`
-- Target connections must be FCR-backed and in `PROVISIONED` state with bandwidth > 5 Gbps
+- Target connections must be FCR-backed and in `PROVISIONED` state with bandwidth exceeding `min_bandwidth_mbps`
 - Each qualifying connection must have at least one BGP routing protocol
 
 ## Available Tools
@@ -34,9 +34,9 @@ This skill can use the following tools:
 ## Instructions
 
 ### Step 1 — Find Qualifying FCR Connections
-Call `search_connections` to retrieve all provisioned FCR connections with bandwidth greater than 5 Gbps (5000 Mbps).
+Call `search_connections` to retrieve all provisioned FCR connections with bandwidth greater than `min_bandwidth_mbps` (default `1000` Mbps).
 
-- Filter: `/operation/equinixStatus` = `PROVISIONED`, connection type must be FCR-backed (`aSide` device type `CLOUD_ROUTER`), `bandwidth` > `5000`.
+- Filter: `/operation/equinixStatus` = `PROVISIONED`, connection type must be FCR-backed (`aSide` device type `CLOUD_ROUTER`), `bandwidth` > `min_bandwidth_mbps`.
 - Paginate until all results are collected.
 - If no connections are found, skip to Step 4 and report that no qualifying connections were found.
 
@@ -118,5 +118,6 @@ Section content rules for `pdfContent`:
 - **Prioritize Clarity**: Report all outcomes — updated, skipped, and failed — in the completion email.
 
 ## Configuration
+* **`min_bandwidth_mbps`**: <integer> — Optional — Minimum connection bandwidth in Mbps to qualify for BFD enablement; default `1000` (1 Gbps).
 * **`bfd_interval`**: <integer> — Optional — BFD detection interval in milliseconds; default `100`.
 * **`recipient_email_addresses`**: <list of email addresses> — Required — Recipients for the completion report.

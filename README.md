@@ -250,9 +250,9 @@ unattached. This agent runs once immediately by default unless scheduled by user
 	</tr>
 	<tr>
 		<td><a href="https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_schedule/cloud-router/cloud-router-bgp-bfd-enabler.md">Cloud Router BGP BFD Enabler Agent<br>[cloud-router-bgp-bfd-enabler.md]</a></td>
-		<td>An Equinix agent that scans all provisioned Fabric Cloud Router (FCR) connections with bandwidth greater than 10 Gbps, identifies those with an existing BGP routing protocol where BFD is not yet enabled, enables BFD on each qualifying BGP session, and sends a completion email report summarizing all changes made.
+		<td>An Equinix agent that scans all provisioned Fabric Cloud Router (FCR) connections whose bandwidth exceeds a configurable threshold (default 1 Gbps), identifies those with an existing BGP routing protocol where BFD is not yet enabled, enables BFD on each qualifying BGP session, and sends a completion email report summarizing all changes made.
 This agent runs once immediately by default unless scheduled by user.</td>
-		<td>- Search for all provisioned FCR connections with bandwidth greater than 10 Gbps<br>- Inspect each connection's routing protocols and identify BGP sessions with BFD disabled<br>- Enable BFD on qualifying BGP routing protocols using a configurable interval<br>- Skip connections where BFD is already enabled or where no BGP routing protocol exists<br>- Send a completion email report listing updated, skipped, and failed connections</td>
+		<td>- Search for all provisioned FCR connections exceeding a configurable bandwidth threshold (default 1 Gbps)<br>- Inspect each connection's routing protocols and identify BGP sessions with BFD disabled<br>- Enable BFD on qualifying BGP routing protocols using a configurable interval<br>- Skip connections where BFD is already enabled or where no BGP routing protocol exists<br>- Send a completion email report listing updated, skipped, and failed connections</td>
 		<td>This skill can use the following tools:
 
 * **`search_connections`**: Searches for provisioned FCR connections filtered by bandwidth.
