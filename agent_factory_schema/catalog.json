@@ -217,6 +217,12 @@
                     ]
                 },
                 {
+                    "name": "Fabric Cloud Router dry-run validator agent",
+                    "description": "Validate a new Equinix Fabric Cloud Router (FCR) request by calling the `create_router` tool with `dry_run: true`. This validates the full request \u2014 package availability in the target metro, quota limits, and account permissions \u2014 without creating the router. Return the dry-run result to the user. Do not proceed to real creation under any circumstances.",
+                    "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_schedule/cloud-router/cloud-router-dry-run.md",
+                    "releaseStatus": "preview"
+                },
+                {
                     "name": "Port Attachment Audit Agent",
                     "description": "An Equinix agent that audits all Fabric Ports to detect ports that are unmonitored then attachs them to stream.",
                     "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_schedule/port/port-attachment-audit.md",
