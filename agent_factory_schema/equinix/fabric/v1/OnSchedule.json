@@ -123,6 +123,12 @@
             ]
         },
         {
+            "name": "equinix.fabric.cloud_router.connection.bgp.health.report",
+            "description": "Scans BGP health for connections attached to a specific cloud router, attempts bounded self-heal/remediation, and sends one batched report only when unhealthy sessions are found.",
+            "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_schedule/cloud-router/cloud-router-connection-bgp-health-report.md",
+            "releaseStatus": "preview"
+        },
+        {
             "name": "equinix.fabric.connection.health.scorecard",
             "description": "Create Connection Health Scorecard",
             "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_schedule/connection/connection-health-scorecard.md",

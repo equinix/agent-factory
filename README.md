@@ -264,6 +264,29 @@ This agent runs once immediately by default unless scheduled by user.</td>
 		<td>preview
 	</tr>
 	<tr>
+		<td><a href="https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_schedule/cloud-router/cloud-router-connection-bgp-health-report.md">Cloud Router Connection BGP Session Restart Agent (Scheduled Batch)<br>[cloud-router-connection-bgp-health-report.md]</a></td>
+		<td>An Equinix scheduled agent that evaluates BGP session health for Fabric Cloud Router backed connections and performs narrow bounded remediation only when needed.
+
+This run is initiated by schedule and discovers unhealthy sessions from live API state rather than from a triggering BGP status event.
+
+Because BGP is a self-healing protocol, the agent first waits and observes for a bounded grace period before attempting any restart. It attempts exactly one remediation tier per affected session/address family: a soft restart by toggling the routing protocol address family's `enabled` flag (disable, then re-enable). It never retries this toggle in the same run, never performs peer reset, and never performs path failover.
+
+This agent runs once immediately by default unless scheduled by the user. It sends at most one batched email report at the end of a run: always when unhealthy BGP sessions are detected, and optionally on clean runs when `send_email_on_clean_run` is enabled.
+
+All tool-facing request details that matter for execution — including the `search_connections` filter shape, the `search_cloud_events` filter operators, and the HTML report template — are intentionally kept explicit below and should be preserved.</td>
+		<td>- Run on schedule and evaluate BGP health across a scoped set of FCR-attached connections<br>- Support optional `connection_uuid` override to target one connection<br>- Support optional `fcr_uuid` to scope discovery to connections attached to that cloud router<br>- Discover BGP routing protocols and evaluate both `bgpIpv4` and `bgpIpv6` families when present<br>- Skip non-actionable states (still provisioning, administratively disabled, already healthy)<br>- Detect flap storms from recent cloud events before remediation<br>- Wait for natural BGP recovery (self-heal grace period) before restarting<br>- Attempt one soft restart (disable/wait/enable/wait) only for the affected unhealthy session family<br>- Verify post-restart recovery within bounded polling limits<br>- Aggregate all findings/actions into one batched incident email with PDF attachment per notification policy (`send_email_on_clean_run`)<br>- Log all per-item decisions, actions, and errors</td>
+		<td>This skill can use the following tools:
+
+* **`search_connections`**: Finds connections by UUID or by scoped filter and reads connection state.
+* **`list_routing_protocols`**: Reads routing protocols for a connection, including `state`, family `enabled`, and operation status fields.
+* **`get_timestamps`**: Produces UTC `from`/`to` timestamps from a duration (for flap-storm lookback).
+* **`search_cloud_events`**: Counts recent BGP status events for a connection to detect flap storms. Use `/equinixproject` with `=` plus `/subject` with `IN` and `/type` with `LIKE`.
+* **`update_routing_protocol`**: Applies JSON Patch operations for `enabled` toggles.
+* **`wait`**: Sleeps between checks and restart phases.
+* **`send_email_notification`**: Sends exactly one batched email report with attached PDF.</td>
+		<td>preview
+	</tr>
+	<tr>
 		<td><a href="https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_schedule/cloud-router/cloud-router-management.md">Cloud Router Management Agent<br>[cloud-router-management.md]</a></td>
 		<td>An Equinix agent that creates a Fabric Cloud Router with user-specified parameters.
 This agent runs once immediately by default unless scheduled by user.</td>
