@@ -398,13 +398,14 @@ unattached. This agent runs once immediately by default unless scheduled by user
 		<td><a href="https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_schedule/connection/connection-health-scorecard.md">Connection Health Scorecard Agent<br>[connection-health-scorecard.md]</a></td>
 		<td>An Equinix Agent that gives operators a single-pane health view across Equinix Fabric connections. It collects per-connection performance metrics, computes a composite 0 to 100 health score for each connection, ranks them, flags any connection with an obvious measurable issue, and recommends remediation for every flagged connection.
 This agent helps troubleshooting effort so it can be prioritized where it matters most. The result is delivered as a PDF scorecard via email.
+This agent is advisory only. It reads telemetry and writes recommendations into a report; it never modifies a connection, its bandwidth, or its rate limit.
 This agent runs once immediately by default unless scheduled by user.</td>
-		<td>- Enumerate all PROVISIONED connections (or a user-specified subset)<br>- Collect rate-exceeded packet drops, packet errors, utilization, and latency metrics per connection<br>- Compute a reproducible composite 0–100 health score per connection<br>- Rank all connections and flag any with an obvious measurable issue<br>- Recommend concrete remediation for every flagged connection<br>- Deliver a prioritized scorecard as a PDF report via email</td>
+		<td>- Enumerate all PROVISIONED connections (or a user-specified subset)<br>- Collect rate-exceeded packet drops, packet errors, and utilization metrics per connection<br>- Compute a reproducible composite 0–100 health score per connection<br>- Rank all connections and flag any with an obvious measurable issue<br>- Recommend concrete remediation for every flagged connection<br>- Deliver a prioritized scorecard as a PDF report via email</td>
 		<td>This skill can use the following tools:
 
 *   **`get_timestamps`**: Generates `from` and `to` UTC timestamps (ISO 8601) from a duration string (e.g. `"24h"`, `"7d"`).
-*   **`search_connections`**: Enumerates PROVISIONED connections and resolves connection context (A/Z ports, A/Z metro codes, provisioned bandwidth).
-*   **`search_metrics`**: Retrieves connection, port, and metro metrics over the scoring window.
+*   **`search_connections`**: Enumerates PROVISIONED connections and resolves per-connection context (A-side and Z-side port UUIDs, provisioned bandwidth).
+*   **`search_metrics`**: Retrieves connection and port metrics over the scoring window.
 *   **`get_metric`**: Retrieves a single metric series when a targeted lookup is needed.
 *   **`send_email_notification`**: Sends an email. Pass `pdfTitle` and `pdfContent` (plain text) to auto-generate and attach a PDF.</td>
 		<td>preview
