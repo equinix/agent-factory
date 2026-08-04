@@ -1,7 +1,7 @@
 ---
 name: asset-change-daily-logger
 description: Identify connections, ports, cloud routers, networks, internet access, and network edge change events in past 24 hours; compile change summary with owners and distribute a daily report.
-categories: ["Troubleshooting, Analysis, Usage, Compliance, and Documentation Agents"]
+categories: ["Monitor & Report Agents"]
 ---
 
 # Daily Asset Change Report Agent
