@@ -211,7 +211,8 @@
                     "name": "IPWAN & Cloud Router Network Setup Agent",
                     "description": "An Equinix agent that provisions a single IPWAN-based network topology with FCR.",
                     "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_schedule/network/ipwan-fcr-network-setup.md",
-                    "releaseStatus": "preview"
+                    "releaseStatus": "preview",
+                    "categories": []
                 },
                 {
                     "name": "Port Attachment Audit Agent",
@@ -220,6 +221,15 @@
                     "releaseStatus": "preview",
                     "categories": [
                         "Troubleshooting, Analysis, Usage, Compliance, and Documentation Agents"
+                    ]
+                },
+                {
+                    "name": "Port Pending State Tracker Agent",
+                    "description": "This agent analyzes the lifecycle state of Equinix Fabric ports to identify those stuck in provisioning or deprovisioning state longer than a configured threshold, proactively notifying the user when action may be needed.",
+                    "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_schedule/port/port-pending-state-tracker.md",
+                    "releaseStatus": "preview",
+                    "categories": [
+                        "Monitor & Report Agents"
                     ]
                 },
                 {
