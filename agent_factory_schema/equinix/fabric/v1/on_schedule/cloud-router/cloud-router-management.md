@@ -1,7 +1,7 @@
 ---
 name: cloud-router-management
 description: Creates a Fabric Cloud Router based on user-provided parameters and notifies on completion.
-categories: ["Deployment & Change Agents"]
+categories: ["Deploy & Change Agents"]
 ---
 
 # Cloud Router Management Agent

@@ -1,7 +1,7 @@
 ---
 name: resource-stuck-state-timeout-notifier
 description: Detects Fabric connections, ports, and routers stuck in provisioning or deprovisioning past a configurable timeout, and notifies user via email.
-categories: ["Troubleshooting, Analysis, Usage, Compliance, and Documentation Agents"]
+categories: ["Monitor & Report Agents"]
 ---
 
 # Resource Stuck State Timeout Notifier Agent

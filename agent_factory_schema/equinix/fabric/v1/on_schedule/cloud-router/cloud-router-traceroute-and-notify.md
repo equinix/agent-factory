@@ -1,7 +1,7 @@
 ---
 name: cloud-router-tracerouter-and-notify
 description: Initiates a TRACEROUTE command on a Fabric Cloud Router.
-categories: ["Troubleshooting, Analysis, Usage, Compliance, and Documentation Agents"]
+categories: ["Monitor & Report Agents"]
 ---
 
 # Cloud Router Traceroute and Report Agent

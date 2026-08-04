@@ -3,7 +3,7 @@ name: cloud-router-attachment-audit
 description: Scans all Fabric Cloud Routers for missing stream attachments, then automatically attaches
   unattached routers (up to 5) to a user-specified stream and emails a report of attached and
   unattached routers on completion.
-categories: ["Troubleshooting, Analysis, Usage, Compliance, and Documentation Agents"]
+categories: ["Monitor & Report Agents"]
 ---
 
 # Cloud Router Attachment Audit Agent

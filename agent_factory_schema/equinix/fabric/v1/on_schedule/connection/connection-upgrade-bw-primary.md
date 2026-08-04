@@ -1,7 +1,7 @@
 ---
 name: connection-upgrade-bw-primary
 description: Upgrades the bandwidth of a connection.
-categories: ["Deployment & Change Agents"]
+categories: ["Deploy & Change Agents"]
 ---
 
 # Connection Bandwidth Upgrade Agent

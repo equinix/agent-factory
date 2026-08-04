@@ -15,7 +15,7 @@
                     "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_event/cloud-router/cloud-router-upgrade-package.md",
                     "releaseStatus": "preview",
                     "categories": [
-                        "Deployment & Change Agents"
+                        "Deploy & Change Agents"
                     ]
                 },
                 {
@@ -24,7 +24,7 @@
                     "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_event/connection/connection-upgrade-bw-primary.md",
                     "releaseStatus": "preview",
                     "categories": [
-                        "Deployment & Change Agents"
+                        "Deploy & Change Agents"
                     ]
                 },
                 {
@@ -33,7 +33,7 @@
                     "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_event/connection/connection-upgrade-bw-secondary.md",
                     "releaseStatus": "preview",
                     "categories": [
-                        "Deployment & Change Agents"
+                        "Deploy & Change Agents"
                     ]
                 },
                 {
@@ -42,7 +42,7 @@
                     "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_event/connection/connection-high-latency-runbook.md",
                     "releaseStatus": "preview",
                     "categories": [
-                        "Deployment & Change Agents"
+                        "Deploy & Change Agents"
                     ]
                 },
                 {
@@ -51,7 +51,7 @@
                     "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_event/connection/connection-upgrade-bw-on-packet-drop-alert.md",
                     "releaseStatus": "preview",
                     "categories": [
-                        "Deployment & Change Agents"
+                        "Deploy & Change Agents"
                     ]
                 },
                 {
@@ -60,7 +60,7 @@
                     "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_event/connection/connection-metro-latency-notify.md",
                     "releaseStatus": "preview",
                     "categories": [
-                        "Deployment & Change Agents"
+                        "Deploy & Change Agents"
                     ]
                 }
             ]
@@ -78,7 +78,7 @@
                     "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_schedule/stream/alert-rule-management.md",
                     "releaseStatus": "preview",
                     "categories": [
-                        "Deployment & Change Agents"
+                        "Deploy & Change Agents"
                     ]
                 },
                 {
@@ -87,7 +87,7 @@
                     "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_schedule/asset/asset-pending-state-tracker.md",
                     "releaseStatus": "preview",
                     "categories": [
-                        "Troubleshooting, Analysis, Usage, Compliance, and Documentation Agents"
+                        "Monitor & Report Agents"
                     ]
                 },
                 {
@@ -96,7 +96,7 @@
                     "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_schedule/cloud-router/cloud-router-attachment-audit.md",
                     "releaseStatus": "preview",
                     "categories": [
-                        "Troubleshooting, Analysis, Usage, Compliance, and Documentation Agents"
+                        "Monitor & Report Agents"
                     ]
                 },
                 {
@@ -105,8 +105,14 @@
                     "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_schedule/cloud-router/cloud-router-bgp-boostrap-provisioner.md",
                     "releaseStatus": "preview",
                     "categories": [
-                        "Design & Planning Agents"
+                        "Design & Plan Agents"
                     ]
+                },
+                {
+                    "name": "Cloud Router Connection BGP Session Restart Agent (Scheduled Batch)",
+                    "description": "An Equinix scheduled agent that evaluates BGP session health for Fabric Cloud Router backed connections and performs narrow bounded remediation only when needed.",
+                    "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_schedule/cloud-router/cloud-router-connection-bgp-health-report.md",
+                    "releaseStatus": "preview"
                 },
                 {
                     "name": "Cloud Router Management Agent",
@@ -114,7 +120,7 @@
                     "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_schedule/cloud-router/cloud-router-management.md",
                     "releaseStatus": "preview",
                     "categories": [
-                        "Deployment & Change Agents"
+                        "Deploy & Change Agents"
                     ]
                 },
                 {
@@ -123,7 +129,7 @@
                     "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_schedule/cloud-router/cloud-router-ping-and-notify.md",
                     "releaseStatus": "preview",
                     "categories": [
-                        "Troubleshooting, Analysis, Usage, Compliance, and Documentation Agents"
+                        "Monitor & Report Agents"
                     ]
                 },
                 {
@@ -132,7 +138,7 @@
                     "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_schedule/cloud-router/cloud-router-route-aggregation-recommendation.md",
                     "releaseStatus": "preview",
                     "categories": [
-                        "Design & Planning Agents"
+                        "Design & Plan Agents"
                     ]
                 },
                 {
@@ -141,7 +147,7 @@
                     "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_schedule/cloud-router/cloud-router-traceroute-and-notify.md",
                     "releaseStatus": "preview",
                     "categories": [
-                        "Troubleshooting, Analysis, Usage, Compliance, and Documentation Agents"
+                        "Monitor & Report Agents"
                     ]
                 },
                 {
@@ -150,7 +156,7 @@
                     "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_schedule/cloud-router/cloud-router-upgrade-package.md",
                     "releaseStatus": "preview",
                     "categories": [
-                        "Deployment & Change Agents"
+                        "Deploy & Change Agents"
                     ]
                 },
                 {
@@ -159,7 +165,7 @@
                     "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_schedule/connection/connection-attachment-audit.md",
                     "releaseStatus": "preview",
                     "categories": [
-                        "Troubleshooting, Analysis, Usage, Compliance, and Documentation Agents"
+                        "Monitor & Report Agents"
                     ]
                 },
                 {
@@ -168,7 +174,7 @@
                     "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_schedule/connection/connection-upgrade-bw-primary.md",
                     "releaseStatus": "preview",
                     "categories": [
-                        "Deployment & Change Agents"
+                        "Deploy & Change Agents"
                     ]
                 },
                 {
@@ -177,7 +183,7 @@
                     "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_schedule/connection/connection-health-scorecard.md",
                     "releaseStatus": "preview",
                     "categories": [
-                        "Troubleshooting, Analysis, Usage, Compliance, and Documentation Agents"
+                        "Monitor & Report Agents"
                     ]
                 },
                 {
@@ -186,7 +192,7 @@
                     "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_schedule/connection/connection-pending-state-tracker.md",
                     "releaseStatus": "preview",
                     "categories": [
-                        "Troubleshooting, Analysis, Usage, Compliance, and Documentation Agents"
+                        "Monitor & Report Agents"
                     ]
                 },
                 {
@@ -195,7 +201,7 @@
                     "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_schedule/asset/asset-change-daily-logger.md",
                     "releaseStatus": "preview",
                     "categories": [
-                        "Troubleshooting, Analysis, Usage, Compliance, and Documentation Agents"
+                        "Monitor & Report Agents"
                     ]
                 },
                 {
@@ -204,7 +210,7 @@
                     "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_schedule/asset/asset-create-daily-report.md",
                     "releaseStatus": "preview",
                     "categories": [
-                        "Troubleshooting, Analysis, Usage, Compliance, and Documentation Agents"
+                        "Monitor & Report Agents"
                     ]
                 },
                 {
@@ -212,7 +218,9 @@
                     "description": "An Equinix agent that provisions a single IPWAN-based network topology with FCR.",
                     "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_schedule/network/ipwan-fcr-network-setup.md",
                     "releaseStatus": "preview",
-                    "categories": []
+                    "categories": [
+                        "Deploy & Change Agents"
+                    ]
                 },
                 {
                     "name": "Port Attachment Audit Agent",
@@ -220,7 +228,16 @@
                     "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_schedule/port/port-attachment-audit.md",
                     "releaseStatus": "preview",
                     "categories": [
-                        "Troubleshooting, Analysis, Usage, Compliance, and Documentation Agents"
+                        "Monitor & Report Agents"
+                    ]
+                },
+                {
+                    "name": "Port Pending State Tracker Agent",
+                    "description": "This agent analyzes the lifecycle state of Equinix Fabric ports to identify those stuck in provisioning or deprovisioning state longer than a configured threshold, proactively notifying the user when action may be needed.",
+                    "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_schedule/port/port-pending-state-tracker.md",
+                    "releaseStatus": "preview",
+                    "categories": [
+                        "Monitor & Report Agents"
                     ]
                 },
                 {
@@ -229,7 +246,7 @@
                     "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_schedule/asset/project-lifecycle-activities.md",
                     "releaseStatus": "preview",
                     "categories": [
-                        "Troubleshooting, Analysis, Usage, Compliance, and Documentation Agents"
+                        "Monitor & Report Agents"
                     ]
                 },
                 {
@@ -238,7 +255,7 @@
                     "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_schedule/asset/resource-stuck-state-timeout-notifier.md",
                     "releaseStatus": "preview",
                     "categories": [
-                        "Troubleshooting, Analysis, Usage, Compliance, and Documentation Agents"
+                        "Monitor & Report Agents"
                     ]
                 },
                 {
@@ -247,7 +264,7 @@
                     "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_schedule/stream/stream-attachment-router-finder.md",
                     "releaseStatus": "preview",
                     "categories": [
-                        "Troubleshooting, Analysis, Usage, Compliance, and Documentation Agents"
+                        "Monitor & Report Agents"
                     ]
                 },
                 {
@@ -256,7 +273,7 @@
                     "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_schedule/stream/stream-attachment-connection-finder.md",
                     "releaseStatus": "preview",
                     "categories": [
-                        "Troubleshooting, Analysis, Usage, Compliance, and Documentation Agents"
+                        "Monitor & Report Agents"
                     ]
                 },
                 {
@@ -265,7 +282,7 @@
                     "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_schedule/stream/stream-attachment-port-finder.md",
                     "releaseStatus": "preview",
                     "categories": [
-                        "Troubleshooting, Analysis, Usage, Compliance, and Documentation Agents"
+                        "Monitor & Report Agents"
                     ]
                 }
             ]
