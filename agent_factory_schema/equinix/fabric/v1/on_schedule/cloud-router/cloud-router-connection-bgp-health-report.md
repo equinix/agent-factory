@@ -1,6 +1,7 @@
 ---
 name: cloud-router-connection-bgp-health-report
 description: Runs on a schedule, scans eligible connections attached to a Fabric Cloud Router UUID (or one connection via override), checks BGP session health, waits for natural recovery, attempts at most one soft restart for non-recovered non-storm flaps, and sends one batched incident email report for unhealthy sessions (or clean runs when configured).
+categories: ["Monitor & Report Agents", "Deploy & Change Agents"]
 ---
 
 # Cloud Router Connection BGP Session Restart Agent (Scheduled Batch)
