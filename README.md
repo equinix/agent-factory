@@ -507,6 +507,17 @@ unattached. This agent runs once immediately by default unless scheduled by user
 - **`send_email_notification`**: Sends an email notification to a list of recipients with an optional PDF attachment.</td>
 		<td>preview
 	</tr>
+	<tr>
+		<td><a href="https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_schedule/port/port-pending-state-tracker.md">Port Pending State Tracker Agent<br>[port-pending-state-tracker.md]</a></td>
+		<td>This agent analyzes the lifecycle state of Equinix Fabric ports to identify those stuck in provisioning or deprovisioning state longer than a configured threshold, proactively notifying the user when action may be needed.
+This agent runs once immediately by default unless scheduled by user. Recommended schedule: every 4 hours. Only sends email if ports exceed the timeout threshold.</td>
+		<td>- Search for all ports currently in a pending (provisioning or deprovisioning) state<br>- Deliver a plain-English summary via email</td>
+		<td>- **`search_ports`**: Searches for ports.
+- **`get_timestamps`**: Generates `from` and `to` UTC timestamps based on a required duration string (e.g., `"24h"`, `"7d"`). `to` is always the current UTC time; `from` is `to` minus the duration. Use the `to` field as the current UTC time reference for calculating time-in-state. Do not compute or hardcode the current time manually.
+- **`wait`**: Wait for a while. An optional parameter can be provided to specify the wait time in milliseconds.
+- **`send_email_notification`**: Sends an email. Pass `pdfTitle` and `pdfContent` (plain text) to auto-generate and attach a PDF.</td>
+		<td>preview
+	</tr>
 </table>
 
 </details>
