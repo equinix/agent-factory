@@ -1,7 +1,7 @@
 ---
 name: cloud-router-bgp-bfd-enabler
 description: Finds FCR connections whose bandwidth exceeds a configurable threshold (default 1 Gbps) that have a BGP routing protocol and enables BFD on those BGP sessions, then sends a completion report.
-categories: ["Deployment & Change Agents"]
+categories: ["Deploy & Change Agents"]
 ---
 
 # Cloud Router BGP BFD Enabler Agent
