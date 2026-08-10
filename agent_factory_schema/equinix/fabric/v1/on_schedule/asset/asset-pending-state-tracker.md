@@ -28,7 +28,7 @@ None
       { "property": "/operation/equinixStatus", "operator": "=", "values": ["PROVISIONING", "DEPROVISIONING"] }
     ]
   },
-  "pagination": { "offset": 0, "limit": 100 },
+  "pagination": { "offset": 0, "limit": 5 },
   "sort": [
     {
       "direction": "DESC",
@@ -45,7 +45,7 @@ None
       { "property": "/state", "operator": "=", "values": ["PROVISIONING", "DEPROVISIONING"] }
     ]
   },
-  "pagination": { "offset": 0, "limit": 100 }
+  "pagination": { "offset": 0, "limit": 5 }
 }
 ```
 3. Search for routers. Follow the request payload below:
@@ -57,7 +57,7 @@ None
       { "property": "/state", "operator": "=", "values": ["PROVISIONING", "DEPROVISIONING"] }
     ]
   },
-  "pagination": { "offset": 0, "limit": 100 }
+  "pagination": { "offset": 0, "limit": 5 }
 }
 ```
 4. Structure the report below:
