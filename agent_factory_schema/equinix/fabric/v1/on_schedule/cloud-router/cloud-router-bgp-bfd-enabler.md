@@ -7,7 +7,7 @@ categories: ["Deploy & Change Agents"]
 # Cloud Router BGP BFD Enabler Agent
 
 ## Overview
-An Equinix agent that scans all provisioned Fabric Cloud Router (FCR) connections whose bandwidth exceeds a configurable threshold (default 1 Gbps), identifies those with an existing BGP routing protocol where BFD is not yet enabled, enables BFD on each qualifying BGP session, and sends a completion email report summarizing all changes made.
+An Equinix agent that scans all provisioned Fabric Cloud Router connections whose bandwidth exceeds a configurable threshold, identifies those with an existing BGP routing protocol where BFD is not yet enabled, enables BFD on each qualifying BGP session, and sends a completion email report summarizing all changes made.
 This agent runs once immediately by default unless scheduled by user.
 
 ## Capabilities
