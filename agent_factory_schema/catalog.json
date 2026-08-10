@@ -3,97 +3,317 @@
     "version": 1,
     "schemas": [
         {
-            "url": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/EventDriven.json",
-            "domain": "Equinix Fabric Agent Factory Event Driven",
-            "title": "EventDriven",
-            "description": "Equinix Fabric Agent Factory Event Driven",
-            "datatype": "equinix.fabric.v1.eventdriven",
+            "url": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/OnEvent.json",
+            "domain": "Equinix Fabric Agent Factory On Event",
+            "title": "OnEvent",
+            "description": "Equinix Fabric Agent Factory Event-Driven Scenarios",
+            "datatype": "equinix.fabric.v1.on_event",
             "agentFactories": [
                 {
-                    "name": "equinix.fabric.connection.bandwidth.upgrade",
-                    "description": "Upgrade Connection Bandwidth from Packet Drop Alert",
-                    "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/event_driven/upgrade-bw-on-packet-drop-alert.md",
-                    "releaseStatus": "preview"
+                    "name": "Cloud Router Monitoring and Upgrade Package Agent",
+                    "description": "An Equinix agent that continuously monitors route usage on a Fabric Cloud Router.",
+                    "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_event/cloud-router/cloud-router-upgrade-package.md",
+                    "releaseStatus": "preview",
+                    "categories": [
+                        "Deploy & Change Agents"
+                    ]
                 },
                 {
-                    "name": "equinix.fabric.connection.list.notify",
-                    "description": "Email connection-list that over metros have latency alert",
-                    "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/event_driven/metro-latency-notify.md",
-                    "releaseStatus": "preview"
+                    "name": "Connection Bandwidth Monitoring and Upgrade Agent",
+                    "description": "An Equinix agent that automatically upgrades the bandwidth of a connection when usage reaches a certain threshold.",
+                    "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_event/connection/connection-upgrade-bw-primary.md",
+                    "releaseStatus": "preview",
+                    "categories": [
+                        "Deploy & Change Agents"
+                    ]
                 },
                 {
-                    "name": "equinix.fabric.router.upgrade",
-                    "description": "Upgrade FCR Package",
-                    "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/event_driven/upgrade-fcr-package.md",
-                    "releaseStatus": "preview"
+                    "name": "Connection Bandwidth Monitoring and Upgrade Redundant Connection Agent",
+                    "description": "This automated agent monitors Equinix Fabric connections and maintains bandwidth parity between redundant connection pairs.",
+                    "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_event/connection/connection-upgrade-bw-secondary.md",
+                    "releaseStatus": "preview",
+                    "categories": [
+                        "Deploy & Change Agents"
+                    ]
+                },
+                {
+                    "name": "Connection High Latency Auto-Runbook Agent",
+                    "description": "An Equinix agent that runs an automated diagnostic runbook when a metro latency alert fires.",
+                    "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_event/connection/connection-high-latency-runbook.md",
+                    "releaseStatus": "preview",
+                    "categories": [
+                        "Deploy & Change Agents"
+                    ]
+                },
+                {
+                    "name": "Connection Packet Drop Monitoring and Upgrade Agent",
+                    "description": "An Equinix agent that automatically boosts connection bandwidth to mitigate traffic-induced packet loss.",
+                    "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_event/connection/connection-upgrade-bw-on-packet-drop-alert.md",
+                    "releaseStatus": "preview",
+                    "categories": [
+                        "Deploy & Change Agents"
+                    ]
+                },
+                {
+                    "name": "Metro Latency Spikes and Connections Over Metros Report Agent",
+                    "description": "An Equinix agent that automatically email a list of connections that are over the metros where latency spike.",
+                    "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_event/connection/connection-metro-latency-notify.md",
+                    "releaseStatus": "preview",
+                    "categories": [
+                        "Deploy & Change Agents"
+                    ]
                 }
             ]
         },
         {
-            "url": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/RunOnce.json",
-            "domain": "Equinix Fabric Agent Factory Run Once",
-            "title": "RunOnce",
-            "description": "Equinix Fabric Agent Factory Run Once",
-            "datatype": "equinix.fabric.v1.runonce",
+            "url": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/OnSchedule.json",
+            "domain": "Equinix Fabric Agent Factory On Schedule",
+            "title": "OnSchedule",
+            "description": "Equinix Fabric Agent Factory On Schedule and On Demand Scenarios",
+            "datatype": "equinix.fabric.v1.on_schedule",
             "agentFactories": [
                 {
-                    "name": "equinix.fabric.connection.bandwidth.upgrade",
-                    "description": "Upgrade Primary Connection Bandwidth",
-                    "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/run_once/upgrade-bw-primary-connection.md",
-                    "releaseStatus": "preview"
+                    "name": "Alert Rule Manager Agent",
+                    "description": "An Equinix agent that sets up an alert rule for a connection.",
+                    "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_schedule/stream/alert-rule-management.md",
+                    "releaseStatus": "preview",
+                    "categories": [
+                        "Deploy & Change Agents"
+                    ]
                 },
                 {
-                    "name": "equinix.fabric.default.new.connection.stream.attachment",
-                    "description": "Attach new connections to default stream",
-                    "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/run_once/default-new-connection-attachment-to-stream.md",
-                    "releaseStatus": "preview"
+                    "name": "Asset Pending State Tracker Agent",
+                    "description": "This agent actively analyzes the lifecycle state of Equinix Fabric assets to identify those stuck in provisioning or deprovisioning phases for an extended period, proactively notifying user.",
+                    "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_schedule/asset/asset-pending-state-tracker.md",
+                    "releaseStatus": "preview",
+                    "categories": [
+                        "Monitor & Report Agents"
+                    ]
                 },
                 {
-                    "name": "equinix.fabric.default.new.port.stream.attachment",
-                    "description": "Attach new ports to default stream",
-                    "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/run_once/default-new-port-attachment-to-stream.md",
-                    "releaseStatus": "preview"
+                    "name": "Cloud Router Attachment Audit Agent",
+                    "description": "An Equinix agent that audits Fabric Cloud Routers to detect routers that are unmonitored and attach to stream.",
+                    "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_schedule/cloud-router/cloud-router-attachment-audit.md",
+                    "releaseStatus": "preview",
+                    "categories": [
+                        "Monitor & Report Agents"
+                    ]
                 },
                 {
-                    "name": "equinix.fabric.default.new.router.stream.attachment",
-                    "description": "Attach new routers to default stream",
-                    "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/run_once/default-new-router-attachment-to-stream.md",
-                    "releaseStatus": "preview"
+                    "name": "Cloud Router BGP BFD Enabler Agent",
+                    "description": "An Equinix agent that scans all provisioned Fabric Cloud Router (FCR) connections whose bandwidth exceeds a configurable threshold (default 1 Gbps), identifies those with an existing BGP routing protocol where BFD is not yet enabled, enables BFD on each qualifying BGP session, and sends a completion email report summarizing all changes made.",
+                    "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_schedule/cloud-router/cloud-router-bgp-bfd-enabler.md",
+                    "releaseStatus": "preview",
+                    "categories": [
+                        "Deploy & Change Agents"
+                    ]
                 },
                 {
-                    "name": "equinix.fabric.connection.health.scorecard",
-                    "description": "Create Connection Health Scorecard",
-                    "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/run_once/create-connection-health-scorecard.md",
-                    "releaseStatus": "preview"
+                    "name": "Cloud Router BGP Bootstrap Provisioner Agent",
+                    "description": "An Equinix agent targets a connection that is pending interface configuration, sets up a standard BGP routing protocol, and sends a completion notification with final execution outcome.",
+                    "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_schedule/cloud-router/cloud-router-bgp-boostrap-provisioner.md",
+                    "releaseStatus": "preview",
+                    "categories": [
+                        "Design & Plan Agents"
+                    ]
                 },
                 {
-                    "name": "equinix.fabric.router.ping.notify",
-                    "description": "Ping and Notify Fabric Cloud Router Connection",
-                    "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/run_once/ping-and-notify.md",
-                    "releaseStatus": "preview"
+                    "name": "Cloud Router Connection BGP Session Restart Agent (Scheduled Batch)",
+                    "description": "An Equinix scheduled agent that evaluates BGP session health for Fabric Cloud Router backed connections and performs narrow bounded remediation only when needed.",
+                    "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_schedule/cloud-router/cloud-router-connection-bgp-health-report.md",
+                    "releaseStatus": "preview",
+                    "categories": [
+                        "Monitor & Report Agents",
+                        "Deploy & Change Agents"
+                    ]
                 },
                 {
-                    "name": "equinix.fabric.routing.protocol.create",
-                    "description": "Creates a standard BGP routing protocol and sends completion notifications for connections that are pending interface configuration.",
-                    "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/run_once/provision-bgp.md",
-                    "releaseStatus": "preview"
+                    "name": "Cloud Router Management Agent",
+                    "description": "An Equinix agent that creates a Fabric Cloud Router with user-specified parameters.",
+                    "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_schedule/cloud-router/cloud-router-management.md",
+                    "releaseStatus": "preview",
+                    "categories": [
+                        "Deploy & Change Agents"
+                    ]
+                },
+                {
+                    "name": "Cloud Router Ping and Report Agent",
+                    "description": "An Equinix agent that initiates a PING command on a Fabric Cloud Router in order to perform a network connectivity check.",
+                    "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_schedule/cloud-router/cloud-router-ping-and-notify.md",
+                    "releaseStatus": "preview",
+                    "categories": [
+                        "Monitor & Report Agents"
+                    ]
+                },
+                {
+                    "name": "Cloud Router Route Aggregation Recommendation Agent",
+                    "description": "An Equinix agent that recommends, or suggests, aggregate routes for a Fabric Cloud Router.",
+                    "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_schedule/cloud-router/cloud-router-route-aggregation-recommendation.md",
+                    "releaseStatus": "preview",
+                    "categories": [
+                        "Design & Plan Agents"
+                    ]
+                },
+                {
+                    "name": "Cloud Router Traceroute and Report Agent",
+                    "description": "An Equinix agent that initiates a TRACEROUTE command on a Fabric Cloud Router in order to perform a network connectivity check.",
+                    "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_schedule/cloud-router/cloud-router-traceroute-and-notify.md",
+                    "releaseStatus": "preview",
+                    "categories": [
+                        "Monitor & Report Agents"
+                    ]
+                },
+                {
+                    "name": "Cloud Router Upgrade Package Agent",
+                    "description": "This definition sets up and activates an Equinix agent that upgrades the package of a Fabric Cloud Router.",
+                    "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_schedule/cloud-router/cloud-router-upgrade-package.md",
+                    "releaseStatus": "preview",
+                    "categories": [
+                        "Deploy & Change Agents"
+                    ]
+                },
+                {
+                    "name": "Connection Attachment Audit Agent",
+                    "description": "An Equinix agent that audits Fabric connections to detect that are unmonitored and attach to stream.",
+                    "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_schedule/connection/connection-attachment-audit.md",
+                    "releaseStatus": "preview",
+                    "categories": [
+                        "Monitor & Report Agents"
+                    ]
+                },
+                {
+                    "name": "Connection Bandwidth Upgrade Agent",
+                    "description": "An Equinix agent that upgrades the bandwidth of a connection.",
+                    "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_schedule/connection/connection-upgrade-bw-primary.md",
+                    "releaseStatus": "preview",
+                    "categories": [
+                        "Deploy & Change Agents"
+                    ]
+                },
+                {
+                    "name": "Connection Health Scorecard Agent",
+                    "description": "An Equinix Agent that gives operators a single-pane health view across Equinix Fabric connections. It collects per-connection performance metrics, computes a composite 0 to 100 health score for each connection, ranks them, flags any connection with an obvious measurable issue, and recommends remediation for every flagged connection.",
+                    "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_schedule/connection/connection-health-scorecard.md",
+                    "releaseStatus": "preview",
+                    "categories": [
+                        "Monitor & Report Agents"
+                    ]
+                },
+                {
+                    "name": "Connection Pending State Tracker Agent",
+                    "description": "This agent analyzes the lifecycle state of Equinix Fabric connections to identify those stuck in provisioning or deprovisioning state longer than a configured threshold, proactively notifying the user when action may be needed.",
+                    "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_schedule/connection/connection-pending-state-tracker.md",
+                    "releaseStatus": "preview",
+                    "categories": [
+                        "Monitor & Report Agents"
+                    ]
+                },
+                {
+                    "name": "Daily Asset Change Report Agent",
+                    "description": "An Equinix Agent that identifies connections, ports, cloud routers, networks, internet access, and network edge change events in past 24 hours.",
+                    "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_schedule/asset/asset-change-daily-logger.md",
+                    "releaseStatus": "preview",
+                    "categories": [
+                        "Monitor & Report Agents"
+                    ]
+                },
+                {
+                    "name": "Daily Asset Creation Report Agent",
+                    "description": "An Equinix Agent that identifies connections, ports, cloud routers, networks, internet access, and network edge creation events in past 24 hours.",
+                    "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_schedule/asset/asset-create-daily-report.md",
+                    "releaseStatus": "preview",
+                    "categories": [
+                        "Monitor & Report Agents"
+                    ]
+                },
+                {
+                    "name": "IPWAN & Cloud Router Network Setup Agent",
+                    "description": "An Equinix agent that provisions a single IPWAN-based network topology with FCR.",
+                    "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_schedule/network/ipwan-fcr-network-setup.md",
+                    "releaseStatus": "preview",
+                    "categories": [
+                        "Deploy & Change Agents"
+                    ]
+                },
+                {
+                    "name": "Port Attachment Audit Agent",
+                    "description": "An Equinix agent that audits all Fabric Ports to detect ports that are unmonitored then attachs them to stream.",
+                    "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_schedule/port/port-attachment-audit.md",
+                    "releaseStatus": "preview",
+                    "categories": [
+                        "Monitor & Report Agents"
+                    ]
+                },
+                {
+                    "name": "Port Pending State Tracker Agent",
+                    "description": "This agent analyzes the lifecycle state of Equinix Fabric ports to identify those stuck in provisioning or deprovisioning state longer than a configured threshold, proactively notifying the user when action may be needed.",
+                    "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_schedule/port/port-pending-state-tracker.md",
+                    "releaseStatus": "preview",
+                    "categories": [
+                        "Monitor & Report Agents"
+                    ]
+                },
+                {
+                    "name": "Project Lifecycle Activities Insight Report Agent",
+                    "description": "This reporting agent analyzes all cloud events within a given Equinix Fabric project over a specified time range and delivers a plain-English operational health summary report via email. This agent runs once immediately by default unless scheduled by user.",
+                    "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_schedule/asset/project-lifecycle-activities.md",
+                    "releaseStatus": "preview",
+                    "categories": [
+                        "Monitor & Report Agents"
+                    ]
+                },
+                {
+                    "name": "Resource Stuck State Timeout Notifier Agent",
+                    "description": "This agent identifies Equinix Fabric connections, ports, and routers stuck in a `PROVISIONING` or `DEPROVISIONING` state past a configurable timeout.",
+                    "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_schedule/asset/resource-stuck-state-timeout-notifier.md",
+                    "releaseStatus": "preview",
+                    "categories": [
+                        "Monitor & Report Agents"
+                    ]
+                },
+                {
+                    "name": "Stream Attachment Cloud Router Finder Agent",
+                    "description": "An Equinix agent that automatically detects new routers older than a certain amount of time and ensures they are at least connected to the default stream.",
+                    "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_schedule/stream/stream-attachment-router-finder.md",
+                    "releaseStatus": "preview",
+                    "categories": [
+                        "Monitor & Report Agents"
+                    ]
+                },
+                {
+                    "name": "Stream Attachment Connection Finder Agent",
+                    "description": "An Equinix agent that automatically detects new connections older than a certain amount of time and ensures they are at least connected to the default stream.",
+                    "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_schedule/stream/stream-attachment-connection-finder.md",
+                    "releaseStatus": "preview",
+                    "categories": [
+                        "Monitor & Report Agents"
+                    ]
+                },
+                {
+                    "name": "Stream Attachment Port Finder Agent",
+                    "description": "An Equinix agent that automatically detects new ports older than a certain amount of time and ensures they are at least connected to the default stream.",
+                    "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_schedule/stream/stream-attachment-port-finder.md",
+                    "releaseStatus": "preview",
+                    "categories": [
+                        "Monitor & Report Agents"
+                    ]
                 }
             ]
         },
         {
-            "url": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/network_edge/v1/EventDriven.json",
-            "domain": "Equinix Network Edge Agent Factory Event Driven",
-            "title": "EventDriven",
-            "description": "Equinix Network Edge Agent Factory Event Driven",
-            "datatype": "equinix.network_edge.v1.eventdriven",
+            "url": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/network_edge/v1/OnEvent.json",
+            "domain": "Equinix Network Edge Agent Factory OnEvent",
+            "title": "OnEvent",
+            "description": "Equinix Network Edge Agent Factory Event-Driven Scenarios",
+            "datatype": "equinix.network_edge.v1.on_event",
             "agentFactories": []
         },
         {
-            "url": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/network_edge/v1/RunOnce.json",
-            "domain": "Equinix Network Edge Agent Factory Run Once",
-            "title": "RunOnce",
-            "description": "Equinix Network Edge Agent Factory Run Once",
-            "datatype": "equinix.network_edge.v1.runonce",
+            "url": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/network_edge/v1/OnSchedule.json",
+            "domain": "Equinix Network Edge Agent Factory OnSchedule",
+            "title": "OnSchedule",
+            "description": "Equinix Network Edge Agent Factory On Schedule and On Demand Scenarios",
+            "datatype": "equinix.network_edge.v1.on_schedule",
             "agentFactories": []
         }
     ]

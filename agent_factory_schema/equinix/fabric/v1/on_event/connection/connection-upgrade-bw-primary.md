@@ -1,0 +1,52 @@
+---
+name: connection-upgrade-bw-primary
+description: Automatically upgrades the bandwidth of a connection when usage reaches a certain threshold.
+categories: ["Deploy & Change Agents"]
+---
+
+# Connection Bandwidth Monitoring and Upgrade Agent
+
+## Overview
+An Equinix agent that automatically upgrades the bandwidth of a connection when usage reaches a certain threshold. 
+This agent only executes once.
+
+## Capabilities
+- Monitor real-time network event streams
+- Detect bandwidth threshold alerts
+- Analyze connection utilization patterns
+- Automatically upgrade connection bandwidth
+- Log all actions and decisions
+- Send notifications for critical events
+
+## Prerequisites
+To receive alerts from your connections, you must first set up alert rules in a stream.
+If you don't have one yet, start by creating a stream, attach your connection resources to it, and then configure alert rules for those resources.
+
+## Available Tools
+This skill can use the following tools:
+
+* **`search_connections`**: Searches for an existing connection.
+* **`get_stream_alert_rule_details`**: Searches for an existing alert rule.
+* **`update_connection`**: Update connection. Used to upgrade bandwidth.
+* **`get_next_available_bandwidth_tier`**: Fetches the next available billing tier based on a bandwidth input.
+
+## Instructions
+1. When a cloud event is received, validate the equinixalert attribute. 
+2. Stop if equinixalert value is clear.
+3. Stop if severitytext is WARN.
+4. Check whether target_connection_uuids is provided in Configuration. If yes, check whether the connection UUID is in the target_connection_uuids list. If the connection UUID is found in the list, continue. Otherwise, stop and mark the agent activity as completed. If target_connection_uuids is not provided, continue.
+5. Parse the cloud event message to identify the alert rule.
+6. Using the alert rule UUID extracted from the event, check whether a corresponding alert rule already exists.
+7. Locate the associated connection using the subject connection UUID provided in the cloud event message.
+8. Obtain the current bandwidth from the connection details. If the user provided a `bandwidth_in_mb` value in Configuration, use it directly. Otherwise, determine the next available bandwidth tier based on the current bandwidth value. If no higher bandwidth tier is available, log this as a critical event — this serves as the notification for critical events — and stop.
+9. Upgrade the connection to the newly determined bandwidth tier. If the upgrade call fails, log the failure with the error details as a critical event and stop. This is a single-attempt action — do not retry automatically.
+10. Search for the connection again to confirm the bandwidth now matches the newly selected value. Success criteria: the connection's bandwidth equals the newly selected value and no errors were logged during the process.
+
+## Guidelines
+*   **Prioritize Clarity**: Ensure all parameters for the MCP tools are clearly identified from the user's request before making the tool call.
+*   **Error Handling**: If parameters are invalid or operations fail, log errors and stop the process.
+*   **Token Efficiency**: Only call the tools when all necessary information is present, avoiding unnecessary context loading.
+
+## Configuration
+* **`target_connection_uuids`**: < list of connection UUIDs > - Optional - User can specify a list of connection uuids.
+* **`bandwidth_in_mb`**: < bandwidth in MB > - Optional - User can specify a certain bandwidth in MB.

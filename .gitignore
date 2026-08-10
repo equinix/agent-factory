@@ -1,11 +1,45 @@
 # OS X Finder Files
 .DS_Store
+._*
 
 # IDE files
 .idea
+.vscode
 
 # Local Setup Scripts for Repo
 local_helper_scripts/*
 
 # Python Generated Files
 __pycache__
+.venv
+
+# Generated eval output
+eval_report.md
+
+# generated catalog files
+catalog2.json
+
+# Packages #
+############
+# it's better to unpack these files and commit the raw source
+# git has its own built in compression methods
+*.7z
+*.dmg
+*.gz
+*.iso
+*.jar
+*.rar
+*.tar
+*.zip
+
+# Logs and databases #
+######################
+*.log
+*.sql
+*.sqlite
+
+# Environment Variables
+.env
+*.pem
+*.key
+*_rsa
