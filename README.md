@@ -195,7 +195,7 @@ This agent runs once immediately by default unless scheduled by user.</td>
 	</tr>
 	<tr>
 		<td><a href="https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_schedule/asset/resource-stuck-state-timeout-notifier.md">Resource Stuck State Timeout Notifier Agent<br>[resource-stuck-state-timeout-notifier.md]</a></td>
-		<td>This agent identifies Equinix Fabric connections, ports, and routers stuck in a `PROVISIONING` or `DEPROVISIONING` state past a configurable timeout.
+		<td>This agent identifies Equinix Fabric connections, ports, and routers stuck in a PROVISIONING or DEPROVISIONING state past a configurable timeout.
 This agent runs once immediately by default unless scheduled by user, and emails a report of the affected resources.
 This agent is read-only — it never modifies, upgrades, or cancels any resource.
 
@@ -250,7 +250,7 @@ unattached. This agent runs once immediately by default unless scheduled by user
 	</tr>
 	<tr>
 		<td><a href="https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_schedule/cloud-router/cloud-router-bgp-bfd-enabler.md">Cloud Router BGP BFD Enabler Agent<br>[cloud-router-bgp-bfd-enabler.md]</a></td>
-		<td>An Equinix agent that scans all provisioned Fabric Cloud Router (FCR) connections whose bandwidth exceeds a configurable threshold (default 1 Gbps), identifies those with an existing BGP routing protocol where BFD is not yet enabled, enables BFD on each qualifying BGP session, and sends a completion email report summarizing all changes made.
+		<td>An Equinix agent that scans all provisioned Fabric Cloud Router connections whose bandwidth exceeds a configurable threshold, identifies those with an existing BGP routing protocol where BFD is not yet enabled, enables BFD on each qualifying BGP session, and sends a completion email report summarizing all changes made.
 This agent runs once immediately by default unless scheduled by user.</td>
 		<td>- Search for all provisioned FCR connections exceeding a configurable bandwidth threshold (default 1 Gbps)<br>- Inspect each connection's routing protocols and identify BGP sessions with BFD disabled<br>- Enable BFD on qualifying BGP routing protocols using a configurable interval<br>- Skip connections where BFD is already enabled or where no BGP routing protocol exists<br>- Send a completion email report listing updated, skipped, and failed connections</td>
 		<td>This skill can use the following tools:
