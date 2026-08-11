@@ -101,7 +101,7 @@
                 },
                 {
                     "name": "Cloud Router BGP BFD Enabler Agent",
-                    "description": "An Equinix agent that scans all provisioned Fabric Cloud Router (FCR) connections whose bandwidth exceeds a configurable threshold (default 1 Gbps), identifies those with an existing BGP routing protocol where BFD is not yet enabled, enables BFD on each qualifying BGP session, and sends a completion email report summarizing all changes made.",
+                    "description": "An Equinix agent that scans all provisioned Fabric Cloud Router connections whose bandwidth exceeds a configurable threshold, identifies those with an existing BGP routing protocol where BFD is not yet enabled, enables BFD on each qualifying BGP session, and sends a completion email report summarizing all changes made.",
                     "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_schedule/cloud-router/cloud-router-bgp-bfd-enabler.md",
                     "releaseStatus": "preview",
                     "categories": [
@@ -264,7 +264,7 @@
                 },
                 {
                     "name": "Resource Stuck State Timeout Notifier Agent",
-                    "description": "This agent identifies Equinix Fabric connections, ports, and routers stuck in a `PROVISIONING` or `DEPROVISIONING` state past a configurable timeout.",
+                    "description": "This agent identifies Equinix Fabric connections, ports, and routers stuck in a PROVISIONING or DEPROVISIONING state past a configurable timeout.",
                     "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_schedule/asset/resource-stuck-state-timeout-notifier.md",
                     "releaseStatus": "preview",
                     "categories": [
