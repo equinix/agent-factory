@@ -5,8 +5,9 @@ name: Template Content Evals
 # and an LLM judge (clarity, non-contradiction, scope, completeness, instruction/tool alignment).
 # No agent is run and no tools are executed — safe to run on every PR.
 #
-# The evaluator runs as a Python script (scripts/template_content_eval.py) — no external service
-# or Docker image required.
+# The LLM judge calls agent-eval-service (POST /fabric/i4/eval/template-content) via Apigee.
+# agent-eval-service runs in-cluster and can reach AWS Bedrock Runtime (VPC-only) where the
+# GitHub Actions runner cannot. The runner authenticates with X-AUTH-APIKEY via Apigee.
 
 on:
   pull_request:
@@ -82,7 +83,10 @@ jobs:
       - name: Run template content evals
         if: steps.templates.outputs.mode != 'none'
         env:
-          GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+          AGENT_EVAL_SERVICE_URL: ${{ secrets.AGENT_EVAL_SERVICE_URL }}
+          # Apigee base URL - point this secret at qa3 for CI (e.g. https://sitapi.npclouda.equinix.com)
+          AGENT_EVAL_SERVICE_API_KEY: ${{ secrets.AGENT_EVAL_SERVICE_API_KEY }}
+          # X-AUTH-APIKEY for /fabric/i4/* - generate at npapiportal.equinix.com
           LANGSMITH_API_KEY: ${{ secrets.LANGSMITH_API_KEY }}
         run: |
           set -euo pipefail
