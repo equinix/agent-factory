@@ -141,6 +141,34 @@ This agent only executes once.</td>
 Equinix Fabric Agent Factory On Schedule and On Demand Scenarios
 
 
+### Agent Agents
+
+<details>
+<summary>Show agents</summary>
+
+<table>
+	<tr>
+		<th>Name</th>
+		<th>Overview</th>
+		<th>Capabilities</th>
+		<th>Agent Tools</th>
+		<th>Release Status</th>
+	</tr>
+	<tr>
+		<td><a href="https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_schedule/agent/update-agent-email.md">Agent Email Update Agent<br>[update-agent-email.md]</a></td>
+		<td>An Equinix agent that scans every agent's configuration prompt for a specified email address and replaces it with a new one.
+It validates both email addresses before making any changes, reports exactly which agents were updated and which failed, and runs once immediately.</td>
+		<td>- Validate old and new email addresses before making any changes<br>- Scan all agent configuration prompts across the account<br>- Replace every occurrence of the old email with the new email in each matching prompt<br>- Report a change summary: how many agents were scanned, matched, updated, and failed<br>- Log all actions and decisions</td>
+		<td>This skill can use the following tools:
+
+* **`update_agent_email`**: Scans all agent configuration prompts for `old_email`, replaces every occurrence with `new_email`, and returns a JSON change report with fields: `scanned` (total agents checked), `matched` (agents containing the old email), `updated` (agents successfully patched), `failed` (list of `{uuid, error}` for agents that could not be patched), and `changes` (list of `{uuid, name}` for successfully updated agents).</td>
+		<td>preview
+	</tr>
+</table>
+
+</details>
+
+
 ### Asset Agents
 
 <details>
