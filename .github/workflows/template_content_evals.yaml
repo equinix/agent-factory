@@ -8,6 +8,9 @@ name: Template Content Evals
 # The LLM judge calls agent-eval-service (POST /fabric/i4/eval/template-content) via Apigee.
 # agent-eval-service runs in-cluster and can reach AWS Bedrock Runtime (VPC-only) where the
 # GitHub Actions runner cannot. The runner authenticates with X-AUTH-APIKEY via Apigee.
+#
+# The Apigee route (sitapi.npclouda.equinix.com) is only reachable from Equinix's internal
+# network, not from GitHub-hosted ubuntu-latest runners — hence the self-hosted ecx runner below.
 
 on:
   pull_request:
@@ -37,7 +40,7 @@ jobs:
     # regeneration, and re-running here just duplicates the run already triggered by the
     # human's push while surfacing a confusing action_required check.
     if: github.actor != 'github-actions[bot]'
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, nonprod, ecx, aws]
     timeout-minutes: 15
     steps:
       - name: Check out agent-factory

@@ -41,7 +41,7 @@ All tool-facing request details that matter for execution — including the `sea
 - Recipient addresses must be configured for final batch report delivery.
 
 ## Available Tools
-This skill can use the following tools:
+This agent template can use the following tools:
 
 * **`search_connections`**: Finds connections by UUID or by scoped filter and reads connection state.
 * **`list_routing_protocols`**: Reads routing protocols for a connection, including `state`, family `enabled`, and operation status fields.
