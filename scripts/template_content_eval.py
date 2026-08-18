@@ -346,9 +346,12 @@ class AgentEvalServiceJudge:
             "Accept": "application/json",
             "X-CORRELATION-ID": str(uuid.uuid4()),
         }
+        response_body = ""
         for attempt in range(2):
             try:
                 response = httpx.post(token_url, json=body, headers=headers, timeout=self._timeout)
+                if response.status_code >= 400:
+                    response_body = response.text[:1000]
                 response.raise_for_status()
                 token = response.json().get("access_token")
                 if not token:
@@ -359,13 +362,15 @@ class AgentEvalServiceJudge:
                     log.debug("Apigee token fetch attempt 1 failed, retrying in 2s: %s", e)
                     time.sleep(2)
                     continue
-                log.warning("Apigee token fetch failed after retry: %s", e)
+                detail = f" — response body: {response_body}" if response_body else ""
+                log.warning("Apigee token fetch failed after retry: %s%s", e, detail)
                 return None
         return None
 
     def judge(self, spec: TemplateSpec) -> dict[str, JudgeScore]:
         if not self._enabled:
             return self._fail_open()
+        response_body = ""
         for attempt in range(2):
             try:
                 resp = httpx.post(
@@ -383,6 +388,8 @@ class AgentEvalServiceJudge:
                     },
                     timeout=self._timeout,
                 )
+                if resp.status_code >= 400:
+                    response_body = resp.text[:1000]
                 resp.raise_for_status()
                 return self._parse(resp.json(), spec.source_path)
             except Exception as e:
@@ -390,9 +397,10 @@ class AgentEvalServiceJudge:
                     log.debug("Judge attempt 1 failed, retrying in 2s: %s", e)
                     time.sleep(2)
                     continue
+                detail = f" — response body: {response_body}" if response_body else ""
                 log.warning(
-                    "Template judge failed after retry (failing open) path=%s: %s",
-                    spec.source_path, e,
+                    "Template judge failed after retry (failing open) path=%s: %s%s",
+                    spec.source_path, e, detail,
                 )
                 return self._fail_open()
         return self._fail_open()
