@@ -31,8 +31,8 @@ permissions:
 
 env:
   THRESHOLD: ${{ github.event.inputs.threshold || '0.6' }}
-  APIGEE_TOKEN_URL: ${{ vars.APIGEE_TOKEN_URL || 'https://qaapi.equinix.com/oauth2/v1/token' }}
-  AGENT_EVAL_SERVICE_URL: ${{ vars.AGENT_EVAL_SERVICE_URL || 'https://qaapi.equinix.com' }}
+  APIGEE_TOKEN_URL: ${{ vars.APIGEE_TOKEN_URL || 'https://sitapi.equinix.com/oauth2/v1/token' }}
+  AGENT_EVAL_SERVICE_URL: ${{ vars.AGENT_EVAL_SERVICE_URL || 'https://sitapi.equinix.com' }}
 
 jobs:
   content-eval:
