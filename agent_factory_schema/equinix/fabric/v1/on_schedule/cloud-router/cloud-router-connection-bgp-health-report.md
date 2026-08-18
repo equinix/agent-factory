@@ -7,7 +7,7 @@ categories: ["Monitor & Report Agents", "Deploy & Change Agents"]
 # Cloud Router Connection BGP Session Restart Agent (Scheduled Batch)
 
 ## Overview
-An Equinix scheduled agent that evaluates BGP session health for Fabric Cloud Router backed connections and performs narrow bounded remediation only when needed.
+An Equinix scheduled agent that carefully evaluates BGP session health for Fabric Cloud Router backed connections and performs narrow bounded remediation only when needed.
 
 This run is initiated by schedule and discovers unhealthy sessions from live API state rather than from a triggering BGP status event.
 
