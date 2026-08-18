@@ -28,10 +28,13 @@ Options:
     --skip-llm                Run deterministic checks only (no LLM judge)
 
 Environment variables:
-    AGENT_EVAL_SERVICE_URL    Apigee base URL for agent-eval-service (required for LLM judge)
-                              point at qa3 for CI, e.g. https://qa3api.npclouda.equinix.com
-    AGENT_EVAL_SERVICE_API_KEY  X-AUTH-APIKEY header value for /fabric/i4/* routes
-    LANGSMITH_API_KEY         LangSmith API key (optional — disables LangSmith if absent)
+    APIGEE_TOKEN_URL           OAuth2 token endpoint (grant_type=password)
+    AGENT_EVAL_SERVICE_URL     Base URL of agent-eval-service's external Apigee route
+    APIGEE_CLIENT_ID           OAuth2 client_id
+    APIGEE_CLIENT_SECRET       OAuth2 client_secret
+    APIGEE_SERVICE_USERNAME    Service account username (grant_type=password)
+    APIGEE_SERVICE_PASSWORD    Service account password (grant_type=password)
+    LANGSMITH_API_KEY          LangSmith API key (optional — disables LangSmith if absent)
 """
 
 from __future__ import annotations
@@ -285,28 +288,80 @@ def build_tool_corpus(templates_root: Optional[str], exclude: Optional[Path] = N
 class AgentEvalServiceJudge:
     """
     Scores a template on five semantic dimensions by calling agent-eval-service's
-    POST /fabric/i4/eval/template-content endpoint via Apigee.
+    POST /fabric/v4/eval/template-content endpoint through the external Apigee gateway.
 
     agent-eval-service runs in-cluster and calls AWS Bedrock Runtime (Claude) internally.
-    GitHub Actions runners cannot reach Bedrock directly (VPC-only), so they call this
-    service through Apigee instead.
+    GitHub Actions runners cannot reach Bedrock — or the internal /fabric/i4/* route —
+    directly (VPC-only), so they authenticate with an OAuth2 Bearer token (obtained via
+    the platform's grant_type=password token endpoint) and call the external v4 route
+    through Apigee instead. Runs on a normal ubuntu-latest runner; no self-hosted/in-network
+    runner needed.
 
     Fails open (all dimensions 1.0) on any error so a flaky network call never blocks a PR.
     """
 
     _FAIL_OPEN_COMMENT = "judge unavailable — failed open"
 
-    def __init__(self, base_url: str, api_key: str = ""):
-        self._enabled = bool(base_url and base_url.strip())
-        self._base_url = (base_url or "").rstrip("/")
-        self._headers = {
-            "X-AUTH-APIKEY": api_key,
-            "Content-Type": "application/json",
+    def __init__(
+        self,
+        token_url: str,
+        eval_service_url: str,
+        client_id: str,
+        client_secret: str,
+        username: str,
+        password: str,
+        timeout: float = 30.0,
+    ):
+        self._enabled = False
+        self._eval_service_url = (eval_service_url or "").rstrip("/")
+        self._username = username
+        self._timeout = timeout
+        if not all([token_url, eval_service_url, client_id, client_secret, username, password]):
+            log.warning("LLM judge disabled (missing Apigee credentials/config)")
+            return
+        self._access_token = self._fetch_token(token_url, client_id, client_secret, username, password)
+        if not self._access_token:
+            log.warning("LLM judge disabled (could not obtain Apigee access token)")
+            return
+        self._enabled = True
+        log.info("LLM judge: using agent-eval-service via external Apigee (%s)", self._eval_service_url)
+
+    def _fetch_token(self, token_url: str, client_id: str, client_secret: str,
+                      username: str, password: str) -> Optional[str]:
+        """
+        Exchanges service-account credentials for a short-lived Bearer token via the
+        platform's OAuth2 grant_type=password flow. One token is fetched per script run
+        (not cached/persisted across runs) and reused for every template judged in this run —
+        its ~3599s TTL comfortably covers a single CI run.
+        """
+        body = {
+            "grant_type": "password",
+            "user_name": username,
+            "user_password": password,
+            "client_id": client_id,
+            "client_secret": client_secret,
         }
-        if not self._enabled:
-            log.warning("LLM judge disabled — AGENT_EVAL_SERVICE_URL not set")
-        else:
-            log.info("LLM judge: using agent-eval-service at %s", self._base_url)
+        headers = {
+            "Content-Type": "application/json",
+            "Accept": "application/json",
+            "X-CORRELATION-ID": str(uuid.uuid4()),
+        }
+        for attempt in range(2):
+            try:
+                response = httpx.post(token_url, json=body, headers=headers, timeout=self._timeout)
+                response.raise_for_status()
+                token = response.json().get("access_token")
+                if not token:
+                    raise ValueError("token response missing access_token")
+                return token
+            except Exception as e:
+                if attempt == 0:
+                    log.debug("Apigee token fetch attempt 1 failed, retrying in 2s: %s", e)
+                    time.sleep(2)
+                    continue
+                log.warning("Apigee token fetch failed after retry: %s", e)
+                return None
+        return None
 
     def judge(self, spec: TemplateSpec) -> dict[str, JudgeScore]:
         if not self._enabled:
@@ -314,13 +369,19 @@ class AgentEvalServiceJudge:
         for attempt in range(2):
             try:
                 resp = httpx.post(
-                    f"{self._base_url}/fabric/i4/eval/template-content",
+                    f"{self._eval_service_url}/fabric/v4/eval/template-content",
                     json={
                         "templateMarkdown": spec.raw_markdown,
                         "templatePath": spec.source_path,
                     },
-                    headers=self._headers,
-                    timeout=35,
+                    headers={
+                        "Authorization": f"Bearer {self._access_token}",
+                        "Content-Type": "application/json",
+                        "Accept": "application/json",
+                        "X-AUTH-USER-NAME": self._username,
+                        "X-CORRELATION-ID": str(uuid.uuid4()),
+                    },
+                    timeout=self._timeout,
                 )
                 resp.raise_for_status()
                 return self._parse(resp.json(), spec.source_path)
@@ -721,11 +782,16 @@ def main() -> None:
     # LangSmith (observability only — no longer wired to the judge client)
     langsmith = LangSmithLogger(api_key=os.environ.get("LANGSMITH_API_KEY", ""))
 
-    # Build judge — calls agent-eval-service via Apigee, which calls AWS Bedrock internally.
-    # Bedrock is VPC-only and not reachable from ubuntu-latest runners directly.
+    # Build judge — calls agent-eval-service via the external Apigee /fabric/v4 route,
+    # which calls AWS Bedrock internally. Bedrock (and the internal /fabric/i4 route) are
+    # VPC-only and not reachable from ubuntu-latest runners; the external v4 route is.
     judge = AgentEvalServiceJudge(
-        base_url=os.environ.get("AGENT_EVAL_SERVICE_URL", ""),
-        api_key=os.environ.get("AGENT_EVAL_SERVICE_API_KEY", ""),
+        token_url=os.environ.get("APIGEE_TOKEN_URL", ""),
+        eval_service_url=os.environ.get("AGENT_EVAL_SERVICE_URL", ""),
+        client_id=os.environ.get("APIGEE_CLIENT_ID", ""),
+        client_secret=os.environ.get("APIGEE_CLIENT_SECRET", ""),
+        username=os.environ.get("APIGEE_SERVICE_USERNAME", ""),
+        password=os.environ.get("APIGEE_SERVICE_PASSWORD", ""),
     )
 
     corpus_root = args.templates_dir or "agent_factory_schema"

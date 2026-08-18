@@ -5,12 +5,11 @@ name: Template Content Evals
 # and an LLM judge (clarity, non-contradiction, scope, completeness, instruction/tool alignment).
 # No agent is run and no tools are executed — safe to run on every PR.
 #
-# The LLM judge calls agent-eval-service (POST /fabric/i4/eval/template-content) via Apigee.
-# agent-eval-service runs in-cluster and can reach AWS Bedrock Runtime (VPC-only) where the
-# GitHub Actions runner cannot. The runner authenticates with X-AUTH-APIKEY via Apigee.
-#
-# The Apigee route (sitapi.npclouda.equinix.com) is only reachable from Equinix's internal
-# network, not from GitHub-hosted ubuntu-latest runners — hence the self-hosted ecx runner below.
+# The LLM judge calls agent-eval-service (POST /fabric/v4/eval/template-content) through the
+# external Apigee gateway. agent-eval-service runs in-cluster and can reach AWS Bedrock Runtime
+# (VPC-only) where the GitHub Actions runner cannot — but the external v4 route is reachable
+# from a normal ubuntu-latest runner, unlike the internal /fabric/i4/* route. The runner
+# authenticates with an OAuth2 Bearer token (grant_type=password) via Apigee.
 
 on:
   pull_request:
@@ -32,6 +31,8 @@ permissions:
 
 env:
   THRESHOLD: ${{ github.event.inputs.threshold || '0.6' }}
+  APIGEE_TOKEN_URL: ${{ vars.APIGEE_TOKEN_URL || 'https://qaapi.equinix.com/oauth2/v1/token' }}
+  AGENT_EVAL_SERVICE_URL: ${{ vars.AGENT_EVAL_SERVICE_URL || 'https://qaapi.equinix.com' }}
 
 jobs:
   content-eval:
@@ -40,7 +41,7 @@ jobs:
     # regeneration, and re-running here just duplicates the run already triggered by the
     # human's push while surfacing a confusing action_required check.
     if: github.actor != 'github-actions[bot]'
-    runs-on: [self-hosted, nonprod, ecx, aws]
+    runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
       - name: Check out agent-factory
@@ -86,10 +87,10 @@ jobs:
       - name: Run template content evals
         if: steps.templates.outputs.mode != 'none'
         env:
-          AGENT_EVAL_SERVICE_URL: ${{ secrets.AGENT_EVAL_SERVICE_URL }}
-          # Apigee base URL - point this secret at qa3 for CI (e.g. https://sitapi.npclouda.equinix.com)
-          AGENT_EVAL_SERVICE_API_KEY: ${{ secrets.AGENT_EVAL_SERVICE_API_KEY }}
-          # X-AUTH-APIKEY for /fabric/i4/* - generate at npapiportal.equinix.com
+          APIGEE_CLIENT_ID: ${{ secrets.APIGEE_CLIENT_ID }}
+          APIGEE_CLIENT_SECRET: ${{ secrets.APIGEE_CLIENT_SECRET }}
+          APIGEE_SERVICE_USERNAME: ${{ secrets.APIGEE_SERVICE_USERNAME }}
+          APIGEE_SERVICE_PASSWORD: ${{ secrets.APIGEE_SERVICE_PASSWORD }}
           LANGSMITH_API_KEY: ${{ secrets.LANGSMITH_API_KEY }}
         run: |
           set -euo pipefail
