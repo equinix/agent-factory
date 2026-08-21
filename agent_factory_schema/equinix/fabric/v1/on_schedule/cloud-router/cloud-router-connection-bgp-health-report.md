@@ -31,7 +31,7 @@ All tool-facing request details that matter for execution — including the `sea
 - Log all per-item decisions, actions, and errors
 
 ## Prerequisites
-- Target connections must be FCR-backed and have BGP routing protocols.
+- Target connections should be FCR-backed and have BGP routing protocols.
 - This scheduled agent requires scoped input:
   - either `connection_uuid` (single-connection mode), or
   - `fcr_uuid` (FCR-scoped project-scan mode).
