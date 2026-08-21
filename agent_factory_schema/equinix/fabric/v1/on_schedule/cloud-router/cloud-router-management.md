@@ -60,7 +60,9 @@ This skill can use the following tools:
     }
     ```
 4. After creation, use `search_routers` to confirm the router was successfully provisioned and retrieve its UUID and status.
-5. Notify the user with the router details: UUID, name, metro, package, status, and creation timestamp.
+5. Next, send an email notification to the recipient email addresses specified in `notifications`,
+   using the router details (UUID, name, metro, package, status, and creation timestamp) as the
+   email body, so the recipient is clearly informed of the outcome using `send_email_notification`.
 
 ## Guidelines
 *   **Prioritize Clarity**: Ensure all required parameters are clearly identified from the user's request before making the tool call.
