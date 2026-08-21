@@ -308,7 +308,8 @@ This agent runs once immediately by default unless scheduled by user.</td>
 		<td>This skill can use the following tools:
 
 *   **`search_routers`**: Searches for existing cloud routers. Used to check for duplicates and to confirm post-creation status.
-*   **`create_router`**: Creates a new Fabric Cloud Router with the specified configuration.</td>
+*   **`create_router`**: Creates a new Fabric Cloud Router with the specified configuration.
+*   **`send_email_notification`**: Sends an email notification given a list email of addresses and email body.</td>
 		<td>preview
 	</tr>
 	<tr>
