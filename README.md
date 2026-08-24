@@ -487,6 +487,29 @@ This agent runs once immediately by default unless scheduled by user.</td>
 - **`send_email_notification`**: Sends an email notification to a list of recipients with an optional PDF attachment.</td>
 		<td>preview
 	</tr>
+	<tr>
+		<td><a href="https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_schedule/network/network-connection-orchestrator.md">Network Connection Orchestrator Agent<br>[network-connection-orchestrator.md]</a></td>
+		<td>Creates a Fabric Network of a supported type and connects a caller-supplied list of existing access points to it, then waits for each connection to provision, attaches the provisioned connections to an observability stream, and sends a completion report.
+
+Supported network types are EVPLAN, EPLAN, EVPTREE, EPTREE, and IPWAN. Access points are Ports for the Layer2 network types and existing Cloud Routers for IPWAN. Unlike agents that provision the far-end resource themselves (for example the IPWAN and Cloud Router Network Setup agent, which creates its own Cloud Router), this agent never creates a Port or Cloud Router; it only accepts UUIDs of resources that already exist. This keeps its scope to network, connections, and observability, and avoids duplicating router or port provisioning logic owned elsewhere.
+
+The agent creates the Network, waits for it to become `ACTIVE`, then creates one connection per listed access point (Port→Network for Layer2 types, Cloud Router→Network for IPWAN), waits for each connection's `operation.equinixStatus` to reach `PROVISIONED`, attaches the successfully provisioned connections to a stream (creating one if needed — the Network itself cannot be attached to a stream), and sends a single completion report covering every item's outcome.
+
+This agent runs once immediately by default unless scheduled by user.</td>
+		<td>- Create a Fabric Network of type `EPLAN`, `EVPLAN`, `EPTREE`, `EVPTREE`, or `IPWAN`<br>- Accept a list of existing access points (Ports for Layer2 network types; existing Cloud Routers for IPWAN) and create one connection per entry, linking each to the new Network<br>- Poll the Network and every created connection independently until each reaches its ready state, or times out<br>- Create a stream automatically if no stream UUID is provided, then attach every successfully provisioned connection to it (Networks cannot be attached to a stream; pre-existing source Ports/Cloud Routers are never attached — only the connections this run creates)<br>- Send a single email completion report itemizing the outcome of the Network and every requested connection</td>
+		<td>This skill can use the following tools:
+
+- **`create_network`**: Creates a Fabric Network. Accepts name, type, scope (`LOCAL`, `REGIONAL`, or `GLOBAL`), location (region or metro code, as applicable to scope), notifications (mandatory), and project UUID.
+- **`search_networks`**: Searches for existing Fabric Networks by filter, used to poll state.
+- **`create_connection`**: Creates a connection. Used to create one connection per source access point, linking it to the Network. Accepts notifications.
+- **`search_connections`**: Searches for existing connections by filter, used to poll provisioning state via `/operation/equinixStatus`.
+- **`get_stream_details`**: Fetches stream details given a stream UUID.
+- **`create_stream`**: Creates a new stream. Accepts a stream type (for example TELEMETRY_STREAM), name, description, and project UUID.
+- **`attach_stream_asset`**: Attaches an asset to a stream. Accepts the stream UUID, an asset type (set it to "connection"), the asset UUID (the connection's UUID), and a request body that enables metrics collection. Networks cannot be attached to a stream — there is no network asset type.
+- **`wait`**: Waits for a specified number of milliseconds before the next action.
+- **`send_email_notification`**: Sends an email notification to a list of recipients with an optional PDF attachment.</td>
+		<td>preview
+	</tr>
 </table>
 
 </details>
