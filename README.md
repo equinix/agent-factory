@@ -112,8 +112,9 @@ This agent only executes once.</td>
 
 * **`search_connections`**: Searches for an existing connection.
 * **`get_stream_alert_rule_details`**: Searches for an existing alert rule.
-* **`update_connection`**: Update connection. Used to upgrade bandwidth.
-* **`get_next_available_bandwidth_tier`**: Fetches the next available billing tier based on a bandwidth input.</td>
+* **`update_connection`**: Update connection. Used to upgrade bandwidth. Returns success once the change request is accepted (e.g., `APPROVED`) — the connection's actual `bandwidth` value does not update until the platform finishes provisioning the change.
+* **`get_next_available_bandwidth_tier`**: Fetches the next available billing tier based on a bandwidth input.
+* **`wait`**: Waits for a specified number of milliseconds before the next action.</td>
 		<td>preview
 	</tr>
 	<tr>
