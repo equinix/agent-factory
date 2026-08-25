@@ -140,34 +140,6 @@ This agent only executes once.</td>
 Equinix Fabric Agent Factory On Schedule and On Demand Scenarios
 
 
-### Agent Agents
-
-<details>
-<summary>Show agents</summary>
-
-<table>
-	<tr>
-		<th>Name</th>
-		<th>Overview</th>
-		<th>Capabilities</th>
-		<th>Agent Tools</th>
-		<th>Release Status</th>
-	</tr>
-	<tr>
-		<td><a href="https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_schedule/agent/update-agent-email.md">Agent Email Update Agent<br>[update-agent-email.md]</a></td>
-		<td>An Equinix agent that scans every agent's configuration prompt for a specified email address and replaces it with a new one.
-It validates both email addresses before making any changes, reports exactly which agents were updated and which failed, and runs once immediately.</td>
-		<td>- Validate old and new email addresses before making any changes<br>- Scan all agent configuration prompts across the account<br>- Replace every occurrence of the old email with the new email in each matching prompt<br>- Report a change summary: how many agents were scanned, matched, updated, and failed<br>- Log all actions and decisions</td>
-		<td>This skill can use the following tools:
-
-* **`update_agent_email`**: Scans all agent configuration prompts for `old_email`, replaces every occurrence with `new_email`, and returns a JSON change report with fields: `scanned` (total agents checked), `matched` (agents containing the old email), `updated` (agents successfully patched), `failed` (list of `{uuid, error}` for agents that could not be patched), and `changes` (list of `{uuid, name}` for successfully updated agents).</td>
-		<td>preview
-	</tr>
-</table>
-
-</details>
-
-
 ### Asset Agents
 
 <details>
@@ -307,7 +279,7 @@ This agent runs once immediately by default unless scheduled by user.</td>
 	</tr>
 	<tr>
 		<td><a href="https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_schedule/cloud-router/cloud-router-connection-bgp-health-report.md">Cloud Router Connection BGP Session Restart Agent (Scheduled Batch)<br>[cloud-router-connection-bgp-health-report.md]</a></td>
-		<td>An Equinix scheduled agent that evaluates BGP session health for Fabric Cloud Router backed connections and performs narrow bounded remediation only when needed.
+		<td>An Equinix scheduled agent that carefully evaluates BGP session health for Fabric Cloud Router backed connections and performs narrow bounded remediation only when needed.
 
 This run is initiated by schedule and discovers unhealthy sessions from live API state rather than from a triggering BGP status event.
 
@@ -317,7 +289,7 @@ This agent runs once immediately by default unless scheduled by the user. It sen
 
 All tool-facing request details that matter for execution — including the `search_connections` filter shape, the `search_cloud_events` filter operators, and the HTML report template — are intentionally kept explicit below and should be preserved.</td>
 		<td>- Run on schedule and evaluate BGP health across a scoped set of FCR-attached connections<br>- Support optional `connection_uuid` override to target one connection<br>- Support optional `fcr_uuid` to scope discovery to connections attached to that cloud router<br>- Discover BGP routing protocols and evaluate both `bgpIpv4` and `bgpIpv6` families when present<br>- Skip non-actionable states (still provisioning, administratively disabled, already healthy)<br>- Detect flap storms from recent cloud events before remediation<br>- Wait for natural BGP recovery (self-heal grace period) before restarting<br>- Attempt one soft restart (disable/wait/enable/wait) only for the affected unhealthy session family<br>- Verify post-restart recovery within bounded polling limits<br>- Aggregate all findings/actions into one batched incident email with PDF attachment per notification policy (`send_email_on_clean_run`)<br>- Log all per-item decisions, actions, and errors</td>
-		<td>This skill can use the following tools:
+		<td>This agent template can use the following tools:
 
 * **`search_connections`**: Finds connections by UUID or by scoped filter and reads connection state.
 * **`list_routing_protocols`**: Reads routing protocols for a connection, including `state`, family `enabled`, and operation status fields.
