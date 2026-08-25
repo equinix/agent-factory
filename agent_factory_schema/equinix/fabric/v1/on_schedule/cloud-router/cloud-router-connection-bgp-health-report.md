@@ -7,11 +7,11 @@ categories: ["Monitor & Report Agents", "Deploy & Change Agents"]
 # Cloud Router Connection BGP Session Restart Agent (Scheduled Batch)
 
 ## Overview
-An Equinix scheduled agent that evaluates BGP session health for Fabric Cloud Router backed connections and performs narrow bounded remediation only when needed.
+An Equinix scheduled agent that carefully evaluates BGP session health for Fabric Cloud Router backed connections and performs narrow bounded remediation only when needed.
 
 This run is initiated by schedule and discovers unhealthy sessions from live API state rather than from a triggering BGP status event.
 
-Because BGP is a self-healing protocol, the agent first waits and observes for a bounded grace period before attempting any restart. It attempts exactly one remediation tier per affected session/address family: a soft restart by toggling the routing protocol address family's `enabled` flag (disable, then re-enable). It never retries this toggle in the same run, never performs peer reset, and never performs path failover.
+Because BGP is a self-healing protocol, the agent first waits and observes for a bounded grace period before attempting any restart. It attempts exactly one remediation tier per affected session/address family: a soft restart by toggling the routing protocol address family's `enabled` flag (disable, wait then re-enable). It never retries this toggle in the same run, never performs peer reset, and never performs path failover.
 
 This agent runs once immediately by default unless scheduled by the user. It sends at most one batched email report at the end of a run: always when unhealthy BGP sessions are detected, and optionally on clean runs when `send_email_on_clean_run` is enabled.
 
@@ -41,7 +41,7 @@ All tool-facing request details that matter for execution — including the `sea
 - Recipient addresses must be configured for final batch report delivery.
 
 ## Available Tools
-This skill can use the following tools:
+This agent template can use the following tools:
 
 * **`search_connections`**: Finds connections by UUID or by scoped filter and reads connection state.
 * **`list_routing_protocols`**: Reads routing protocols for a connection, including `state`, family `enabled`, and operation status fields.

@@ -10,7 +10,7 @@ Runs two tiers of checks on every agent-factory template markdown file:
        - ## Configuration section, if non-empty, contains at least one parseable parameter
        - ## Instructions section is non-empty
        - Declared tools exist in the known tool corpus (warning, non-blocking)
-  2. LLM judge (Groq llama-3.3-70b-versatile, 0-1 per dimension):
+  2. LLM judge (Claude on AWS Bedrock via agent-eval-service, 0-1 per dimension):
        - clarity, nonContradiction, scope, completeness, instructionToolAlignment
 
 Overall pass = all deterministic checks pass AND min judge score >= threshold.
@@ -28,13 +28,19 @@ Options:
     --skip-llm                Run deterministic checks only (no LLM judge)
 
 Environment variables:
-    GROQ_API_KEY              Groq API key (required for LLM judge)
-    LANGSMITH_API_KEY         LangSmith API key (optional — disables LangSmith if absent)
+    APIGEE_TOKEN_URL           OAuth2 token endpoint (grant_type=password)
+    AGENT_EVAL_SERVICE_URL     Base URL of agent-eval-service's external Apigee route
+    APIGEE_CLIENT_ID           OAuth2 client_id
+    APIGEE_CLIENT_SECRET       OAuth2 client_secret
+    APIGEE_SERVICE_USERNAME    Service account username (grant_type=password)
+    APIGEE_SERVICE_PASSWORD    Service account password (grant_type=password)
+    LANGSMITH_API_KEY          LangSmith API key (optional — disables LangSmith if absent)
 """
 
 from __future__ import annotations
 
 import argparse
+import httpx
 import json
 import logging
 import os
@@ -279,163 +285,150 @@ def build_tool_corpus(templates_root: Optional[str], exclude: Optional[Path] = N
 # LLM judge
 # ---------------------------------------------------------------------------
 
-class TemplateContentJudge:
+class AgentEvalServiceJudge:
     """
-    Scores a template on five semantic dimensions using Groq (llama-3.3-70b-versatile).
-    Groq is a public internet API — reachable from ubuntu-latest CI runners unlike
-    the internal Azure OpenAI private endpoint.
-    Fails open (all dimensions 1.0) on any error so a flaky LLM call never blocks a PR.
+    Scores a template on five semantic dimensions by calling agent-eval-service's
+    POST /fabric/v4/eval/template-content endpoint through the external Apigee gateway.
+
+    agent-eval-service runs in-cluster and calls AWS Bedrock Runtime (Claude) internally.
+    GitHub Actions runners cannot reach Bedrock — or the internal /fabric/i4/* route —
+    directly (VPC-only), so they authenticate with an OAuth2 Bearer token (obtained via
+    the platform's grant_type=password token endpoint) and call the external v4 route
+    through Apigee instead. Runs on a normal ubuntu-latest runner; no self-hosted/in-network
+    runner needed.
+
+    Fails open (all dimensions 1.0) on any error so a flaky network call never blocks a PR.
     """
 
-    DEFAULT_MODEL = "llama-3.3-70b-versatile"
+    _FAIL_OPEN_COMMENT = "judge unavailable — failed open"
 
-    def __init__(self, api_key: str, model: str = DEFAULT_MODEL, langsmith_client=None):
+    def __init__(
+        self,
+        token_url: str,
+        eval_service_url: str,
+        client_id: str,
+        client_secret: str,
+        username: str,
+        password: str,
+        timeout: float = 30.0,
+    ):
         self._enabled = False
-        if not api_key:
-            log.warning("LLM judge disabled (missing GROQ_API_KEY)")
+        self._eval_service_url = (eval_service_url or "").rstrip("/")
+        self._username = username
+        self._timeout = timeout
+        if not all([token_url, eval_service_url, client_id, client_secret, username, password]):
+            log.warning("LLM judge disabled (missing Apigee credentials/config)")
             return
-        try:
-            from groq import Groq
-            raw_client = Groq(api_key=api_key)
-            # Wrap with LangSmith for automatic LLM call tracing if available
-            if langsmith_client is not None:
-                try:
-                    from langsmith.wrappers import wrap_openai
-                    self._client = wrap_openai(raw_client)
-                    log.info("LLM judge: Groq client wrapped with LangSmith tracing")
-                except Exception as e:
-                    log.debug("wrap_openai failed (tracing disabled): %s", e)
-                    self._client = raw_client
-            else:
-                self._client = raw_client
-            self._model = model
-            self._enabled = True
-            log.info("LLM judge: using Groq model %s", model)
-        except Exception as e:
-            log.warning("LLM judge unavailable (will fail open): %s", e)
+        self._access_token = self._fetch_token(token_url, client_id, client_secret, username, password)
+        if not self._access_token:
+            log.warning("LLM judge disabled (could not obtain Apigee access token)")
+            return
+        self._enabled = True
+        log.info("LLM judge: using agent-eval-service via external Apigee (%s)", self._eval_service_url)
+
+    def _fetch_token(self, token_url: str, client_id: str, client_secret: str,
+                      username: str, password: str) -> Optional[str]:
+        """
+        Exchanges service-account credentials for a short-lived Bearer token via the
+        platform's OAuth2 grant_type=password flow. One token is fetched per script run
+        (not cached/persisted across runs) and reused for every template judged in this run —
+        its ~3599s TTL comfortably covers a single CI run.
+        """
+        body = {
+            "grant_type": "password",
+            "user_name": username,
+            "user_password": password,
+            "client_id": client_id,
+            "client_secret": client_secret,
+        }
+        headers = {
+            "Content-Type": "application/json",
+            "Accept": "application/json",
+            "X-CORRELATION-ID": str(uuid.uuid4()),
+        }
+        response_body = ""
+        for attempt in range(2):
+            try:
+                response = httpx.post(token_url, json=body, headers=headers, timeout=self._timeout)
+                if response.status_code >= 400:
+                    response_body = response.text[:1000]
+                response.raise_for_status()
+                token = response.json().get("access_token")
+                if not token:
+                    raise ValueError("token response missing access_token")
+                return token
+            except Exception as e:
+                if attempt == 0:
+                    log.debug("Apigee token fetch attempt 1 failed, retrying in 2s: %s", e)
+                    time.sleep(2)
+                    continue
+                detail = f" — response body: {response_body}" if response_body else ""
+                log.warning("Apigee token fetch failed after retry: %s%s", e, detail)
+                return None
+        return None
 
     def judge(self, spec: TemplateSpec) -> dict[str, JudgeScore]:
         if not self._enabled:
             return self._fail_open()
-        prompt = self._build_prompt(spec)
+        response_body = ""
         for attempt in range(2):
             try:
-                response = self._client.chat.completions.create(
-                    model=self._model,
-                    messages=[{"role": "user", "content": prompt}],
-                    temperature=0.0,
-                    response_format={"type": "json_object"},
-                    timeout=30,
+                resp = httpx.post(
+                    f"{self._eval_service_url}/fabric/v4/eval/template-content",
+                    json={
+                        "templateMarkdown": spec.raw_markdown,
+                        "templatePath": spec.source_path,
+                    },
+                    headers={
+                        "Authorization": f"Bearer {self._access_token}",
+                        "Content-Type": "application/json",
+                        "Accept": "application/json",
+                        "X-AUTH-USER-NAME": self._username,
+                        "X-CORRELATION-ID": str(uuid.uuid4()),
+                    },
+                    timeout=self._timeout,
                 )
-                raw = response.choices[0].message.content or ""
-                return self._parse(raw)
+                if resp.status_code >= 400:
+                    response_body = resp.text[:1000]
+                resp.raise_for_status()
+                return self._parse(resp.json(), spec.source_path)
             except Exception as e:
                 if attempt == 0:
                     log.debug("Judge attempt 1 failed, retrying in 2s: %s", e)
                     time.sleep(2)
                     continue
-                log.warning("Template content judge failed after retry (failing open) path=%s: %s",
-                            spec.source_path, e)
+                detail = f" — response body: {response_body}" if response_body else ""
+                log.warning(
+                    "Template judge failed after retry (failing open) path=%s: %s%s",
+                    spec.source_path, e, detail,
+                )
                 return self._fail_open()
         return self._fail_open()
 
-    def _build_prompt(self, spec: TemplateSpec) -> str:
-        declared = ", ".join(spec.declared_tools) if spec.declared_tools else "none declared"
-        return f"""You are a strict production-readiness reviewer for Equinix agent-factory templates.
-These templates instruct an LLM agent to perform automated network operations — mistakes cause
-real infrastructure failures. Be a skeptical reviewer, not a generous one.
-
-Declared tools: {declared}
-
-Full template markdown:
----
-{spec.raw_markdown}
----
-
-SCORING ANCHORS — calibrate against these before assigning any score:
-  1.0  Fully meets the criterion. Nothing missing or ambiguous.
-  0.8  Minor gap that does not affect executability.
-  0.6  Notable gap — an agent could get confused or skip a critical step.
-  0.4  Significant problem — agent will likely fail or behave incorrectly.
-  0.0  Criterion completely unmet.
-
-DIMENSION RUBRICS — read carefully, every bullet is a potential deduction:
-
-clarity (Is every step specific and unambiguous?):
-  - Penalize for vague verbs with no tool call: "check", "do", "handle", "verify", "continue monitoring".
-  - Penalize for steps that say "wait" or "retry" without specifying a wait/retry tool and its parameters.
-  - Penalize for "if unsuccessful" / "if it works" with no measurable definition of success or failure.
-  - Score ≤ 0.5 if more than one step cannot be executed as written.
-
-nonContradiction (Do guidelines and instructions align with each other and with the declared tools?):
-  - Penalize for any guideline that mandates behavior the declared tools cannot satisfy
-    (e.g. "always log every action" when no logging tool is declared).
-  - Penalize for a guideline that says stop on error but instructions say proceed on failure.
-  - Score ≤ 0.5 if a guideline directly contradicts a declared tool's absence.
-
-scope (Is the agent's goal specific, bounded, and completable?):
-  - Penalize for no defined termination condition (success or give-up state).
-  - Penalize for open-ended steps like "continue monitoring" with no exit criteria.
-  - Score ≤ 0.6 if the agent has no clear end state.
-
-completeness (Are prerequisites, success criteria, timing, and failure handling fully specified?):
-  - Penalize for any remediation action (restart, reset, failover) with no wait/poll step before
-    re-checking outcome — the agent has no way to know if the action took effect.
-  - Penalize for a notification step that specifies no required content, format, or fields.
-  - Penalize for missing timeout or threshold before escalating to the next recovery tier.
-  - Penalize for a failover step with no defined trigger condition or success check.
-  - Score ≤ 0.5 if two or more of the above are missing.
-
-instructionToolAlignment (Does every step use a declared tool, and is every declared tool used?):
-  - For EACH instruction step that performs an action, identify whether a declared tool covers it.
-  - Score ≤ 0.4 if ANY step performs an action (reset, failover, wait, log, update) for which
-    there is NO declared tool — the agent cannot execute that step.
-  - Score ≤ 0.6 if a declared tool is listed but never referenced by any instruction step.
-  - Do NOT assume a tool exists just because the step implies it. Only count tools explicitly
-    listed under ## Available Tools.
-
-Reason through each dimension in one sentence, then output ONLY valid JSON — no prose, no code fences:
-{{
-  "clarity":                  {{"score": <0.0-1.0>, "comment": "<one sentence finding>"}},
-  "nonContradiction":         {{"score": <0.0-1.0>, "comment": "<one sentence finding>"}},
-  "scope":                    {{"score": <0.0-1.0>, "comment": "<one sentence finding>"}},
-  "completeness":             {{"score": <0.0-1.0>, "comment": "<one sentence finding>"}},
-  "instructionToolAlignment": {{"score": <0.0-1.0>, "comment": "<one sentence finding>"}}
-}}
-"""
-
-    def _parse(self, raw: str) -> dict[str, JudgeScore]:
-        if not raw or not raw.strip():
+    def _parse(self, body: dict, source_path: str) -> dict[str, JudgeScore]:
+        if body.get("failedOpen"):
+            log.warning(
+                "agent-eval-service reported failedOpen=true for path=%s — treating as fail-open",
+                source_path,
+            )
             return self._fail_open()
-        try:
-            text = raw.strip()
-            if text.startswith("```"):
-                text = re.sub(r"^```(?:json)?\s*", "", text)
-                text = re.sub(r"\s*```$", "", text).strip()
-            node = json.loads(text)
-            scores: dict[str, JudgeScore] = {}
-            for dim in JUDGE_DIMENSIONS:
-                entry = node.get(dim, {})
-                score = max(0.0, min(1.0, float(entry.get("score", 1.0))))
-                comment = entry.get("comment", "")
-                scores[dim] = JudgeScore(score=score, comment=comment)
-            return scores
-        except Exception as e:
-            log.warning("Failed to parse judge response (failing open): %s", e)
-            return self._fail_open()
-
-    _FAIL_OPEN_COMMENT = "judge unavailable — failed open"
+        scores: dict[str, JudgeScore] = {}
+        for dim in JUDGE_DIMENSIONS:
+            entry = (body.get("scores") or {}).get(dim, {})
+            score = max(0.0, min(1.0, float(entry.get("score", 1.0))))
+            scores[dim] = JudgeScore(score=score, comment=entry.get("comment", ""))
+        return scores
 
     @staticmethod
     def _fail_open() -> dict[str, JudgeScore]:
-        return {dim: JudgeScore(score=1.0, comment=TemplateContentJudge._FAIL_OPEN_COMMENT)
+        return {dim: JudgeScore(score=1.0, comment=AgentEvalServiceJudge._FAIL_OPEN_COMMENT)
                 for dim in JUDGE_DIMENSIONS}
 
     @staticmethod
     def scores_are_fail_open(scores: dict[str, JudgeScore]) -> bool:
         """True when every dimension carries the fail-open sentinel comment."""
         return bool(scores) and all(
-            s.comment == TemplateContentJudge._FAIL_OPEN_COMMENT
+            s.comment == AgentEvalServiceJudge._FAIL_OPEN_COMMENT
             for s in scores.values()
         )
 
@@ -446,7 +439,7 @@ Reason through each dimension in one sentence, then output ONLY valid JSON — n
 
 class TemplateContentEvalService:
 
-    def __init__(self, judge: TemplateContentJudge, tool_corpus: set[str] | None = None):
+    def __init__(self, judge: AgentEvalServiceJudge, tool_corpus: set[str] | None = None):
         self._parser = TemplateMarkdownParser()
         self._judge = judge
         self._tool_corpus = tool_corpus or set()
@@ -518,7 +511,7 @@ class TemplateContentEvalService:
             judge_ran = False
         else:
             judge_scores = self._judge.judge(spec)
-            judge_ran = not TemplateContentJudge.scores_are_fail_open(judge_scores)
+            judge_ran = not AgentEvalServiceJudge.scores_are_fail_open(judge_scores)
             judge_min = min((s.score for s in judge_scores.values()), default=1.0)
             if not judge_ran:
                 log.warning("path=%s  LLM judge failed open — scores are unreliable", path)
@@ -730,7 +723,7 @@ def _write_report_md(results: list[EvalResult], threshold: float, output_path: s
     ]
     if judge_skipped:
         lines += [
-            "> ⚠️ **LLM judge could not reach the Groq API** (network error, timeout, or bad response). "
+            "> ⚠️ **LLM judge could not reach agent-eval-service via Apigee** (network error, timeout, or service unavailable). "
             "Deterministic checks ran; judge scores are skipped. "
             "Templates passed on deterministic checks alone — spec quality was NOT graded.",
             "",
@@ -794,13 +787,19 @@ def main() -> None:
         log.warning("No templates to evaluate. Provide --changed=<files> or --templates-dir=<dir>.")
         sys.exit(0)
 
-    # LangSmith (init first so we can pass its client to judge for wrap_openai tracing)
+    # LangSmith (observability only — no longer wired to the judge client)
     langsmith = LangSmithLogger(api_key=os.environ.get("LANGSMITH_API_KEY", ""))
 
-    # Build judge (Groq — public internet API, reachable from ubuntu-latest CI runners)
-    judge = TemplateContentJudge(
-        api_key=os.environ.get("GROQ_API_KEY", ""),
-        langsmith_client=langsmith.get_client(),
+    # Build judge — calls agent-eval-service via the external Apigee /fabric/v4 route,
+    # which calls AWS Bedrock internally. Bedrock (and the internal /fabric/i4 route) are
+    # VPC-only and not reachable from ubuntu-latest runners; the external v4 route is.
+    judge = AgentEvalServiceJudge(
+        token_url=os.environ.get("APIGEE_TOKEN_URL", ""),
+        eval_service_url=os.environ.get("AGENT_EVAL_SERVICE_URL", ""),
+        client_id=os.environ.get("APIGEE_CLIENT_ID", ""),
+        client_secret=os.environ.get("APIGEE_CLIENT_SECRET", ""),
+        username=os.environ.get("APIGEE_SERVICE_USERNAME", ""),
+        password=os.environ.get("APIGEE_SERVICE_PASSWORD", ""),
     )
 
     corpus_root = args.templates_dir or "agent_factory_schema"
