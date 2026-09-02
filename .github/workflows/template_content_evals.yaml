@@ -84,6 +84,27 @@ jobs:
           pip install --upgrade pip
           pip install -r scripts/requirements.txt
 
+      - name: Debug Apigee token + eval endpoint
+        if: steps.templates.outputs.mode != 'none'
+        env:
+          APIGEE_CLIENT_ID: ${{ secrets.APIGEE_CLIENT_ID }}
+          APIGEE_CLIENT_SECRET: ${{ secrets.APIGEE_CLIENT_SECRET }}
+          APIGEE_SERVICE_USERNAME: ${{ secrets.APIGEE_SERVICE_USERNAME }}
+          APIGEE_SERVICE_PASSWORD: ${{ secrets.APIGEE_SERVICE_PASSWORD }}
+        run: |
+          set -euo pipefail
+          TOKEN=$(curl -s -X POST "${APIGEE_TOKEN_URL}" \
+            -H "Content-Type: application/json" \
+            -d "{\"grant_type\":\"password\",\"user_name\":\"${APIGEE_SERVICE_USERNAME}\",\"user_password\":\"${APIGEE_SERVICE_PASSWORD}\",\"client_id\":\"${APIGEE_CLIENT_ID}\",\"client_secret\":\"${APIGEE_CLIENT_SECRET}\"}" \
+            | jq -r '.access_token // empty')
+          echo "Token length: ${#TOKEN}"
+          echo "Token dot-count: $(echo "$TOKEN" | tr -cd '.' | wc -c)"
+          curl -s -o /dev/null -w "Eval endpoint HTTP status: %{http_code}\n" \
+            -X POST "${AGENT_EVAL_SERVICE_URL}/fabric/v4/eval/template-content" \
+            -H "Authorization: Bearer ${TOKEN}" \
+            -H "Content-Type: application/json" \
+            -d '{"templateMarkdown":"## Overview\nTest","templatePath":"debug/test.md"}'
+
       - name: Run template content evals
         if: steps.templates.outputs.mode != 'none'
         env:
