@@ -331,6 +331,6 @@ Content rules:
 
 * **`restart_update_wait_ms`**: <Integer> - Optional. Default `30000`. Wait after every `update_routing_protocol` call (disable and enable), and also used for one additional transient-state wait before deciding re-enable is blocked.
 
-* **`recovery_poll_attempts`**: <Integer> - Optional. Default `5`. Maximum number of Step 9 recovery-verification poll attempts to perform before giving up and recording `Not Restored`.
+* **`recovery_poll_attempts`**: <Integer> - Optional. Default `5`. Maximum number of Step 9 poll attempts (recovery-verification) to perform before giving up and recording `Not Restored`.
 * **`recovery_poll_interval_ms`**: <Integer> - Optional. Default `10000`. Wait between each Step 9 recovery-verification poll attempt.
 
