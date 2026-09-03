@@ -99,28 +99,24 @@ jobs:
             | jq -r '.access_token // empty')
           echo "Token length: ${#TOKEN}"
           echo "Token dot-count: $(echo "$TOKEN" | tr -cd '.' | wc -c)"
-          echo "--- curl (baseline, no extra headers) ---"
+          echo "--- curl with tiny body (baseline) ---"
           curl -s -o /dev/null -w "HTTP status: %{http_code}\n" \
             -X POST "${AGENT_EVAL_SERVICE_URL}/fabric/v4/eval/template-content" \
             -H "Authorization: Bearer ${TOKEN}" \
             -H "Content-Type: application/json" \
             -d '{"templateMarkdown":"## Overview\nTest","templatePath":"debug/test.md"}'
-          echo "--- curl with X-AUTH-USER-NAME (as Python script sends) ---"
+          echo "--- curl with backtick tool names (no HTML) ---"
           curl -s -o /dev/null -w "HTTP status: %{http_code}\n" \
             -X POST "${AGENT_EVAL_SERVICE_URL}/fabric/v4/eval/template-content" \
             -H "Authorization: Bearer ${TOKEN}" \
             -H "Content-Type: application/json" \
-            -H "X-AUTH-USER-NAME: ${APIGEE_SERVICE_USERNAME}" \
-            -d '{"templateMarkdown":"## Overview\nTest","templatePath":"debug/test.md"}'
-          echo "--- curl with all Python script headers ---"
+            -d '{"templateMarkdown":"## Instructions\n1. Call `search_connections`.\n2. Call `update_routing_protocol`.","templatePath":"debug/test.md"}'
+          echo "--- curl with HTML tags in body (simulates real template) ---"
           curl -s -o /dev/null -w "HTTP status: %{http_code}\n" \
             -X POST "${AGENT_EVAL_SERVICE_URL}/fabric/v4/eval/template-content" \
             -H "Authorization: Bearer ${TOKEN}" \
             -H "Content-Type: application/json" \
-            -H "Accept: application/json" \
-            -H "X-AUTH-USER-NAME: ${APIGEE_SERVICE_USERNAME}" \
-            -H "X-CORRELATION-ID: debug-test-id" \
-            -d '{"templateMarkdown":"## Overview\nTest","templatePath":"debug/test.md"}'
+            -d '{"templateMarkdown":"## Overview\nTest.\n```html\n<div class=\"header\"><h1>Report</h1></div>\n```","templatePath":"debug/test.md"}'
 
       - name: Run template content evals
         if: steps.templates.outputs.mode != 'none'
