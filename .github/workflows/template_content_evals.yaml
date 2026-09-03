@@ -99,7 +99,15 @@ jobs:
             | jq -r '.access_token // empty')
           echo "Token length: ${#TOKEN}"
           echo "Token dot-count: $(echo "$TOKEN" | tr -cd '.' | wc -c)"
-          curl -s -o /dev/null -w "Eval endpoint HTTP status: %{http_code}\n" \
+          echo "--- curl (no User-Agent override) ---"
+          curl -s -o /dev/null -w "HTTP status: %{http_code}\n" \
+            -X POST "${AGENT_EVAL_SERVICE_URL}/fabric/v4/eval/template-content" \
+            -H "Authorization: Bearer ${TOKEN}" \
+            -H "Content-Type: application/json" \
+            -d '{"templateMarkdown":"## Overview\nTest","templatePath":"debug/test.md"}'
+          echo "--- curl with python-httpx User-Agent (simulates Python script) ---"
+          curl -s -o /dev/null -w "HTTP status: %{http_code}\n" \
+            -A "python-httpx/0.27.2" \
             -X POST "${AGENT_EVAL_SERVICE_URL}/fabric/v4/eval/template-content" \
             -H "Authorization: Bearer ${TOKEN}" \
             -H "Content-Type: application/json" \
