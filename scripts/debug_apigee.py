@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 """Temporary debug script — prints exact httpx request headers and status for the eval endpoint."""
 import httpx
-import json
 import os
 
 token = os.environ.get("DEBUG_TOKEN", "")
@@ -12,7 +11,9 @@ with open("agent_factory_schema/equinix/fabric/v1/on_event/connection/connection
 
 print(f"Template size: {len(content)} chars")
 
-resp = httpx.post(
+# Build the request object first so we can inspect headers BEFORE sending
+req = httpx.Request(
+    "POST",
     f"{base_url}/fabric/v4/eval/template-content",
     json={"templateMarkdown": content, "templatePath": "debug/small.md"},
     headers={
@@ -22,10 +23,20 @@ resp = httpx.post(
         "X-CORRELATION-ID": "debug-001",
     },
 )
-print(f"httpx status: {resp.status_code}")
-print("httpx request headers sent:")
-for k, v in resp.request.headers.items():
+
+print("=== Request headers httpx will send ===")
+for k, v in req.headers.items():
     if k.lower() == "authorization":
         print(f"  {k}: Bearer ***")
     else:
         print(f"  {k}: {v}")
+
+print("=== Sending request (40s timeout) ===")
+try:
+    with httpx.Client(timeout=40.0) as client:
+        resp = client.send(req)
+    print(f"httpx status: {resp.status_code}")
+except httpx.TimeoutException as e:
+    print(f"httpx TIMEOUT: {e}")
+except Exception as e:
+    print(f"httpx ERROR: {e}")

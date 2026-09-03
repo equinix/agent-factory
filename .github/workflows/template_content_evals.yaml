@@ -92,7 +92,7 @@ jobs:
           APIGEE_SERVICE_USERNAME: ${{ secrets.APIGEE_SERVICE_USERNAME }}
           APIGEE_SERVICE_PASSWORD: ${{ secrets.APIGEE_SERVICE_PASSWORD }}
         run: |
-          set -euo pipefail
+          set -uo pipefail
           TOKEN=$(curl -s -X POST "${APIGEE_TOKEN_URL}" \
             -H "Content-Type: application/json" \
             -d "{\"grant_type\":\"password\",\"user_name\":\"${APIGEE_SERVICE_USERNAME}\",\"user_password\":\"${APIGEE_SERVICE_PASSWORD}\",\"client_id\":\"${APIGEE_CLIENT_ID}\",\"client_secret\":\"${APIGEE_CLIENT_SECRET}\"}" \
