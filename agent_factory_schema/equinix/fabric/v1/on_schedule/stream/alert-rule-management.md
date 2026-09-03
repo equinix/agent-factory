@@ -52,4 +52,4 @@ This skill can use the following tools:
 * **`operand`**: < operand must be ABOVE or BELOW > - Required - User should specify an operand.
 * **`critical_threshold`**: < numeric value for metric type from alert rule > - Required - User should a critical threshold.
 * **`window_size`**: < numeric value for window size from alert rule > - Optional - User should a window size or default is PT15M.
-* **`notifications`**: < Comma-separated email addresses > — Required — Email addresses to receive provisioning status notifications (notification type defaults to `"ALL"`).
+* **`recipient_email_addresses`**: < Comma-separated email addresses > — Required — Email addresses to receive provisioning status notifications (notification type defaults to `"ALL"`).
