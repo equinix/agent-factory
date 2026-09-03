@@ -4,7 +4,7 @@ description: Creates one Network, one Cloud Router, and one IPWAN connection bet
 categories: ["Deploy & Change Agents"]
 ---
 
-# IPWAN & Cloud Router Network Setup Agent
+# IPWAN and Cloud Router Network Setup Agent
 
 ## Overview
 An Equinix agent that provisions a single IPWAN-based network topology with FCR. 
@@ -149,7 +149,7 @@ Wait 3000 milliseconds after each attachment to allow the platform to register t
 
 ```
 <div class="header">
-    <h1>IPWAN & Cloud Router Network Setup — Completion Report</h1>
+    <h1>IPWAN and Cloud Router Network Setup — Completion Report</h1>
 </div>
 
 <div class="section">
