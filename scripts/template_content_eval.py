@@ -40,6 +40,7 @@ Environment variables:
 from __future__ import annotations
 
 import argparse
+import base64
 import httpx
 import json
 import logging
@@ -376,7 +377,9 @@ class AgentEvalServiceJudge:
                 resp = httpx.post(
                     f"{self._eval_service_url}/fabric/v4/eval/template-content",
                     json={
-                        "templateMarkdown": spec.raw_markdown,
+                        "templateMarkdownBase64": base64.b64encode(
+                            spec.raw_markdown.encode()
+                        ).decode(),
                         "templatePath": spec.source_path,
                     },
                     headers={
