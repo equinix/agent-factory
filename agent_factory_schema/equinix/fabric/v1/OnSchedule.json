@@ -248,6 +248,15 @@
             "categories": [
                 "Monitor & Report Agents"
             ]
+        },
+        {
+            "name": "equinix.fabric.agent.email.update",
+            "description": "Scan all agent configuration prompts for an email address and replace it with a new one",
+            "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_schedule/agent/update-agent-email.md",
+            "releaseStatus": "preview",
+            "categories": [
+                "Deploy & Change Agents"
+            ]
         }
     ]
 }

@@ -73,6 +73,15 @@
             "datatype": "equinix.fabric.v1.on_schedule",
             "agentFactories": [
                 {
+                    "name": "Agent Email Update Agent",
+                    "description": "An Equinix agent that scans every agent's configuration prompt for a specified email address and replaces it with a new one.",
+                    "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_schedule/agent/update-agent-email.md",
+                    "releaseStatus": "preview",
+                    "categories": [
+                        "Deploy & Change Agents"
+                    ]
+                },
+                {
                     "name": "Alert Rule Manager Agent",
                     "description": "An Equinix agent that sets up an alert rule for a connection.",
                     "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_schedule/stream/alert-rule-management.md",
