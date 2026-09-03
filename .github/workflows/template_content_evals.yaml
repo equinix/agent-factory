@@ -105,20 +105,37 @@ jobs:
             -H "Authorization: Bearer ${TOKEN}" \
             -H "Content-Type: application/json" \
             -d '{"templateMarkdown":"## Overview\nTest","templatePath":"debug/test.md"}'
-          echo "--- curl with small body (~500 bytes) ---"
+          echo "--- curl with actual smallest template file (2KB) ---"
+          python3 -c "
+import json, sys
+content = open('agent_factory_schema/equinix/fabric/v1/on_event/connection/connection-metro-latency-notify.md').read()
+sys.stdout.write(json.dumps({'templateMarkdown': content, 'templatePath': 'debug/small.md'}))
+" > /tmp/small_template_body.json
+          echo "Body size: $(wc -c < /tmp/small_template_body.json) bytes"
           curl -s -o /dev/null -w "HTTP status: %{http_code}\n" \
             -X POST "${AGENT_EVAL_SERVICE_URL}/fabric/v4/eval/template-content" \
             -H "Authorization: Bearer ${TOKEN}" \
             -H "Content-Type: application/json" \
-            -d '{"templateMarkdown":"## Instructions\n1. Call `search_connections`.\n2. Call `update_routing_protocol`.","templatePath":"debug/test.md"}'
-          echo "--- curl with large body (~22KB, same size as real template) ---"
-          python3 -c "import json,sys; sys.stdout.write(json.dumps({'templateMarkdown': '## Overview\n' + ('A detailed instruction step. ' * 800), 'templatePath': 'debug/large.md'}))" > /tmp/large_body.json
-          echo "Body size: $(wc -c < /tmp/large_body.json) bytes"
-          curl -s -o /dev/null -w "HTTP status: %{http_code}\n" \
-            -X POST "${AGENT_EVAL_SERVICE_URL}/fabric/v4/eval/template-content" \
-            -H "Authorization: Bearer ${TOKEN}" \
-            -H "Content-Type: application/json" \
-            --data @/tmp/large_body.json
+            --data @/tmp/small_template_body.json
+          echo "--- python httpx with same small template (prints request headers + status) ---"
+          python3 - <<'PYEOF'
+import httpx, json, os
+token = os.environ["TOKEN"] if "TOKEN" in os.environ else ""
+# read TOKEN from shell — note: passed via env below
+PYEOF
+          python3 -c "
+import httpx, json, os, subprocess, sys
+token_raw = subprocess.check_output(['bash','-c','curl -s -X POST \"\$APIGEE_TOKEN_URL\" -H \"Content-Type: application/json\" -d \"{\\\"grant_type\\\":\\\"password\\\",\\\"user_name\\\":\\\"\$APIGEE_SERVICE_USERNAME\\\",\\\"user_password\\\":\\\"\$APIGEE_SERVICE_PASSWORD\\\",\\\"client_id\\\":\\\"\$APIGEE_CLIENT_ID\\\",\\\"client_secret\\\":\\\"\$APIGEE_CLIENT_SECRET\\\"}\"'], env={**os.environ}).decode().strip()
+token = json.loads(token_raw).get('access_token','')
+content = open('agent_factory_schema/equinix/fabric/v1/on_event/connection/connection-metro-latency-notify.md').read()
+resp = httpx.post(
+  os.environ['AGENT_EVAL_SERVICE_URL'] + '/fabric/v4/eval/template-content',
+  json={'templateMarkdown': content, 'templatePath': 'debug/small.md'},
+  headers={'Authorization': f'Bearer {token}', 'Content-Type': 'application/json', 'Accept': 'application/json', 'X-CORRELATION-ID': 'debug-001'},
+)
+print('httpx status:', resp.status_code)
+print('httpx request headers:', dict(resp.request.headers))
+"
 
       - name: Run template content evals
         if: steps.templates.outputs.mode != 'none'
