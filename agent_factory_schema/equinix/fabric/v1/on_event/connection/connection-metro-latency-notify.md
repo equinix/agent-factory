@@ -7,7 +7,7 @@ categories: ["Deploy & Change Agents"]
 # Metro Latency Spikes and Connections Over Metros Report Agent
 
 ## Overview
-An Equinix agent that automatically email a list of connections that are over the metros where latency spike.
+An Equinix agent that automatically emails a list of connections that are in the metros where latency spikes.
 
 ## Capabilities
 - Detect metro latency alerts
