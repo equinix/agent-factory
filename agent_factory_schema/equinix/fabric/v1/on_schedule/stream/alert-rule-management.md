@@ -22,7 +22,7 @@ Resources should be in PROVISIONED state to be eligible for alert setup.
 This skill can use the following tools:
 
 *   **`search_connections`**: Searches for an existing connection.
-*   **`get_stream_details`**: Fetches stream details given a stream uuid.
+*   **`get_stream`**: Fetches stream details given a stream uuid.
 *   **`create_stream`**: Create a stream.
 *   **`attach_stream_asset`**: Attach a resource to a stream.
 *   **`create_stream_alert_rule`**: Create an alert rule given a stream uuid.
@@ -52,3 +52,4 @@ This skill can use the following tools:
 * **`operand`**: < operand must be ABOVE or BELOW > - Required - User should specify an operand.
 * **`critical_threshold`**: < numeric value for metric type from alert rule > - Required - User should a critical threshold.
 * **`window_size`**: < numeric value for window size from alert rule > - Optional - User should a window size or default is PT15M.
+* **`notifications`**: < Comma-separated email addresses > — Required — Email addresses to receive provisioning status notifications (notification type defaults to `"ALL"`).

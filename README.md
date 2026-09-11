@@ -112,8 +112,9 @@ This agent only executes once.</td>
 
 * **`search_connections`**: Searches for an existing connection.
 * **`get_stream_alert_rule_details`**: Searches for an existing alert rule.
-* **`update_connection`**: Update connection. Used to upgrade bandwidth.
-* **`get_next_available_bandwidth_tier`**: Fetches the next available billing tier based on a bandwidth input.</td>
+* **`update_connection`**: Update connection. Used to upgrade bandwidth. Returns success once the change request is accepted (e.g., `APPROVED`) — the connection's actual `bandwidth` value does not update until the platform finishes provisioning the change.
+* **`get_next_available_bandwidth_tier`**: Fetches the next available billing tier based on a bandwidth input.
+* **`wait`**: Waits for a specified number of milliseconds before the next action.</td>
 		<td>preview
 	</tr>
 	<tr>
@@ -195,7 +196,7 @@ This agent runs once immediately by default unless scheduled by user.</td>
 	</tr>
 	<tr>
 		<td><a href="https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_schedule/asset/resource-stuck-state-timeout-notifier.md">Resource Stuck State Timeout Notifier Agent<br>[resource-stuck-state-timeout-notifier.md]</a></td>
-		<td>This agent identifies Equinix Fabric connections, ports, and routers stuck in a `PROVISIONING` or `DEPROVISIONING` state past a configurable timeout.
+		<td>This agent identifies Equinix Fabric connections, ports, and routers stuck in a PROVISIONING or DEPROVISIONING state past a configurable timeout.
 This agent runs once immediately by default unless scheduled by user, and emails a report of the affected resources.
 This agent is read-only — it never modifies, upgrades, or cancels any resource.
 
@@ -250,7 +251,7 @@ unattached. This agent runs once immediately by default unless scheduled by user
 	</tr>
 	<tr>
 		<td><a href="https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_schedule/cloud-router/cloud-router-bgp-bfd-enabler.md">Cloud Router BGP BFD Enabler Agent<br>[cloud-router-bgp-bfd-enabler.md]</a></td>
-		<td>An Equinix agent that scans all provisioned Fabric Cloud Router (FCR) connections whose bandwidth exceeds a configurable threshold (default 1 Gbps), identifies those with an existing BGP routing protocol where BFD is not yet enabled, enables BFD on each qualifying BGP session, and sends a completion email report summarizing all changes made.
+		<td>An Equinix agent that scans all provisioned Fabric Cloud Router connections whose bandwidth exceeds a configurable threshold, identifies those with an existing BGP routing protocol where BFD is not yet enabled, enables BFD on each qualifying BGP session, and sends a completion email report summarizing all changes made.
 This agent runs once immediately by default unless scheduled by user.</td>
 		<td>- Search for all provisioned FCR connections exceeding a configurable bandwidth threshold (default 1 Gbps)<br>- Inspect each connection's routing protocols and identify BGP sessions with BFD disabled<br>- Enable BFD on qualifying BGP routing protocols using a configurable interval<br>- Skip connections where BFD is already enabled or where no BGP routing protocol exists<br>- Send a completion email report listing updated, skipped, and failed connections</td>
 		<td>This skill can use the following tools:
@@ -279,17 +280,17 @@ This agent runs once immediately by default unless scheduled by user.</td>
 	</tr>
 	<tr>
 		<td><a href="https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_schedule/cloud-router/cloud-router-connection-bgp-health-report.md">Cloud Router Connection BGP Session Restart Agent (Scheduled Batch)<br>[cloud-router-connection-bgp-health-report.md]</a></td>
-		<td>An Equinix scheduled agent that evaluates BGP session health for Fabric Cloud Router backed connections and performs narrow bounded remediation only when needed.
+		<td>An Equinix scheduled agent that carefully evaluates BGP session health for Fabric Cloud Router backed connections and performs narrow bounded remediation only when needed.
 
 This run is initiated by schedule and discovers unhealthy sessions from live API state rather than from a triggering BGP status event.
 
-Because BGP is a self-healing protocol, the agent first waits and observes for a bounded grace period before attempting any restart. It attempts exactly one remediation tier per affected session/address family: a soft restart by toggling the routing protocol address family's `enabled` flag (disable, then re-enable). It never retries this toggle in the same run, never performs peer reset, and never performs path failover.
+Because BGP is a self-healing protocol, the agent first waits and observes for a bounded grace period before attempting any restart. It attempts exactly one remediation tier per affected session/address family: a soft restart by toggling the routing protocol address family's `enabled` flag (disable, wait then re-enable). It never retries this toggle in the same run, never performs peer reset, and never performs path failover.
 
 This agent runs once immediately by default unless scheduled by the user. It sends at most one batched email report at the end of a run: always when unhealthy BGP sessions are detected, and optionally on clean runs when `send_email_on_clean_run` is enabled.
 
 All tool-facing request details that matter for execution — including the `search_connections` filter shape, the `search_cloud_events` filter operators, and the HTML report template — are intentionally kept explicit below and should be preserved.</td>
 		<td>- Run on schedule and evaluate BGP health across a scoped set of FCR-attached connections<br>- Support optional `connection_uuid` override to target one connection<br>- Support optional `fcr_uuid` to scope discovery to connections attached to that cloud router<br>- Discover BGP routing protocols and evaluate both `bgpIpv4` and `bgpIpv6` families when present<br>- Skip non-actionable states (still provisioning, administratively disabled, already healthy)<br>- Detect flap storms from recent cloud events before remediation<br>- Wait for natural BGP recovery (self-heal grace period) before restarting<br>- Attempt one soft restart (disable/wait/enable/wait) only for the affected unhealthy session family<br>- Verify post-restart recovery within bounded polling limits<br>- Aggregate all findings/actions into one batched incident email with PDF attachment per notification policy (`send_email_on_clean_run`)<br>- Log all per-item decisions, actions, and errors</td>
-		<td>This skill can use the following tools:
+		<td>This agent template can use the following tools:
 
 * **`search_connections`**: Finds connections by UUID or by scoped filter and reads connection state.
 * **`list_routing_protocols`**: Reads routing protocols for a connection, including `state`, family `enabled`, and operation status fields.
@@ -308,7 +309,8 @@ This agent runs once immediately by default unless scheduled by user.</td>
 		<td>This skill can use the following tools:
 
 *   **`search_routers`**: Searches for existing cloud routers. Used to check for duplicates and to confirm post-creation status.
-*   **`create_router`**: Creates a new Fabric Cloud Router with the specified configuration.</td>
+*   **`create_router`**: Creates a new Fabric Cloud Router with the specified configuration.
+*   **`send_email_notification`**: Sends an email notification given a list email of addresses and email body.</td>
 		<td>preview
 	</tr>
 	<tr>
@@ -559,7 +561,7 @@ This agent runs once immediately by default unless scheduled by user.</td>
 		<td>This skill can use the following tools:
 
 *   **`search_connections`**: Searches for an existing connection.
-*   **`get_stream_details`**: Fetches stream details given a stream uuid.
+*   **`get_stream`**: Fetches stream details given a stream uuid.
 *   **`create_stream`**: Create a stream.
 *   **`attach_stream_asset`**: Attach a resource to a stream.
 *   **`create_stream_alert_rule`**: Create an alert rule given a stream uuid.

@@ -5,8 +5,11 @@ name: Template Content Evals
 # and an LLM judge (clarity, non-contradiction, scope, completeness, instruction/tool alignment).
 # No agent is run and no tools are executed — safe to run on every PR.
 #
-# The evaluator runs as a Python script (scripts/template_content_eval.py) — no external service
-# or Docker image required.
+# The LLM judge calls agent-eval-service (POST /fabric/v4/eval/template-content) through the
+# external Apigee gateway. agent-eval-service runs in-cluster and can reach AWS Bedrock Runtime
+# (VPC-only) where the GitHub Actions runner cannot — but the external v4 route is reachable
+# from a normal ubuntu-latest runner, unlike the internal /fabric/i4/* route. The runner
+# authenticates with an OAuth2 Bearer token (grant_type=password) via Apigee.
 
 on:
   pull_request:
@@ -28,6 +31,8 @@ permissions:
 
 env:
   THRESHOLD: ${{ github.event.inputs.threshold || '0.6' }}
+  APIGEE_TOKEN_URL: ${{ vars.APIGEE_TOKEN_URL || 'https://sitapi.equinix.com/oauth2/v1/token' }}
+  AGENT_EVAL_SERVICE_URL: ${{ vars.AGENT_EVAL_SERVICE_URL || 'https://sitapi.equinix.com' }}
 
 jobs:
   content-eval:
@@ -82,7 +87,10 @@ jobs:
       - name: Run template content evals
         if: steps.templates.outputs.mode != 'none'
         env:
-          GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+          APIGEE_CLIENT_ID: ${{ secrets.APIGEE_CLIENT_ID }}
+          APIGEE_CLIENT_SECRET: ${{ secrets.APIGEE_CLIENT_SECRET }}
+          APIGEE_SERVICE_USERNAME: ${{ secrets.APIGEE_SERVICE_USERNAME }}
+          APIGEE_SERVICE_PASSWORD: ${{ secrets.APIGEE_SERVICE_PASSWORD }}
           LANGSMITH_API_KEY: ${{ secrets.LANGSMITH_API_KEY }}
         run: |
           set -euo pipefail
