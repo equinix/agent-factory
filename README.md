@@ -141,6 +141,36 @@ This agent only executes once.</td>
 Equinix Fabric Agent Factory On Schedule and On Demand Scenarios
 
 
+### Agent Agents
+
+<details>
+<summary>Show agents</summary>
+
+<table>
+	<tr>
+		<th>Name</th>
+		<th>Overview</th>
+		<th>Capabilities</th>
+		<th>Agent Tools</th>
+		<th>Release Status</th>
+	</tr>
+	<tr>
+		<td><a href="https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_schedule/agent/update-agent-email.md">Agent Email Update Agent<br>[update-agent-email.md]</a></td>
+		<td>An Equinix agent that scans every agent's configuration prompt for a specified email address and replaces it with a new one.
+It validates both email addresses before making any changes, iterates through all agents via pagination, reports exactly which agents were updated and which failed, and continues processing even when individual agents fail.</td>
+		<td>- Validate old and new email addresses before making any changes<br>- Confirm the two addresses are actually different before proceeding<br>- Scan all agent configuration prompts across the account by paginating through every agent<br>- Replace every occurrence of the old email with the new email in each matching prompt<br>- Continue processing remaining agents if one fails, rather than aborting<br>- Report a change summary: how many agents were scanned, updated, and failed</td>
+		<td>This skill can use the following tools:
+
+* **`list_agents`**: Retrieves a paginated list of agents. Takes `pagination: {offset, limit}`. Returns a JSON object with a `data` array (each item has `uuid`, `name`, and `configuration.prompt`) and a `pagination` object (with `next` set to `null` when there are no more pages).
+
+* **`update_agent_email`**: Scans a single agent's configuration prompt for `old_email` and replaces every occurrence with `new_email`. Takes `agent_id`, `old_email`, and `new_email`. Returns `{"updated": true}` if the email was found and patched, or `{"updated": false, "reason": "email not found in prompt"}` if the email was not present. Raises an error on API or permission failures.</td>
+		<td>preview
+	</tr>
+</table>
+
+</details>
+
+
 ### Asset Agents
 
 <details>
