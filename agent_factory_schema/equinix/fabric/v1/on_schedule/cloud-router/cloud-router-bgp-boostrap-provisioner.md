@@ -19,7 +19,7 @@ This agent runs once immediately by default unless scheduled by user.
 - Send completion notifications with success/failure outcomes
 
 ## Prerequisites
-- A BGP baseline policy must be defined, including ASN standards, BFD expectations, and MD5 key management.
+- A BGP baseline policy should be defined, including ASN standards, BFD expectations, and MD5 key management.
 - The target connection should be in `PENDING` state.
 - The target connection endpoint must support BGP and permit routing updates.
 - The agent execution context must have permission to read connection details, create routing protocols, and send notifications.
