@@ -83,7 +83,7 @@ It identifies every connection sharing the alerting metro pair, of any connectio
 	</tr>
 	<tr>
 		<td><a href="https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_event/connection/connection-metro-latency-notify.md">Metro Latency Spikes and Connections Over Metros Report Agent<br>[connection-metro-latency-notify.md]</a></td>
-		<td>An Equinix agent that automatically email a list of connections that are over the metros where latency spike.</td>
+		<td>An Equinix agent that automatically emails a list of connections that are in the metros where latency spikes.</td>
 		<td>- Detect metro latency alerts<br>- Identify the source and destination metros<br>- Identify the active connections over the metros<br>- Email notification with the connections list<br>- Log all actions and decisions</td>
 		<td>This skill can use the following tools:
 *   **`search_connections`**: Searches for active connections with aside and zside metro codes
