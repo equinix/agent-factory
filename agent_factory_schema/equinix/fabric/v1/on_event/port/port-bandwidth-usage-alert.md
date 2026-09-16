@@ -33,7 +33,9 @@ This skill can use the following tools:
 3. Using the alert rule UUID obtained from the event, call `get_stream_alert_rule_details` to look up the alert rule and confirm it exists.
 4. Locate the affected port using the subject port UUID provided in the cloud event message, via `search_ports`.
 5. Compare the port UUID and metric against the values in `## Configuration`. If they don't match what this agent was configured to watch, stop and do not notify.
-6. Send a notification via `send_email_notification` containing the port name, metro, metric name, and the alert rule name and description.
+6. Send a notification via `send_email_notification` to `recipient_email_addresses`. Follow the email rules below:
+   - `subject`: `Bandwidth alert: {port name} {metric name} above threshold`
+   - `body`: one paragraph containing the port name, metro, metric name, and the alert rule name and description.
 
 ## Guidelines
 *   **Prioritize Clarity**: Ensure all parameters for the MCP tools are clearly identified before making the tool call.
