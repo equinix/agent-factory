@@ -78,6 +78,7 @@ It identifies every connection sharing the alerting metro pair, of any connectio
 *   **`wait`**: Wait for a while. An optional parameter can be provided to specify the wait time in milliseconds.
 *   **`search_metrics`**: Retrieves connection bandwidth-usage and metro-latency time series over the lookback window.
 *   **`get_metric`**: Retrieves a single metric series when a targeted lookup is needed.
+*   **`get_email_template`**: Get email template.
 *   **`send_email_notification`**: Sends an email. Pass `pdfTitle` and `pdfContent` (plain text) to auto-generate and attach a PDF.</td>
 		<td>preview
 	</tr>
@@ -191,6 +192,7 @@ This agent compile change summary with owners and distribute a daily report.</td
 		<td>- Analyze all cloud events within a given Equinix Fabric project over the past 24 hours<br>- Deliver a plain-English daily report for changed assets summary via email as a summarized report in PDF format</td>
 		<td>- **`get_timestamps`**: Generates `from` and `to` UTC timestamps based on a duration string (e.g., `"24h"`, `"7d"`, `"1M"`). Returns a JSON object with `from` and `to` as ISO 8601 UTC strings. Always call this in Step 1 to obtain the reporting window.
 - **`search_cloud_events`**: Searches Equinix Fabric cloud events. Use `/equinixproject` `=` with `/time` `>=` and `<=` to scope by project and time window.
+- **`get_email_template`**: Get email template.
 - **`send_email_notification`**: Sends an email. Pass `pdfTitle` and `pdfContent` (plain text) to auto-generate and attach a PDF.</td>
 		<td>preview
 	</tr>
@@ -201,6 +203,7 @@ This agent compile creation summary with owners and distribute a daily report.</
 		<td>- Analyze all cloud events within a given Equinix Fabric project over the past 24 hours<br>- Deliver a plain-English daily report for created assets summary via email as a summarized report in PDF format</td>
 		<td>- **`get_timestamps`**: Generates `from` and `to` UTC timestamps based on a duration string (e.g., `"24h"`, `"7d"`, `"1M"`). Returns a JSON object with `from` and `to` as ISO 8601 UTC strings. Always call this in Step 1 to obtain the reporting window.
 - **`search_cloud_events`**: Searches Equinix Fabric cloud events. Use `/equinixproject` `=` with `/time` `>=` and `<=` to scope by project and time window.
+- **`get_email_template`**: Get email template.
 - **`send_email_notification`**: Sends an email. Pass `pdfTitle` and `pdfContent` (plain text) to auto-generate and attach a PDF.</td>
 		<td>preview
 	</tr>
@@ -212,6 +215,7 @@ This agent runs once immediately by default unless scheduled by user.</td>
 		<td>- **`search_connections`**: Searches for connections.
 - **`search_routers`**: Searches for fabric cloud routers.
 - **`search_ports`**: Searches for ports.
+- **`get_email_template`**: Get email template.
 - **`send_email_notification`**: Sends an email. Pass `pdfTitle` and `pdfContent` (plain text) to auto-generate and attach a PDF.</td>
 		<td>preview
 	</tr>
@@ -221,6 +225,7 @@ This agent runs once immediately by default unless scheduled by user.</td>
 		<td>- Analyze all cloud events within a given Equinix Fabric project over a specified time range<br>- Detect BGP/routing instability, provisioning churn, and critical events<br>- Deliver a plain-English operational health summary via email as a summarized report in PDF format</td>
 		<td>- **`get_timestamps`**: Generates `from` and `to` UTC timestamps based on a duration string (e.g., `"24h"`, `"7d"`, `"1M"`). Returns a JSON object with `from` and `to` as ISO 8601 UTC strings. Always call this in Step 1 to obtain the reporting window.
 - **`search_cloud_events`**: Searches Equinix Fabric cloud events. Use `/equinixproject` `=` with `/time` `>=` and `<=` to scope by project and time window.
+- **`get_email_template`**: Get email template.
 - **`send_email_notification`**: Sends an email. Pass `pdfTitle` and `pdfContent` (plain text) to auto-generate and attach a PDF.</td>
 		<td>preview
 	</tr>
@@ -240,6 +245,7 @@ most recent related cloud event for extra context.</td>
 - **`search_cloud_events_by_asset`**: Retrieves recent cloud events for a given connection or port UUID. Not supported for routers.
 - **`get_timestamps`**: Generates `from` and `to` UTC timestamps based on a duration string (e.g., `"24h"`). Use the `to` field as the current UTC time reference for calculating elapsed minutes. Do not compute or hardcode the current time manually.
 - **`wait`**: Wait for a while before retrying a failed search call. An optional parameter can be provided to specify the wait time in milliseconds.
+- **`get_email_template`**: Get email template.
 - **`send_email_notification`**: Sends an email. Pass `pdfTitle` and `pdfContent` (plain text) to auto-generate and attach a PDF.</td>
 		<td>preview
 	</tr>
@@ -276,6 +282,7 @@ unattached. This agent runs once immediately by default unless scheduled by user
 - **`search_attached_assets`**: Returns all routers attached to a given stream UUID.
 - **`attach_stream_asset`**: Attaches a router to a stream by asset UUID and stream UUID with `"metrics_enabled": false`.
 - **`wait`**: Waits for a specified number of milliseconds before the next action.
+- **`get_email_template`**: Get email template.
 - **`send_email_notification`**: Sends an email notification to a list of recipients with an optional PDF attachment.</td>
 		<td>preview
 	</tr>
@@ -290,6 +297,7 @@ This agent runs once immediately by default unless scheduled by user.</td>
 * **`list_routing_protocols`**: Lists all routing protocols for a given connection.
 * **`replace_routing_protocol`**: Replaces a routing protocol configuration; used here to enable BFD on an existing BGP session while preserving all other fields.
 * **`wait`**: Waits for a specified number of milliseconds before the next action.
+* **`get_email_template`**: Get email template.
 * **`send_email_notification`**: Sends an email notification with an optional PDF report.</td>
 		<td>preview
 	</tr>
@@ -305,6 +313,7 @@ This agent runs once immediately by default unless scheduled by user.</td>
 * **`list_routing_protocols`**: Retrieves existing routing protocols for a connection.
 * **`create_routing_protocol`**: Creates a routing protocol for the target connection.
 * **`wait`**: Waits for a specified number of milliseconds before the next action.
+* **`get_email_template`**: Get email template.
 * **`send_email_notification`**: Sends an email notification.</td>
 		<td>preview
 	</tr>
@@ -328,6 +337,7 @@ All tool-facing request details that matter for execution — including the `sea
 * **`search_cloud_events`**: Counts recent BGP status events for a connection to detect flap storms. Use `/equinixproject` with `=` plus `/subject` with `IN` and `/type` with `LIKE`.
 * **`update_routing_protocol`**: Applies JSON Patch operations for `enabled` toggles.
 * **`wait`**: Sleeps between checks and restart phases.
+* **`get_email_template`**: Get email template.
 * **`send_email_notification`**: Sends exactly one batched email report with attached PDF.</td>
 		<td>preview
 	</tr>
@@ -437,6 +447,7 @@ unattached. This agent runs once immediately by default unless scheduled by user
 - **`search_attached_assets`**: Returns all connections attached to a given stream UUID.
 - **`attach_stream_asset`**: Attaches a connection to a stream by asset UUID and stream UUID with `"metrics_enabled": true`.
 - **`wait`**: Waits for a specified number of milliseconds before the next action.
+- **`get_email_template`**: Get email template.
 - **`send_email_notification`**: Sends an email notification to a list of recipients with an optional PDF attachment.</td>
 		<td>preview
 	</tr>
@@ -453,6 +464,7 @@ This agent runs once immediately by default unless scheduled by user.</td>
 *   **`search_connections`**: Enumerates PROVISIONED connections and resolves per-connection context (A-side and Z-side port UUIDs, provisioned bandwidth).
 *   **`search_metrics`**: Retrieves connection and port metrics over the scoring window.
 *   **`get_metric`**: Retrieves a single metric series when a targeted lookup is needed.
+*   **`get_email_template`**: Get email template.
 *   **`send_email_notification`**: Sends an email. Pass `pdfTitle` and `pdfContent` (plain text) to auto-generate and attach a PDF.</td>
 		<td>preview
 	</tr>
@@ -464,6 +476,7 @@ This agent runs once immediately by default unless scheduled by user. Recommende
 		<td>- **`search_connections`**: Searches for connections.
 - **`get_timestamps`**: Generates `from` and `to` UTC timestamps based on a required duration string (e.g., `"24h"`, `"7d"`). `to` is always the current UTC time; `from` is `to` minus the duration. Use the `to` field as the current UTC time reference for calculating time-in-state. Do not compute or hardcode the current time manually.
 - **`wait`**: Wait for a while. An optional parameter can be provided to specify the wait time in milliseconds.
+- **`get_email_template`**: Get email template.
 - **`send_email_notification`**: Sends an email. Pass `pdfTitle` and `pdfContent` (plain text) to auto-generate and attach a PDF.</td>
 		<td>preview
 	</tr>
@@ -515,6 +528,7 @@ This agent runs once immediately by default unless scheduled by user.</td>
 - **`create_stream`**: Creates a new stream given a name and project UUID.
 - **`attach_stream_asset`**: Attaches a resource (router or connection) to a stream by UUID. Networks cannot be attached to a stream.
 - **`wait`**: Waits for a specified number of milliseconds before the next action.
+- **`get_email_template`**: Get email template.
 - **`send_email_notification`**: Sends an email notification to a list of recipients with an optional PDF attachment.</td>
 		<td>preview
 	</tr>
@@ -551,6 +565,7 @@ unattached. This agent runs once immediately by default unless scheduled by user
 - **`search_attached_assets`**: Returns all ports attached to a given stream UUID.
 - **`attach_stream_asset`**: Attaches a port to a stream by asset UUID and stream UUID with `"metrics_enabled": true`.
 - **`wait`**: Waits for a specified number of milliseconds before the next action.
+- **`get_email_template`**: Get email template.
 - **`send_email_notification`**: Sends an email notification to a list of recipients with an optional PDF attachment.</td>
 		<td>preview
 	</tr>
