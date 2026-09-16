@@ -29,6 +29,7 @@ This skill can use the following tools:
 * **`list_routing_protocols`**: Lists all routing protocols for a given connection.
 * **`replace_routing_protocol`**: Replaces a routing protocol configuration; used here to enable BFD on an existing BGP session while preserving all other fields.
 * **`wait`**: Waits for a specified number of milliseconds before the next action.
+* **`get_email_template`**: Get email template.
 * **`send_email_notification`**: Sends an email notification with an optional PDF report.
 
 ## Instructions
@@ -67,44 +68,21 @@ For each BGP routing protocol in the **to-update** list:
 
 A failure on one connection must not stop processing of the remaining connections.
 
-### Step 4 — Send Completion Report
-4a. Compose `pdfContent` in memory. When inserting a single line break, use `<br/>` instead of `<br>`.
+### Step 4 — Retrieve the email template
+Retrieve the email template that will be used for the report.
 
-```
-<div class="header">
-    <h1>BGP BFD Enabler Completion Report</h1>
-</div>
-
-<div class="section">
-    <h2>Summary</h2>
-    <div class="content">
-    </div>
-</div>
-<div class="section">
-    <h2>Updated Connections</h2>
-    <div class="content">
-    </div>
-</div>
-<div class="section">
-    <h2>Skipped Connections</h2>
-    <div class="content">
-    </div>
-</div>
-<div class="section">
-    <h2>Failed Updates</h2>
-    <div class="content">
-    </div>
-</div>
-```
-
-Section content rules for `pdfContent`:
+### Step 5 — Send Completion Report
+5a. Compose `pdfContent` in memory. Structure the report below using the email template from Step 4
+#### Header
+**BGP BFD Enabler Completion Report**:
+#### Section content
 - **Summary**: Total connections scanned, count updated, count skipped, count failed, and the BFD interval applied.
 - **Updated Connections**: For each updated connection, list: connection UUID, BGP routing protocol UUID, and BFD interval set.
 - **Skipped Connections**: For each skipped connection, list: connection UUID and reason (BFD already enabled / no BGP routing protocol). If none, state "No connections skipped."
 - **Failed Updates**: For each failure, list: connection UUID, routing protocol UUID, and error message. If none, state "No failures."
 
-4b. Call `send_email_notification` with:
-- `pdfContent`: the report from 4a.
+5b. Call `send_email_notification` with:
+- `pdfContent`: the report from 5a.
 - `body`: a one-paragraph summary of the operation covering how many connections were scanned, updated, skipped, and failed.
 - `pdfTitle`: `BGP_BFD_Enabler_Report`
 - `recipients`: `recipient_email_addresses`

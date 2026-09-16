@@ -47,6 +47,7 @@ This skill can use the following tools:
 - **`create_stream`**: Creates a new stream given a name and project UUID.
 - **`attach_stream_asset`**: Attaches a resource (router or connection) to a stream by UUID. Networks cannot be attached to a stream.
 - **`wait`**: Waits for a specified number of milliseconds before the next action.
+- **`get_email_template`**: Get email template.
 - **`send_email_notification`**: Sends an email notification to a list of recipients with an optional PDF attachment.
 
 ## Instructions
@@ -144,93 +145,18 @@ Record the returned UUID as `stream_uuid`.
 
 Wait 3000 milliseconds after each attachment to allow the platform to register the asset.
 
-### Step 9 — Send Completion Notification
-9a. Compose the completion report in memory using the structure below.
+### Step 9 — Retrieve the email template
+Retrieve the email template that will be used for the report.
 
-```
-<div class="header">
-    <h1>IPWAN & Cloud Router Network Setup — Completion Report</h1>
-</div>
-
-<div class="section">
-    <h2>Summary</h2>
-    <div class="content">
-    </div>
-</div>
-
-<div class="section">
-    <h2>Network</h2>
-    <div class="content">
-        <div class="table-container">
-            <ul class="table-row table-header">
-                <li>Name</li>
-                <li>UUID</li>
-                <li>Type</li>
-                <li>Scope</li>
-                <li>Region</li>
-                <li>State</li>
-            </ul>
-            <!-- Data Row -->
-            <ul class="table-row">
-            </ul>
-        </div>
-    </div>
-</div>
-
-<div class="section">
-    <h2>Fabric Cloud Router</h2>
-    <div class="content">
-        <div class="table-container">
-            <ul class="table-row table-header">
-                <li>Name</li>
-                <li>UUID</li>
-                <li>Metro</li>
-                <li>Package</li>
-                <li>State</li>
-            </ul>
-            <!-- Data Row -->
-            <ul class="table-row">
-            </ul>
-        </div>
-    </div>
-</div>
-
-<div class="section">
-    <h2>IPWAN Connection</h2>
-    <div class="content">
-        <div class="table-container">
-            <ul class="table-row table-header">
-                <li>Name</li>
-                <li>UUID</li>
-                <li>Cloud Router UUID</li>
-                <li>Bandwidth (Mbps)</li>
-                <li>State</li>
-            </ul>
-            <!-- Data Row -->
-            <ul class="table-row">
-            </ul>
-        </div>
-    </div>
-</div>
-
-<div class="section">
-    <h2>Stream Attachment</h2>
-    <div class="content">
-    </div>
-</div>
-
-<div class="section">
-    <h2>Next Steps</h2>
-    <div class="content">
-    </div>
-</div>
-```
-
-Section content rules:
+### Step 10 — Send Completion Notification
+9a. Structure the report below using the email template from Step 9
+#### Header
+**IPWAN & Cloud Router Network Setup — Completion Report**:
+#### Section content
 - **Summary**: State the metro and overall outcome in 3–5 sentences. If any resource failed to create or provision, name the failing resource, include its error detail, and state that stream attachment was skipped as a result.
-- **Network**: One row — name, UUID, type (`IPWAN`), scope (`REGIONAL`), region, and final state. If the network was never created, state "Not created" and the error detail in place of UUID/state.
-- **Fabric Cloud Router**: One row — name, UUID, metro, package, and final state. If the router was never created, state "Not created" and the error detail in place of UUID/state; if creation was skipped because the network failed, state "Skipped — network creation failed".
-- **IPWAN Connection**: One row — name, UUID, the Cloud Router UUID it links, bandwidth, and final state. If the connection was never created, state "Not created" and the error detail in place of UUID/state; if creation was skipped because an earlier resource failed, state "Skipped — <resource> creation failed".
+- **Network**: One row — Name, UUID, type (`IPWAN`), scope (`REGIONAL`), Region, and final State. If the network was never created, state "Not created" and the error detail in place of UUID/state.
+- **Fabric Cloud Router**: One row — Name, UUID, Metro, Package, and final State. If the router was never created, state "Not created" and the error detail in place of UUID/state; if creation was skipped because the network failed, state "Skipped — network creation failed".
+- **IPWAN Connection**: One row — Name, UUID, Cloud Router UUID, Bandwidth, and final State. If the connection was never created, state "Not created" and the error detail in place of UUID/state; if creation was skipped because an earlier resource failed, state "Skipped — <resource> creation failed".
 - **Stream Attachment**: If the Cloud Router and connection were successfully attached to stream UUID, confirm this and state whether the stream was newly created or pre-existing (note that the Network is not attached, as networks cannot be attached to a stream). If stream attachment was skipped due to an earlier failure, state that explicitly.
 - **Next Steps**: If the run succeeded, give 1–3 plain-English recommendations (e.g., configure a BGP routing protocol on the Cloud Router, set up an alert rule on the connection, validate end-to-end connectivity with a PING command). If the run failed, state the specific remediation from the Guidelines' Remediation mapping that matches the reported error, and note that the agent must be re-run manually after remediating.
 

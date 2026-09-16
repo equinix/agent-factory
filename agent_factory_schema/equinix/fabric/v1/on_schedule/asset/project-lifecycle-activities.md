@@ -105,56 +105,15 @@ Assign one label — do not expose scoring in the report:
 - **"Elevated Risk"** — Routing instability + provisioning churn present, or any CRIT-level event
 - **"Migration in Progress"** — High provisioning/deprovisioning churn, low/no WARN events
 
-### Step 5 — Compose the Intelligence Report
+### Step 6 — Retrieve the email template
+Retrieve the email template that will be used for the report.
+### Step 7 — Compose the Intelligence Report
 Do NOT write the report as prose in your response text. Compose in-memory only, then immediately call `send_email_notification`. The report must only appear as the `pdfContent` parameter — never in the response body.
 
-**Do not respond to the user between Step 5 and Step 6. Proceed directly to calling `send_email_notification`.**
-
-Structure the report using these sections. Do not include any section numbers in the headings. Use the separator formatting shown below exactly. **If a section has no content, omit both the section label and its separator entirely — do not write the heading, do not write placeholder or filler text such as "No events were detected" or "None". The only exception is "What You Should Do", which must always be included.**
-
-```
-<div class="header">
-    <h1>Project Lifecycle Activities Report</h1>
-</div>
-
-<div class="section">
-    <h2>Summary</h2>
-    <div class="content">
-    </div>
-</div>
-<div class="section">
-    <h2>Project & User Activity</h2>
-    <div class="content">
-    </div>
-</div>
-<div class="section">
-    <h2>Fabric Cloud Router Activity</h2>
-    <div class="content">
-    </div>
-</div>
-<div class="section">
-    <h2>Connection Activity</h2>
-    <div class="content">
-    </div>
-</div>
-<div class="section">
-    <h2>Routing Protocol & BGP Health</h2>
-    <div class="content">
-    </div>
-</div>
-<div class="section">
-    <h2>Events That Need Your Attention</h2>
-    <div class="content">
-    </div>
-</div>
-<div class="section">
-    <h2>What You Should Do</h2>
-    <div class="content">
-    </div>
-</div>
-```
-
-Section content rules:
+Structure the report below using the email template from Step 6. Do not include any section numbers in the headings. Use the separator formatting shown below exactly. **If a section has no content, omit both the section label and its separator entirely — do not write the heading, do not write placeholder or filler text such as "No events were detected" or "None". The only exception is "What You Should Do", which must always be included.**
+#### Header
+**Project Lifecycle Activities Report**:
+#### Section content
 - **Summary**: State the Project UUID and reporting period, then 3–5 sentences — total events, asset types active, headline finding, routine or needs attention.
 - **Project & User Activity**: Include only if human/API actors or administrative events exist — otherwise omit entirely. List active users as `<data.auth.name> (id: <authid>)` with event counts and plain English description of their activity. Note service token expirations as informational only.
 - **Fabric Cloud Router Activity**: Include only if router events exist — otherwise omit entirely. Note churn (3+ transitions) as elevated. List each router as `<data.resource.name> (<full-uuid>)` with plain English description of activity.
@@ -168,15 +127,16 @@ Rules:
 - Always use both the human-readable name AND the full UUID when referencing any asset (router, connection, port, routing protocol) or user. Format: `<name> (<full-uuid>)` for assets and `<data.auth.name> (id: <authid>)` for users. If a name is not available, fall back to the full UUID only.
 - Final observed state must be stated for any asset with multiple transitions.
 
-### Step 6 — Send the Report
+### Step 8 — Send the Report
 Use `send_email_notification` to send the report to `recipient_email_addresses`.
-- `pdfContent`: the full report text from Step 5.
+- `pdfContent`: the full report text from Step 7.
 - `body`: one-paragraph summary of overall status and headline finding.
 - `pdfTitle`: `FabricInsights_<project_uuid>_<reporting period from date>_<reporting period to date>_<Overall Status label>` — Use only the date portion (`YYYY-MM-DD`) of each timestamp, not the full ISO 8601 string.
 
 ## Available Tools
 - **`get_timestamps`**: Generates `from` and `to` UTC timestamps based on a duration string (e.g., `"24h"`, `"7d"`, `"1M"`). Returns a JSON object with `from` and `to` as ISO 8601 UTC strings. Always call this in Step 1 to obtain the reporting window.
 - **`search_cloud_events`**: Searches Equinix Fabric cloud events. Use `/equinixproject` `=` with `/time` `>=` and `<=` to scope by project and time window.
+- **`get_email_template`**: Get email template.
 - **`send_email_notification`**: Sends an email. Pass `pdfTitle` and `pdfContent` (plain text) to auto-generate and attach a PDF.
 
 ## Guidelines

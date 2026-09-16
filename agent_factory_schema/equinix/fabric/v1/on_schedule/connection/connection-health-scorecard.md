@@ -129,88 +129,20 @@ This agent runs once immediately by default unless scheduled by user.
    - Rate-exceeded drops or utilization above 80% → recommend a bandwidth upgrade / review of the rate limit.
    - Packet errors → recommend physical-layer / port investigation (cabling, optics) on the affected port.
 
-7. **Build the report.** Structure it using the HTML report block below. Populate the Summary, the ranked scorecard table, the flagged-connections section, and the remediation section. Skip any component or section that has no data — no placeholder text.
+7. **Retrieve the email template that will be used for the report.**
 
+8. **Build the report.** Structure the report below using the email template from previous step. Populate the Summary, the ranked scorecard table, the flagged-connections section, and the remediation section. Skip any component or section that has no data — no placeholder text.
+   ### Header
+   **Connection Health Scorecard**:
    ### Section content
    - **Summary**: 4–6 sentences — the scoring window; the number of connections in scope; the number scored; the number skipped for no metric data, with the most common reason; average and median score; the number flagged; and the headline finding. If the connection inventory itself was incomplete (see the failure handling in Step 2), say so before any counts, so no reader mistakes a partial inventory for the whole estate.
-   - **Scorecard Ranking**: every scored connection ranked by score. Include rank, connection name, UUID, composite score, and the top deductions (which components cost the most points).
-   - **Flagged Connections**: every connection with at least one measurable issue (per Step 5), with the primary issue. Include only if any exist.
-   - **Recommended Remediation**: every flagged connection with its recommended action. Include only if any exist.
+   - **Scorecard Ranking**: every scored connection ranked by score. Include Rank, Connection Name, Connection UUID, Health Score, and the Top Deductions (which components cost the most points).
+   - **Flagged Connections**: every connection with at least one measurable issue (per Step 5), with the primary issue. Include Rank, Connection Name, Connection UUID, Health Score, and Primary Issue. Include only if any exist.
+   - **Recommended Remediation**: every flagged connection with its recommended action. Include Rank, Connection Name, Connection UUID, Health Score, Dominant Factory, and Recommended Action. Include only if any exist.
 
-   ```
-   <div class="header">
-       <h1>Connection Health Scorecard</h1>
-   </div>
-
-   <div class="section">
-       <h2>Summary</h2>
-       <div class="content">
-       </div>
-   </div>
-
-   <div class="section">
-       <h2>Scorecard Ranking</h2>
-       <div class="content">
-           <div class="table-container">
-               <!-- Header Row -->
-               <ul class="table-row table-header">
-                   <li>Rank</li>
-                   <li>Connection Name</li>
-                   <li>UUID</li>
-                   <li>Health Score</li>
-                   <li>Top Deductions</li>
-               </ul>
-
-               <!-- Data Row -->
-               <ul class="table-row">
-               </ul>
-           </div>
-       </div>
-   </div>
-
-   <div class="section">
-       <h2>Flagged Connections</h2>
-       <div class="content">
-           <div class="table-container">
-               <!-- Header Row -->
-               <ul class="table-row table-header">
-                   <li>Connection Name</li>
-                   <li>UUID</li>
-                   <li>Health Score</li>
-                   <li>Primary Issue</li>
-               </ul>
-
-               <!-- Data Row -->
-               <ul class="table-row">
-               </ul>
-           </div>
-       </div>
-   </div>
-
-   <div class="section">
-       <h2>Recommended Remediation</h2>
-       <div class="content">
-           <div class="table-container">
-               <!-- Header Row -->
-               <ul class="table-row table-header">
-                   <li>Connection Name</li>
-                   <li>UUID</li>
-                   <li>Health Score</li>
-                   <li>Dominant Factor</li>
-                   <li>Recommended Action</li>
-               </ul>
-
-               <!-- Data Row -->
-               <ul class="table-row">
-               </ul>
-           </div>
-       </div>
-   </div>
-   ```
-
-8. **Send the report** with `send_email_notification` to `recipient_email_addresses`. Follow the email rules below:
+9. **Send the report** with `send_email_notification` to `recipient_email_addresses`. Follow the email rules below:
    - `recipients`: `recipient_email_addresses`.
-   - `pdfContent`: the full report text from Step 7.
+   - `pdfContent`: the full report text from Step 8.
    - `body`: one-paragraph summary of overall connection health, the coverage actually achieved (scored / skipped counts), and the headline finding.
    - `pdfTitle`: `ConnectionHealthScorecard`
 
@@ -225,6 +157,7 @@ This skill can use the following tools:
 *   **`search_connections`**: Enumerates PROVISIONED connections and resolves per-connection context (A-side and Z-side port UUIDs, provisioned bandwidth).
 *   **`search_metrics`**: Retrieves connection and port metrics over the scoring window.
 *   **`get_metric`**: Retrieves a single metric series when a targeted lookup is needed.
+*   **`get_email_template`**: Get email template.
 *   **`send_email_notification`**: Sends an email. Pass `pdfTitle` and `pdfContent` (plain text) to auto-generate and attach a PDF.
 
 ## Guidelines

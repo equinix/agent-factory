@@ -49,6 +49,7 @@ This agent template can use the following tools:
 * **`search_cloud_events`**: Counts recent BGP status events for a connection to detect flap storms. Use `/equinixproject` with `=` plus `/subject` with `IN` and `/type` with `LIKE`.
 * **`update_routing_protocol`**: Applies JSON Patch operations for `enabled` toggles.
 * **`wait`**: Sleeps between checks and restart phases.
+* **`get_email_template`**: Get email template.
 * **`send_email_notification`**: Sends exactly one batched email report with attached PDF.
 
 ## Instructions
@@ -239,53 +240,13 @@ This agent template can use the following tools:
      - `pdfTitle`: `BgpSessionDailyBatch_<scope>_<YYYYMMDD>_<IssuesFound|PartialErrors|NoIssues>`
    - After send attempt (or clean-run skip), run is complete. Take no further action until next schedule trigger.
 
-## Batch Report HTML Template
+## Retrieve the email template
+Retrieve the email template that will be used for the report.
 
-Use the following structure for `pdfContent`:
-
-```html
-<div class="header">
-  <h1>Daily BGP Session Health Batch Report</h1>
-</div>
-
-<div class="section">
-  <h2>Run Summary</h2>
-  <div class="content">
-  </div>
-</div>
-
-<div class="section">
-  <h2>Scope &amp; Configuration</h2>
-  <div class="content">
-  </div>
-</div>
-
-<div class="section">
-  <h2>Aggregate Results</h2>
-  <div class="content">
-  </div>
-</div>
-
-<div class="section">
-  <h2>Per-Session Findings</h2>
-  <div class="content">
-  </div>
-</div>
-
-<div class="section">
-  <h2>Failures / Tool Errors</h2>
-  <div class="content">
-  </div>
-</div>
-
-<div class="section">
-  <h2>Recommended Next Steps</h2>
-  <div class="content">
-  </div>
-</div>
-```
-
-Content rules:
+## Send Report
+### Header
+**Daily BGP Session Health Batch Report**:
+### Section content
 - **Run Summary**: run timestamp, scope type/value (`connection_uuid` or `fcr_uuid`), configured `project_id`, total connections scanned.
 - **Scope & Configuration**: configured `project_id`, plus effective values for `flap_storm_lookback_window`, `flap_storm_threshold`, grace/restart/recovery timers and attempts, `max_connections_per_run`.
 - **Aggregate Results**: all counters from Step 1.

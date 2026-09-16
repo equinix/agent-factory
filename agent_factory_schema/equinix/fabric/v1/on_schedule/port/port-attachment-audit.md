@@ -34,6 +34,7 @@ This skill can use the following tools:
 - **`search_attached_assets`**: Returns all ports attached to a given stream UUID.
 - **`attach_stream_asset`**: Attaches a port to a stream by asset UUID and stream UUID with `"metrics_enabled": true`.
 - **`wait`**: Waits for a specified number of milliseconds before the next action.
+- **`get_email_template`**: Get email template.
 - **`send_email_notification`**: Sends an email notification to a list of recipients with an optional PDF attachment.
 
 ## Instructions
@@ -93,66 +94,19 @@ Do not abort the run on a single failure.
 - `failed`: ports whose attachment failed, with error details.
 - `left_unattached`: `ports_over_limit` (skipped due to the 5-port limit) plus every port in `failed`.
 
-### Step 6 — Send Email Report
-6a. Compose the completion report in memory:
+### Step 6 — Retrieve the email template
+Retrieve the email template that will be used for the report.
 
-```
-<div class="header">
-    <h1>Port Attachment Audit Report</h1>
-</div>
-
-<div class="section">
-    <h2>Summary</h2>
-    <div class="content">
-    </div>
-</div>
-
-<div class="section">
-    <h2>Attached Ports</h2>
-    <div class="content">
-        <div class="table-container">
-            <ul class="table-row table-header">
-                <li>Port Name</li>
-                <li>Port UUID</li>
-                <li>Metro</li>
-                <li>Stream Name</li>
-                <li>Stream UUID</li>
-            </ul>
-            <!-- Data Rows -->
-            <ul class="table-row">
-            </ul>
-        </div>
-    </div>
-</div>
-
-<div class="section">
-    <h2>Unattached Ports</h2>
-    <div class="content">
-        <div class="table-container">
-            <ul class="table-row table-header">
-                <li>Port Name</li>
-                <li>Port UUID</li>
-                <li>Metro</li>
-                <li>Reason</li>
-            </ul>
-            <!-- Data Rows -->
-            <ul class="table-row">
-            </ul>
-        </div>
-    </div>
-</div>
-
-<div class="section">
-    <h2>Next Steps</h2>
-    <div class="content">
-    </div>
-</div>
-```
+### Step 7 — Send Email Report
+6a. Structure the report below using the email template from Step 6
+#### Header
+**Port Attachment Audit Report**:
+#### Section content
 
 Section content rules:
 - **Summary**: Total ports audited, count unattached found, count successfully attached, count left unattached. Name the target stream. State the overall outcome in 2–4 sentences.
-- **Attached Ports**: One row per successfully attached port — name, full UUID, metro, target stream name, target stream full UUID. If none were attached, note "None."
-- **Unattached Ports**: One row per port left unattached — name, full UUID, metro, and reason ("Exceeded 5-port attachment limit" or the specific attachment error). If none, note "None."
+- **Attached Ports**: One row per successfully attached port — Name, UUID, Metro, Stream Name, Stream UUID. If none were attached, note "None."
+- **Unattached Ports**: One row per port left unattached — Name, UUID, Metro, and Reason ("Exceeded 5-port attachment limit" or the specific attachment error). If none, note "None."
 - **Next Steps**: 1–3 plain-English recommendations (e.g., re-run the audit to attach ports that exceeded the 5-port limit, set up alert rules on the newly monitored ports, investigate any failed attachments).
 
 6b. If `recipient_email_addresses` is provided and non-empty, call `send_email_notification` with:

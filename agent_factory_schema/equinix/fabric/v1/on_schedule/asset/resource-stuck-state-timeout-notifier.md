@@ -85,89 +85,18 @@ proceed to step 4.
    Skip this step for routers — this tool does not support the router resource type. This lookup is best-effort and
    is not retried: if the call fails for a given resource, omit the "Last Related Event" field for that resource
    only — do not abort the run and do not omit the resource itself from the report.
-7. Structure the report below:
+7. Retrieve the email template that will be used for the report.
+8. Structure the report below using the email template from Step 7:
+### Header
+**Stuck State Timeout Report**:
 ### Section content
 - **Summary**: 3–5 sentences — total stuck count by resource type, headline finding, insights.
-- **Fabric Cloud Router Activity**: Include only if stuck routers exist — otherwise omit entirely. Include name, uuid, state, project, updated date, minutes over threshold.
-- **Connection Activity**: Include only if stuck connections exist — otherwise omit entirely. Include name, uuid, state, project, updated date, minutes over threshold, last related event (if found in step 6).
-- **Port Activity**: Include only if stuck ports exist — otherwise omit entirely. Include name, uuid, state, project, updated date, minutes over threshold, last related event (if found in step 6).
+- **Fabric Cloud Router Activity**: Include only if stuck routers exist — otherwise omit entirely. Include Name, UUID, State, Project, Updated Date, Minutes Over Threshold.
+- **Connection Activity**: Include only if stuck connections exist — otherwise omit entirely. Include Name, UUID, State, Project, Updated Date, Minutes Over Threshold, Last Related Event (if found in step 6).
+- **Port Activity**: Include only if stuck ports exist — otherwise omit entirely. Include Name, UUID, State, Project, Updated Date, Minutes Over Threshold, Last Related Event (if found in step 6).
 
-```
-<div class="header">
-    <h1>Stuck State Timeout Report</h1>
-</div>
-
-<div class="section">
-    <h2>Summary</h2>
-    <div class="content">
-    </div>
-</div>
-
-<div class="section">
-    <h2>Cloud Router Activity</h2>
-    <div class="content">
-        <div class="table-container">
-            <!-- Header Row -->
-            <ul class="table-row table-header">
-                <li>Name</li>
-                <li>UUID</li>
-                <li>State</li>
-                <li>Updated Date</li>
-                <li>Minutes Over Threshold</li>
-            </ul>
-
-          <!-- Data Row-->
-          <ul class="table-row">
-          </ul>
-        </div>
-    </div>
-</div>
-
-<div class="section">
-    <h2>Connection Activity</h2>
-    <div class="content">
-        <div class="table-container">
-            <!-- Header Row -->
-            <ul class="table-row table-header">
-                <li>Name</li>
-                <li>UUID</li>
-                <li>State</li>
-                <li>Updated Date</li>
-                <li>Minutes Over Threshold</li>
-                <li>Last Related Event</li>
-            </ul>
-
-          <!-- Data Row-->
-          <ul class="table-row">
-          </ul>
-        </div>
-    </div>
-</div>
-
-<div class="section">
-    <h2>Port Activity</h2>
-    <div class="content">
-        <div class="table-container">
-            <!-- Header Row -->
-            <ul class="table-row table-header">
-                <li>Name</li>
-                <li>UUID</li>
-                <li>State</li>
-                <li>Updated Date</li>
-                <li>Minutes Over Threshold</li>
-                <li>Last Related Event</li>
-            </ul>
-
-          <!-- Data Row-->
-          <ul class="table-row">
-          </ul>
-        </div>
-    </div>
-</div>
-```
-
-8. Use `send_email_notification` to send the report to `recipient_email_addresses`. Follow the email rules below:
-- `pdfContent`: the full report text from Step 7.
+9. Use `send_email_notification` to send the report to `recipient_email_addresses`. Follow the email rules below:
+- `pdfContent`: the full report text from Step 8.
 - `body`: one-paragraph summary of overall status and headline finding.
 - `pdfTitle`: `FabricStuckStateAlert`
 
@@ -178,6 +107,7 @@ proceed to step 4.
 - **`search_cloud_events_by_asset`**: Retrieves recent cloud events for a given connection or port UUID. Not supported for routers.
 - **`get_timestamps`**: Generates `from` and `to` UTC timestamps based on a duration string (e.g., `"24h"`). Use the `to` field as the current UTC time reference for calculating elapsed minutes. Do not compute or hardcode the current time manually.
 - **`wait`**: Wait for a while before retrying a failed search call. An optional parameter can be provided to specify the wait time in milliseconds.
+- **`get_email_template`**: Get email template.
 - **`send_email_notification`**: Sends an email. Pass `pdfTitle` and `pdfContent` (plain text) to auto-generate and attach a PDF.
 
 ## Guidelines

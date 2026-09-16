@@ -39,6 +39,7 @@ This skill can use the following tools:
 *   **`wait`**: Wait for a while. An optional parameter can be provided to specify the wait time in milliseconds.
 *   **`search_metrics`**: Retrieves connection bandwidth-usage and metro-latency time series over the lookback window.
 *   **`get_metric`**: Retrieves a single metric series when a targeted lookup is needed.
+*   **`get_email_template`**: Get email template.
 *   **`send_email_notification`**: Sends an email. Pass `pdfTitle` and `pdfContent` (plain text) to auto-generate and attach a PDF.
 
 ## Instructions
@@ -77,86 +78,21 @@ This skill can use the following tools:
     - Isolated + the affected connection(s) headroom is flagged → recommend a bandwidth upgrade or rate-limit review for the affected connection(s).
     - Isolated + no headroom concern → recommend manual investigation of the affected connection(s); data available is inconclusive.
     - Metro-wide + one or more connections also headroom-flagged → recommend both a path/metro review and a bandwidth review for the flagged connection(s), noted as two independent next steps.
-11. **Compose the brief** using the HTML report block below. Populate the Alert Summary, Blast Radius, Live Ping Results, Headroom Status, Metro Correlation Verdict, Likely Contributing Factor, and Recommended Next-Best Action sections. In the Blast Radius table, set each row's **Evidence Basis** to one of `Ping + Headroom`, `Ping only`, `Headroom only`, or `No data` per the tagging in Step 8 — this is what lets the NOC tell a ping-confirmed clean connection apart from one that was only ever eligible for a headroom reading. Skip a section only if it genuinely has no data — never leave placeholder text.
+11. **Retrieve the email template.** Retrieve the email template that will be used for the report.
+12. **Compose report.** Create report using the email template from Step 11.
+### Header
+**High Latency Incident Brief**:
+### Section content
+- **Summary**: 3–5 sentences — total count, headline finding, insights.
+- **Blast Radius**: Include: Connection Name, UUID, A-Side Metro, Z-Side Metro, Latency Status, and Evidence Basis. Put values under Data Row. Set each row's **Evidence Basis** to one of `Ping + Headroom`, `Ping only`, `Headroom only`, or `No data` per the tagging in Step 8 — this is what lets the NOC tell a ping-confirmed clean connection apart from one that was only ever eligible for a headroom reading. Skip a section only if it genuinely has no data — never leave placeholder text.
+- **Live Ping Results**: Include: Connection Name, UUID, Destination IP, Ping Result
+- **Headroom Status**:
+- **Metro Correlation Verdict**:
+- **Likely Contributing Factor (Inference)**:
+- **Recommended Next-Best Action sections**:
 
-   ```
-   <div class="header">
-       <h1>High Latency Incident Brief</h1>
-   </div>
-
-   <div class="section">
-       <h2>Alert Summary</h2>
-       <div class="content">
-       </div>
-   </div>
-
-   <div class="section">
-       <h2>Blast Radius</h2>
-       <div class="content">
-           <div class="table-container">
-               <!-- Header Row -->
-               <ul class="table-row table-header">
-                   <li>Connection Name</li>
-                   <li>UUID</li>
-                   <li>A-Side Metro</li>
-                   <li>Z-Side Metro</li>
-                   <li>Latency Status</li>
-                   <li>Evidence Basis</li>
-               </ul>
-
-               <!-- Data Row -->
-               <ul class="table-row">
-               </ul>
-           </div>
-       </div>
-   </div>
-
-   <div class="section">
-       <h2>Live Ping Results</h2>
-       <div class="content">
-           <div class="table-container">
-               <!-- Header Row -->
-               <ul class="table-row table-header">
-                   <li>Connection Name</li>
-                   <li>UUID</li>
-                   <li>Destination IP</li>
-                   <li>Ping Result</li>
-               </ul>
-
-               <!-- Data Row -->
-               <ul class="table-row">
-               </ul>
-           </div>
-       </div>
-   </div>
-
-   <div class="section">
-       <h2>Headroom Status</h2>
-       <div class="content">
-       </div>
-   </div>
-
-   <div class="section">
-       <h2>Metro Correlation Verdict</h2>
-       <div class="content">
-       </div>
-   </div>
-
-   <div class="section">
-       <h2>Likely Contributing Factor (Inference)</h2>
-       <div class="content">
-       </div>
-   </div>
-
-   <div class="section">
-       <h2>Recommended Next-Best Action</h2>
-       <div class="content">
-       </div>
-   </div>
-   ```
-
-12. **Send the report** with `send_email_notification` to `recipient_email_addresses`:
-    - `pdfContent`: the full report text from Step 11.
+13. **Send the report** with `send_email_notification` to `recipient_email_addresses`:
+    - `pdfContent`: the full report text from Step 12.
     - `body`: one-paragraph summary of the alert, blast-radius size, correlation verdict, and the recommended next-best action.
     - `pdfTitle`: `HighLatencyIncidentBrief`
 

@@ -31,6 +31,7 @@ This skill can use the following tools:
 * **`list_routing_protocols`**: Retrieves existing routing protocols for a connection.
 * **`create_routing_protocol`**: Creates a routing protocol for the target connection.
 * **`wait`**: Waits for a specified number of milliseconds before the next action.
+* **`get_email_template`**: Get email template.
 * **`send_email_notification`**: Sends an email notification.
 
 ## Instructions
@@ -113,44 +114,22 @@ Call `create_routing_protocol` with:
 - `PARTIAL_SUCCESS` if at least one created routing protocol reached `PROVISIONED` and at least one did not (e.g., BGP provisioned but DIRECT still `PROVISIONING`, or vice versa).
 - `FAILURE` if none of the created routing protocols reached `PROVISIONED`.
 
-### Step 6 - Send Completion Notification
-6a. Compose `pdfContent` in memory. When inserting a single line break, use `<br/>` instead of `<br>`.
+### Step 6 — Retrieve the email template
+Retrieve the email template that will be used for the report.
 
-```
-<div class="header">
-    <h1>Routing Protocol Provisioner - Completion Report</h1>
-</div>
-
-<div class="section">
-    <h2>Summary</h2>
-    <div class="content">
-    </div>
-</div>
-<div class="section">
-    <h2>Routing Protocol and BGP Status</h2>
-    <div class="content">
-    </div>
-</div>
-<div class="section">
-    <h2>Execution Checks and Retries</h2>
-    <div class="content">
-    </div>
-</div>
-<div class="section">
-    <h2>What You Should Do</h2>
-    <div class="content">
-    </div>
-</div>
-```
-
+### Step 7 - Send Completion Notification
+7a. Compose `pdfContent` in memory. Structure the report below using the email template from Step 6
+#### Header
+**Routing Protocol Provisioner - Completion Report**:
+#### Section content
 Section content rules for `pdfContent`:
 - **Summary**: State `connection_uuid`, each created routing protocol UUID (`direct_routing_protocol_uuid` and/or `bgp_routing_protocol_uuid`, whichever apply) with its final state, and overall execution outcome (`SUCCESS`, `PARTIAL_SUCCESS`, or `FAILURE`) as determined in Step 5b. In 2-4 sentences, summarize what was attempted and whether provisioning completed for each created protocol.
 - **Routing Protocol and BGP Status**: Include final routing protocol state and key BGP configuration applied: `customerAsn`, `equinixAsn`, BFD (`enabled`, `interval`), and configured address families (`bgpIpv4`, `bgpIpv6`).
 - **Execution Checks and Retries**: Include polling behavior and outcome: provisioning retry count used, and whether timeout thresholds were reached. If the state is still `PROVISIONING`, ask the user to verify the routing protocol state in 1-2 minutes.
 - **What You Should Do**: Provide 1-3 operational next actions based on final outcome. If outcome is `SUCCESS`, end with: "BGP provisioning completed successfully and no further action is required at this time."
 
-6b. Call `send_email_notification` with:
-- `pdfContent`: completion summary from Step 6a.
+7b. Call `send_email_notification` with:
+- `pdfContent`: completion summary from Step 7a.
 - `body`: one-paragraph operational summary of execution result (`SUCCESS`, `PARTIAL_SUCCESS`, or `FAILURE`) and any required follow-up action.
 - `pdfTitle`: `ProvisionBGP_<connection_uuid>_<execution_result>`
 - `recipients`: `recipient_email_addresses`

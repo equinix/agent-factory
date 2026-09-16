@@ -62,13 +62,13 @@ None
 ```
 4. Retrieve the email template that will be used for the report.
 5. Structure the report below using the email template from Step 4:
-### Header
+#### Header
 **Pending State Tracker Report**:
-### Section content
+#### Section content
 - **Summary**: 3–5 sentences — total count, headline finding, insights.
-- **Fabric Cloud Router Activity**: Include only if routers exist — otherwise omit entirely. Include Name, UUID, State, project, Created Date, and Updated Date. Also include how long has it been in pending state in hours. Call it 'Hours in Pending State'. Put values under Data Row.
-- **Connection Activity**: Include only if connections exist — otherwise omit entirely. Include Name, UUID, State, project, Created Date, and Updated Date. Also include how long has it been in pending state in hours. Call it 'Hours in Pending State'. Put values under Data Row.
-- **Port Activity**: Include only if connections exist — otherwise omit entirely. Include Name, UUID, State, project, Created Date, and Updated Date. Also include how long has it been in pending state in hours. Call it 'Hours in Pending State'. Put values under Data Row.
+- **Fabric Cloud Router Activity**: Include only if routers exist — otherwise omit entirely. Include Name, UUID, State, Project, Created Date, and Updated Date. Also include how long has it been in pending state in hours. Call it 'Hours in Pending State'. Put values under Data Row.
+- **Connection Activity**: Include only if connections exist — otherwise omit entirely. Include Name, UUID, State, Project, Created Date, and Updated Date. Also include how long has it been in pending state in hours. Call it 'Hours in Pending State'. Put values under Data Row.
+- **Port Activity**: Include only if connections exist — otherwise omit entirely. Include Name, UUID, State, Project, Created Date, and Updated Date. Also include how long has it been in pending state in hours. Call it 'Hours in Pending State'. Put values under Data Row.
 
 6. Use `send_email_notification` to send the report to `recipient_email_addresses`. Follow the email rules below:
 - `pdfContent`: the full report text from Step 5.
