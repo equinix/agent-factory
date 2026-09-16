@@ -34,6 +34,7 @@ This skill can use the following tools:
 - **`search_attached_assets`**: Returns all connections attached to a given stream UUID.
 - **`attach_stream_asset`**: Attaches a connection to a stream by asset UUID and stream UUID with `"metrics_enabled": true`.
 - **`wait`**: Waits for a specified number of milliseconds before the next action.
+- **`get_email_template`**: Get email template.
 - **`send_email_notification`**: Sends an email notification to a list of recipients with an optional PDF attachment.
 
 ## Instructions
@@ -93,70 +94,21 @@ Do not abort the run on a single failure.
 - `failed`: connections whose attachment failed, with error details.
 - `left_unattached`: `connections_over_limit` (skipped due to the 5-connection limit) plus every connection in `failed`.
 
-### Step 6 — Send Email Report
-6a. Compose the completion report in memory:
+### Step 6 — Retrieve the email template
+Retrieve the email template that will be used for the report.
 
-```
-<div class="header">
-    <h1>Connection Attachment Audit Report</h1>
-</div>
-
-<div class="section">
-    <h2>Summary</h2>
-    <div class="content">
-    </div>
-</div>
-
-<div class="section">
-    <h2>Attached Connections</h2>
-    <div class="content">
-        <div class="table-container">
-            <ul class="table-row table-header">
-                <li>Connection Name</li>
-                <li>Connection UUID</li>
-                <li>Bandwidth (Mbps)</li>
-                <li>Stream Name</li>
-                <li>Stream UUID</li>
-            </ul>
-            <!-- Data Rows -->
-            <ul class="table-row">
-            </ul>
-        </div>
-    </div>
-</div>
-
-<div class="section">
-    <h2>Unattached Connections</h2>
-    <div class="content">
-        <div class="table-container">
-            <ul class="table-row table-header">
-                <li>Connection Name</li>
-                <li>Connection UUID</li>
-                <li>Bandwidth (Mbps)</li>
-                <li>Reason</li>
-            </ul>
-            <!-- Data Rows -->
-            <ul class="table-row">
-            </ul>
-        </div>
-    </div>
-</div>
-
-<div class="section">
-    <h2>Next Steps</h2>
-    <div class="content">
-    </div>
-</div>
-```
-
-Section content rules:
+### Step 7 — Send Email Report
+7a. Compose the completion report in memory. Structure the report below using the email template from Step 6.
+#### Header
+**Connection Attachment Audit Report**:
+#### Section content
 - **Summary**: Total connections audited, count unattached found, count successfully attached, count left unattached. Name the target stream. State the overall outcome in 2–4 sentences.
-- **Attached Connections**: One row per successfully attached connection — name, full UUID, bandwidth, target stream name, target stream full UUID. If none were attached, note "None."
-- **Unattached Connections**: One row per connection left unattached — name, full UUID, bandwidth, and reason ("Exceeded 5-connection attachment limit" or the specific attachment error). If none, note "None."
+- **Attached Connections**: One row per successfully attached connection — Connection Name, Connection UUID, Bandwidth, Stream Name, Stream UUID. If none were attached, note "None."
+- **Unattached Connections**: One row per connection left unattached — Connection Name, Connection UUID, Bandwidth, and Reason ("Exceeded 5-connection attachment limit" or the specific attachment error). If none, note "None."
 - **Next Steps**: 1–3 plain-English recommendations (e.g., re-run the audit to attach connections that exceeded the 5-connection limit, set up alert rules on the newly monitored connections, investigate any failed attachments).
 
 6b. If `recipient_email_addresses` is provided and non-empty, call `send_email_notification` with:
-- `pdfContent`: the full report from Step 6a.
+- `pdfContent`: the full report from Step 7a.
 - `body`: one-paragraph summary of the audit outcome, including counts of attached and unattached connections.
 - `pdfTitle`: `FabricConnectionAudit_<YYYY-MM-DD>_Complete`
 - `recipients`: `recipient_email_addresses`

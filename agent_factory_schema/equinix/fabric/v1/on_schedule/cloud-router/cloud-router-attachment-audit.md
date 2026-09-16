@@ -34,6 +34,7 @@ This skill can use the following tools:
 - **`search_attached_assets`**: Returns all routers attached to a given stream UUID.
 - **`attach_stream_asset`**: Attaches a router to a stream by asset UUID and stream UUID with `"metrics_enabled": false`.
 - **`wait`**: Waits for a specified number of milliseconds before the next action.
+- **`get_email_template`**: Get email template.
 - **`send_email_notification`**: Sends an email notification to a list of recipients with an optional PDF attachment.
 
 ## Instructions
@@ -93,75 +94,27 @@ Do not abort the run on a single failure.
 - `failed`: routers whose attachment failed, with error details.
 - `left_unattached`: `routers_over_limit` (skipped due to the 5-router limit) plus every router in `failed`.
 
-### Step 6 — Send Email Report
-6a. Compose the completion report in memory:
+### Step 6 — Retrieve the email template
+Retrieve the email template that will be used for the report.
 
-```
-<div class="header">
-    <h1>Router Attachment Audit Report</h1>
-</div>
+### Step 7 — Send Email Report
 
-<div class="section">
-    <h2>Summary</h2>
-    <div class="content">
-    </div>
-</div>
-
-<div class="section">
-    <h2>Attached Routers</h2>
-    <div class="content">
-        <div class="table-container">
-            <ul class="table-row table-header">
-                <li>Router Name</li>
-                <li>Router UUID</li>
-                <li>Metro</li>
-                <li>Stream Name</li>
-                <li>Stream UUID</li>
-            </ul>
-            <!-- Data Rows -->
-            <ul class="table-row">
-            </ul>
-        </div>
-    </div>
-</div>
-
-<div class="section">
-    <h2>Unattached Routers</h2>
-    <div class="content">
-        <div class="table-container">
-            <ul class="table-row table-header">
-                <li>Router Name</li>
-                <li>Router UUID</li>
-                <li>Metro</li>
-                <li>Reason</li>
-            </ul>
-            <!-- Data Rows -->
-            <ul class="table-row">
-            </ul>
-        </div>
-    </div>
-</div>
-
-<div class="section">
-    <h2>Next Steps</h2>
-    <div class="content">
-    </div>
-</div>
-```
-
-Section content rules:
+7a. Compose the completion report in memory. Structure the report below using the email template from Step 6
+#### Header
+**Router Attachment Audit Report**:
+#### Section content
 - **Summary**: Total routers audited, count unattached found, count successfully attached, count left unattached. Name the target stream. State the overall outcome in 2–4 sentences.
-- **Attached Routers**: One row per successfully attached router — name, full UUID, metro, target stream name, target stream full UUID. If none were attached, note "None."
-- **Unattached Routers**: One row per router left unattached — name, full UUID, metro, and reason ("Exceeded 50-router attachment limit" or the specific attachment error). If none, note "None."
+- **Attached Routers**: One row per successfully attached router — Router Name, Router UUID, Metro, Stream Name, target Stream UUID. If none were attached, note "None."
+- **Unattached Routers**: One row per router left unattached — Router Name, Router UUID, Metro, and Reason ("Exceeded 50-router attachment limit" or the specific attachment error). If none, note "None."
 - **Next Steps**: 1–3 plain-English recommendations (e.g., re-run the audit to attach routers that exceeded the 50-router limit, set up alert rules on the newly monitored routers, investigate any failed attachments).
 
-6b. If `recipient_email_addresses` is provided and non-empty, call `send_email_notification` with:
-- `pdfContent`: the full report from Step 6a.
+7b. If `recipient_email_addresses` is provided and non-empty, call `send_email_notification` with:
+- `pdfContent`: the full report from Step 7a.
 - `body`: one-paragraph summary of the audit outcome, including counts of attached and unattached routers.
 - `pdfTitle`: `FabricRouterAudit_<YYYY-MM-DD>_Complete`
 - `recipients`: `recipient_email_addresses`
 
-6c. Also present the same summary (attached and unattached router lists) directly in the conversation, so the outcome is visible even when no email recipients are configured.
+7c. Also present the same summary (attached and unattached router lists) directly in the conversation, so the outcome is visible even when no email recipients are configured.
 
 ## Guidelines
 - **Autonomous attachment**: Do not ask the user to confirm attachments. Once unattached routers are identified, attach them per the rules in Step 5 automatically.

@@ -101,56 +101,16 @@ Build the following in-memory groupings:
 
 After completing 3a–3b, discard all raw event payloads. Carry forward only in-memory groupings and derived summaries. Do not pass raw event data into any downstream step.
 
-### Step 4 — Compose the Intelligence Report
+### Step 4 — Retrieve the email template
+Retrieve the email template that will be used for the report.
+
+### Step 5 — Compose the Intelligence Report
 Do NOT write the report as prose in your response text. Compose in-memory only, then immediately call `send_email_notification`. The report must only appear as the `pdfContent` parameter — never in the response body.
 
-**Do not respond to the user between Step 5 and Step 6. Proceed directly to calling `send_email_notification`.**
-
-Structure the report using these sections. Do not include any section numbers in the headings. Use the separator formatting shown below exactly. **If a section has no content, omit both the section label and its separator entirely — do not write the heading, do not write placeholder or filler text such as "No events were detected" or "None". The only exception is "What You Should Do", which must always be included.**
-
-```
-<div class="header">
-    <h1>Daily Equinix Updated Assets Report</h1>
-</div>
-
-<div class="section">
-    <h2>Summary</h2>
-    <div class="content">
-    </div>
-</div>
-<div class="section">
-    <h2>Connection Updated Events</h2>
-    <div class="content">
-    </div>
-</div>
-<div class="section">
-    <h2>Port Updated Events</h2>
-    <div class="content">
-    </div>
-</div>
-<div class="section">
-    <h2>Cloud Router Updated Events </h2>
-    <div class="content">
-    </div>
-</div>
-<div class="section">
-    <h2>Network Updated Events</h2>
-    <div class="content">
-    </div>
-</div>
-<div class="section">
-    <h2>Internet Access Updated Events</h2>
-    <div class="content">
-    </div>
-</div>
-<div class="section">
-    <h2>Network Edge Device Updated Events</h2>
-    <div class="content">
-    </div>
-</div>
-```
-
-Section content rules:
+Structure the report below using the email template from Step 4. Do not include any section numbers in the headings. Use the separator formatting shown below exactly. **If a section has no content, omit both the section label and its separator entirely — do not write the heading, do not write placeholder or filler text such as "No events were detected" or "None". The only exception is "What You Should Do", which must always be included.**
+#### Header
+**Daily Equinix Updated Assets Report**:
+#### Section content
 - **Summary**: State the Project UUID and reporting period, then 3–5 sentences — total events, asset types active, headline finding, routine or needs attention.
 - **Connection Updated Activity**: Include only if connection events exist — otherwise omit entirely. Note churn (3+ transitions). List each connection as `<data.resource.name> (<full-uuid>)` with plain English description of activity and the exact list of attributes that were changed.
 - **Port Updated Activity**: Include only if router events exist — otherwise omit entirely. Note churn (3+ transitions) as elevated. List each router as `<data.resource.name> (<full-uuid>)`  with plain English description of activity and the exact list of attributes that were changed.
@@ -163,7 +123,7 @@ Rules:
 - Plain English always. No raw event type strings, no API jargon.
 - Always use both the human-readable name AND the full UUID when referencing any asset (router, connection, port, routing protocol) or user. Format: `<name> (<full-uuid>)` for assets and `<data.auth.name> (id: <authid>)` for users. If a name is not available, fall back to the full UUID only.
 
-### Step 5 — Send the Report
+### Step 6 — Send the Report
 Use `send_email_notification` to send the report to `recipient_email_addresses`.
 - `pdfContent`: the full report text from Step 5.
 - `body`: one-paragraph summary of overall status and headline finding.
@@ -172,6 +132,7 @@ Use `send_email_notification` to send the report to `recipient_email_addresses`.
 ## Available Tools
 - **`get_timestamps`**: Generates `from` and `to` UTC timestamps based on a duration string (e.g., `"24h"`, `"7d"`, `"1M"`). Returns a JSON object with `from` and `to` as ISO 8601 UTC strings. Always call this in Step 1 to obtain the reporting window.
 - **`search_cloud_events`**: Searches Equinix Fabric cloud events. Use `/equinixproject` `=` with `/time` `>=` and `<=` to scope by project and time window.
+- **`get_email_template`**: Get email template.
 - **`send_email_notification`**: Sends an email. Pass `pdfTitle` and `pdfContent` (plain text) to auto-generate and attach a PDF.
 
 ## Guidelines

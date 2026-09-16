@@ -41,49 +41,16 @@ None
 If the `search_ports` call fails, retry up to 5 attempts total. Before each retry, call `wait` with `waitInMilliseconds` = `3000` (3 seconds), then call `search_ports` again with the same payload. Stop retrying as soon as a call succeeds, and continue to Step 2 with that result. Only give up after all 5 attempts fail.
 
 2. Call `get_timestamps` with `duration` = `"24h"` to obtain the current UTC time. If the call fails, do not send an email and stop processing. If the call succeeds, use the `to` field as `now` (ignore `from`). For each port from Step 1, calculate `minutes_in_pending_state` = `now` − `changeLog.updatedDateTime`, in minutes. Keep only ports where `minutes_in_pending_state > pending_state_timeout_minutes` (default: 30 minutes). If no ports exceed the threshold, stop here and do not send an email. Otherwise, proceed to Step 3 with the filtered list.
-
-3. Structure the report below:
+3. Retrieve the email template that will be used for the report.
+4. Structure the report below using the email template from Step 3:
+### Header
+**Port Pending State Tracker Report**:
 ### Section content
 - **Summary**: 3–5 sentences — count of ports exceeding timeout, headline finding, insights.
-- **Port Activity**: Include name, uuid, state, project, created and updated dates. Also include how long has it been in pending state in hours. Put values under Data Row.
+- **Port Activity**: Include name, uuid, state, project, created date, and updated date. Also include how long has it been in pending state in hours. Call it 'Hours in Pending State'. Put values under Data Row.
 
-```
-<div class="header">
-    <h1>Port Pending State Tracker Report</h1>
-</div>
-
-<div class="section">
-    <h2>Summary</h2>
-    <div class="content">
-    </div>
-</div>
-
-<div class="section">
-    <h2>Port Activity</h2>
-    <div class="content">
-        <div class="table-container">
-            <!-- Header Row -->
-            <ul class="table-row table-header">
-                <li>Name</li>
-                <li>UUID</li>
-                <li>State</li>
-                <li>Created Date</li>
-                <li>Updated Date</li>
-                <li>Hours in Pending State</li>
-            </ul>
-
-          <!-- Data Row-->
-          <ul class="table-row">
-
-          </ul>
-        </div>
-    </div>
-</div>
-
-```
-
-4. Use `send_email_notification` to send the report to `recipient_email_addresses`. Follow the email rules below:
-- `pdfContent`: the full report text from Step 3.
+5. Use `send_email_notification` to send the report to `recipient_email_addresses`. Follow the email rules below:
+- `pdfContent`: the full report text from Step 4.
 - `body`: one-paragraph summary of ports exceeding timeout threshold and recommended actions.
 - `pdfTitle`: `PortPendingStates`
 

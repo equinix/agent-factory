@@ -60,99 +60,18 @@ None
   "pagination": { "offset": 0, "limit": 100 }
 }
 ```
-4. Structure the report below:
-### Section content
+4. Retrieve the email template that will be used for the report.
+5. Structure the report below using the email template from Step 4:
+#### Header
+**Pending State Tracker Report**:
+#### Section content
 - **Summary**: 3–5 sentences — total count, headline finding, insights.
-- **Fabric Cloud Router Activity**: Include only if routers exist — otherwise omit entirely. Include name, uuid, state, project, created and updated dates. Also include how long has it been since created date in hours. Put values under Data Row.
-- **Connection Activity**: Include only if connections exist — otherwise omit entirely. Include name, uuid, state, project, created and updated dates. Also include how long has it been since created date in hours. Put values under Data Row.
-- **Port Activity**: Include only if connections exist — otherwise omit entirely. Include name, uuid, state, project, created and updated dates. Also include how long has it been since created date in hours. Put values under Data Row.
+- **Fabric Cloud Router Activity**: Include only if routers exist — otherwise omit entirely. Include Name, UUID, State, Project, Created Date, and Updated Date. Also include how long has it been in pending state in hours. Call it 'Hours in Pending State'. Put values under Data Row.
+- **Connection Activity**: Include only if connections exist — otherwise omit entirely. Include Name, UUID, State, Project, Created Date, and Updated Date. Also include how long has it been in pending state in hours. Call it 'Hours in Pending State'. Put values under Data Row.
+- **Port Activity**: Include only if connections exist — otherwise omit entirely. Include Name, UUID, State, Project, Created Date, and Updated Date. Also include how long has it been in pending state in hours. Call it 'Hours in Pending State'. Put values under Data Row.
 
-```
-<div class="header">
-    <h1>Pending State Tracker Report</h1>
-</div>
-
-<div class="section">
-    <h2>Summary</h2>
-    <div class="content">
-    </div>
-</div>
-
-<div class="section">
-    <h2>Cloud Router Activity</h2>
-    <div class="content">
-        <div class="table-container">
-            <!-- Header Row -->
-            <ul class="table-row table-header">
-                <li>Name</li>
-                <li>UUID</li>
-                <li>State</li>
-                <li>Created Date</li>
-                <li>Updated Date</li>
-                <li>Hours Since Creation</li>
-            </ul>
-          
-          <!-- Data Row-->
-          <ul class="table-row">
-
-          </ul>
-        </div>
-    </div>
-</div>
-
-
-<div class="section">
-    <h2>Connection Activity</h2>
-    <div class="content">
-        <div class="table-container">
-            <!-- Header Row -->
-            <ul class="table-row table-header">
-                <li>Name</li>
-                <li>UUID</li>
-                <li>State</li>
-                <li>Created Date</li>
-                <li>Updated Date</li>
-                <li>Hours Since Creation</li>
-            </ul>
-          
-          <!-- Data Row-->
-          <ul class="table-row">
-          </ul>
-                              <li>xd</li>
-                <li>UUID</li>
-                <li>State</li>
-                <li>Created Date</li>
-                <li>Updated Date</li>
-                <li>Hours Since Creation</li>
-        </div>
-    </div>
-</div>
-
-<div class="section">
-    <h2>Port Activity</h2>
-    <div class="content">
-        <div class="table-container">
-            <!-- Header Row -->
-            <ul class="table-row table-header">
-                <li>Name</li>
-                <li>UUID</li>
-                <li>State</li>
-                <li>Created Date</li>
-                <li>Updated Date</li>
-                <li>Hours Since Creation</li>
-            </ul>
-          
-          <!-- Data Row-->
-          <ul class="table-row">
-          </ul>
-        </div>
-    </div>
-</div>
-
-```
-
-5. Use `send_email_notification` to send the report to `recipient_email_addresses`. Follow the email rules below:
-- `pdfContent`: the full report text from Step 4.
+6. Use `send_email_notification` to send the report to `recipient_email_addresses`. Follow the email rules below:
+- `pdfContent`: the full report text from Step 5.
 - `body`: one-paragraph summary of overall status and headline finding.
 - `pdfTitle`: `FabricPendingStates`
 
@@ -160,6 +79,7 @@ None
 - **`search_connections`**: Searches for connections.
 - **`search_routers`**: Searches for fabric cloud routers.
 - **`search_ports`**: Searches for ports.
+- **`get_email_template`**: Get email template.
 - **`send_email_notification`**: Sends an email. Pass `pdfTitle` and `pdfContent` (plain text) to auto-generate and attach a PDF.
 
 ## Guidelines
