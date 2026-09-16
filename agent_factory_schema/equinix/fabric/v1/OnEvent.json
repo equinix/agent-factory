@@ -76,6 +76,15 @@
             "categories": [
                 "Deploy & Change Agents"
             ]
+        },
+        {
+            "name": "equinix.fabric.port.bandwidth.alert",
+            "description": "Notify on Port Bandwidth Usage Alert",
+            "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_event/port/port-bandwidth-usage-alert.md",
+            "releaseStatus": "preview",
+            "categories": [
+                "Monitor & Report Agents"
+            ]
         }
     ]
 }
