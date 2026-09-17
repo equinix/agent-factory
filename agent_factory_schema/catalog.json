@@ -71,6 +71,15 @@
                     "categories": [
                         "Monitor & Report Agents"
                     ]
+                },
+                {
+                    "name": "Port Packet Drop Alert Agent",
+                    "description": "An Equinix agent that monitors Fabric port packet drop counts and notifies a user when a packet drop alert is raised on a port.",
+                    "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_event/port/port-packet-drop-alert.md",
+                    "releaseStatus": "preview",
+                    "categories": [
+                        "Monitor & Report Agents"
+                    ]
                 }
             ]
         },
