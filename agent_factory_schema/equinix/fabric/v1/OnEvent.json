@@ -85,6 +85,15 @@
             "categories": [
                 "Monitor & Report Agents"
             ]
+        },
+        {
+            "name": "equinix.fabric.port.packet_drop.alert",
+            "description": "Notify on Port Packet Drop Alert",
+            "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_event/port/port-packet-drop-alert.md",
+            "releaseStatus": "preview",
+            "categories": [
+                "Monitor & Report Agents"
+            ]
         }
     ]
 }
