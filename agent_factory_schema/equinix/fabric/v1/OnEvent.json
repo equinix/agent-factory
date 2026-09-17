@@ -85,6 +85,24 @@
             "categories": [
                 "Monitor & Report Agents"
             ]
+        },
+        {
+            "name": "equinix.fabric.connection.route_filter.attach",
+            "description": "Auto-attach the applicable route filter policy to a newly provisioned connection or BGP routing protocol",
+            "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_event/connection/connection-route-filter-auto-attach.md",
+            "releaseStatus": "preview",
+            "categories": [
+                "Deploy & Change Agents"
+            ]
+        },
+        {
+            "name": "equinix.fabric.connection.route_aggregation.attach",
+            "description": "Auto-attach the applicable route aggregation policy to a newly created BGP routing protocol and report the advertised route-count reduction",
+            "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_event/connection/connection-route-aggregation-auto-attach.md",
+            "releaseStatus": "preview",
+            "categories": [
+                "Deploy & Change Agents"
+            ]
         }
     ]
 }

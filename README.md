@@ -92,6 +92,47 @@ It identifies every connection sharing the alerting metro pair, of any connectio
 		<td>preview
 	</tr>
 	<tr>
+		<td><a href="https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_event/connection/connection-route-aggregation-auto-attach.md">Connection Route Aggregation Auto-Attach Agent<br>[connection-route-aggregation-auto-attach.md]</a></td>
+		<td>An Equinix agent that reacts to a newly created BGP routing protocol on a Fabric Cloud Router (FCR) connection and applies the route aggregation policy that connection is supposed to carry.
+The agent resolves the connection from the cloud event, confirms it is FCR-backed with a BGP routing protocol, checks whether a route aggregation is already attached, selects the applicable policy deterministically from a caller-supplied policy map, measures the advertised route count before attaching, attaches the policy, verifies the attachment reached `ATTACHED`, re-measures the advertised route count, and emails a report.
+Route aggregation policies that are applied by hand end up applied inconsistently across connections, so this agent applies them at routing-protocol creation time and shows the resulting route-count reduction.
+This agent only executes once per cloud event.</td>
+		<td>- Detect newly created BGP routing protocols and newly provisioned connections from the cloud event stream<br>- Resolve the connection and confirm it is FCR-backed with a BGP routing protocol eligible for aggregation<br>- Detect connections with no route aggregation policy attached<br>- Select the applicable route aggregation policy deterministically from an ordered policy map matched on connection type, A-side/Z-side metro, project, or connection name<br>- Validate the selected policy is provisioned, address-family compatible, and has at least one rule before attaching<br>- Attach the route aggregation policy, skipping connections that already have one (idempotent)<br>- Verify the attachment reached `ATTACHED` and report `PENDING_BGP_CONFIGURATION` or `FAILED` outcomes<br>- Measure the advertised route count before and after attachment and report the reduction<br>- Support a dry-run mode that reports the intended attachment without changing anything<br>- Log every action and decision, and email a completion report</td>
+		<td>This skill can use the following tools:
+
+*   **`search_connections`**: Searches for an existing connection. Used with the /uuid property to resolve the connection from the event and read its type, A-side/Z-side metro codes, A-side router UUID, project ID, name, and Equinix status.
+*   **`list_routing_protocols`**: Lists all routing protocols for a connection. Used to confirm a BGP routing protocol exists and to read the bgpIpv4 and bgpIpv6 enabled flags for address-family matching.
+*   **`list_route_aggregations_for_connection`**: Gets the route aggregations already attached to a connection. Each item exposes the policy UUID, type, and attachment status (ATTACHING, ATTACHED, DETACHING, DETACHED, FAILED, PENDING_BGP_CONFIGURATION). Used both for the idempotency check and for post-attach verification — pass a single route aggregation UUID to read just that attachment.
+*   **`match_policy_rules`**: Selects which policy applies to a subject by walking an ordered rule list and returning the first rule whose criteria all hold, plus a trace of every rule examined. Used to pick the route aggregation policy for this connection — the selection must not be reasoned through by hand.
+*   **`get_route_aggregation`**: Retrieves a route aggregation policy by UUID. Used to confirm the selected policy exists, is PROVISIONED, and to read its type.
+*   **`list_route_aggregation_rules`**: Lists the rules under a route aggregation policy. Used to confirm the policy is not empty before attaching it.
+*   **`search_routes`**: Searches the routing table of a Fabric Cloud Router. Used with route_type advertised and the connection UUID to read the advertised route count from the response pagination total, before and after attachment.
+*   **`attach_route_aggregation`**: Attaches a route aggregation policy to a connection. Takes the connection UUID and the route aggregation UUID; unlike a route filter, it has no direction.
+*   **`wait`**: Waits for a specified number of milliseconds before the next action.
+*   **`send_email_notification`**: Sends an email notification. Pass a PDF title and PDF content to auto-generate and attach a PDF report.</td>
+		<td>preview
+	</tr>
+	<tr>
+		<td><a href="https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_event/connection/connection-route-filter-auto-attach.md">Connection Route Filter Auto-Attach Agent<br>[connection-route-filter-auto-attach.md]</a></td>
+		<td>An Equinix agent that reacts to a newly provisioned connection or a newly created BGP routing protocol and makes sure the connection carries a route filter policy.
+The agent resolves the connection from the cloud event, confirms it has a BGP routing protocol, checks whether a route filter is already attached, selects the applicable route filter policy from a caller-supplied policy map (matched deterministically on connection type, metro, project, or connection name), attaches it in the configured direction, verifies the attachment reached `ATTACHED`, and emails a report of what was attached, skipped, or failed.
+Forgetting to attach a route filter to a new connection leaves an unfiltered BGP session, so this agent enforces the routing policy at provisioning time instead of at audit time.
+This agent only executes once per cloud event.</td>
+		<td>- Detect newly provisioned connections and newly created BGP routing protocols from the cloud event stream<br>- Resolve the connection and confirm it has a BGP routing protocol eligible for route filtering<br>- Detect connections with no route filter attached in the required direction<br>- Select the applicable route filter policy deterministically from an ordered policy map matched on connection type, A-side/Z-side metro, project, or connection name<br>- Validate the selected policy is provisioned, address-family compatible, and has at least one rule before attaching<br>- Attach the route filter policy in the configured direction, skipping connections that already have one (idempotent)<br>- Verify the attachment reached `ATTACHED` and report `PENDING_BGP_CONFIGURATION` or `FAILED` outcomes<br>- Support a dry-run mode that reports the intended attachment without changing anything<br>- Log every action and decision, and email a completion report</td>
+		<td>This skill can use the following tools:
+
+*   **`search_connections`**: Searches for an existing connection. Used with the /uuid property to resolve the connection from the event and read its type, A-side/Z-side metro codes, project ID, name, and Equinix status.
+*   **`list_routing_protocols`**: Lists all routing protocols for a connection. Used to confirm a BGP routing protocol exists and to read the bgpIpv4 and bgpIpv6 enabled flags for address-family matching.
+*   **`list_route_filters_for_connection`**: Gets the route filters already attached to a connection. Each item exposes the policy UUID, type, direction, and attachment status (ATTACHING, ATTACHED, DETACHING, DETACHED, FAILED, PENDING_BGP_CONFIGURATION). Used both for the idempotency check and for post-attach verification — pass a single route filter UUID to read just that attachment.
+*   **`search_route_filters`**: Searches route filter policies. Used with the /uuid property to confirm the selected policy exists, is PROVISIONED, and to read its type.
+*   **`match_policy_rules`**: Selects which policy applies to a subject by walking an ordered rule list and returning the first rule whose criteria all hold, plus a trace of every rule examined. Used to pick the route filter policy for this connection — the selection must not be reasoned through by hand.
+*   **`list_route_filter_rules`**: Lists the rules under a route filter policy. Used to confirm the policy is not empty before attaching it.
+*   **`attach_route_filter`**: Attaches a route filter policy to a connection. Takes the connection UUID, the route filter UUID, and a direction of INBOUND or OUTBOUND.
+*   **`wait`**: Waits for a specified number of milliseconds before the next action.
+*   **`send_email_notification`**: Sends an email notification. Pass a PDF title and PDF content to auto-generate and attach a PDF report.</td>
+		<td>preview
+	</tr>
+	<tr>
 		<td><a href="https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_event/connection/connection-upgrade-bw-on-packet-drop-alert.md">Connection Packet Drop Monitoring and Upgrade Agent<br>[connection-upgrade-bw-on-packet-drop-alert.md]</a></td>
 		<td>An Equinix agent that automatically boosts connection bandwidth to mitigate traffic-induced packet loss.
 This agent only executes once.</td>
