@@ -30,7 +30,7 @@ unattached. This agent runs once immediately by default unless scheduled by user
 This skill can use the following tools:
 
 - **`search_ports`**: Searches for existing provisioned Fabric Ports with pagination support.
-- **`list_streams`**: Lists all streams available in the account.
+- **`search_streams`**: Searches for streams with the given UUID.
 - **`search_attached_assets`**: Returns all ports attached to a given stream UUID.
 - **`attach_stream_asset`**: Attaches a port to a stream by asset UUID and stream UUID with `"metrics_enabled": true`.
 - **`wait`**: Waits for a specified number of milliseconds before the next action.
@@ -43,7 +43,7 @@ This skill can use the following tools:
 1a. Read `stream_uuid` from configuration. This is **required**. If it is missing or empty, stop immediately and inform the user:
 > "No `stream_uuid` was provided in configuration. Please supply the UUID of the stream to attach ports to."
 
-1b. Call `list_streams` and confirm that a stream with the given `stream_uuid` exists and is in `PROVISIONED` state.
+1b. Call `search_streams` and confirm that a stream with the given `stream_uuid` exists and is in `PROVISIONED` state.
 Retain its `name` for use in the report. If no matching stream is found, stop and inform the user that the provided `stream_uuid` is invalid.
 
 ### Step 2 — Collect All Ports
@@ -60,7 +60,7 @@ Retain its `name` for use in the report. If no matching stream is found, stop an
 2d. Filter out ports not in `PROVISIONED` state — they are ineligible for stream attachment.
 
 ### Step 3 — Collect Existing Stream Attachments
-3a. Using the streams returned by `list_streams` in Step 1b, call `search_attached_assets` with "asset_type: port" 
+3a. Using the streams returned by `search_streams` in Step 1b, call `search_attached_assets` with "asset_type: port" 
 for **each** stream UUID
 to get the list of ports currently attached to that stream.
 Collect all returned port UUIDs into a single in-memory set: `attached_asset_uuids`.
@@ -121,7 +121,7 @@ Section content rules:
 - **Autonomous attachment**: Do not ask the user to confirm attachments. Once unattached ports are identified, attach them per the rules in Step 5 automatically.
 - **5-port cap**: Never attach more than 5 ports in a single run. Ports beyond the first 5 must be reported as left unattached with the limit reason.
 - **Partial success**: A failure on one attachment must not abort the remaining attachments — continue and report all outcomes.
-- **Pagination discipline**: Always paginate ports fully before cross-referencing. Call `search_attached_assets` for every stream returned by `list_streams` before building `attached_asset_uuids` — an incomplete inventory will produce false negatives.
+- **Pagination discipline**: Always paginate ports fully before cross-referencing. Call `search_attached_assets` for every stream returned by `search_streams` before building `attached_asset_uuids` — an incomplete inventory will produce false negatives.
 - **Configuration required**: `stream_uuid` is mandatory. Never guess or invent a stream UUID; stop and ask if it is missing or invalid.
 - **Name length**: No generated names should exceed 24 characters.
 - **Token efficiency**: After cross-referencing in Step 4, discard the raw port payloads. Carry forward only the curated `unattached_ports`, target stream details, and attachment outcomes.
