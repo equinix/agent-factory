@@ -161,6 +161,18 @@ This agent only executes once per event.</td>
 *   **`send_email_notification`**: Sends an email.</td>
 		<td>preview
 	</tr>
+	<tr>
+		<td><a href="https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_event/port/port-packet-drop-alert.md">Port Packet Drop Alert Agent<br>[port-packet-drop-alert.md]</a></td>
+		<td>An Equinix agent that monitors Fabric port packet drop counts and notifies a user when a packet drop alert is raised on a port.
+This agent only executes once per event.</td>
+		<td>- Monitor real-time network event streams for port packet drop counts<br>- Detect and validate packet drop alert rules raised on a port<br>- Resolve the affected port's details (name, metro, account)<br>- Send notifications for critical packet drop alerts</td>
+		<td>This skill can use the following tools:
+
+*   **`search_ports`**: Searches for an existing port.
+*   **`get_stream_alert_rule_details`**: Searches for an existing alert rule.
+*   **`send_email_notification`**: Sends an email.</td>
+		<td>preview
+	</tr>
 </table>
 
 </details>
