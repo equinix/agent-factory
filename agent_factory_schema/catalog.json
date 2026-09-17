@@ -62,6 +62,15 @@
                     "categories": [
                         "Deploy & Change Agents"
                     ]
+                },
+                {
+                    "name": "Port Bandwidth Usage Alert Agent",
+                    "description": "An Equinix agent that monitors Fabric port bandwidth usage and notifies a user when a bandwidth alert is raised on a port.",
+                    "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_event/port/port-bandwidth-usage-alert.md",
+                    "releaseStatus": "preview",
+                    "categories": [
+                        "Monitor & Report Agents"
+                    ]
                 }
             ]
         },
