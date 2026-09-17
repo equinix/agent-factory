@@ -34,15 +34,20 @@ This skill can use the following tools:
 1. Extract `old_email` and `new_email` from the Configuration. Both are required; stop and notify the user if either is missing or not a valid email format.
 2. If `old_email` and `new_email` are the same (compare case-insensitively), stop immediately and inform the user — no changes are needed.
 3. Paginate through all agents: call `list_agents({offset: 0, limit: 100})`, collect all agents from `data`, then repeat with an incremented offset until `pagination.next` is `null`.
-4. For each collected agent, **skip any agent whose `agentTemplate.uuid` is `SELF_TEMPLATE_UUID`** — these are all instances of this template and must never have their own configuration patched. Then call `update_agent_email(agent_id, old_email, new_email)`:
-   - If it returns `{"updated": true}` — record the agent as successfully updated (name + UUID).
-   - If it returns `{"updated": false, "reason": "email not found in prompt"}` — the email was not in this agent's prompt; count it as scanned but skip silently.
-   - If the tool raises an error — record the agent as failed (UUID, name, error message) and **continue with the remaining agents**.
-5. After all agents are processed, report the full summary: total scanned (excluding skipped template instances), total updated, total failed.
+4. Build a `template_cache` (a map from `agentTemplate.uuid` → `is_email_updater` boolean). For each collected agent, determine whether it is an email-updater agent before deciding whether to patch it:
+   - Look up the agent's `agentTemplate.uuid` in `template_cache`.
+   - If not yet cached: inspect the agent's `configuration.prompt`. If it contains both `old_email:` and `new_email:` as parameter keys, record `true` in `template_cache` for that template UUID; otherwise record `false`. This check runs at most once per unique template UUID — all subsequent agents sharing the same template UUID reuse the cached result.
+   - If `template_cache[agentTemplate.uuid]` is `true` — **skip this agent entirely**. Record it as skipped (name + UUID) and do not call `update_agent_email`.
+   - Otherwise, call `update_agent_email(agent_id, old_email, new_email)`:
+     - If it returns `{"updated": true}` — record the agent as successfully updated (name + UUID).
+     - If it returns `{"updated": false, "reason": "email not found in prompt"}` — count it as scanned but skip silently.
+     - If the tool raises an error — record the agent as failed (UUID, name, error message) and **continue with the remaining agents**.
+5. After all agents are processed, report the full summary: total scanned, total skipped (email-updater agents), total updated, total failed.
 6. If any agents failed, list each by UUID, name, and error so the user can investigate manually.
+7. If any agents were skipped as email-updater agents, list them by UUID and name so the user is aware.
 
 ## Guidelines
-* **Never update agents from this template**: Skip any agent whose `agentTemplate.uuid` is `SELF_TEMPLATE_UUID`. Updating them would corrupt their `old_email`/`new_email` parameters and break future runs.
+* **Never update email-updater agents**: Any agent whose `configuration.prompt` contains both `old_email:` and `new_email:` as parameter keys is itself an email-updater agent. Patching it would corrupt its own `old_email`/`new_email` parameters and break future runs. Cache this classification by `agentTemplate.uuid` — you only need to check the prompt once per unique template.
 * **Validate first**: Do not call any tools if either email address is missing or malformed. Inform the user immediately.
 * **Check for difference**: Do not proceed if `old_email` and `new_email` are identical (case-insensitive). Inform the user immediately.
 * **Classify errors before deciding what to do**:
