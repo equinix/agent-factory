@@ -161,7 +161,7 @@ It validates both email addresses before making any changes, iterates through al
 		<td>- Validate old and new email addresses before making any changes<br>- Confirm the two addresses are actually different before proceeding<br>- Scan all agent configuration prompts across the account by paginating through every agent<br>- Replace every occurrence of the old email with the new email in each matching prompt<br>- Continue processing remaining agents if one fails, rather than aborting<br>- Report a change summary: how many agents were scanned, updated, and failed</td>
 		<td>This skill can use the following tools:
 
-* **`list_agents`**: Retrieves a paginated list of agents. Takes `pagination: {offset, limit}`. Returns a JSON object with a `data` array (each item has `uuid`, `name`, and `configuration.prompt`) and a `pagination` object (with `next` set to `null` when there are no more pages).
+* **`list_agents`**: Retrieves a paginated list of agents. Takes `pagination: {offset, limit}`. Returns a JSON object with a `data` array (each item has `uuid`, `name`, `agentTemplate.uuid`, and `configuration.prompt`) and a `pagination` object (with `next` set to `null` when there are no more pages).
 
 * **`update_agent_email`**: Scans a single agent's configuration prompt for `old_email` and replaces every occurrence with `new_email`. Takes `agent_id`, `old_email`, and `new_email`. Returns `{"updated": true}` if the email was found and patched, or `{"updated": false, "reason": "email not found in prompt"}` if the email was not present. Raises an error on API or permission failures.</td>
 		<td>preview
