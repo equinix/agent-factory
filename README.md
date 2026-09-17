@@ -308,7 +308,7 @@ unattached. This agent runs once immediately by default unless scheduled by user
 		<td>This skill can use the following tools:
 
 - **`search_routers`**: Searches for existing provisioned Fabric Cloud Routers with pagination support.
-- **`list_streams`**: Lists all streams available in the account.
+- **`search_streams`**: Searches for streams with the given UUID.
 - **`search_attached_assets`**: Returns all routers attached to a given stream UUID.
 - **`attach_stream_asset`**: Attaches a router to a stream by asset UUID and stream UUID with `"metrics_enabled": false`.
 - **`wait`**: Waits for a specified number of milliseconds before the next action.
@@ -473,7 +473,7 @@ unattached. This agent runs once immediately by default unless scheduled by user
 		<td>This skill can use the following tools:
 
 - **`search_connections`**: Searches for existing provisioned Fabric Connections with pagination support.
-- **`list_streams`**: Lists all streams available in the account.
+- **`search_streams`**: Searches for streams with the given UUID.
 - **`search_attached_assets`**: Returns all connections attached to a given stream UUID.
 - **`attach_stream_asset`**: Attaches a connection to a stream by asset UUID and stream UUID with `"metrics_enabled": true`.
 - **`wait`**: Waits for a specified number of milliseconds before the next action.
@@ -591,7 +591,7 @@ unattached. This agent runs once immediately by default unless scheduled by user
 		<td>This skill can use the following tools:
 
 - **`search_ports`**: Searches for existing provisioned Fabric Ports with pagination support.
-- **`list_streams`**: Lists all streams available in the account.
+- **`search_streams`**: Searches for streams with the given UUID.
 - **`search_attached_assets`**: Returns all ports attached to a given stream UUID.
 - **`attach_stream_asset`**: Attaches a port to a stream by asset UUID and stream UUID with `"metrics_enabled": true`.
 - **`wait`**: Waits for a specified number of milliseconds before the next action.

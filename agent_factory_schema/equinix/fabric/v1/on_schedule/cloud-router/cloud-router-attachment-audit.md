@@ -30,7 +30,7 @@ unattached. This agent runs once immediately by default unless scheduled by user
 This skill can use the following tools:
 
 - **`search_routers`**: Searches for existing provisioned Fabric Cloud Routers with pagination support.
-- **`list_streams`**: Lists all streams available in the account.
+- **`search_streams`**: Searches for streams with the given UUID.
 - **`search_attached_assets`**: Returns all routers attached to a given stream UUID.
 - **`attach_stream_asset`**: Attaches a router to a stream by asset UUID and stream UUID with `"metrics_enabled": false`.
 - **`wait`**: Waits for a specified number of milliseconds before the next action.
@@ -43,7 +43,7 @@ This skill can use the following tools:
 1a. Read `stream_uuid` from configuration. This is **required**. If it is missing or empty, stop immediately and inform the user:
 > "No `stream_uuid` was provided in configuration. Please supply the UUID of the stream to attach routers to."
 
-1b. Call `list_streams` and confirm that a stream with the given `stream_uuid` exists and is in `PROVISIONED` state.
+1b. Call `search_streams` and confirm that a stream with the given `stream_uuid` exists and is in `PROVISIONED` state.
 Retain its `name` for use in the report. If no matching stream is found, stop and inform the user that the provided `stream_uuid` is invalid.
 
 ### Step 2 — Collect All Routers
@@ -60,7 +60,7 @@ Retain its `name` for use in the report. If no matching stream is found, stop an
 2d. Filter out routers not in `PROVISIONED` state — they are ineligible for stream attachment.
 
 ### Step 3 — Collect Existing Stream Attachments
-3a. Using the streams returned by `list_streams` in Step 1b, call `search_attached_assets` with "asset_type: router" 
+3a. Using the streams returned by `search_streams` in Step 1b, call `search_attached_assets` with "asset_type: router" 
 for **each** stream UUID
 to get the list of routers currently attached to that stream.
 Collect all returned router UUIDs into a single in-memory set: `attached_asset_uuids`.
@@ -120,7 +120,7 @@ Retrieve the email template that will be used for the report.
 - **Autonomous attachment**: Do not ask the user to confirm attachments. Once unattached routers are identified, attach them per the rules in Step 5 automatically.
 - **50-router cap**: Never attach more than 5 routers in a single run. Routers beyond the first 5 must be reported as left unattached with the limit reason.
 - **Partial success**: A failure on one attachment must not abort the remaining attachments — continue and report all outcomes.
-- **Pagination discipline**: Always paginate routers fully before cross-referencing. Call `search_attached_assets` for every stream returned by `list_streams` before building `attached_asset_uuids` — an incomplete inventory will produce false negatives.
+- **Pagination discipline**: Always paginate routers fully before cross-referencing. Call `search_attached_assets` for every stream returned by `search_streams` before building `attached_asset_uuids` — an incomplete inventory will produce false negatives.
 - **Configuration required**: `stream_uuid` is mandatory. Never guess or invent a stream UUID; stop and ask if it is missing or invalid.
 - **Name length**: No generated names should exceed 24 characters.
 - **Token efficiency**: After cross-referencing in Step 4, discard the raw router payloads. Carry forward only the curated `unattached_routers`, target stream details, and attachment outcomes.
