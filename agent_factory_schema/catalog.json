@@ -55,6 +55,24 @@
                     ]
                 },
                 {
+                    "name": "Connection Route Aggregation Auto-Attach Agent",
+                    "description": "An Equinix agent that reacts to a newly created BGP routing protocol on a Fabric Cloud Router (FCR) connection and applies the route aggregation policy that connection is supposed to carry.",
+                    "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_event/connection/connection-route-aggregation-auto-attach.md",
+                    "releaseStatus": "preview",
+                    "categories": [
+                        "Deploy & Change Agents"
+                    ]
+                },
+                {
+                    "name": "Connection Route Filter Auto-Attach Agent",
+                    "description": "An Equinix agent that reacts to a newly provisioned connection or a newly created BGP routing protocol and makes sure the connection carries a route filter policy.",
+                    "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_event/connection/connection-route-filter-auto-attach.md",
+                    "releaseStatus": "preview",
+                    "categories": [
+                        "Deploy & Change Agents"
+                    ]
+                },
+                {
                     "name": "Metro Latency Spikes and Connections Over Metros Report Agent",
                     "description": "An Equinix agent that automatically email a list of connections that are over the metros where latency spike.",
                     "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_event/connection/connection-metro-latency-notify.md",
