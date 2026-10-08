@@ -205,6 +205,15 @@
             ]
         },
         {
+            "name": "equinix.fabric.network.health.scorecard",
+            "description": "Create Network Health Scorecard for the connections on a Cloud Router",
+            "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_schedule/network/network-health-scorecard.md",
+            "releaseStatus": "preview",
+            "categories": [
+                "Monitor & Report Agents"
+            ]
+        },
+        {
             "name": "equinix.fabric.project.lifecycle.logger",
             "description": "Analyzes all cloud events within a given Equinix Fabric project",
             "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_schedule/asset/project-lifecycle-activities.md",

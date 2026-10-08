@@ -1,8 +1,7 @@
 ---
 name: network-health-scorecard
 description: Scores and ranks the health of every connection on a Fabric Cloud Router (rate-exceeded packet drops, packet errors, utilization, latency) and emails a prioritized remediation scorecard.
-categories:
-  - Monitor & Report Agents
+categories: ["Monitor & Report Agents"]
 ---
 
 # Network Health Scorecard Agent

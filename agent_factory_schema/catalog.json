@@ -254,6 +254,15 @@
                     ]
                 },
                 {
+                    "name": "Network Health Scorecard Agent",
+                    "description": "An Equinix Agent that gives operators a single-pane health view of the network built around one Equinix Fabric Cloud Router. Given a Cloud Router UUID, it resolves the router, fetches every connection attached to it, collects per-connection performance metrics, computes a composite 0 to 100 health score for each connection, ranks them, flags any connection with an obvious measurable issue, and recommends remediation for every flagged connection.",
+                    "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_schedule/network/network-health-scorecard.md",
+                    "releaseStatus": "preview",
+                    "categories": [
+                        "Monitor & Report Agents"
+                    ]
+                },
+                {
                     "name": "Port Attachment Audit Agent",
                     "description": "An Equinix agent that audits all Fabric Ports to detect ports that are unmonitored then attachs them to stream.",
                     "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_schedule/port/port-attachment-audit.md",
