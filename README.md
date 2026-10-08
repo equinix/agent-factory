@@ -568,14 +568,14 @@ This agent runs once immediately by default unless scheduled by user.</td>
 This agent helps troubleshooting effort on a Cloud Router's network be prioritized where it matters most. The result is delivered as a PDF scorecard via email.
 This agent is advisory only. It reads telemetry and writes recommendations into a report; it never modifies the Cloud Router, a connection, its bandwidth, its rate limit, or any routing configuration.
 This agent runs once immediately by default unless scheduled by user.</td>
-		<td>- Resolve a Fabric Cloud Router and its location, package, and state<br>- Enumerate all PROVISIONED connections on that Cloud Router (or a user-specified subset of them)<br>- Collect rate-exceeded packet drops, packet errors, utilization, and inter-metro latency per connection<br>- Compute a reproducible composite 0–100 health score per connection<br>- Rank all connections and flag any with an obvious measurable issue<br>- Recommend concrete remediation for every flagged connection<br>- Deliver a prioritized scorecard as a PDF report via email</td>
+		<td>- Resolve a Fabric Cloud Router and its location, package, and state<br>- Enumerate all PROVISIONED connections on that Cloud Router (or a user-specified subset of them)<br>- Collect rate-exceeded packet drops, packet errors, and utilization metrics per connection<br>- Compute a reproducible composite 0–100 health score per connection<br>- Rank all connections and flag any with an obvious measurable issue<br>- Recommend concrete remediation for every flagged connection<br>- Deliver a prioritized scorecard as a PDF report via email</td>
 		<td>This skill can use the following tools:
 
 - **`get_timestamps`**: Generates `from` and `to` UTC timestamps (ISO 8601) from a duration string (e.g. `"24h"`, `"7d"`).
 - **`search_routers`**: Looks up the Cloud Router by UUID and returns its name, state, package, metro, and project.
-- **`search_connections`**: Enumerates PROVISIONED connections on the Cloud Router and resolves per-connection context (Z-side access point type, Z-side port UUID, Z-side metro, provisioned bandwidth).
-- **`search_metrics`**: Retrieves connection, port, and metro metrics over the scoring window.
-- **`get_metric`**: Retrieves a single metric series when a targeted lookup is needed, including each inter-metro latency series.
+- **`search_connections`**: Enumerates PROVISIONED connections on the Cloud Router and resolves per-connection context (Z-side access point type, Z-side port UUID, provisioned bandwidth).
+- **`search_metrics`**: Retrieves connection and port metrics over the scoring window.
+- **`get_metric`**: Retrieves a single metric series when a targeted lookup is needed.
 - **`get_email_template`**: Get email template.
 - **`send_email_notification`**: Sends an email. Pass `pdfTitle` and `pdfContent` (plain text) to auto-generate and attach a PDF.</td>
 		<td>preview
