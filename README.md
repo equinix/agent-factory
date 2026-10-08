@@ -562,6 +562,24 @@ This agent runs once immediately by default unless scheduled by user.</td>
 - **`send_email_notification`**: Sends an email notification to a list of recipients with an optional PDF attachment.</td>
 		<td>preview
 	</tr>
+	<tr>
+		<td><a href="https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_schedule/network/network-health-scorecard.md">Network Health Scorecard Agent<br>[network-health-scorecard.md]</a></td>
+		<td>An Equinix Agent that gives operators a single-pane health view of the network built around one Equinix Fabric Cloud Router. Given a Cloud Router UUID, it resolves the router, fetches every connection attached to it, collects per-connection performance metrics, computes a composite 0 to 100 health score for each connection, ranks them, flags any connection with an obvious measurable issue, and recommends remediation for every flagged connection.
+This agent helps troubleshooting effort on a Cloud Router's network be prioritized where it matters most. The result is delivered as a PDF scorecard via email.
+This agent is advisory only. It reads telemetry and writes recommendations into a report; it never modifies the Cloud Router, a connection, its bandwidth, its rate limit, or any routing configuration.
+This agent runs once immediately by default unless scheduled by user.</td>
+		<td>- Resolve a Fabric Cloud Router and its location, package, and state<br>- Enumerate all PROVISIONED connections on that Cloud Router (or a user-specified subset of them)<br>- Collect rate-exceeded packet drops, packet errors, and utilization metrics per connection<br>- Compute a reproducible composite 0–100 health score per connection<br>- Rank all connections and flag any with an obvious measurable issue<br>- Recommend concrete remediation for every flagged connection<br>- Deliver a prioritized scorecard as a PDF report via email</td>
+		<td>This skill can use the following tools:
+
+- **`get_timestamps`**: Generates `from` and `to` UTC timestamps (ISO 8601) from a duration string (e.g. `"24h"`, `"7d"`).
+- **`search_routers`**: Looks up the Cloud Router by UUID and returns its name, state, package, metro, and project.
+- **`search_connections`**: Enumerates PROVISIONED connections on the Cloud Router and resolves per-connection context (Z-side access point type, Z-side port UUID, provisioned bandwidth).
+- **`search_metrics`**: Retrieves connection and port metrics over the scoring window.
+- **`get_metric`**: Retrieves a single metric series when a targeted lookup is needed.
+- **`get_email_template`**: Get email template.
+- **`send_email_notification`**: Sends an email. Pass `pdfTitle` and `pdfContent` (plain text) to auto-generate and attach a PDF.</td>
+		<td>preview
+	</tr>
 </table>
 
 </details>
