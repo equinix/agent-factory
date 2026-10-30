@@ -348,6 +348,24 @@ This agent runs once immediately by default unless scheduled by user.</td>
 		<td>preview
 	</tr>
 	<tr>
+		<td><a href="https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_schedule/cloud-router/cloud-router-bgp-route-mismatch-report.md">Cloud Router BGP Route Mismatch Report Agent<br>[cloud-router-bgp-route-mismatch-report.md]</a></td>
+		<td>An Equinix agent that detects routes that are not advertised to, or not received from, the BGP peer of a connection whose A-side is a Fabric Cloud Router (FCR). A gap in either direction typically indicates route filtering or a BGP configuration issue.
+The agent reads the FCR's own advertised and received route sets for the connection, compares each against the expected prefixes supplied in configuration, cross-checks the BGP routing protocol configuration and attached route filters, classifies each gap as a likely filtering issue or a likely BGP configuration issue, and emails one diagnostic report with recommended next actions.
+The agent sees the FCR's view only. It cannot see the peer router's own route table, so a prefix the FCR advertises is reported as advertised, not as confirmed received by the peer.
+This agent is diagnostic only. It never modifies a connection, routing protocol, route filter, or route aggregation; recommendations are for the network operator to action manually.
+This agent runs once immediately by default unless scheduled by user.</td>
+		<td>- Resolve the target connection and its A-side Fabric Cloud Router<br>- Retrieve the routes the FCR advertises to the peer and the routes it receives from the peer, per IP family<br>- Identify expected prefixes that the FCR does not advertise, and expected prefixes that the FCR does not receive<br>- Identify received prefixes that were not expected<br>- Read the BGP routing protocol configuration (state, address-family enablement, peer IP and ASN) to explain each gap<br>- Classify each gap as a likely filtering issue or a likely BGP configuration issue, with the supporting evidence<br>- Recommend a concrete next action for the operator for every gap<br>- Email a report as a PDF<br>- Log all actions and decisions</td>
+		<td>This skill can use the following tools:
+
+* **`search_connections`**: Finds a connection by UUID and resolves its name, state, and A-side router UUID.
+* **`list_routing_protocols`**: Fetches routing protocols for a connection; used to read BGP state, `customerPeerIp`, `customerAsn`, and the `enabled` flag per address family (`bgpIpv4`, `bgpIpv6`).
+* **`search_routes`**: Searches the routing table of a Fabric Cloud Router. Requires `router_uuid`. Use `route_type` = `advertised` for routes sent to the peer and `route_type` = `received` for routes learned from the peer; both also require `connection_uuid`. Filter on `/type` with `=` and the value `IPv4_BGP_ROUTE` or `IPv6_BGP_ROUTE` to select an IP family. Each returned route exposes a `prefix` field (the CIDR entry).
+* **`search_route_filter_attachments_for_fcr`**: Lists route filters attached to the router; used to detect filters that may explain missing prefixes.
+* **`get_email_template`**: Get email template.
+* **`send_email_notification`**: Sends an email. Pass `pdfTitle` and `pdfContent` (plain text) to auto-generate and attach a PDF.</td>
+		<td>preview
+	</tr>
+	<tr>
 		<td><a href="https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_schedule/cloud-router/cloud-router-connection-bgp-health-report.md">Cloud Router Connection BGP Session Restart Agent (Scheduled Batch)<br>[cloud-router-connection-bgp-health-report.md]</a></td>
 		<td>An Equinix scheduled agent that carefully evaluates BGP session health for Fabric Cloud Router backed connections and performs narrow bounded remediation only when needed.
 
