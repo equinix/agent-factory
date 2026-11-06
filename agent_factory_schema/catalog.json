@@ -137,7 +137,7 @@
                 },
                 {
                     "name": "Cloud Router BGP Route Mismatch Report Agent",
-                    "description": "An Equinix agent that detects routes that are not advertised to, or not received from, the BGP peer of a connection whose A-side is a Fabric Cloud Router (FCR). A gap in either direction typically indicates route filtering or a BGP configuration issue.",
+                    "description": "An Equinix agent that detects route mismatches on a connection whose A-side is a Fabric Cloud Router (FCR) with a BGP routing protocol. A mismatch typically indicates route filtering or a BGP configuration issue.",
                     "uri": "https://raw.githubusercontent.com/equinix/agent-factory/refs/heads/main/agent_factory_schema/equinix/fabric/v1/on_schedule/cloud-router/cloud-router-bgp-route-mismatch-report.md",
                     "releaseStatus": "preview",
                     "categories": [
